@@ -1,0 +1,6 @@
+disabled_rules:
+- line_length
+
+excluded:
+  - Sources/Application/AppDelegate.swift
+  - Sources/Application/SceneDelegate.swift
