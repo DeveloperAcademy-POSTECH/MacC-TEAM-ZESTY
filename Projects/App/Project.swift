@@ -25,5 +25,5 @@ let project = Project.makeModule(
         .package(product: "Kingfisher")
     ],
     resources: ["Resources/**"],
-    infoPlist: .default
+    infoPlist: .file(path: "Sources/Application/Info.plist")
 )
