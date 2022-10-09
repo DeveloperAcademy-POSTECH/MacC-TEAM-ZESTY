@@ -1,0 +1,7 @@
+disabled_rules:
+- line_length
+- trailing_whitespace
+
+excluded:
+  - Sources/Application/AppDelegate.swift
+  - Sources/Application/SceneDelegate.swift
