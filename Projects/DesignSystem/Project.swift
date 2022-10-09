@@ -10,7 +10,7 @@ import ProjectDescriptionHelpers
 
 let project = Project.makeModule(
     name: "DesignSystem",
-    product: .framework,
+    product: .staticFramework,
     packages: [],
     dependencies: [],
     resources: ["Resources/**"]
