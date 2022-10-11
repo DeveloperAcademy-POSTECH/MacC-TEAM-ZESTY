@@ -14,6 +14,11 @@ final class ViewControllerTemplate: UIViewController {
     
     // MARK: LifeCycle
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+    }
+    
     // MARK: Function
     
 }
