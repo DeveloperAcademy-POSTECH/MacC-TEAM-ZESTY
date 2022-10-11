@@ -22,4 +22,12 @@ extension ViewController {
     
     // MARK: UI Function
     
+    private func configureUI() {
+        
+    }
+    
+    private func configureLayout() {
+        
+    }
+    
 }
