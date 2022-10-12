@@ -1,5 +1,5 @@
 //
-//  EndPoint.swift
+//  Endpoint.swift
 //  Network
 //
 //  Created by 리아 on 2022/10/10.
