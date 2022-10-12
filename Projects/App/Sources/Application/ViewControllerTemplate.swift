@@ -31,7 +31,7 @@ extension ViewController {
         
     }
     
-    private func configureLayout() {
+    private func createLayout() {
         
     }
     

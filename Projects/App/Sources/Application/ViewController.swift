@@ -21,7 +21,7 @@ final class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        configureLayout()
+        createLayout()
     }
     
     // MARK: Function
@@ -46,7 +46,7 @@ extension ViewController {
         testButton.addTarget(self, action: #selector(changeTestTextField), for: .touchUpInside)
     }
     
-    private func configureLayout() {
+    private func createLayout() {
         view.addSubviews([testTextField, testButton])
         
         testTextField.snp.makeConstraints { make in
