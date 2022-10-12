@@ -13,5 +13,4 @@ class PlaceDetailViewModel {
     
     private let cancelBag = Set<AnyCancellable>()
     
-    
 }
