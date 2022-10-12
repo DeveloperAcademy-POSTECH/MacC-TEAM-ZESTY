@@ -22,15 +22,15 @@ final class Endpoint: ResponseRequestable {
          host: String = "",
          path: String = "",
          method: HttpMethod = .get,
-         queryParameters: Encodable? = nil,
-         bodyParameters: Encodable? = nil,
+         queryParams: Encodable? = nil,
+         bodyParams: Encodable? = nil,
          headers: [String: String]? = [:]) {
         self.scheme = scheme
         self.host = host
         self.path = path
         self.method = method
-        self.queryParams = queryParameters
-        self.bodyParams = bodyParameters
+        self.queryParams = queryParams
+        self.bodyParams = bodyParams
         self.headers = headers
     }
 }
