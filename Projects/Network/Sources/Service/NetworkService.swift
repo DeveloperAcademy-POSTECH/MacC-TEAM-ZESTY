@@ -50,6 +50,8 @@ extension NetworkService {
 
 }
 
+// MARK: - Error Handling
+
 extension URLSession.DataTaskPublisher {
 
     // TODO: Error Handling
