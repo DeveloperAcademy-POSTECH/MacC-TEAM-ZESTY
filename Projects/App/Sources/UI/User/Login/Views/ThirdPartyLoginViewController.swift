@@ -33,7 +33,6 @@ final class ThirdPartyLoginViewController: UIViewController {
     
     @objc func kakaoLoginImageViewClicked() {
         navigationController?.pushViewController(NickNameInputViewController(), animated: true)
-        print("clicked")
     }
     
     @objc func appleLoginButtonClicked() {
