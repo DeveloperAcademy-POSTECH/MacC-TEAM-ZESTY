@@ -32,11 +32,12 @@ final class ThirdPartyLoginViewController: UIViewController {
     // MARK: Function
     
     @objc func kakaoLoginImageViewClicked() {
-        
+        navigationController?.pushViewController(NickNameInputViewController(), animated: true)
+        print("clicked")
     }
     
     @objc func appleLoginButtonClicked() {
-        
+        navigationController?.pushViewController(NickNameInputViewController(), animated: true)
     }
     
 }

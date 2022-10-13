@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "ZESTER_ONE.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

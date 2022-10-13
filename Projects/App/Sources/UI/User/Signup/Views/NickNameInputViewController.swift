@@ -20,7 +20,9 @@ final class NickNameInputViewController: UIViewController {
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
     private let nickNameTextField = UITextFieldPadding(top: 14, left: 20, bottom: 14, right: 20)
-    private let nextButtonView = ShadowButtonView()
+    private let nextButtonView = ShadowButtonView(initialDisable: true)
+    private var keyBoardUpConstraints: NSLayoutConstraint?
+    private var keyBoardDownConstraints: NSLayoutConstraint?
     
     private var cancelBag = Set<AnyCancellable>()
     
@@ -39,15 +41,31 @@ final class NickNameInputViewController: UIViewController {
         nickNameTextField.delegate = self
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let activatedField = viewModel.activatedField {
+                activatedField.resignFirstResponder()
+        }
+    }
+    
     // MARK: Function
     
     private func bindUI() {
         nickNameTextFieldPublisher
             .assign(to: \.nickNameText, on: viewModel)
             .store(in: &cancelBag)
+        
         viewModel.$isTextEmpty
             .sink { [weak self] isTextEmpty in
                 self?.nextButtonView.setDisable(isTextEmpty)
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.$isKeyBoardShown
+            .sink { [weak self] isKeyBoardShown in
+                guard let self = self else { return }
+                print(isKeyBoardShown)
+                self.keyBoardUpConstraints?.isActive = isKeyBoardShown
+                self.keyBoardDownConstraints?.isActive = !isKeyBoardShown
             }
             .store(in: &cancelBag)
     }
@@ -64,10 +82,15 @@ final class NickNameInputViewController: UIViewController {
         }
         return false
     }
+    
+    @objc func nextButtonClicked() {
+        navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
+    }
 
 }
 
 extension NickNameInputViewController: UITextFieldDelegate {
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let maxNickNameCount = 6
         let isBackSpace = strcmp(string.cString(using: .utf8), "\\b") == -92
@@ -75,6 +98,19 @@ extension NickNameInputViewController: UITextFieldDelegate {
             return true
         }
         return false
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        viewModel.activatedField = textField
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        viewModel.activatedField = nil
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
 
@@ -105,8 +141,9 @@ extension NickNameInputViewController {
         let arrowImageconfiguration = UIImage.SymbolConfiguration(pointSize: 17, weight: .regular, scale: .default)
         let arrowImage = UIImage(systemName: "arrow.forward", withConfiguration: arrowImageconfiguration)
         nextButtonView.button.semanticContentAttribute = .forceRightToLeft
-        nextButtonView.button.setTitle("다음", for: .normal)
+        nextButtonView.button.setAttributedTitle(NSAttributedString(string: "다음", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)]), for: .normal)
         nextButtonView.button.setImage(arrowImage, for: .normal)
+        nextButtonView.button.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
     }
     
     private func configureLayout() {
@@ -127,8 +164,13 @@ extension NickNameInputViewController {
         
         nextButtonView.snp.makeConstraints { make in
             make.trailing.equalTo(view.snp.trailing).offset(-20)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-100)
         }
+        
+        keyBoardUpConstraints = nextButtonView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor, constant: -20)
+        keyBoardDownConstraints = nextButtonView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.bottomAnchor, constant: -100)
+        keyBoardUpConstraints?.priority = .defaultLow
+        keyBoardDownConstraints?.priority = .defaultLow
+        keyBoardDownConstraints?.isActive = true
     }
     
 }

@@ -6,4 +6,11 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
-import Foundation
+import UIKit
+import Combine
+
+final class SignupCompleteViewModel {
+        
+    let userName = "고반"
+    
+}
