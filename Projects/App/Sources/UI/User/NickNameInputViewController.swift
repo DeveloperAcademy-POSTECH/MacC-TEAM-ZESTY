@@ -19,8 +19,7 @@ final class NickNameInputViewController: UIViewController {
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
     private let nickNameTextField = UITextFieldPadding(top: 14, left: 20, bottom: 14, right: 20)
-    private let nextButton = UIButton()
-    private let nextButtonShadowUIView = UIView()
+    private let nextButton = UIView()
     
     private var cancelBag = Set<AnyCancellable>()
     
@@ -47,10 +46,6 @@ final class NickNameInputViewController: UIViewController {
             .store(in: &cancelBag)
         viewModel.$isTextEmpty
             .sink { [weak self] isTextEmpty in
-                self?.nextButton.isEnabled = !isTextEmpty
-                self?.nextButton.tintColor = isTextEmpty ? .lightGray : .white
-                self?.nextButton.layer.borderColor = isTextEmpty ? UIColor.lightGray.cgColor : UIColor.black.cgColor
-                self?.nextButtonShadowUIView.backgroundColor = isTextEmpty ? .lightGray : .black
             }
             .store(in: &cancelBag)
     }
@@ -105,29 +100,11 @@ extension NickNameInputViewController {
         nickNameTextField.clipsToBounds = true
         nickNameTextField.layer.cornerRadius = 25
         
-//        nextButton.setAttributedTitle(NSAttributedString(string: "다음", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)]), for: .normal)
-        nextButton.setTitle("다음", for: .normal)
-        nextButton.backgroundColor = .white
-        nextButton.configuration = .filled()
-        nextButton.configuration?.contentInsets = .init(top: 8, leading: 16, bottom: 8, trailing: 16)
-        nextButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
-        let arrowImageconfiguration = UIImage.SymbolConfiguration(pointSize: 17, weight: .regular, scale: .default)
-        let arrowImage = UIImage(systemName: "arrow.forward", withConfiguration: arrowImageconfiguration)
-        nextButton.setImage(arrowImage, for: .normal)
-        nextButton.semanticContentAttribute = .forceRightToLeft
-        nextButton.clipsToBounds = true
-        nextButton.layer.borderWidth = 2
-        nextButton.layer.cornerRadius = 18
-        
-        nextButtonShadowUIView.backgroundColor = .black
-        nextButtonShadowUIView.clipsToBounds = true
-        nextButtonShadowUIView.layer.cornerRadius = 18
     }
     
     private func configureLayout() {
         view.addSubview(titleStackView)
         view.addSubview(nickNameTextField)
-        view.addSubview(nextButtonShadowUIView)
         view.addSubview(nextButton)
         titleStackView.addArrangedSubviews([titleLabel, subtitleLabel])
         
@@ -145,14 +122,6 @@ extension NickNameInputViewController {
             make.trailing.equalTo(view.snp.trailing).offset(-20)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-20)
         }
-        
-        nextButtonShadowUIView.snp.makeConstraints { make in
-            make.trailing.equalTo(nextButton.snp.trailing).offset(-4)
-            make.top.equalTo(nextButton.snp.top).offset(4)
-            make.width.equalTo(nextButton.snp.width)
-            make.height.equalTo(nextButton.snp.height)
-        }
-        nextButtonShadowUIView.sendSubviewToBack(nextButton)
     }
     
 }
