@@ -9,13 +9,13 @@
 import Combine
 import Foundation
 
-protocol NetworkServiceable {
+protocol  NetworkServable {
     func request<T: Decodable>(url: URL, responseType: T.Type) -> AnyPublisher<T, NetworkError>
     func request<E: ResponseRequestable, T: Decodable>(with endpoint: E, responseType: T.Type)
     -> AnyPublisher<T, NetworkError>
 }
 
-final class NetworkService: NetworkServiceable {
+final class NetworkService:  NetworkServable {
 
     private let session: URLSession
 
