@@ -41,7 +41,7 @@ final class NickNameInputViewController: UIViewController {
     
     // MARK: Function
     
-    func bindUI() {
+    private func bindUI() {
         nickNameTextFieldPublisher
             .assign(to: \.nickNameText, on: viewModel)
             .store(in: &cancelBag)
@@ -52,7 +52,7 @@ final class NickNameInputViewController: UIViewController {
             .store(in: &cancelBag)
     }
     
-    func checkValidCharacter(to string: String) -> Bool {
+    private func checkValidCharacter(to string: String) -> Bool {
         do {
             let regex = try NSRegularExpression(pattern: "^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\\s]$", options: .caseInsensitive)
             if regex.firstMatch(in: string, options: NSRegularExpression.MatchingOptions.reportCompletion, range: .init(location: 0, length: string.count)) != nil {
