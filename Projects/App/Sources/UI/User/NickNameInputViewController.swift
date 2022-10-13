@@ -8,6 +8,7 @@
 
 import UIKit
 import Combine
+import DesignSystem
 
 final class NickNameInputViewController: UIViewController {
     
@@ -19,7 +20,7 @@ final class NickNameInputViewController: UIViewController {
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
     private let nickNameTextField = UITextFieldPadding(top: 14, left: 20, bottom: 14, right: 20)
-    private let nextButton = UIView()
+    private let nextButtonView = ShadowButtonView()
     
     private var cancelBag = Set<AnyCancellable>()
     
@@ -46,6 +47,7 @@ final class NickNameInputViewController: UIViewController {
             .store(in: &cancelBag)
         viewModel.$isTextEmpty
             .sink { [weak self] isTextEmpty in
+                self?.nextButtonView.setDisable(isTextEmpty)
             }
             .store(in: &cancelBag)
     }
@@ -100,12 +102,17 @@ extension NickNameInputViewController {
         nickNameTextField.clipsToBounds = true
         nickNameTextField.layer.cornerRadius = 25
         
+        let arrowImageconfiguration = UIImage.SymbolConfiguration(pointSize: 17, weight: .regular, scale: .default)
+        let arrowImage = UIImage(systemName: "arrow.forward", withConfiguration: arrowImageconfiguration)
+        nextButtonView.button.semanticContentAttribute = .forceRightToLeft
+        nextButtonView.button.setTitle("다음", for: .normal)
+        nextButtonView.button.setImage(arrowImage, for: .normal)
     }
     
     private func configureLayout() {
         view.addSubview(titleStackView)
         view.addSubview(nickNameTextField)
-        view.addSubview(nextButton)
+        view.addSubview(nextButtonView)
         titleStackView.addArrangedSubviews([titleLabel, subtitleLabel])
         
         titleStackView.snp.makeConstraints { make in
@@ -118,9 +125,9 @@ extension NickNameInputViewController {
             make.center.equalTo(view.snp.center)
         }
         
-        nextButton.snp.makeConstraints { make in
+        nextButtonView.snp.makeConstraints { make in
             make.trailing.equalTo(view.snp.trailing).offset(-20)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-20)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-100)
         }
     }
     

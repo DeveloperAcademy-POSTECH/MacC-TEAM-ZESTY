@@ -8,9 +8,9 @@
 
 import UIKit
 
-class UITextFieldPadding: UITextField {
+public class UITextFieldPadding: UITextField {
     
-    init(top: CGFloat, left: CGFloat, bottom: CGFloat, right: CGFloat) {
+    public init(top: CGFloat, left: CGFloat, bottom: CGFloat, right: CGFloat) {
         padding = .init(top: top, left: left, bottom: bottom, right: right)
         super.init(frame: .zero)
     }
