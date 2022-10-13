@@ -11,8 +11,6 @@ import Combine
 
 final class NickNameInputViewModel {
     
-    // MARK: Properties
-    
     // Input
     @Published var nickNameText = ""
     
