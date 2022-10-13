@@ -9,7 +9,7 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.makeModule(
-    name: "Zest",
+    name: "App",
     platform: .iOS,
     product: .app,
     packages: [
