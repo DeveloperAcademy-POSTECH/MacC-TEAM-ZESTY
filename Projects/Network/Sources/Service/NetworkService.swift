@@ -15,7 +15,7 @@ protocol  NetworkServable {
     -> AnyPublisher<T, NetworkError>
 }
 
-final class NetworkService:  NetworkServable {
+final class NetworkService: NetworkServable {
 
     private let session: URLSession
 
