@@ -14,11 +14,11 @@ public class ShadowButtonView: UIView {
     public let button = UIButton()
     private let buttonShadowView = UIView()
     
-    public init() {
+    public init(initialDisable: Bool = false) {
         super.init(frame: .zero)
         configureUI()
         createLayout()
-        setDisable(true)
+        setDisable(initialDisable)
     }
     
     required init?(coder: NSCoder) {
@@ -37,7 +37,6 @@ public class ShadowButtonView: UIView {
 extension ShadowButtonView {
     
     private func configureUI() {
-        button.setAttributedTitle(NSAttributedString(string: "다음", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)]), for: .normal)
         button.backgroundColor = .white
         button.configuration = .filled()
         button.configuration?.contentInsets = .init(top: 8, leading: 16, bottom: 8, trailing: 16)
@@ -56,8 +55,10 @@ extension ShadowButtonView {
         addSubview(button)
         
         button.snp.makeConstraints { make in
-            make.top.equalTo(snp.top)
+            make.leading.equalTo(snp.leading)
             make.trailing.equalTo(snp.trailing)
+            make.top.equalTo(snp.top)
+            make.bottom.equalTo(snp.bottom)
         }
         
         buttonShadowView.snp.makeConstraints { make in
