@@ -25,7 +25,6 @@ public class ShadowButtonView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     public func setDisable(_ state: Bool) {
         button.isEnabled = !state
         button.tintColor = state ? .lightGray : .white
