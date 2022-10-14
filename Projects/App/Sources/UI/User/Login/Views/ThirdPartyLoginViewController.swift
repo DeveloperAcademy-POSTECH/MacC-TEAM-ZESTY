@@ -96,7 +96,7 @@ extension ThirdPartyLoginViewController {
         loginStackView.snp.makeConstraints { make in
             make.top.equalTo(characterImageView.snp.bottom).offset(158)
             make.leading.equalTo(view.snp.leading).offset(20)
-            make.trailing.equalTo(view.snp.trailing).offset(-20)
+            make.leading.trailing.equalToSuperview().inset(20)
         }
         
         kakaoLoginButton.snp.makeConstraints { make in
