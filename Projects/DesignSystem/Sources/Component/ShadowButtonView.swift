@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-public class ShadowButtonView: UIView {
+public final class ShadowButtonView: UIView {
     
     public let button = UIButton()
     private let buttonShadowView = UIView()

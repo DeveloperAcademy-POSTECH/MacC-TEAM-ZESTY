@@ -21,6 +21,7 @@ final class NickNameInputViewController: UIViewController {
     private let subtitleLabel = UILabel()
     private let nickNameTextField = UITextFieldPadding(top: 14, left: 20, bottom: 14, right: 20)
     private let nextButtonView = ShadowButtonView(initialDisable: true)
+    
     private var keyBoardUpConstraints: NSLayoutConstraint?
     private var keyBoardDownConstraints: NSLayoutConstraint?
     
@@ -43,7 +44,7 @@ final class NickNameInputViewController: UIViewController {
     
     // MARK: Function
     
-    @objc func nextButtonClicked() {
+    @objc private func nextButtonClicked() {
         navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
     }
     
@@ -141,8 +142,8 @@ extension NickNameInputViewController {
         nickNameTextField.clipsToBounds = true
         nickNameTextField.layer.cornerRadius = 25
         
-        let arrowImageconfiguration = UIImage.SymbolConfiguration(pointSize: 17, weight: .regular, scale: .default)
-        let arrowImage = UIImage(systemName: "arrow.forward", withConfiguration: arrowImageconfiguration)
+        let arrowImageConfiguration = UIImage.SymbolConfiguration(pointSize: 17, weight: .regular, scale: .default)
+        let arrowImage = UIImage(systemName: "arrow.forward", withConfiguration: arrowImageConfiguration)
         nextButtonView.button.semanticContentAttribute = .forceRightToLeft
         nextButtonView.button.setAttributedTitle(NSAttributedString(string: "다음", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)]), for: .normal)
         nextButtonView.button.setImage(arrowImage, for: .normal)

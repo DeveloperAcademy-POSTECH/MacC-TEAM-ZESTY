@@ -31,7 +31,7 @@ final class SignupCompleteViewController: UIViewController {
     
     // MARK: Function
     
-    @objc func termsOfServiceLabelClicked() {
+    @objc private func termsOfServiceLabelClicked() {
         
     }
     
