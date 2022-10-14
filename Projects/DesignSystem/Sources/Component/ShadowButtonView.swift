@@ -27,7 +27,6 @@ public class ShadowButtonView: UIView {
     
     public func setDisable(_ state: Bool) {
         button.isEnabled = !state
-        button.tintColor = state ? .lightGray : .white
         button.layer.borderColor = state ? UIColor.lightGray.cgColor : UIColor.black.cgColor
         buttonShadowView.backgroundColor = state ? .lightGray : .black
     }
@@ -37,6 +36,7 @@ public class ShadowButtonView: UIView {
 extension ShadowButtonView {
     
     private func configureUI() {
+        button.tintColor = .white
         button.backgroundColor = .white
         button.configuration = .filled()
         button.configuration?.contentInsets = .init(top: 8, leading: 16, bottom: 8, trailing: 16)
@@ -67,7 +67,6 @@ extension ShadowButtonView {
             make.width.equalTo(button.snp.width)
             make.height.equalTo(button.snp.height)
         }
-        buttonShadowView.sendSubviewToBack(button)
     }
     
 }
