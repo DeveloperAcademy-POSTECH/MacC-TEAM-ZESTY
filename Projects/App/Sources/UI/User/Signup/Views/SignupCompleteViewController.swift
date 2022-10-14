@@ -47,8 +47,14 @@ extension SignupCompleteViewController {
         characterImageView.image = UIImage(named: "ZESTER_ONE")
         
         nickNameLabel.text = "\(viewModel.userName)"
+        nickNameLabel.font = .systemFont(ofSize: 17, weight: .semibold)
         
-        termsOfServiceLabel.text = "‘시작하기' 버튼을 누르시면\n이용약관에 동의하시게 됩니다."
+        let termsOfServiceLabelText = "‘시작하기' 버튼을 누르시면\n이용약관에 동의하시게 됩니다."
+        let attributedText = NSMutableAttributedString(string: termsOfServiceLabelText, attributes: [.font: UIFont.systemFont(ofSize: 13)])
+          attributedText.addAttribute(.underlineStyle,
+                                      value: NSUnderlineStyle.single.rawValue,
+                                      range: (termsOfServiceLabelText as NSString).range(of: "이용약관"))
+        termsOfServiceLabel.attributedText = attributedText
         termsOfServiceLabel.textAlignment = .center
         termsOfServiceLabel.numberOfLines = 2
         
