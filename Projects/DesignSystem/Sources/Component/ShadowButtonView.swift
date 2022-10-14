@@ -18,14 +18,14 @@ public final class ShadowButtonView: UIView {
         super.init(frame: .zero)
         configureUI()
         createLayout()
-        setDisable(initialDisable)
+        setDisabled(initialDisable)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func setDisable(_ state: Bool) {
+    public func setDisabled(_ state: Bool) {
         button.isEnabled = !state
         button.layer.borderColor = state ? UIColor.lightGray.cgColor : UIColor.black.cgColor
         buttonShadowView.backgroundColor = state ? .lightGray : .black

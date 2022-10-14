@@ -80,7 +80,7 @@ extension NickNameInputViewController {
         
         viewModel.$isTextEmpty
             .sink { [weak self] isTextEmpty in
-                self?.nextButtonView.setDisable(isTextEmpty)
+                self?.nextButtonView.setDisabled(isTextEmpty)
             }
             .store(in: &cancelBag)
         
