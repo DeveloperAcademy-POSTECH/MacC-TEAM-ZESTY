@@ -6,9 +6,9 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
+import AuthenticationServices
 import UIKit
 import SnapKit
-import AuthenticationServices
 import DesignSystem
 
 final class ThirdPartyLoginViewController: UIViewController {
