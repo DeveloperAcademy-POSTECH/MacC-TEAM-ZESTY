@@ -40,7 +40,6 @@ extension ShadowButtonView {
         button.backgroundColor = .white
         button.configuration = .filled()
         button.configuration?.contentInsets = .init(top: 8, leading: 16, bottom: 8, trailing: 16)
-        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
         button.clipsToBounds = true
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 18
