@@ -54,17 +54,19 @@ extension SignupCompleteViewController {
         nickNameLabel.font = .systemFont(ofSize: 17, weight: .semibold)
         
         let termsOfServiceLabelText = "‘시작하기' 버튼을 누르시면\n이용약관에 동의하시게 됩니다."
-        let attributedText = NSMutableAttributedString(string: termsOfServiceLabelText, attributes: [.font: UIFont.systemFont(ofSize: 13)])
-          attributedText.addAttribute(.underlineStyle,
-                                      value: NSUnderlineStyle.single.rawValue,
-                                      range: (termsOfServiceLabelText as NSString).range(of: "이용약관"))
+        let attributedText = NSMutableAttributedString(string: termsOfServiceLabelText,
+                                                       attributes: [.font: UIFont.systemFont(ofSize: 13)])
+        attributedText.addAttribute(.underlineStyle,
+                                    value: NSUnderlineStyle.single.rawValue,
+                                    range: (termsOfServiceLabelText as NSString).range(of: "이용약관"))
         termsOfServiceLabel.attributedText = attributedText
         termsOfServiceLabel.textAlignment = .center
         termsOfServiceLabel.numberOfLines = 2
         termsOfServiceLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(termsOfServiceLabelClicked)))
         termsOfServiceLabel.isUserInteractionEnabled = true
         
-        startButtonView.button.setAttributedTitle(NSAttributedString(string: "시작하기", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)]), for: .normal)
+        startButtonView.button.setAttributedTitle(NSAttributedString(string: "시작하기",
+                                                                     attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)]), for: .normal)
     }
     
     private func createLayout() {
