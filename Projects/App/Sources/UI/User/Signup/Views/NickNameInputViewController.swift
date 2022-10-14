@@ -22,8 +22,8 @@ final class NickNameInputViewController: UIViewController {
     private let nickNameTextField = UITextFieldPadding(top: 14, left: 20, bottom: 14, right: 20)
     private let nextButtonView = ShadowButtonView(initialDisable: true)
     
-    private var keyBoardUpConstraints: NSLayoutConstraint?
-    private var keyBoardDownConstraints: NSLayoutConstraint?
+    private var keyboardUpConstraints: NSLayoutConstraint?
+    private var keyboardDownConstraints: NSLayoutConstraint?
     
     private var cancelBag = Set<AnyCancellable>()
     
@@ -59,11 +59,11 @@ final class NickNameInputViewController: UIViewController {
             }
             .store(in: &cancelBag)
         
-        viewModel.$isKeyBoardShown
-            .sink { [weak self] isKeyBoardShown in
+        viewModel.$isKeyboardShown
+            .sink { [weak self] isKeyboardShown in
                 guard let self = self else { return }
-                self.keyBoardUpConstraints?.isActive = isKeyBoardShown
-                self.keyBoardDownConstraints?.isActive = !isKeyBoardShown
+                self.keyboardUpConstraints?.isActive = isKeyboardShown
+                self.keyboardDownConstraints?.isActive = !isKeyboardShown
             }
             .store(in: &cancelBag)
     }
@@ -170,11 +170,11 @@ extension NickNameInputViewController {
             make.trailing.equalTo(view.snp.trailing).offset(-20)
         }
         
-        keyBoardUpConstraints = nextButtonView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor, constant: -20)
-        keyBoardDownConstraints = nextButtonView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.bottomAnchor, constant: -100)
-        keyBoardUpConstraints?.priority = .defaultLow
-        keyBoardDownConstraints?.priority = .defaultLow
-        keyBoardDownConstraints?.isActive = true
+        keyboardUpConstraints = nextButtonView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor, constant: -20)
+        keyboardDownConstraints = nextButtonView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.bottomAnchor, constant: -100)
+        keyboardUpConstraints?.priority = .defaultLow
+        keyboardDownConstraints?.priority = .defaultLow
+        keyboardDownConstraints?.isActive = true
     }
     
 }

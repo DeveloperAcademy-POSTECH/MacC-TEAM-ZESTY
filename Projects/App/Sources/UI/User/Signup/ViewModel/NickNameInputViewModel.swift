@@ -17,7 +17,7 @@ final class NickNameInputViewModel {
     
     // Output
     @Published var isTextEmpty = true
-    @Published var isKeyBoardShown = false
+    @Published var isKeyboardShown = false
 
     private var cancelBag = Set<AnyCancellable>()
     
@@ -29,7 +29,7 @@ final class NickNameInputViewModel {
         
         $activatedField
             .map(checkIsNotNil)
-            .assign(to: \.isKeyBoardShown, on: self)
+            .assign(to: \.isKeyboardShown, on: self)
             .store(in: &cancelBag)
     }
     
