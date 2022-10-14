@@ -48,26 +48,6 @@ final class NickNameInputViewController: UIViewController {
         navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
     }
     
-    private func bindUI() {
-        nickNameTextFieldPublisher
-            .assign(to: \.nickNameText, on: viewModel)
-            .store(in: &cancelBag)
-        
-        viewModel.$isTextEmpty
-            .sink { [weak self] isTextEmpty in
-                self?.nextButtonView.setDisable(isTextEmpty)
-            }
-            .store(in: &cancelBag)
-        
-        viewModel.$isKeyboardShown
-            .sink { [weak self] isKeyboardShown in
-                guard let self = self else { return }
-                self.keyboardUpConstraints?.isActive = isKeyboardShown
-                self.keyboardDownConstraints?.isActive = !isKeyboardShown
-            }
-            .store(in: &cancelBag)
-    }
-    
     private func checkValidCharacter(to string: String) -> Bool {
         do {
             let regex = try NSRegularExpression(pattern: "^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\\s]$", options: .caseInsensitive)
@@ -89,7 +69,35 @@ final class NickNameInputViewController: UIViewController {
 
 }
 
+extension NickNameInputViewController {
+    
+    // MARK: Bind Function
+    
+    private func bindUI() {
+        nickNameTextFieldPublisher
+            .assign(to: \.nickNameText, on: viewModel)
+            .store(in: &cancelBag)
+        
+        viewModel.$isTextEmpty
+            .sink { [weak self] isTextEmpty in
+                self?.nextButtonView.setDisable(isTextEmpty)
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.$isKeyboardShown
+            .sink { [weak self] isKeyboardShown in
+                guard let self = self else { return }
+                self.keyboardUpConstraints?.isActive = isKeyboardShown
+                self.keyboardDownConstraints?.isActive = !isKeyboardShown
+            }
+            .store(in: &cancelBag)
+    }
+    
+}
+
 extension NickNameInputViewController: UITextFieldDelegate {
+    
+    // MARK: Delegate Function
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let maxNickNameCount = 6
