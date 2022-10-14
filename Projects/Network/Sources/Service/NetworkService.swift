@@ -10,7 +10,6 @@ import Combine
 import Foundation
 
 protocol NetworkServable {
-    func request<T: Decodable>(url: URL, responseType: T.Type) -> AnyPublisher<T, NetworkError>
     func request<E: ResponseRequestable, T: Decodable>(with endpoint: E, responseType: T.Type)
     -> AnyPublisher<T, NetworkError>
 }
@@ -27,14 +26,6 @@ final class NetworkService: NetworkServable {
 
 extension NetworkService {
 
-    // get, delete
-    func request<T: Decodable>(url: URL, responseType: T.Type) -> AnyPublisher<T, NetworkError> {
-        return session.dataTaskPublisher(for: url)
-            .checkError()
-            .decode()
-    }
-
-    // post, put
     func request<E: ResponseRequestable, T: Decodable>(with endpoint: E, responseType: T.Type)
     -> AnyPublisher<T, NetworkError> {
         do {
