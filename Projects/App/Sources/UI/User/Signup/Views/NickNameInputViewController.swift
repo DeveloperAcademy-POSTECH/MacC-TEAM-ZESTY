@@ -160,9 +160,7 @@ extension NickNameInputViewController {
     }
     
     private func configureLayout() {
-        view.addSubview(titleStackView)
-        view.addSubview(nickNameTextField)
-        view.addSubview(nextButtonView)
+        view.addSubviews([titleStackView, nickNameTextField, nextButtonView])
         titleStackView.addArrangedSubviews([titleLabel, subtitleLabel])
         
         titleStackView.snp.makeConstraints { make in

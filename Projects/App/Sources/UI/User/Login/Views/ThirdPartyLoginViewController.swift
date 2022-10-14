@@ -75,9 +75,7 @@ extension ThirdPartyLoginViewController {
     }
     
     private func configureLayout() {
-        view.addSubview(titleStackView)
-        view.addSubview(characterImageView)
-        view.addSubview(loginStackView)
+        view.addSubviews([titleStackView, characterImageView, loginStackView])
         titleStackView.addArrangedSubviews([titleLabel, subtitleLabel])
         loginStackView.addArrangedSubviews([kakaoLoginButton, appleLoginButton])
         

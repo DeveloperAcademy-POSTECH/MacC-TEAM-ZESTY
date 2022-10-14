@@ -70,11 +70,7 @@ extension SignupCompleteViewController {
     }
     
     private func createLayout() {
-        view.addSubview(titleLabel)
-        view.addSubview(characterImageView)
-        view.addSubview(nickNameLabel)
-        view.addSubview(termsOfServiceLabel)
-        view.addSubview(startButtonView)
+        view.addSubviews([titleLabel, characterImageView, nickNameLabel, termsOfServiceLabel, startButtonView])
         
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(view.snp.leading).offset(20)
