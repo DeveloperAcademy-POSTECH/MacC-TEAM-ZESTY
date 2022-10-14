@@ -112,6 +112,7 @@ extension NickNameInputViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
+    
 }
 
 extension NickNameInputViewController {

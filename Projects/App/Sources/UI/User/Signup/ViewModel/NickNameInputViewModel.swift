@@ -36,7 +36,9 @@ final class NickNameInputViewModel {
     private func checkIsEmpty(to string: String) -> Bool {
         return string == ""
     }
+    
     private func checkIsNotNil(to object: UITextField?) -> Bool {
         return object != nil
     }
+    
 }
