@@ -8,7 +8,7 @@
 
 import Foundation
 
-final class Endpoint: ResponseRequestable {
+final class Endpoint: Requestable {
 
     var scheme: String
     var host: String

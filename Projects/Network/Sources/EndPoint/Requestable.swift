@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol ResponseRequestable {
+protocol Requestable {
     var scheme: String { get }
     var host: String { get }
     var path: String { get }
@@ -18,7 +18,7 @@ protocol ResponseRequestable {
     var headers: [String: String]? { get }
 }
 
-extension ResponseRequestable {
+extension Requestable {
 
     func getUrlRequest() throws -> URLRequest {
         let url = try url()

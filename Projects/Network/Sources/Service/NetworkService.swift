@@ -10,7 +10,7 @@ import Combine
 import Foundation
 
 protocol NetworkServable {
-    func request<E: ResponseRequestable, T: Decodable>(with endpoint: E, responseType: T.Type)
+    func request<E: Requestable, T: Decodable>(with endpoint: E, responseType: T.Type)
     -> AnyPublisher<T, NetworkError>
 }
 
@@ -26,7 +26,7 @@ final class NetworkService: NetworkServable {
 
 extension NetworkService {
 
-    func request<E: ResponseRequestable, T: Decodable>(with endpoint: E, responseType: T.Type)
+    func request<E: Requestable, T: Decodable>(with endpoint: E, responseType: T.Type)
     -> AnyPublisher<T, NetworkError> {
         do {
             let request = try endpoint.getUrlRequest()
