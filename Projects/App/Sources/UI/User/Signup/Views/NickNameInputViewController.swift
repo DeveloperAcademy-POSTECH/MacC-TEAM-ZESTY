@@ -62,7 +62,6 @@ final class NickNameInputViewController: UIViewController {
         viewModel.$isKeyBoardShown
             .sink { [weak self] isKeyBoardShown in
                 guard let self = self else { return }
-                print(isKeyBoardShown)
                 self.keyBoardUpConstraints?.isActive = isKeyBoardShown
                 self.keyBoardDownConstraints?.isActive = !isKeyBoardShown
             }
