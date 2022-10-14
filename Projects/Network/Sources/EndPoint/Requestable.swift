@@ -41,13 +41,13 @@ extension Requestable {
         components.scheme = scheme
         components.host = host
         components.path = path
-        components.queryItems = try getQueryItems() // 이름 수정 Get 없애자
+        components.queryItems = try queryItems() // 이름 수정 Get 없애자
 
         guard let url = components.url else { throw NetworkError.urlComponent }
         return url
     }
 
-    private func getQueryItems() throws -> [URLQueryItem]? {
+    private func queryItems() throws -> [URLQueryItem]? {
         if let queryParams = try queryParams?.toDictionary() {
             if !queryParams.isEmpty {
                 return queryParams.map { URLQueryItem(name: $0.key, value: "\($0.value)") }
