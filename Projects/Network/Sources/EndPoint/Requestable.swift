@@ -41,7 +41,7 @@ extension Requestable {
         components.scheme = scheme
         components.host = host
         components.path = path
-        components.queryItems = try queryItems() // 이름 수정 Get 없애자
+        components.queryItems = try queryItems()
 
         guard let url = components.url else { throw NetworkError.urlComponent }
         return url
@@ -61,17 +61,17 @@ extension Requestable {
         
         guard let bodyParams = try bodyParams?.toDictionary() else { return nil }
         
-        // 이미지가 있을 경우
+        // multipart가 있을 경우
         if let multipart = multipart, let boundary = boundary {
             let bound = BoundaryType(boundary: boundary)
             
-            // 이미지 외의 정보들
+            // multipart 외 함께 전달하는 정보들
             for (key, value) in bodyParams {
                 dataBody.append(bound.initial)
                 dataBody.append("Content-Disposition: form-data; ")
                 dataBody.append("name=\"\(key)\"\(bound.crlf)\(bound.crlf)\(value)\(bound.crlf)")
             }
-            // 이미지 정보
+            // multipart 정보
             for data in multipart {
                 dataBody.append(bound.initial)
                 dataBody.append("Content-Disposition: form-data; ")
@@ -83,7 +83,7 @@ extension Requestable {
             dataBody.append(bound.final)
         }
         
-        // 이미지가 없는 경우
+        // multipart가 없는 경우
         else if !bodyParams.isEmpty {
             return try? JSONSerialization.data(withJSONObject: bodyParams)
         }
@@ -92,6 +92,8 @@ extension Requestable {
     }
 
 }
+
+// MARK: - Utility
 
 fileprivate extension Encodable {
 
@@ -102,7 +104,6 @@ fileprivate extension Encodable {
     }
 
 }
-
 
 fileprivate extension Data {
     
