@@ -95,7 +95,7 @@ extension SignupCompleteViewController {
         }
         
         termsOfServiceLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-122)
+            make.bottom.equalTo(startButtonView.snp.top).offset(-16)
             make.centerX.equalTo(view.snp.centerX)
         }
         
