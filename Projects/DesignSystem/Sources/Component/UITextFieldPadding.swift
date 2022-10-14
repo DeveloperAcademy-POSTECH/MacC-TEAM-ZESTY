@@ -19,7 +19,7 @@ public final class UITextFieldPadding: UITextField {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var padding: UIEdgeInsets
+    private var padding: UIEdgeInsets
 
     override public func textRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)
