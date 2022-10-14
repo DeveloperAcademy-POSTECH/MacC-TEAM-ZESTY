@@ -63,9 +63,9 @@ extension Requestable {
 
 }
 
-extension Encodable {
+fileprivate extension Encodable {
 
-    fileprivate func toDictionary() throws -> [String: Any]? {
+    func toDictionary() throws -> [String: Any]? {
         let data = try JSONEncoder().encode(self)
         let jsonData = try JSONSerialization.jsonObject(with: data)
         return jsonData as? [String: Any]
