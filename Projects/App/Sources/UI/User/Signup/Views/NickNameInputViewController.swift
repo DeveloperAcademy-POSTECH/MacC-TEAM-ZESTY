@@ -144,9 +144,10 @@ extension NickNameInputViewController {
         
         let arrowImageConfiguration = UIImage.SymbolConfiguration(pointSize: 17, weight: .regular, scale: .default)
         let arrowImage = UIImage(systemName: "arrow.forward", withConfiguration: arrowImageConfiguration)
-        nextButtonView.button.semanticContentAttribute = .forceRightToLeft
-        nextButtonView.button.setAttributedTitle(NSAttributedString(string: "다음", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)]), for: .normal)
+        nextButtonView.button.setAttributedTitle(NSAttributedString(string: "다음",
+                                                                    attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)]), for: .normal)
         nextButtonView.button.setImage(arrowImage, for: .normal)
+        nextButtonView.button.semanticContentAttribute = .forceRightToLeft
         nextButtonView.button.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
     }
     
