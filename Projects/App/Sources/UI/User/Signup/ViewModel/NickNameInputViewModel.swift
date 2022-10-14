@@ -23,7 +23,7 @@ final class NickNameInputViewModel {
     
     init() {
         $nickNameText
-            .map(checkIsEmpty)
+            .map(isEmpty)
             .assign(to: \.isTextEmpty, on: self)
             .store(in: &cancelBag)
         
@@ -33,12 +33,12 @@ final class NickNameInputViewModel {
             .store(in: &cancelBag)
     }
     
-    private func checkIsEmpty(to string: String) -> Bool {
-        return string == ""
+    private func isEmpty(to text: String) -> Bool {
+        return text.isEmpty
     }
     
-    private func checkIsNotNil(to object: UITextField?) -> Bool {
-        return object != nil
+    private func checkIsNotNil(to textField: UITextField?) -> Bool {
+        return textField != nil
     }
     
 }
