@@ -47,3 +47,15 @@ enum HttpMethod: String {
     case put = "PUT"
     case delete = "DELETE"
 }
+
+struct Multipart {
+    let data: Data
+    let mediaType: String
+    let `extension`: String
+    
+    init(data: Data, mediaType: String = "image", extension: String = "jpeg") {
+        self.data = data
+        self.mediaType = mediaType
+        self.`extension` = `extension`
+    }
+}

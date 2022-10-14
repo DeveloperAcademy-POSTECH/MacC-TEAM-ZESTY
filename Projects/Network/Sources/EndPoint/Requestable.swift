@@ -103,28 +103,8 @@ fileprivate extension Encodable {
 
 }
 
-struct Multipart {
-    let data: Data
-    let mediaType: String
-    let `extension`: String
-    
-    init(data: Data, mediaType: String = "image", extension: String = "jpeg") {
-        self.data = data
-        self.mediaType = mediaType
-        self.`extension` = `extension`
-    }
-}
 
-private struct BoundaryType {
-    let boundary: String
-    let crlf = "\r\n"
-    
-    var initial: String { "--\(boundary)\(crlf)" }
-    var encapsulated: String { "\(crlf)--\(boundary)\(crlf)" }
-    var final: String { "\(crlf)--\(boundary)--\(crlf)" }
-}
-
-extension Data {
+fileprivate extension Data {
     
     mutating func append(_ string: String) {
         if let data = string.data(using: .utf8) {
@@ -132,4 +112,13 @@ extension Data {
         }
     }
     
+}
+
+fileprivate struct BoundaryType {
+    let boundary: String
+    let crlf = "\r\n"
+    
+    var initial: String { "--\(boundary)\(crlf)" }
+    var encapsulated: String { "\(crlf)--\(boundary)\(crlf)" }
+    var final: String { "\(crlf)--\(boundary)--\(crlf)" }
 }
