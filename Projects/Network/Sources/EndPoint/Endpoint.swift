@@ -24,7 +24,7 @@ final class Endpoint: Requestable {
          method: HttpMethod = .get,
          queryParams: Encodable? = nil,
          bodyParams: Encodable? = nil,
-         headers: [String: String]? = [:]) {
+         headers: [String: String]?) {
         self.scheme = scheme
         self.host = host
         self.path = path
