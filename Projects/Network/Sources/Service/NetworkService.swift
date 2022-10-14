@@ -29,7 +29,7 @@ extension NetworkService {
     func request<E: Requestable, T: Decodable>(with endpoint: E, responseType: T.Type)
     -> AnyPublisher<T, NetworkError> {
         do {
-            let request = try endpoint.getUrlRequest()
+            let request = try endpoint.urlRequest()
 
             return session.dataTaskPublisher(for: request)
                 .checkError()
