@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum Pallete: String {
+public enum Color: String {
     case grayC5
 
     var hexString: String {

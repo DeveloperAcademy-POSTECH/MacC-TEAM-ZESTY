@@ -9,7 +9,7 @@
 import UIKit
 
 public extension UIColor {
-    class func zestyColor(_ color: Pallete) -> UIColor? {
+    class func zestyColor(_ color: Color) -> UIColor? {
         return UIColor(named: color.rawValue, in: Bundle.module, compatibleWith: nil)
     }
 }
