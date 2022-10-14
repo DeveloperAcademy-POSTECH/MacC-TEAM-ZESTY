@@ -2,6 +2,9 @@ disabled_rules:
 - line_length
 - trailing_whitespace
 
+excluded:
+- Sources/Asset/Asset.swift
+
 identifier_name:
     excluded:
         - id

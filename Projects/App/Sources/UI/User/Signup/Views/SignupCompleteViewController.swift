@@ -48,7 +48,7 @@ extension SignupCompleteViewController {
         titleLabel.font = .systemFont(ofSize: 26)
         titleLabel.numberOfLines = 2
         
-        characterImageView.image = UIImage(named: "ZESTER_ONE")
+        characterImageView.image = UIImage(.img_zesterone)
         
         nickNameLabel.text = "\(viewModel.userName)"
         nickNameLabel.font = .preferredFont(forTextStyle: .headline)

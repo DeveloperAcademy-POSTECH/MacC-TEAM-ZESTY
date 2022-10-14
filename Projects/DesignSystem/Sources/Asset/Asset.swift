@@ -9,6 +9,8 @@
 import Foundation
 
 public enum Asset: String {
-    case temp // FIXME: - 추후 삭제 요망
-//    case ic_test  => 나중에 이렇게 해주세요
+    case btn_kakaologin
+    case btn_applelogin
+    case img_zesterone
+    case img_zesterthree
 }

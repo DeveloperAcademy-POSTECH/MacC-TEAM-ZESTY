@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import AuthenticationServices
+import DesignSystem
 
 final class ThirdPartyLoginViewController: UIViewController {
     
@@ -61,16 +62,16 @@ extension ThirdPartyLoginViewController {
         subtitleLabel.textColor = .gray
         subtitleLabel.font = .preferredFont(forTextStyle: .callout)
         
-        characterImageView.image = UIImage(named: "ZESTER_THREE")
+        characterImageView.image = UIImage(.img_zesterthree)
         
         loginStackView.axis = .vertical
         loginStackView.spacing = 20
         
         kakaoLoginButton.addTarget(self, action: #selector(kakaoLoginButtonClicked), for: .touchUpInside)
-        kakaoLoginButton.setImage(UIImage(named: "KakaoLogin"), for: .normal)
+        kakaoLoginButton.setImage(UIImage(.btn_kakaologin), for: .normal)
         
         appleLoginButton.addTarget(self, action: #selector(appleLoginButtonClicked), for: .touchUpInside)
-        appleLoginButton.setImage(UIImage(named: "AppleLogin"), for: .normal)
+        appleLoginButton.setImage(UIImage(.btn_applelogin), for: .normal)
     }
     
     private func configureLayout() {
