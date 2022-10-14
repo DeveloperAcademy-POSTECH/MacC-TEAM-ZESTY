@@ -31,6 +31,10 @@ final class SignupCompleteViewController: UIViewController {
     
     // MARK: Function
     
+    @objc func termsOfServiceLabelClicked() {
+        
+    }
+    
 }
 
 extension SignupCompleteViewController {
@@ -57,6 +61,8 @@ extension SignupCompleteViewController {
         termsOfServiceLabel.attributedText = attributedText
         termsOfServiceLabel.textAlignment = .center
         termsOfServiceLabel.numberOfLines = 2
+        termsOfServiceLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(termsOfServiceLabelClicked)))
+        termsOfServiceLabel.isUserInteractionEnabled = true
         
         startButtonView.button.setAttributedTitle(NSAttributedString(string: "시작하기", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)]), for: .normal)
     }
