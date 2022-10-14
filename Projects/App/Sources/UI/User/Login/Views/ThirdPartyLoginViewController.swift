@@ -19,8 +19,8 @@ final class ThirdPartyLoginViewController: UIViewController {
     private let subtitleLabel = UILabel()
     private let characterImageView = UIImageView()
     private let loginStackView = UIStackView()
-    private let kakaoLoginImageView = UIImageView()
-    private let appleLoginButton = ASAuthorizationAppleIDButton(type: .signUp, style: .black)
+    private let kakaoLoginButton = UIButton()
+    private let appleLoginButton = UIButton()
     
     // MARK: LifeCycle
     
@@ -31,7 +31,7 @@ final class ThirdPartyLoginViewController: UIViewController {
     
     // MARK: Function
     
-    @objc func kakaoLoginImageViewClicked() {
+    @objc func kakaoLoginButtonClicked() {
         navigationController?.pushViewController(NickNameInputViewController(), animated: true)
     }
     
@@ -66,10 +66,11 @@ extension ThirdPartyLoginViewController {
         loginStackView.axis = .vertical
         loginStackView.spacing = 20
         
-        kakaoLoginImageView.image = UIImage(named: "KakaoLogin")
-        kakaoLoginImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(kakaoLoginImageViewClicked)))
+        kakaoLoginButton.addTarget(self, action: #selector(kakaoLoginButtonClicked), for: .touchUpInside)
+        kakaoLoginButton.setImage(UIImage(named: "KakaoLogin"), for: .normal)
         
         appleLoginButton.addTarget(self, action: #selector(appleLoginButtonClicked), for: .touchUpInside)
+        appleLoginButton.setImage(UIImage(named: "AppleLogin"), for: .normal)
     }
     
     private func configureLayout() {
@@ -77,7 +78,7 @@ extension ThirdPartyLoginViewController {
         view.addSubview(characterImageView)
         view.addSubview(loginStackView)
         titleStackView.addArrangedSubviews([titleLabel, subtitleLabel])
-        loginStackView.addArrangedSubviews([kakaoLoginImageView, appleLoginButton])
+        loginStackView.addArrangedSubviews([kakaoLoginButton, appleLoginButton])
         
         titleStackView.snp.makeConstraints { make in
             make.leading.equalTo(view.snp.leading).offset(20)
@@ -93,9 +94,16 @@ extension ThirdPartyLoginViewController {
         }
         
         loginStackView.snp.makeConstraints { make in
+            make.top.equalTo(characterImageView.snp.bottom).offset(158)
             make.leading.equalTo(view.snp.leading).offset(20)
             make.trailing.equalTo(view.snp.trailing).offset(-20)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-64)
+        }
+        
+        kakaoLoginButton.snp.makeConstraints { make in
+            make.height.equalTo(50)
+        }
+        appleLoginButton.snp.makeConstraints { make in
+            make.height.equalTo(50)
         }
     }
     
