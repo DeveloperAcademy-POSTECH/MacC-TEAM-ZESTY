@@ -41,13 +41,11 @@ final class NickNameInputViewController: UIViewController {
         nickNameTextField.delegate = self
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let activatedField = viewModel.activatedField {
-                activatedField.resignFirstResponder()
-        }
-    }
-    
     // MARK: Function
+    
+    @objc func nextButtonClicked() {
+        navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
+    }
     
     private func bindUI() {
         nickNameTextFieldPublisher
@@ -83,8 +81,10 @@ final class NickNameInputViewController: UIViewController {
         return false
     }
     
-    @objc func nextButtonClicked() {
-        navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let activatedField = viewModel.activatedField {
+                activatedField.resignFirstResponder()
+        }
     }
 
 }
@@ -120,6 +120,9 @@ extension NickNameInputViewController {
     
     private func configureUI() {
         view.backgroundColor = .white
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.tintColor = .black
         
         titleStackView.axis = .vertical
         titleStackView.spacing = 12

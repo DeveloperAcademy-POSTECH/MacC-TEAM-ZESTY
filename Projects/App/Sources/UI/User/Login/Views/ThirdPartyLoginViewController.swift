@@ -48,6 +48,9 @@ extension ThirdPartyLoginViewController {
     private func configureUI() {
         view.backgroundColor = .white
         
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.tintColor = .black
+        
         titleStackView.axis = .vertical
         titleStackView.spacing = 12
         
