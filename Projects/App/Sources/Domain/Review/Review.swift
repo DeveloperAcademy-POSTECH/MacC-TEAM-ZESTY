@@ -13,7 +13,7 @@ struct Review {
     let place: Int
     let reviewer: User
     let evaluation: Evaluation
-    let menuName: String
+    let menuName: String?
     let imageURL: String?
     let createdAt: Date
 //    let updatedAt: Date
