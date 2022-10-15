@@ -14,7 +14,7 @@ struct User {
     let social: SocialProvider
     let nickname: String
     let authToken: String
-    let organization: Int // [Int]
+    let organizationId: Int // [Int]
 }
 
 enum SocialProvider: String {

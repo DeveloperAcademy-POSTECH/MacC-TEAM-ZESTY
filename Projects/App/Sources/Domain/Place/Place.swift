@@ -11,14 +11,14 @@ import Foundation
 struct Place {
     let id: Int
     let creator: User
-    let organization: Organization
+    let organizationId: Int
     let name: String
     let address: String
     let lat: String
     let lan: String
     let category: [Category]
     let evaluationSum: EvaluationSum
-//    let reviews: [Review]
+    let reviews: [Review] // Preview Image
 }
 
 struct EvaluationSum {

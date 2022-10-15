@@ -10,7 +10,7 @@ import Foundation
 
 struct Review {
     let id: Int
-    let place: Int
+    let placeId: Int
     let reviewer: User
     let evaluation: Evaluation
     let menuName: String?
