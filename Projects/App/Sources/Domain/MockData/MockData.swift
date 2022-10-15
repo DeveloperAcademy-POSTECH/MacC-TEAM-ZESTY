@@ -79,6 +79,39 @@ extension Place {
     ]
 }
 
+extension Review {
+    static let mockData: [Review] = [
+        Review(id: 0,
+               place: 1,
+               reviewer: User.mockData[1],
+               evaluation: .good,
+               menuName: nil,
+               imageURL: nil,
+               createdAt: Date()),
+        Review(id: 1,
+               place: 2,
+               reviewer: User.mockData[2],
+               evaluation: .bad,
+               menuName: "피자",
+               imageURL: "https://unsplash.com/photos/MqT0asuoIcU",
+               createdAt: Date()),
+        Review(id: 2,
+               place: 2,
+               reviewer: User.mockData[3],
+               evaluation: .good,
+               menuName: "샐러드",
+               imageURL: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+               createdAt: Date()),
+        Review(id: 3,
+               place: 1,
+               reviewer: User.mockData[4],
+               evaluation: .good,
+               menuName: "토스트",
+               imageURL: "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGZvb2R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
+               createdAt: Date())
+    ]
+}
+
 extension EvaluationSum {
     static let mockData: [EvaluationSum] = [
         EvaluationSum(good: 10, soso: 2, bad: 3),
