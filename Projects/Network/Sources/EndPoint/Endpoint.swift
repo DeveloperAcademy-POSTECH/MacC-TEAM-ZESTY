@@ -46,11 +46,21 @@ enum HttpMethod: String {
 }
 
 struct Multipart {
-    let data: Data
-    let mediaType: String
-    let `extension`: String
+    enum Media {
+        case image, video, text
+    }
     
-    init(data: Data, mediaType: String = "image", extension: String = "jpeg") {
+    enum Extension {
+        case jpeg, png, gif
+        case mp4
+        case txt
+    }
+    
+    let data: Data
+    let mediaType: Media
+    let `extension`: Extension
+        
+    init(data: Data, mediaType: Media = .image, extension: Extension = .jpeg) {
         self.data = data
         self.mediaType = mediaType
         self.`extension` = `extension`
