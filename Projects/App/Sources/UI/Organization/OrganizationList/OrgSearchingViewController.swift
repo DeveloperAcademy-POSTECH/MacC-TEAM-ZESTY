@@ -29,6 +29,7 @@ final class OrganizationListViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         createLayout()
+        bindUI()
         
         searchingTextField
             .userInputTextPublisher
@@ -60,6 +61,7 @@ extension OrganizationListViewController {
         
         tableView.dataSource = self
         tableView.separatorStyle = .none
+        tableView.register(OrgListCell.self, forCellReuseIdentifier: OrgListCell.identifier)
     }
     
     private func createLayout() {
@@ -96,12 +98,15 @@ extension OrganizationListViewController {
 
 extension OrganizationListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return orgListViewModel.inputFilteringArray.count
-        return 3
+        return orgNameArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        let orgListcell = tableView.dequeueReusableCell(withIdentifier: OrgListCell.identifier, for: indexPath) as? OrgListCell
+        
+        guard let cell = orgListcell else { return UITableViewCell()}
+        
+        cell.orgNameLabel.text = orgNameArray[indexPath.row]
         
         cell.accessoryType = .disclosureIndicator
         cell.selectionStyle = .none
