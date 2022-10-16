@@ -31,6 +31,9 @@ final class OrganizationListViewController: UIViewController {
         createLayout()
         bindUI()
         
+        // TODO: 이건 어디로 가야할까요? configureUI?
+        searchingTextField.becomeFirstResponder()
+        searchingTextField.delegate = self
         searchingTextField
             .userInputTextPublisher
             .receive(on: DispatchQueue.main)
@@ -57,7 +60,6 @@ extension OrganizationListViewController {
         titleLabel.font = UIFont.boldSystemFont(ofSize: 26)
         
         searchingTextField.placeholder = "대학교 검색"
-        searchingTextField.backgroundColor = .yellow
         
         tableView.dataSource = self
         tableView.separatorStyle = .none
@@ -88,12 +90,11 @@ extension OrganizationListViewController {
     }
     
     private func bindUI() {
-        self.viewModel.$orgNameArray.sink { orgNameArray in
+        self.viewModel.$orgSearchingArray.sink { orgNameArray in
             self.orgNameArray = orgNameArray
+            self.tableView.reloadData()
         }.store(in: &subscriptionSet)
-        self.tableView.reloadData()
     }
-    
 }
 
 extension OrganizationListViewController: UITableViewDataSource {
@@ -115,6 +116,13 @@ extension OrganizationListViewController: UITableViewDataSource {
     }
 }
 
+extension OrganizationListViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return true
+    }
+}
+
 // TODO: 고반의 PR에서 textField의 publisher가 생기면 교체하도록 하겠습니다
 
 extension UITextField {
@@ -122,7 +130,7 @@ extension UITextField {
         NotificationCenter.default.publisher(for: UITextField.textDidEndEditingNotification,
                                              object: self)
             .compactMap { $0.object as? UITextField }
-            .compactMap{ $0.text }
+            .compactMap { $0.text }
             .eraseToAnyPublisher()
     }
 }

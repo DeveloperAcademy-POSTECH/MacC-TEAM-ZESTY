@@ -46,7 +46,6 @@ extension OrgListCell {
         orgNameLabel.snp.makeConstraints { make in
             make.left.equalTo(self.snp.left).offset(20)
             make.top.equalTo(self.snp.top).offset(16)
-            make.centerY.equalTo(self.snp.centerY)
             make.bottom.equalTo(self.snp.bottom).offset(-16)
         }
         

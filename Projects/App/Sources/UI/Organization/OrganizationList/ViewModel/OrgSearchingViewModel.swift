@@ -13,19 +13,16 @@ final class OrganizationListViewModel {
     
     // Input
     var organizationArray: [Organization] = []
+    private var orgNameArray: [String] = []
+    
     @Published var userTextInput: String = "" {
         didSet {
-            if userTextInput.count > 0 {
-                self.orgNameArray = orgNameArray.filter { $0.contains(userTextInput) }
-            } else {
-                setData()
-                return
-            }
+            searchingInput(userTextInput)
         }
     }
     
     //Output
-    @Published var orgNameArray: [String] = []
+    @Published var orgSearchingArray: [String] = []
     
     init() {
         setData()
@@ -37,5 +34,14 @@ extension OrganizationListViewModel {
     private func setData() {
         organizationArray = Organization.mockData
         orgNameArray = organizationArray.map{ $0.name }
+        orgSearchingArray = orgNameArray
+    }
+    
+    private func searchingInput(_ input: String) {
+        if input.isEmpty {
+            orgSearchingArray = orgNameArray
+        } else {
+            self.orgSearchingArray = self.orgNameArray.filter { $0.contains(input) }
+        }
     }
 }
