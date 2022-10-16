@@ -33,7 +33,16 @@ final class NickNameInputViewModel {
         return text.isEmpty
     }
     
-    func checkValidCharacter(to string: String) -> Bool {
+    func isChangePossible(for input: String) -> Bool {
+        let maxNickNameCount = 6
+        let isBackSpace = strcmp(input.cString(using: .utf8), "\\b") == -92
+        if (nickNameText.count < maxNickNameCount && checkValidCharacter(to: input)) || isBackSpace {
+            return true
+        }
+        return false
+    }
+
+    private func checkValidCharacter(to string: String) -> Bool {
         do {
             let regex = try NSRegularExpression(pattern: "^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\\s]$", options: .caseInsensitive)
             if regex.firstMatch(in: string, options: NSRegularExpression.MatchingOptions.reportCompletion, range: .init(location: 0, length: string.count)) != nil {

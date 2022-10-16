@@ -91,12 +91,7 @@ extension NickNameInputViewController: UITextFieldDelegate {
     // MARK: Delegate Function
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let maxNickNameCount = 6
-        let isBackSpace = strcmp(string.cString(using: .utf8), "\\b") == -92
-        if (viewModel.nickNameText.count < maxNickNameCount && viewModel.checkValidCharacter(to: string)) || isBackSpace {
-            return true
-        }
-        return false
+        return viewModel.isChangePossible(for: string)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
