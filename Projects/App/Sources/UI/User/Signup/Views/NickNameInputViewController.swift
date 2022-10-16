@@ -44,9 +44,7 @@ final class NickNameInputViewController: UIViewController {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let activatedField = viewModel.activatedField {
-                activatedField.resignFirstResponder()
-        }
+        nickNameTextField.resignFirstResponder()
     }
 
 }
@@ -56,8 +54,19 @@ extension NickNameInputViewController {
     // MARK: Bind Function
     
     private func bindUI() {
-        nickNameTextField.textPublisher
+        nickNameTextField.textDidChangePublisher
+            .compactMap { $0.text }
             .assign(to: \.nickNameText, on: viewModel)
+            .store(in: &cancelBag)
+        
+        nickNameTextField.textDidBeignEditingPublisher
+            .map { _ in return true }
+            .assign(to: \.isKeyboardShown, on: viewModel)
+            .store(in: &cancelBag)
+        
+        nickNameTextField.textDidEndEditingPublisher
+            .map { _ in return false }
+            .assign(to: \.isKeyboardShown, on: viewModel)
             .store(in: &cancelBag)
         
         viewModel.$isTextEmpty
@@ -88,14 +97,6 @@ extension NickNameInputViewController: UITextFieldDelegate {
             return true
         }
         return false
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        viewModel.activatedField = textField
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        viewModel.activatedField = nil
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

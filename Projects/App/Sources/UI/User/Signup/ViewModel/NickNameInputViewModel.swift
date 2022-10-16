@@ -7,16 +7,17 @@
 //
 
 import Combine
-import UIKit
+import Foundation
 
 final class NickNameInputViewModel {
     
     // Input
     @Published var nickNameText = ""
-    @Published var activatedField: UITextField?
     
     // Output
     @Published var isTextEmpty = true
+    
+    // Input & Output
     @Published var isKeyboardShown = false
 
     private var cancelBag = Set<AnyCancellable>()
@@ -26,19 +27,10 @@ final class NickNameInputViewModel {
             .map(isEmpty)
             .assign(to: \.isTextEmpty, on: self)
             .store(in: &cancelBag)
-        
-        $activatedField
-            .map(checkIsNotNil)
-            .assign(to: \.isKeyboardShown, on: self)
-            .store(in: &cancelBag)
     }
     
     private func isEmpty(to text: String) -> Bool {
         return text.isEmpty
-    }
-    
-    private func checkIsNotNil(to textField: UITextField?) -> Bool {
-        return textField != nil
     }
     
     func checkValidCharacter(to string: String) -> Bool {

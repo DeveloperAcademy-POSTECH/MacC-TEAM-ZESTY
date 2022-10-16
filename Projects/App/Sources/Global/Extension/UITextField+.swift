@@ -11,9 +11,20 @@ import UIKit
 
 extension UITextField {
     
-    var textPublisher: AnyPublisher<String, Never> { NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: self)
+    var textDidChangePublisher: AnyPublisher<UITextField, Never> { NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: self)
             .compactMap { $0.object as? UITextField }
-            .compactMap { $0.text }
+            .eraseToAnyPublisher()
+    }
+    
+    var textDidBeignEditingPublisher: AnyPublisher<UITextField, Never> {
+        NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification, object: self)
+            .compactMap { $0.object as? UITextField }
+            .eraseToAnyPublisher()
+    }
+    
+    var textDidEndEditingPublisher: AnyPublisher<UITextField, Never> {
+        NotificationCenter.default.publisher(for: UITextField.textDidEndEditingNotification, object: self)
+            .compactMap { $0.object as? UITextField }
             .eraseToAnyPublisher()
     }
     
