@@ -16,6 +16,7 @@ protocol Requestable {
     var queryParams: Encodable? { get }
     var bodyParams: Encodable? { get }
     var multipart: [Multipart]? { get }
+    var boundary: String? { get }
     var headers: [String: String]? { get }
 }
 
@@ -61,8 +62,8 @@ extension Requestable {
         guard let bodyParams = try bodyParams?.toDictionary() else { return nil }
         
         // multipart가 있을 경우
-        if let multipart = multipart {
-            let bound = BoundaryType()
+        if let multipart = multipart, let boundary = boundary {
+            let bound = BoundaryType(boundary: boundary)
             
             // multipart 외 함께 전달하는 정보들
             for (key, value) in bodyParams {
@@ -115,7 +116,7 @@ fileprivate extension Data {
 }
 
 fileprivate struct BoundaryType {
-    let boundary = UUID().uuidString
+    let boundary: String
     let crlf = "\r\n"
     
     var initial: String { "--\(boundary)\(crlf)" }

@@ -17,6 +17,7 @@ final class Endpoint: Requestable {
     var queryParams: Encodable?
     var bodyParams: Encodable?
     var multipart: [Multipart]?
+    var boundary: String?
     var headers: [String: String]?
 
     init(scheme: String = "https",
@@ -26,6 +27,7 @@ final class Endpoint: Requestable {
          queryParams: Encodable? = nil,
          bodyParams: Encodable? = nil,
          multipart: [Multipart]? = nil,
+         boundary: String? = nil,
          headers: [String: String]?) {
         self.scheme = scheme
         self.host = host
@@ -34,6 +36,7 @@ final class Endpoint: Requestable {
         self.queryParams = queryParams
         self.bodyParams = bodyParams
         self.multipart = multipart
+        self.boundary = boundary
         self.headers = headers
     }
 }
