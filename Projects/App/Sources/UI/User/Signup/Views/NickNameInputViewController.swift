@@ -37,7 +37,7 @@ final class NickNameInputViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        configureLayout()
+        createLayout()
         bindUI()
         nickNameTextField.delegate = self
     }
@@ -159,7 +159,7 @@ extension NickNameInputViewController {
         nextButtonView.button.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
     }
     
-    private func configureLayout() {
+    private func createLayout() {
         view.addSubviews([titleStackView, nickNameTextField, nextButtonView])
         titleStackView.addArrangedSubviews([titleLabel, subtitleLabel])
         

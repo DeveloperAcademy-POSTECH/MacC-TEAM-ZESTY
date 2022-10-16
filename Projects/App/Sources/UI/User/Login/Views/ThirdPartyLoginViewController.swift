@@ -76,7 +76,7 @@ extension ThirdPartyLoginViewController {
         appleLoginButton.imageView?.contentMode = .scaleAspectFit
     }
     
-    private func configureLayout() {
+    private func createLayout() {
         view.addSubviews([titleStackView, characterImageView, loginStackView])
         titleStackView.addArrangedSubviews([titleLabel, subtitleLabel])
         loginStackView.addArrangedSubviews([kakaoLoginButton, appleLoginButton])
