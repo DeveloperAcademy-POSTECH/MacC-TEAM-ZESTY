@@ -43,19 +43,6 @@ final class NickNameInputViewController: UIViewController {
         navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
     }
     
-    private func checkValidCharacter(to string: String) -> Bool {
-        do {
-            let regex = try NSRegularExpression(pattern: "^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\\s]$", options: .caseInsensitive)
-            if regex.firstMatch(in: string, options: NSRegularExpression.MatchingOptions.reportCompletion, range: .init(location: 0, length: string.count)) != nil {
-                return true
-            }
-        } catch {
-            print(error.localizedDescription)
-            return false
-        }
-        return false
-    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let activatedField = viewModel.activatedField {
                 activatedField.resignFirstResponder()
@@ -97,7 +84,7 @@ extension NickNameInputViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let maxNickNameCount = 6
         let isBackSpace = strcmp(string.cString(using: .utf8), "\\b") == -92
-        if (viewModel.nickNameText.count < maxNickNameCount && checkValidCharacter(to: string)) || isBackSpace {
+        if (viewModel.nickNameText.count < maxNickNameCount && viewModel.checkValidCharacter(to: string)) || isBackSpace {
             return true
         }
         return false
