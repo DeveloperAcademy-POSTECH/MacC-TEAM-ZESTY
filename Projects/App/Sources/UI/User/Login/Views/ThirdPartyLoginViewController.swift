@@ -27,7 +27,7 @@ final class ThirdPartyLoginViewController: UIViewController {
     
     override func viewDidLoad() {
         configureUI()
-        configureLayout()
+        createLayout()
     }
     
     // MARK: Function
