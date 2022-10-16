@@ -50,8 +50,7 @@ extension ShadowButtonView {
     }
     
     private func createLayout() {
-        addSubview(buttonShadowView)
-        addSubview(button)
+        addSubviews([buttonShadowView, button])
         
         button.snp.makeConstraints { make in
             make.leading.equalTo(snp.leading)
