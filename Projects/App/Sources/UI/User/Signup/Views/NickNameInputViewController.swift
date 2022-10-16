@@ -27,11 +27,6 @@ final class NickNameInputViewController: UIViewController {
     
     private var cancelBag = Set<AnyCancellable>()
     
-    private lazy var nickNameTextFieldPublisher: AnyPublisher<String, Never> = NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: nickNameTextField)
-        .compactMap { $0.object as? UITextField }
-        .compactMap { $0.text }
-        .eraseToAnyPublisher()
-    
     // MARK: LifeCycle
     
     override func viewDidLoad() {
@@ -74,7 +69,7 @@ extension NickNameInputViewController {
     // MARK: Bind Function
     
     private func bindUI() {
-        nickNameTextFieldPublisher
+        nickNameTextField.textPublisher
             .assign(to: \.nickNameText, on: viewModel)
             .store(in: &cancelBag)
         
