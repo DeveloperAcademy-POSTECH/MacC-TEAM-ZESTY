@@ -25,6 +25,10 @@ final class OrganizationListViewController: UIViewController {
     
     // MARK: LifeCycle
     
+    override func viewDidLayoutSubviews() {
+        searchingTextField.addLeftImage()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -132,5 +136,16 @@ extension UITextField {
             .compactMap { $0.object as? UITextField }
             .compactMap { $0.text }
             .eraseToAnyPublisher()
+    }
+    
+    func addLeftImage() {
+        let imageLength = self.frame.height
+        
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: imageLength , height: imageLength))
+        imageView.image = UIImage(systemName: "magnifyingglass")
+        imageView.tintColor = .gray
+        
+        self.leftView = imageView
+        self.leftViewMode = ViewMode.always
     }
 }
