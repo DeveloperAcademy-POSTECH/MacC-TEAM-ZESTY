@@ -44,7 +44,7 @@ extension OrgListCell {
         orgNameLabel.translatesAutoresizingMaskIntoConstraints = false
         
         orgNameLabel.snp.makeConstraints { make in
-            make.left.equalTo(self.snp.left).offset(20)
+            make.left.equalTo(self.snp.left).offset(0)
             make.top.equalTo(self.snp.top).offset(16)
             make.bottom.equalTo(self.snp.bottom).offset(-16)
         }
