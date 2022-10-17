@@ -24,7 +24,6 @@ final class ViewControllerTemplate: UIViewController {
     
 }
 
-
 // MARK: - UI Function
 
 extension ViewController {
