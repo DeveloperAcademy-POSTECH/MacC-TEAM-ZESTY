@@ -20,7 +20,6 @@ class EvaluationItemView: UIView {
     
     private let imageView: UIImageView = {
         $0.contentMode = .scaleAspectFit
-//        $0.image = UIImage(.img_good)
         return $0
     }(UIImageView())
     
@@ -32,7 +31,6 @@ class EvaluationItemView: UIView {
     
     private let titleLabel: UILabel = {
         $0.font = .systemFont(ofSize: 12)
-        $0.text = "안녕"
         return $0
     }(UILabel())
 

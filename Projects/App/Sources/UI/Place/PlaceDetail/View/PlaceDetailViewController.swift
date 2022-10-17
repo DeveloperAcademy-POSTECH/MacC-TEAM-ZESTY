@@ -18,6 +18,7 @@ final class PlaceDetailViewController: UIViewController {
     private let cancelBag = Set<AnyCancellable>()
     private let viewModel = PlaceDetailViewModel()
     private let place: Place
+    private let reviews: [Review] = [Review.mockData[1], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3]]
     
     private lazy var placeView = ShadowView()
     
@@ -50,7 +51,7 @@ final class PlaceDetailViewController: UIViewController {
         $0.image = UIImage(.img_good)
         return $0
     }(UIImageView())
-     
+    
     private lazy var addressLabel: UILabel = {
         $0.text = "경북 포항시 남구 효자동 11길 24-1 1층 요기쿠시동"
         $0.textColor = .zestyColor(.gray3C3C43)?.withAlphaComponent(0.6)
@@ -66,14 +67,14 @@ final class PlaceDetailViewController: UIViewController {
             .underlineStyle: NSUnderlineStyle.single.rawValue
         ]
         let attributeString = NSMutableAttributedString(
-           string: "정보가 잘못됐나요?",
-           attributes: customAttributes
+            string: "정보가 잘못됐나요?",
+            attributes: customAttributes
         )
         $0.setAttributedTitle(attributeString, for: .normal)
         $0.addTarget(self, action: #selector(reportPlaceDetail), for: .touchUpInside)
         return $0
     }(UIButton())
-        
+    
     private lazy var addressView: UIStackView = {
         $0.axis = .horizontal
         $0.spacing = 8
@@ -102,6 +103,25 @@ final class PlaceDetailViewController: UIViewController {
     
     private lazy var categoryCollectionView = CategoryCollectionView()
     
+    private lazy var reviewTitleLabel: UILabel = {
+        $0.text = "리뷰"
+        $0.font = .systemFont(ofSize: 20, weight: .bold)
+        return $0
+    }(UILabel())
+    
+    private let reviewCollectionView: UICollectionView = {
+        let viewLayout = UICollectionViewFlowLayout()
+        viewLayout.minimumLineSpacing = 16
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: viewLayout)
+        collectionView.showsVerticalScrollIndicator = false
+        return collectionView
+    }()
+    
+    private let scrollView: UIScrollView = {
+        $0.showsVerticalScrollIndicator = false
+        return $0
+    }(UIScrollView())
+    
     // MARK: - Initialization
     
     init(place: Place) {
@@ -119,6 +139,7 @@ final class PlaceDetailViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         createLayout()
+        setUpCollectionView()
         bind()
     }
     
@@ -141,9 +162,55 @@ final class PlaceDetailViewController: UIViewController {
     }
 }
 
+extension PlaceDetailViewController: UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return reviews.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReviewCell.cellID, for: indexPath) as? ReviewCell else { return UICollectionViewCell()}
+        let review = reviews[indexPath.row]
+        cell.setup(with: review)
+        return cell
+    }
+    
+}
+
+extension PlaceDetailViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    private enum LayoutConstant {
+        static let spacing: CGFloat = 16.0
+        static let itemHeight: CGFloat = 219.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let width = itemWidth(for: view.frame.width, spacing: 0)
+        
+        return CGSize(width: width/1.2, height: LayoutConstant.itemHeight)
+    }
+    
+    func itemWidth(for width: CGFloat, spacing: CGFloat) -> CGFloat {
+        let itemsInRow: CGFloat = 2
+
+        let totalSpacing: CGFloat = 2 * spacing + (itemsInRow - 1) * spacing
+        let finalWidth = (width - totalSpacing) / itemsInRow
+
+        return finalWidth - 5.0
+    }
+}
+
 extension PlaceDetailViewController {
     
     // MARK: - UI Function
+    
+    func setUpCollectionView() {
+        reviewCollectionView.dataSource = self
+        reviewCollectionView.delegate = self
+        reviewCollectionView.register(ReviewCell.self, forCellWithReuseIdentifier: ReviewCell.cellID)
+    }
     
     private func configureUI() {
         view.backgroundColor = .white
@@ -152,7 +219,13 @@ extension PlaceDetailViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([placeView, addReviewButton])
+        
+        self.view.addSubview(scrollView)
+        scrollView.addSubviews([placeView, reviewTitleLabel, reviewCollectionView, addReviewButton])
+        
+        scrollView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
         
         placeView.addSubviews([placeNameLabel, evaluationTitleLabel, evaluationStackView, addressView, reportButton, categoryCollectionView])
         
@@ -198,7 +271,7 @@ extension PlaceDetailViewController {
         badView.snp.makeConstraints {
             $0.width.height.equalTo(40)
         }
-
+        
         addressView.snp.makeConstraints {
             $0.top.equalTo(evaluationStackView.snp.bottom).offset(40)
             $0.leading.trailing.equalToSuperview().inset(32)
@@ -211,11 +284,11 @@ extension PlaceDetailViewController {
         addressLabel.snp.makeConstraints {
             $0.width.equalTo(190)
         }
-
+        
         naverButton.snp.makeConstraints {
             $0.width.height.equalTo(36)
         }
-
+        
         kakaoButton.snp.makeConstraints {
             $0.width.height.equalTo(36)
         }
@@ -223,6 +296,19 @@ extension PlaceDetailViewController {
         reportButton.snp.makeConstraints {
             $0.top.equalTo(addressView.snp.bottom).offset(10)
             $0.centerX.equalToSuperview()
+        }
+        
+        reviewTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(placeView.snp.bottom).offset(44)
+            $0.leading.equalToSuperview().inset(20)
+            $0.height.equalTo(25)
+        }
+        
+        reviewCollectionView.snp.makeConstraints {
+            $0.top.equalTo(reviewTitleLabel.snp.bottom).offset(10)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(1000)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-10)
         }
         
         addReviewButton.snp.makeConstraints {
