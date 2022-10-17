@@ -22,6 +22,8 @@ final class NickNameInputViewModel {
 
     private var cancelBag = Set<AnyCancellable>()
     
+    var isUserReceivedWarning = false
+    
     init() {
         $nickNameText
             .map(isEmpty)

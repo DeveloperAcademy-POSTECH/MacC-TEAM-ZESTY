@@ -21,6 +21,7 @@ final class NickNameInputViewController: UIViewController {
     private let subtitleLabel = UILabel()
     private let nickNameTextField = UITextFieldPadding(top: 14, left: 20, bottom: 14, right: 20)
     private let nextButtonView = ShadowButtonView(initialDisable: true)
+    private let warningLabel = UILabel()
     
     private var keyboardUpConstraints: NSLayoutConstraint?
     private var keyboardDownConstraints: NSLayoutConstraint?
@@ -55,7 +56,7 @@ extension NickNameInputViewController {
     
     private func bindUI() {
         nickNameTextField.textDidChangePublisher
-            .compactMap { $0.text }
+            .compactMap { return $0.text }
             .assign(to: \.nickNameText, on: viewModel)
             .store(in: &cancelBag)
         
@@ -80,6 +81,16 @@ extension NickNameInputViewController {
                 guard let self = self else { return }
                 self.keyboardUpConstraints?.isActive = isKeyboardShown
                 self.keyboardDownConstraints?.isActive = !isKeyboardShown
+            }
+            .store(in: &cancelBag)
+        
+        nickNameTextField.textDidChangePublisher
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                if self.viewModel.isUserReceivedWarning {
+                    self.warningLabel.isHidden = true
+                    self.viewModel.isUserReceivedWarning = false
+                }
             }
             .store(in: &cancelBag)
     }
@@ -136,10 +147,15 @@ extension NickNameInputViewController {
         nextButtonView.button.setImage(arrowImage, for: .normal)
         nextButtonView.button.semanticContentAttribute = .forceRightToLeft
         nextButtonView.button.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
+        
+        warningLabel.text = "이미 있는 이름이에요"
+        warningLabel.textColor = .red
+        warningLabel.font = .preferredFont(forTextStyle: .footnote)
+        warningLabel.isHidden = true
     }
     
     private func createLayout() {
-        view.addSubviews([titleStackView, nickNameTextField, nextButtonView])
+        view.addSubviews([titleStackView, nickNameTextField, nextButtonView, warningLabel])
         titleStackView.addArrangedSubviews([titleLabel, subtitleLabel])
         
         titleStackView.snp.makeConstraints { make in
@@ -154,6 +170,11 @@ extension NickNameInputViewController {
         
         nextButtonView.snp.makeConstraints { make in
             make.trailing.equalTo(view.snp.trailing).offset(-20)
+        }
+        
+        warningLabel.snp.makeConstraints { make in
+            make.top.equalTo(nickNameTextField.snp.bottom).offset(14)
+            make.centerX.equalTo(view.snp.centerX)
         }
         
         keyboardUpConstraints = nextButtonView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor, constant: -20)
