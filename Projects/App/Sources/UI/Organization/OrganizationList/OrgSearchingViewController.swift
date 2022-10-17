@@ -9,6 +9,7 @@
 import UIKit
 import Combine
 import SnapKit
+import DesignSystem
 
 final class OrganizationListViewController: UIViewController {
     
@@ -19,16 +20,12 @@ final class OrganizationListViewController: UIViewController {
 
     private var orgNameArray: [String] = []
     
-    private let textFieldStackView = UIStackView()
     private let titleLabel = UILabel()
-    private let searchingTextField = UITextField()
+    private let searchingTextFieldView = ShadowTextFieldView()
+    private lazy var searchingTextField = searchingTextFieldView.textField
     private let tableView = UITableView()
     
     // MARK: LifeCycle
-    
-    override func viewDidLayoutSubviews() {
-        searchingTextField.addLeftImage()
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,32 +59,30 @@ extension OrganizationListViewController {
         titleLabel.text = "참여할 대학교를 알려주세요"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 26)
         
-        searchingTextField.placeholder = "대학교 검색"
-        searchingTextField.returnKeyType = .next
-        
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.register(OrgListCell.self, forCellReuseIdentifier: OrgListCell.identifier)
     }
     
     private func createLayout() {
-        view.addSubviews([titleLabel, searchingTextField, tableView])
+        view.addSubviews([titleLabel, searchingTextFieldView, tableView])
         
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
             make.left.equalTo(view.snp.left).offset(20)
         }
         
-        searchingTextField.snp.makeConstraints { make in
+        searchingTextFieldView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
             make.left.equalTo(view.snp.left).offset(20)
             make.right.equalTo(view.snp.right).offset(-20)
+            make.height.equalTo(45)
         }
         
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(searchingTextField.snp.bottom).offset(16)
+            make.top.equalTo(searchingTextFieldView.snp.bottom).offset(16)
             make.left.equalTo(view.snp.left).offset(20)
-            make.right.equalTo(view.snp.right).offset(-16)
+            make.right.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
     }
@@ -134,16 +129,5 @@ extension UITextField {
             .compactMap { $0.object as? UITextField }
             .compactMap { $0.text }
             .eraseToAnyPublisher()
-    }
-    
-    func addLeftImage() {
-        let imageLength = self.frame.height
-        
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: imageLength , height: imageLength))
-        imageView.image = UIImage(systemName: "magnifyingglass")
-        imageView.tintColor = .gray
-        
-        self.leftView = imageView
-        self.leftViewMode = ViewMode.always
     }
 }

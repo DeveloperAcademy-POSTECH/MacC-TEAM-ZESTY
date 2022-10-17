@@ -57,7 +57,7 @@ extension OrgListCell {
         
         disclosureIndicator.snp.makeConstraints { make in
             make.top.equalTo(self.snp.top).offset(16)
-            make.right.equalTo(self.snp.right).offset(0)
+            make.right.equalTo(self.snp.right).offset(-20)
             make.bottom.equalTo(self.snp.bottom).offset(-16)
         }
     }
