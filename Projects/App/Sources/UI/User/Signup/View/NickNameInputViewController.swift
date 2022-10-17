@@ -41,7 +41,11 @@ final class NickNameInputViewController: UIViewController {
     // MARK: - Function
     
     @objc private func nextButtonClicked() {
-        navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
+        nextButtonView.startAnimating()
+        nextButtonView.button.setAttributedTitle(NSAttributedString(string: ""), for: .normal)
+        nextButtonView.button.imageView?.isHidden = true
+        
+        viewModel.checkNickNameOverlaped()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -90,6 +94,22 @@ extension NickNameInputViewController {
                 if self.viewModel.isUserReceivedWarning {
                     self.warningLabel.isHidden = true
                     self.viewModel.isUserReceivedWarning = false
+                }
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.isNickNameOverlapedSubject
+            .sink { [weak self] isNickNameOverlaped in
+                guard let self = self else { return }
+                self.nextButtonView.stopAnimating()
+                self.nextButtonView.button.setAttributedTitle(NSAttributedString(string: "다음",
+                                                              attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)]), for: .normal)
+                self.nextButtonView.button.imageView?.isHidden = false
+                if isNickNameOverlaped {
+                    self.nextButtonView.setDisabled(true)
+                    self.warningLabel.isHidden = false
+                } else {
+                    self.navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
                 }
             }
             .store(in: &cancelBag)
