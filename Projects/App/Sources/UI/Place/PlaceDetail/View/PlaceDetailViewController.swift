@@ -9,6 +9,7 @@
 import Combine
 import UIKit
 import SnapKit
+import DesignSystem
 
 final class PlaceDetailViewController: UIViewController {
     
@@ -18,42 +19,85 @@ final class PlaceDetailViewController: UIViewController {
     private let viewModel = PlaceDetailViewModel()
     private let place: Place
     
-    private lazy var placeImageView: UIImageView = {
-        $0.contentMode = .scaleAspectFit
-        $0.image = UIImage(named: "test-pasta")
-        return $0
-    }(UIImageView())
+    private lazy var placeView = ShadowView()
     
     private lazy var placeNameLabel: UILabel = {
-        $0.text = "가게이름"
+        $0.text = "(가게이름없음)"
+        $0.font = .systemFont(ofSize: 22, weight: .bold)
         return $0
     }(UILabel())
     
+    private lazy var evaluationTitleLabel: UILabel = {
+        $0.text = "평가"
+        $0.font = .systemFont(ofSize: 11, weight: .regular)
+        $0.textColor = .zestyColor(.gray3C3C43)?.withAlphaComponent(0.6)
+        return $0
+    }(UILabel())
+    
+    private lazy var evaluationStackView: UIStackView = {
+        $0.axis = .horizontal
+        $0.spacing = 16
+        $0.distribution = .fillEqually
+        return $0
+    }(UIStackView())
+    
+//    private lazy var goodView = EvaluationItemView()
+//    private lazy var sosoView = EvaluationItemView()
+//    private lazy var badView = EvaluationItemView()
+//
+    
+//
+    private lazy var goodView = EvaluationItemView(with: EvaluationViewModel(evaluation: .good, count: 17))
+    private lazy var sosoView = EvaluationItemView(with: EvaluationViewModel(evaluation: .soso, count: 2))
+    private lazy var badView = EvaluationItemView(with: EvaluationViewModel(evaluation: .bad, count: 4))
+    
+    private let imageView: UIImageView = {
+        $0.contentMode = .scaleAspectFit
+        $0.image = UIImage(.img_good)
+        return $0
+    }(UIImageView())
+     
     private lazy var addressLabel: UILabel = {
         $0.text = "경북 포항시 남구 효자동 11길 24-1 1층 요기쿠시동"
+        $0.textColor = .zestyColor(.gray3C3C43)?.withAlphaComponent(0.6)
+        $0.font = .systemFont(ofSize: 11, weight: .regular)
+        $0.numberOfLines = 2
         return $0
     }(UILabel())
     
     private lazy var reportButton: UIButton = {
-        $0.configuration = .borderedTinted()
-        $0.setTitle("제보하기", for: .normal)
+        let customAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 11, weight: .regular),
+            .foregroundColor: UIColor.zestyColor(.gray3C3C43)?.withAlphaComponent(0.3) ?? UIColor.systemGray,
+            .underlineStyle: NSUnderlineStyle.single.rawValue
+        ]
+        let attributeString = NSMutableAttributedString(
+           string: "정보가 잘못됐나요?",
+           attributes: customAttributes
+        )
+        $0.setAttributedTitle(attributeString, for: .normal)
         $0.addTarget(self, action: #selector(reportPlaceDetail), for: .touchUpInside)
         return $0
     }(UIButton())
+        
+    private lazy var addressView: UIStackView = {
+        $0.axis = .horizontal
+        $0.spacing = 8
+        $0.distribution = .equalSpacing
+        return $0
+    }(UIStackView())
     
     private lazy var naverButton: UIButton = {
-        $0.configuration = .borderedTinted()
-        $0.setTitle("네이버지도바로가기", for: .normal)
+        $0.setImage(UIImage(.btn_navermap), for: .normal)
         $0.addTarget(self, action: #selector(openNaverMap), for: .touchUpInside)
         return $0
-    }(UIButton())
+    }(UIButton(type: .custom))
     
     private lazy var kakaoButton: UIButton = {
-        $0.configuration = .borderedTinted()
-        $0.setTitle("카카오지도바로가기", for: .normal)
+        $0.setImage(UIImage(.btn_kakaomap), for: .normal)
         $0.addTarget(self, action: #selector(openKakaoMap), for: .touchUpInside)
         return $0
-    }(UIButton())
+    }(UIButton(type: .custom))
     
     private lazy var addReviewButton: UIButton = {
         $0.configuration = .borderedTinted()
@@ -61,18 +105,18 @@ final class PlaceDetailViewController: UIViewController {
         $0.addTarget(self, action: #selector(reportPlaceDetail), for: .touchUpInside)
         return $0
     }(UIButton())
-
+    
     private lazy var categoryCollectionView = CategoryCollectionView()
     
     // MARK: - Initialization
     
     init(place: Place) {
-      self.place = place
-      super.init(nibName: nil, bundle: nil)
+        self.place = place
+        super.init(nibName: nil, bundle: nil)
     }
-
+    
     required init?(coder: NSCoder) {
-      fatalError("init(coder:) has not been implemented")
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - LifeCycle
@@ -80,7 +124,7 @@ final class PlaceDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        configureLayout()
+        createLayout()
         bind()
     }
     
@@ -107,60 +151,88 @@ extension PlaceDetailViewController {
     private func configureUI() {
         view.backgroundColor = .white
         categoryCollectionView.setupData(tagList: ["한식", "분식"])
+        placeNameLabel.text = place.name
     }
     
-    private func configureLayout() {
-        view.addSubviews([placeImageView, placeNameLabel, addressLabel,
-                          reportButton, naverButton, kakaoButton, addReviewButton, categoryCollectionView])
+    private func createLayout() {
+        view.addSubviews([placeView, addReviewButton])
         
-        placeImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(100)
-            $0.centerX.equalToSuperview()
-            $0.width.equalTo(200)
-            $0.height.equalTo(200)
+        placeView.addSubviews([placeNameLabel, evaluationTitleLabel, evaluationStackView, addressView, reportButton, categoryCollectionView])
+        
+        placeView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(356)
         }
         
         placeNameLabel.snp.makeConstraints {
-            $0.top.equalTo(placeImageView.snp.bottom).offset(10)
+            $0.top.equalToSuperview().offset(32)
             $0.centerX.equalToSuperview()
-        }
-        
-        addressLabel.snp.makeConstraints {
-            $0.top.equalTo(placeNameLabel.snp.bottom).offset(10)
-            $0.centerX.equalToSuperview()
-        }
-        
-        reportButton.snp.makeConstraints {
-            $0.top.equalTo(addressLabel.snp.bottom).offset(30)
-            $0.centerX.equalToSuperview()
-            $0.height.equalTo(50)
-        }
-        
-        naverButton.snp.makeConstraints {
-            $0.top.equalTo(reportButton.snp.bottom).offset(10)
-            $0.centerX.equalToSuperview()
-            $0.height.equalTo(50)
-        }
-        
-        kakaoButton.snp.makeConstraints {
-            $0.top.equalTo(naverButton.snp.bottom).offset(10)
-            $0.centerX.equalToSuperview()
-            $0.height.equalTo(50)
-        }
-        
-        addReviewButton.snp.makeConstraints {
-            $0.top.equalTo(kakaoButton.snp.bottom).offset(10)
-            $0.centerX.equalToSuperview()
-            $0.height.equalTo(50)
         }
         
         categoryCollectionView.snp.makeConstraints {
-            $0.top.equalTo(addReviewButton.snp.bottom).offset(10)
+            $0.top.equalTo(placeNameLabel.snp.bottom).offset(10)
             $0.centerX.equalToSuperview()
-            $0.width.equalToSuperview()
-            $0.height.equalTo(100)
+            $0.leading.trailing.equalToSuperview().inset(10)
+            $0.height.equalTo(30)
         }
         
+        evaluationTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(categoryCollectionView.snp.bottom).offset(40)
+            $0.centerX.equalToSuperview()
+        }
+        
+        evaluationStackView.snp.makeConstraints {
+            $0.top.equalTo(evaluationTitleLabel.snp.bottom).offset(5)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(160)
+            $0.height.equalTo(70)
+        }
+        
+        evaluationStackView.addArrangedSubviews([goodView, sosoView, badView])
+        
+        goodView.snp.makeConstraints {
+            $0.width.height.equalTo(40)
+        }
+        
+        sosoView.snp.makeConstraints {
+            $0.width.height.equalTo(40)
+        }
+        badView.snp.makeConstraints {
+            $0.width.height.equalTo(40)
+        }
+
+        addressView.snp.makeConstraints {
+            $0.top.equalTo(evaluationStackView.snp.bottom).offset(40)
+            $0.leading.trailing.equalToSuperview().inset(32)
+            $0.height.equalTo(36)
+        }
+        
+        addressView.addArrangedSubviews([addressLabel, naverButton, kakaoButton])
+        addressView.setCustomSpacing(8, after: addressLabel)
+        
+        addressLabel.snp.makeConstraints {
+            $0.width.equalTo(190)
+        }
+
+        naverButton.snp.makeConstraints {
+            $0.width.height.equalTo(36)
+        }
+
+        kakaoButton.snp.makeConstraints {
+            $0.width.height.equalTo(36)
+        }
+        
+        reportButton.snp.makeConstraints {
+            $0.top.equalTo(addressView.snp.bottom).offset(10)
+            $0.centerX.equalToSuperview()
+        }
+        
+        addReviewButton.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
+            $0.centerX.equalToSuperview()
+            $0.height.equalTo(45)
+        }
     }
     
 }

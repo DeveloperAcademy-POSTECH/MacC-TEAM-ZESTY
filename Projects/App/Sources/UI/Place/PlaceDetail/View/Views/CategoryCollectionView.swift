@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DesignSystem
 
 class CategoryCollectionView: UIView {
     
@@ -15,12 +16,9 @@ class CategoryCollectionView: UIView {
     public var tagList: [String] = [""]
     
     private lazy var collectionView: UICollectionView = {
-        let layout = LeftAlignedCollectionViewFlowLayout()
-        layout.minimumLineSpacing = 3
-        layout.minimumInteritemSpacing = 3
-        layout.sectionInset = UIEdgeInsets(top: 5, left: 2, bottom: 5, right: 2)
-        $0.isScrollEnabled = false
+        let layout = UICollectionViewCenterLayout()
         $0.collectionViewLayout = layout
+        $0.isScrollEnabled = false
         $0.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.cellID)
         $0.delegate = self
         $0.dataSource = self
@@ -33,7 +31,7 @@ class CategoryCollectionView: UIView {
         super.init(frame: .zero)
         
         configureUI()
-        configureLayout()
+        createLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -56,12 +54,12 @@ extension CategoryCollectionView {
         
     }
     
-    private func configureLayout() {
+    private func createLayout() {
         self.addSubviews([collectionView])
         
         collectionView.snp.makeConstraints {
             $0.center.width.equalToSuperview()
-            $0.height.equalTo(100)
+            $0.height.equalTo(30)
         }
         
     }
@@ -85,7 +83,7 @@ extension CategoryCollectionView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         lazy var label: UILabel = {
-            $0.font = .systemFont(ofSize: 14)
+            $0.font = .systemFont(ofSize: 13)
             $0.text = tagList[indexPath.item]
             $0.sizeToFit()
             return $0
@@ -93,6 +91,6 @@ extension CategoryCollectionView: UICollectionViewDelegateFlowLayout {
         
         let size = label.frame.size
         
-        return CGSize(width: size.width + 16, height: size.height + 10)
+        return CGSize(width: size.width + 20, height: size.height + 12)
     }
 }
