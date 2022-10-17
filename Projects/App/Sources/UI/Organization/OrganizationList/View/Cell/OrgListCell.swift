@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-class OrgListCell: UITableViewCell {
+final class OrgListCell: UITableViewCell {
     
     // MARK: Properties
     
@@ -49,9 +49,9 @@ extension OrgListCell {
     
     private func createLayout() {
         orgNameLabel.snp.makeConstraints { make in
-            make.left.equalTo(self.snp.left).offset(0)
-            make.top.equalTo(self.snp.top).offset(16)
-            make.bottom.equalTo(self.snp.bottom).offset(-16)
+            make.left.equalTo(self.snp.left).inset(20)
+            make.top.equalTo(self.snp.top).inset(16)
+            make.bottom.equalTo(self.snp.bottom).inset(16)
         }
         
         disclosureIndicator.snp.makeConstraints { make in

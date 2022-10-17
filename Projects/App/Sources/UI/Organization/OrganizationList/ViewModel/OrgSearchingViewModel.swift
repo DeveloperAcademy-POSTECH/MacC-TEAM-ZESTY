@@ -12,7 +12,7 @@ import Combine
 final class OrganizationListViewModel {
     
     // Input
-    var organizationArray: [Organization] = []
+    private var organizationArray: [Organization] = []
     private var orgNameArray: [String] = []
     @Published var userTextInput: String = "" {
         didSet {
