@@ -16,7 +16,7 @@ final class NickNameInputViewModel {
     
     // Output
     @Published var isTextEmpty = true
-    @Published var isUserReceivedWarning = false
+    @Published var shouldDisplayWarning = false
     let isNickNameOverlapedSubject = PassthroughSubject<Bool, Never>()
     
     // Input & Output
@@ -33,8 +33,8 @@ final class NickNameInputViewModel {
         $nickNameText
             .sink { [weak self] _ in
                 guard let self = self else { return }
-                if self.isUserReceivedWarning {
-                    self.isUserReceivedWarning = false
+                if self.shouldDisplayWarning {
+                    self.shouldDisplayWarning = false
                 }
             }
             .store(in: &cancelBag)
@@ -50,7 +50,7 @@ final class NickNameInputViewModel {
             let result = Bool.random()
             self.isNickNameOverlapedSubject.send(result)
             if result {
-                self.isUserReceivedWarning = true
+                self.shouldDisplayWarning = true
             }
         }
     }

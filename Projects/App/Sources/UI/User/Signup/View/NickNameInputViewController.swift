@@ -88,10 +88,10 @@ extension NickNameInputViewController {
             }
             .store(in: &cancelBag)
         
-        viewModel.$isUserReceivedWarning
-            .sink { [weak self] isUserReceivedWarning in
+        viewModel.$shouldDisplayWarning
+            .sink { [weak self] shouldDisplayWarning in
                 guard let self = self else { return }
-                self.warningLabel.isHidden = !isUserReceivedWarning
+                self.warningLabel.isHidden = !shouldDisplayWarning
             }
             .store(in: &cancelBag)
         
