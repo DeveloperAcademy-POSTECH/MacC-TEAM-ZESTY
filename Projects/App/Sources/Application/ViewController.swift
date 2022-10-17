@@ -6,8 +6,10 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
+import SwiftUI
 import UIKit
 import SnapKit
+import DesignSystem
 
 final class ViewController: UIViewController {
     
@@ -59,4 +61,12 @@ extension ViewController {
         }
     }
     
+}
+
+struct ViewControllerPreview: PreviewProvider {
+    
+    static var previews: some View {
+        ViewController().toPreview()
+    }
+
 }
