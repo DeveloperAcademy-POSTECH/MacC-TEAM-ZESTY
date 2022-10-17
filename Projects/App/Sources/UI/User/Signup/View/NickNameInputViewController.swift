@@ -41,7 +41,7 @@ final class NickNameInputViewController: UIViewController {
     // MARK: - Function
     
     @objc private func nextButtonClicked() {
-        nextButtonView.startAnimating()
+        nextButtonView.activateIndicator()
         nextButtonView.button.setAttributedTitle(NSAttributedString(string: ""), for: .normal)
         nextButtonView.button.imageView?.isHidden = true
         
@@ -98,7 +98,7 @@ extension NickNameInputViewController {
         viewModel.isNickNameOverlapedSubject
             .sink { [weak self] isNickNameOverlaped in
                 guard let self = self else { return }
-                self.nextButtonView.stopAnimating()
+                self.nextButtonView.stopIndicator()
                 self.nextButtonView.button.setAttributedTitle(NSAttributedString(string: "다음",
                                                               attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)]), for: .normal)
                 self.nextButtonView.button.imageView?.isHidden = false
