@@ -42,6 +42,8 @@ extension OrgListCell {
         self.addSubview(orgNameLabel)
         self.addSubview(disclosureIndicator)
         
+        self.selectionStyle = .none
+        
         disclosureIndicator.image = UIImage(systemName: "chevron.right")
         disclosureIndicator.tintColor = .black
         

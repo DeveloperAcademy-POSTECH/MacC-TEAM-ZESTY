@@ -21,9 +21,10 @@ extension Category {
 
 extension Organization {
     static let mockData: [Organization] = [
-        Organization(id: 0, name: "애플대", domain: "@pos.idserve.net", memberCount: 12, imageCount: 32, placeCount: 2),
+        Organization(id: 0, name: "애플대 포항캠퍼스", domain: "@pos.idserve.net", memberCount: 12, imageCount: 32, placeCount: 2),
         Organization(id: 1, name: "서울대", domain: "@snu.ac.kr", memberCount: 100, imageCount: 2, placeCount: 3),
-        Organization(id: 2, name: "부산대", domain: "@pnu.ac.kr", memberCount: 32, imageCount: 9, placeCount: 34)
+        Organization(id: 2, name: "부산대", domain: "@pnu.ac.kr", memberCount: 32, imageCount: 9, placeCount: 34),
+        Organization(id: 3, name: "경상국립대학교 칠암캠퍼스(경남과기대)", domain: "@gntech.ac.kr", memberCount: 14, imageCount: 3, placeCount: 5),
     ]
 }
 

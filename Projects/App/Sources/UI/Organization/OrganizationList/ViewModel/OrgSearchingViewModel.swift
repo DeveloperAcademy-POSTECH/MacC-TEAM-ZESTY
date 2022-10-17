@@ -21,27 +21,45 @@ final class OrganizationListViewModel {
         }
     }
     
-    //Output
-    @Published var orgSearchingArray: [String] = []
+    // Output
+    @Published var searchingArray: [String] = []
     
     init() {
         setData()
+        setSearchingData()
     }
     
 }
 
 extension OrganizationListViewModel {
+    // TODO: useCase로 바꾸기
     private func setData() {
         organizationArray = Organization.mockData
-        orgNameArray = organizationArray.map{ $0.name }
-        orgSearchingArray = orgNameArray
+        orgNameArray = organizationArray.map { $0.name }
+    }
+    
+    private func setSearchingData() {
+        searchingArray = orgNameArray
     }
     
     private func searchingInput(_ input: String) {
         if input.isEmpty {
-            orgSearchingArray = orgNameArray
+            searchingArray = orgNameArray
+            return
+        }
+        if input.contains(" ") {
+            let newInput = input.replacingOccurrences(of: " ", with: "")
+            
+            if newInput.isEmpty {
+                searchingArray = orgNameArray
+                return
+            }
+            searchingArray = orgNameArray.filter { orgName in
+                let newOrgName = orgName.replacingOccurrences(of: " ", with: "")
+                return newOrgName.contains(newInput)
+            }
         } else {
-            self.orgSearchingArray = self.orgNameArray.filter { $0.contains(input) }
+            self.searchingArray = self.orgNameArray.filter { $0.contains(input) }
         }
     }
 }

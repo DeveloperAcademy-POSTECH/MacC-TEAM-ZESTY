@@ -14,10 +14,10 @@ import DesignSystem
 final class OrganizationListViewController: UIViewController {
     
     // MARK: Properties
-    var viewModel = OrganizationListViewModel()
+    private var viewModel = OrganizationListViewModel()
     
     private var subscriptionSet = Set<AnyCancellable>()
-
+    
     private var orgNameArray: [String] = []
     
     private let titleLabel = UILabel()
@@ -88,7 +88,7 @@ extension OrganizationListViewController {
     }
     
     private func bindUI() {
-        self.viewModel.$orgSearchingArray.sink { orgNameArray in
+        self.viewModel.$searchingArray.sink { orgNameArray in
             self.orgNameArray = orgNameArray
             self.tableView.reloadData()
         }.store(in: &subscriptionSet)
@@ -101,13 +101,9 @@ extension OrganizationListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let orgListcell = tableView.dequeueReusableCell(withIdentifier: OrgListCell.identifier, for: indexPath) as? OrgListCell
-        
-        guard let cell = orgListcell else { return UITableViewCell()}
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: OrgListCell.identifier, for: indexPath) as? OrgListCell
+        guard let cell = cell else { return UITableViewCell()}
         cell.orgNameLabel.text = orgNameArray[indexPath.row]
-        
-        cell.selectionStyle = .none
         
         return cell
     }
@@ -120,14 +116,12 @@ extension OrganizationListViewController: UITextFieldDelegate {
     }
 }
 
-// TODO: 고반의 PR에서 textField의 publisher가 생기면 교체하도록 하겠습니다
-
 extension UITextField {
     var userInputTextPublisher: AnyPublisher<String, Never> {
         NotificationCenter.default.publisher(for: UITextField.textDidEndEditingNotification,
                                              object: self)
-            .compactMap { $0.object as? UITextField }
-            .compactMap { $0.text }
-            .eraseToAnyPublisher()
+        .compactMap { $0.object as? UITextField }
+        .compactMap { $0.text }
+        .eraseToAnyPublisher()
     }
 }
