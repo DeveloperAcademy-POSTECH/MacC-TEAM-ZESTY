@@ -48,17 +48,25 @@ extension OrganizationListViewModel {
         }
         if input.contains(" ") {
             let newInput = input.replacingOccurrences(of: " ", with: "")
+            let inputArray = input.components(separatedBy: " ")
             
             if newInput.isEmpty {
                 searchingArray = orgNameArray
                 return
             }
             searchingArray = orgNameArray.filter { orgName in
-                let newOrgName = orgName.replacingOccurrences(of: " ", with: "")
-                return newOrgName.contains(newInput)
+                var haveOrgName = false
+                for input in inputArray where orgName.contains(input) {
+                        haveOrgName = true
+                }
+                return haveOrgName
             }
         } else {
-            self.searchingArray = self.orgNameArray.filter { $0.contains(input) }
+            filteringInput(input)
         }
+    }
+    
+    private func filteringInput(_ input: String) {
+        self.searchingArray = self.orgNameArray.filter { $0.contains(input) }
     }
 }
