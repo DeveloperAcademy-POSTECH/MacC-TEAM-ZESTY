@@ -88,13 +88,10 @@ extension NickNameInputViewController {
             }
             .store(in: &cancelBag)
         
-        nickNameTextField.textDidChangePublisher
-            .sink { [weak self] _ in
+        viewModel.$isUserReceivedWarning
+            .sink { [weak self] isUserReceivedWarning in
                 guard let self = self else { return }
-                if self.viewModel.isUserReceivedWarning {
-                    self.warningLabel.isHidden = true
-                    self.viewModel.isUserReceivedWarning = false
-                }
+                self.warningLabel.isHidden = !isUserReceivedWarning
             }
             .store(in: &cancelBag)
         
@@ -107,7 +104,6 @@ extension NickNameInputViewController {
                 self.nextButtonView.button.imageView?.isHidden = false
                 if isNickNameOverlaped {
                     self.nextButtonView.setDisabled(true)
-                    self.warningLabel.isHidden = false
                 } else {
                     self.navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
                 }

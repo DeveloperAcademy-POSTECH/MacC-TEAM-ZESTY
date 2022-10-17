@@ -16,7 +16,7 @@ final class NickNameInputViewModel {
     
     // Output
     @Published var isTextEmpty = true
-//    @Published var isNickNameOverlaped = false
+    @Published var isUserReceivedWarning = false
     let isNickNameOverlapedSubject = PassthroughSubject<Bool, Never>()
     
     // Input & Output
@@ -24,12 +24,18 @@ final class NickNameInputViewModel {
 
     private var cancelBag = Set<AnyCancellable>()
     
-    var isUserReceivedWarning = false
-    
     init() {
         $nickNameText
             .map(isEmpty)
             .assign(to: \.isTextEmpty, on: self)
+            .store(in: &cancelBag)
+        
+        $nickNameText
+            .sink { _ in
+                if self.isUserReceivedWarning {
+                    self.isUserReceivedWarning = false
+                }
+            }
             .store(in: &cancelBag)
     }
     
