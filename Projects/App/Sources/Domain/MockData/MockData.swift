@@ -57,7 +57,7 @@ extension Place {
               lat: "36.00922443856994",
               lan: "132.33335502427113",
               category: [Category.mockData[2], Category.mockData[4]],
-              evaluationSum: EvaluationSum.mockData[0], reviews: [Review.mockData[0],Review.mockData[1], Review.mockData[2]]),
+              evaluationSum: EvaluationSum.mockData[0], reviews: [Review.mockData[0], Review.mockData[1], Review.mockData[2]]),
         Place(id: 2,
               creator: User.mockData[0],
               organizationId: 0,
