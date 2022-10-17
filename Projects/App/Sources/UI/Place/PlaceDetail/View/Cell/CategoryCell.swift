@@ -16,8 +16,8 @@ class CategoryCell: UICollectionViewCell {
     
     lazy var nameLabel: UILabel = {
         $0.text = "카테고리"
-        $0.font = .systemFont(ofSize: 14)
-        $0.textColor = .gray
+        $0.font = .systemFont(ofSize: 13, weight: .regular)
+        $0.textColor = .black
         return $0
     }(UILabel())
     
@@ -26,7 +26,7 @@ class CategoryCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
-        configureLayout()
+        createLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -40,16 +40,18 @@ extension CategoryCell {
     // MARK: UI Function
     
     func configureUI() {
-        contentView.backgroundColor = .systemGray5
-        contentView.layer.masksToBounds = true
-        contentView.layer.cornerRadius = 4
+        contentView.backgroundColor = .white
+        self.layer.borderWidth = 2
+        self.layer.masksToBounds = true
+        self.layer.cornerRadius = 14
     }
     
-    func configureLayout() {
+    func createLayout() {
         contentView.addSubviews([nameLabel])
         
         nameLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
+        
     }
 }
