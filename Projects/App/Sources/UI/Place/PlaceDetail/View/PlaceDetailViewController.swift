@@ -150,7 +150,7 @@ extension PlaceDetailViewController {
     
     private func configureUI() {
         view.backgroundColor = .white
-        categoryCollectionView.setupData(tagList: ["한식", "분식"])
+        categoryCollectionView.setupData(tagList: place.category)
         placeNameLabel.text = place.name
     }
     

@@ -13,7 +13,7 @@ class CategoryCollectionView: UIView {
     
     // MARK: Properties
     
-    public var tagList: [String] = [""]
+    public var tagList: [Category] = []
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewCenterLayout()
@@ -40,7 +40,7 @@ class CategoryCollectionView: UIView {
     
     // MARK: Function
     
-    func setupData(tagList: [String]) {
+    func setupData(tagList: [Category]) {
         self.tagList = tagList
     }
     
@@ -73,7 +73,7 @@ extension CategoryCollectionView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.cellID, for: indexPath) as? CategoryCell else { return UICollectionViewCell()}
-        cell.nameLabel.text = tagList[indexPath.item]
+        cell.nameLabel.text = tagList[indexPath.item].name
         return cell
     }
 }
@@ -84,7 +84,7 @@ extension CategoryCollectionView: UICollectionViewDelegateFlowLayout {
         
         lazy var label: UILabel = {
             $0.font = .systemFont(ofSize: 13)
-            $0.text = tagList[indexPath.item]
+            $0.text = tagList[indexPath.item].name
             $0.sizeToFit()
             return $0
         }(UILabel())
