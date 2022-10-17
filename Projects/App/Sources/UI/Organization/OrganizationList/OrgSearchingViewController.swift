@@ -14,6 +14,7 @@ import DesignSystem
 final class OrganizationListViewController: UIViewController {
     
     // MARK: Properties
+    
     private var viewModel = OrganizationListViewModel()
     
     private var subscriptionSet = Set<AnyCancellable>()
@@ -32,21 +33,11 @@ final class OrganizationListViewController: UIViewController {
         configureUI()
         createLayout()
         bindUI()
-        
         searchingTextField.delegate = self
-        searchingTextField
-            .userInputTextPublisher
-            .receive(on: DispatchQueue.main)
-            .assign(to: \.userTextInput, on: viewModel)
-            .store(in: &subscriptionSet)
     }
     
     // MARK: Function
-
-    // TODO: Govan의 UI 작업이 머지되면 다음 페이지로 넘어가는 작업을 연계할 생각입니다
-    @objc func orgCellTapped() {
-        // navaigationCotroller?.pushViewController(nextVc, animated: true)
-    }
+    
 }
 
 extension OrganizationListViewController {
@@ -57,10 +48,10 @@ extension OrganizationListViewController {
         view.backgroundColor = .white
         
         titleLabel.text = "참여할 대학교를 알려주세요"
+        // TODO: system font size로 바꾸기
         titleLabel.font = UIFont.boldSystemFont(ofSize: 26)
         
         tableView.dataSource = self
-        tableView.separatorStyle = .none
         tableView.register(OrgListCell.self, forCellReuseIdentifier: OrgListCell.identifier)
     }
     
@@ -92,6 +83,12 @@ extension OrganizationListViewController {
             self.orgNameArray = orgNameArray
             self.tableView.reloadData()
         }.store(in: &subscriptionSet)
+        
+        self.searchingTextField
+            .userInputTextPublisher
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.userTextInput, on: viewModel)
+            .store(in: &subscriptionSet)
     }
 }
 

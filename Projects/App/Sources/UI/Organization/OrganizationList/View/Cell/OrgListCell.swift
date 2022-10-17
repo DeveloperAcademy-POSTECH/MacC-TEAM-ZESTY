@@ -37,10 +37,7 @@ extension OrgListCell {
     // MARK: UI Function
     
     private func configureUI() {
-        
-        // TODO: addSubView extension으로 교체
-        self.addSubview(orgNameLabel)
-        self.addSubview(disclosureIndicator)
+        self.addSubviews([orgNameLabel, disclosureIndicator])
         
         self.selectionStyle = .none
         
