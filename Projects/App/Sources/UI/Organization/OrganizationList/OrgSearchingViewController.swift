@@ -18,7 +18,8 @@ final class OrganizationListViewController: UIViewController {
     private var subscriptionSet = Set<AnyCancellable>()
 
     private var orgNameArray: [String] = []
-     
+    
+    private let textFieldStackView = UIStackView()
     private let titleLabel = UILabel()
     private let searchingTextField = UITextField()
     private let tableView = UITableView()
@@ -35,8 +36,6 @@ final class OrganizationListViewController: UIViewController {
         createLayout()
         bindUI()
         
-        // TODO: 이건 어디로 가야할까요? configureUI?
-        searchingTextField.becomeFirstResponder()
         searchingTextField.delegate = self
         searchingTextField
             .userInputTextPublisher
@@ -46,7 +45,7 @@ final class OrganizationListViewController: UIViewController {
     }
     
     // MARK: Function
-    
+
     // TODO: Govan의 UI 작업이 머지되면 다음 페이지로 넘어가는 작업을 연계할 생각입니다
     @objc func orgCellTapped() {
         // navaigationCotroller?.pushViewController(nextVc, animated: true)
@@ -77,7 +76,6 @@ extension OrganizationListViewController {
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
             make.left.equalTo(view.snp.left).offset(20)
-            make.right.equalTo(view.snp.right).offset(-20)
         }
         
         searchingTextField.snp.makeConstraints { make in
@@ -114,7 +112,6 @@ extension OrganizationListViewController: UITableViewDataSource {
         
         cell.orgNameLabel.text = orgNameArray[indexPath.row]
         
-        cell.accessoryType = .disclosureIndicator
         cell.selectionStyle = .none
         
         return cell
