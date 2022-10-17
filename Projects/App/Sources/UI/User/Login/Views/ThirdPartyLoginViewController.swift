@@ -13,7 +13,7 @@ import DesignSystem
 
 final class ThirdPartyLoginViewController: UIViewController {
     
-    // MARK: Properties
+    // MARK: - Properties
     
     private let titleStackView = UIStackView()
     private let titleLabel = UILabel()
@@ -23,14 +23,14 @@ final class ThirdPartyLoginViewController: UIViewController {
     private let kakaoLoginButton = UIButton()
     private let appleLoginButton = UIButton()
     
-    // MARK: LifeCycle
+    // MARK: - LifeCycle
     
     override func viewDidLoad() {
         configureUI()
         createLayout()
     }
     
-    // MARK: Function
+    // MARK: - Function
     
     @objc func kakaoLoginButtonClicked() {
         navigationController?.pushViewController(NickNameInputViewController(), animated: true)
@@ -42,9 +42,9 @@ final class ThirdPartyLoginViewController: UIViewController {
     
 }
 
+// MARK: - UI Function
+
 extension ThirdPartyLoginViewController {
-    
-    // MARK: UI Function
     
     private func configureUI() {
         view.backgroundColor = .white

@@ -10,22 +10,23 @@ import UIKit
 
 final class ViewControllerTemplate: UIViewController {
     
-    // MARK: Properties
+    // MARK: - Properties
     
-    // MARK: LifeCycle
+    // MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
     }
     
-    // MARK: Function
+    // MARK: - Function
     
 }
 
+
+// MARK: - UI Function
+
 extension ViewController {
-    
-    // MARK: UI Function
     
     private func configureUI() {
         

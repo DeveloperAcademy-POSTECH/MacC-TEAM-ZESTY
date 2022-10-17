@@ -11,7 +11,7 @@ import DesignSystem
 
 final class SignupCompleteViewController: UIViewController {
     
-    // MARK: Properties
+    // MARK: - Properties
     
     private let viewModel = SignupCompleteViewModel()
     
@@ -21,7 +21,7 @@ final class SignupCompleteViewController: UIViewController {
     private let termsOfServiceLabel = UILabel()
     private let startButtonView = ShadowButtonView()
     
-    // MARK: LifeCycle
+    // MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +29,7 @@ final class SignupCompleteViewController: UIViewController {
         createLayout()
     }
     
-    // MARK: Function
+    // MARK: - Function
     
     @objc private func termsOfServiceLabelClicked() {
         
@@ -37,9 +37,9 @@ final class SignupCompleteViewController: UIViewController {
     
 }
 
+// MARK: - UI Function
+
 extension SignupCompleteViewController {
-    
-    // MARK: UI Function
     
     private func configureUI() {
         view.backgroundColor = .white

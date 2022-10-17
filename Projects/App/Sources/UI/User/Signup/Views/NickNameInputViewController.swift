@@ -12,7 +12,7 @@ import DesignSystem
 
 final class NickNameInputViewController: UIViewController {
     
-    // MARK: Properties
+    // MARK: - Properties
     
     private let viewModel = NickNameInputViewModel()
     
@@ -27,7 +27,7 @@ final class NickNameInputViewController: UIViewController {
     
     private var cancelBag = Set<AnyCancellable>()
     
-    // MARK: LifeCycle
+    // MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +37,7 @@ final class NickNameInputViewController: UIViewController {
         nickNameTextField.delegate = self
     }
     
-    // MARK: Function
+    // MARK: - Function
     
     @objc private func nextButtonClicked() {
         navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
@@ -49,9 +49,9 @@ final class NickNameInputViewController: UIViewController {
 
 }
 
+// MARK: - Bind Function
+
 extension NickNameInputViewController {
-    
-    // MARK: Bind Function
     
     private func bindUI() {
         nickNameTextField.textDidChangePublisher
@@ -86,9 +86,9 @@ extension NickNameInputViewController {
     
 }
 
+// MARK: - Delegate Function
+
 extension NickNameInputViewController: UITextFieldDelegate {
-    
-    // MARK: Delegate Function
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return viewModel.isChangePossible(for: string)
@@ -102,9 +102,9 @@ extension NickNameInputViewController: UITextFieldDelegate {
     
 }
 
+// MARK: - UI Function
+
 extension NickNameInputViewController {
-    
-    // MARK: UI Function
     
     private func configureUI() {
         view.backgroundColor = .white
