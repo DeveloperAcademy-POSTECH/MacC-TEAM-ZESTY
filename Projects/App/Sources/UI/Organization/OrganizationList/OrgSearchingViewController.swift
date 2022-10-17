@@ -64,6 +64,7 @@ extension OrganizationListViewController {
         titleLabel.font = UIFont.boldSystemFont(ofSize: 26)
         
         searchingTextField.placeholder = "대학교 검색"
+        searchingTextField.returnKeyType = .next
         
         tableView.dataSource = self
         tableView.separatorStyle = .none
