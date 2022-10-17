@@ -54,7 +54,7 @@ struct Multipart {
     }
     
     enum Extension {
-        case jpeg, png, gif
+        case jpeg, png, gif, webp
         case mp4
         case txt
     }
