@@ -47,13 +47,8 @@ extension OrganizationListViewModel {
             return
         }
         if input.contains(" ") {
-            let newInput = input.replacingOccurrences(of: " ", with: "")
             let inputArray = input.components(separatedBy: " ")
-            
-            if newInput.isEmpty {
-                searchingArray = orgNameArray
-                return
-            }
+
             searchingArray = orgNameArray.filter { orgName in
                 var haveOrgName = false
                 for input in inputArray where orgName.contains(input) {
