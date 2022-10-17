@@ -42,7 +42,7 @@ extension PlaceListViewController: UICollectionViewDelegate {
     }
     
     private func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { sectionIndex, _ in
+        let layout = UICollectionViewCompositionalLayout { [unowned self] sectionIndex, _ in
             let sectionType = SectionType(index: sectionIndex)
             let section: NSCollectionLayoutSection
             
@@ -53,44 +53,35 @@ extension PlaceListViewController: UICollectionViewDelegate {
             
             switch sectionType {
             case .banner:
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                                      heightDimension: .fractionalHeight(1))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.35),
-                                                       heightDimension: .fractionalHeight(0.23))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                section = NSCollectionLayoutSection(group: group)
-                
-                section.interGroupSpacing = 15
-                section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+                section = self.createSectionLayout(width: .fractionalWidth(1), height: .fractionalHeight(0.4))
+                section.orthogonalScrollingBehavior = .groupPagingCentered
                 
             case .picked:
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                                      heightDimension: .fractionalHeight(1))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.35),
-                                                       heightDimension: .fractionalHeight(0.23))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                section = NSCollectionLayoutSection(group: group)
-                
+                section = self.createSectionLayout(width: .fractionalWidth(0.35), height: .fractionalHeight(0.23))
                 section.boundarySupplementaryItems = [sectionHeader]
-                section.interGroupSpacing = 15
                 section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
                 
             case .whole:
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(90))
-                let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-                section = NSCollectionLayoutSection(group: group)
-
+                section = self.createSectionLayout(width: .fractionalWidth(1), height: .fractionalHeight(0.4))
                 section.boundarySupplementaryItems = [sectionHeader]
-                section.interGroupSpacing = 15
+
             }
             
             return section
         }
         return layout
+    }
+    
+    private func createSectionLayout(width: NSCollectionLayoutDimension,
+                                     height: NSCollectionLayoutDimension) -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(widthDimension: width, heightDimension: height)
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 15
+        
+        return section
     }
     
     private func configureDataSource() {
