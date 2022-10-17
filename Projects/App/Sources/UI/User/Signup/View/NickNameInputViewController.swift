@@ -91,7 +91,7 @@ extension NickNameInputViewController {
 extension NickNameInputViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        return viewModel.isChangePossible(for: string)
+        return viewModel.isValid(for: string)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
