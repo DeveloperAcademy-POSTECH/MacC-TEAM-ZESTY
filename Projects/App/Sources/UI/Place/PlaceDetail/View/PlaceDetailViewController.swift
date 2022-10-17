@@ -41,15 +41,9 @@ final class PlaceDetailViewController: UIViewController {
         return $0
     }(UIStackView())
     
-//    private lazy var goodView = EvaluationItemView()
-//    private lazy var sosoView = EvaluationItemView()
-//    private lazy var badView = EvaluationItemView()
-//
-    
-//
-    private lazy var goodView = EvaluationItemView(with: EvaluationViewModel(evaluation: .good, count: 17))
-    private lazy var sosoView = EvaluationItemView(with: EvaluationViewModel(evaluation: .soso, count: 2))
-    private lazy var badView = EvaluationItemView(with: EvaluationViewModel(evaluation: .bad, count: 4))
+    private lazy var goodView = EvaluationItemView(with: EvaluationViewModel(evaluation: .good, count: place.evaluationSum.good))
+    private lazy var sosoView = EvaluationItemView(with: EvaluationViewModel(evaluation: .soso, count: place.evaluationSum.soso))
+    private lazy var badView = EvaluationItemView(with: EvaluationViewModel(evaluation: .bad, count: place.evaluationSum.bad))
     
     private let imageView: UIImageView = {
         $0.contentMode = .scaleAspectFit
@@ -102,7 +96,7 @@ final class PlaceDetailViewController: UIViewController {
     private lazy var addReviewButton: UIButton = {
         $0.configuration = .borderedTinted()
         $0.setTitle("리뷰 남기기 버튼", for: .normal)
-        $0.addTarget(self, action: #selector(reportPlaceDetail), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(addReviewButtonDidTap), for: .touchUpInside)
         return $0
     }(UIButton())
     
@@ -131,7 +125,7 @@ final class PlaceDetailViewController: UIViewController {
     // MARK: - Function
     
     @objc func reportPlaceDetail() {
-        UrlUtils.openExternalLink(urlStr: "mailto:kingbobne@gmail.com?subject=%5B%EC%A0%9C%EB%B3%B4%ED%95%98%EA%B8%B0%5D%20%EB%A7%9B%EC%A7%91%EC%A0%95%EB%B3%B4%EC%98%A4%EB%A5%98%20%EC%A0%9C%EB%B3%B4%ED%95%98%EA%B8%B0&body=%23%23%20%EC%A0%9C%EB%B3%B4%EC%9E%90%20%EC%84%B1%ED%95%A8%20%ED%98%B9%EC%9D%80%20%EB%8B%89%EB%84%A4%EC%9E%84%20%2F%20%EC%86%8C%EC%86%8D%EB%8C%80%ED%95%99%0D%0A%0D%0A%0D%0A%23%23%20%EB%AC%B8%EC%A0%9C%EA%B0%80%20%EC%9E%88%EB%8A%94%20%EB%A7%9B%EC%A7%91%EC%9D%80%20%EC%96%B4%EB%94%94%EC%9D%B8%EA%B0%80%EC%9A%94%3F%0D%0A%0D%0A%0D%0A%23%23%20%EC%A0%9C%EB%B3%B4%20%EB%82%B4%EC%9A%A9%0D%0A" )
+        UrlUtils.openExternalLink(urlStr: "mailto:kingbobne@gmail.com" )
     }
     
     @objc func openKakaoMap() {
@@ -142,6 +136,9 @@ final class PlaceDetailViewController: UIViewController {
         UrlUtils.openExternalLink(urlStr: "http://app.map.naver.com/launchApp/?version=11&menu=navigation&elat=\(place.lat)&elng=\(place.lan)&etitle=\(place.name)")
     }
     
+    @objc func addReviewButtonDidTap() {
+        // TODO: - 리뷰 남기기 버튼 눌렀을때 동작추가
+    }
 }
 
 extension PlaceDetailViewController {
