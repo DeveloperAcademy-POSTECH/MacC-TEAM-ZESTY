@@ -27,7 +27,8 @@ public final class ShadowButtonView: UIView {
     }
     
     public func setDisabled(_ state: Bool) {
-        button.isEnabled = !state
+        button.isUserInteractionEnabled = !state
+        button.tintColor = state ? .lightGray : .black
         button.layer.borderColor = state ? UIColor.lightGray.cgColor : UIColor.black.cgColor
         buttonShadowView.backgroundColor = state ? .lightGray : .black
     }

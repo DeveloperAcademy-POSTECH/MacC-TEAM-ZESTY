@@ -123,7 +123,9 @@ extension NickNameInputViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        nextButtonClicked()
+        if nextButtonView.button.isUserInteractionEnabled {
+            nextButtonClicked()
+        }
         return true
     }
     
