@@ -31,7 +31,8 @@ final class NickNameInputViewModel {
             .store(in: &cancelBag)
         
         $nickNameText
-            .sink { _ in
+            .sink { [weak self] _ in
+                guard let self = self else { return }
                 if self.isUserReceivedWarning {
                     self.isUserReceivedWarning = false
                 }
