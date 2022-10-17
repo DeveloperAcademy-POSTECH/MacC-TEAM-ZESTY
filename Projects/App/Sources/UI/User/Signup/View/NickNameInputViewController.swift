@@ -60,7 +60,7 @@ extension NickNameInputViewController {
     
     private func bindUI() {
         nickNameTextField.textDidChangePublisher
-            .compactMap { return $0.text }
+            .compactMap { $0.text }
             .assign(to: \.nickNameText, on: viewModel)
             .store(in: &cancelBag)
         
