@@ -62,11 +62,7 @@ extension OrganizationListViewModel {
                 return haveOrgName
             }
         } else {
-            filteringInput(input)
+            self.searchingArray = self.orgNameArray.filter { $0.contains(input) }
         }
-    }
-    
-    private func filteringInput(_ input: String) {
-        self.searchingArray = self.orgNameArray.filter { $0.contains(input) }
     }
 }
