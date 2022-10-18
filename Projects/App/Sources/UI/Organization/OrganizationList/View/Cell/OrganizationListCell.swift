@@ -37,9 +37,9 @@ extension OrganizationListCell {
     // MARK: UI Function
     
     private func configureUI() {
-        self.addSubviews([orgNameLabel, disclosureIndicator])
+        addSubviews([orgNameLabel, disclosureIndicator])
         
-        self.selectionStyle = .none
+        selectionStyle = .none
         
         disclosureIndicator.image = UIImage(systemName: "chevron.right")
         disclosureIndicator.tintColor = .black
@@ -49,15 +49,14 @@ extension OrganizationListCell {
     
     private func createLayout() {
         orgNameLabel.snp.makeConstraints { make in
-            make.left.equalTo(self.snp.left).inset(20)
-            make.top.equalTo(self.snp.top).inset(16)
-            make.bottom.equalTo(self.snp.bottom).inset(16)
+            make.left.equalTo(snp.left).inset(20)
+            make.verticalEdges.equalToSuperview().inset(16)
         }
         
         disclosureIndicator.snp.makeConstraints { make in
-            make.top.equalTo(self.snp.top).offset(16)
-            make.right.equalTo(self.snp.right).offset(-20)
-            make.bottom.equalTo(self.snp.bottom).offset(-16)
+            make.right.equalTo(snp.right).inset(20)
+            make.verticalEdges.equalToSuperview().inset(16)
         }
     }
+    
 }
