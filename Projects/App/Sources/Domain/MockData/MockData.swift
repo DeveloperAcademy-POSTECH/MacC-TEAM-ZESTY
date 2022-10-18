@@ -21,10 +21,9 @@ extension Category {
 
 extension Organization {
     static let mockData: [Organization] = [
-        Organization(id: 0, name: "애플대 포항캠퍼스", domain: "@pos.idserve.net", memberCount: 12, imageCount: 32, placeCount: 2),
+        Organization(id: 0, name: "애플대", domain: "@pos.idserve.net", memberCount: 12, imageCount: 32, placeCount: 2),
         Organization(id: 1, name: "서울대", domain: "@snu.ac.kr", memberCount: 100, imageCount: 2, placeCount: 3),
-        Organization(id: 2, name: "부산대", domain: "@pnu.ac.kr", memberCount: 32, imageCount: 9, placeCount: 34),
-        Organization(id: 3, name: "경상국립대학교 칠암캠퍼스(경남과기대)", domain: "@gntech.ac.kr", memberCount: 14, imageCount: 3, placeCount: 5)
+        Organization(id: 2, name: "부산대", domain: "@pnu.ac.kr", memberCount: 32, imageCount: 9, placeCount: 34)
     ]
 }
 
@@ -33,7 +32,7 @@ extension User {
         User(id: 0, email: "avery@pos.idserve.net", social: .kakao, nickname: "버리", authToken: "dkjds8d2", organizationId: 0),
         User(id: 1, email: "avo@pos.idserve.net", social: .kakao, nickname: "카도아보", authToken: "fkdis09n", organizationId: 0),
         User(id: 2, email: "nick@pos.idserve.net", social: .kakao, nickname: "닉", authToken: "d8s82m", organizationId: 1),
-        User(id: 3, email: "lia@pos.idserve.net", social: .kakao, nickname: "리아", authToken: "dkd02j2", organizationId: 1),
+        User(id: 3, email: "lia@pos.idserve.net", social: .kakao, nickname: "리아", authToken: "dkd02j2", organizationId: 2),
         User(id: 4, email: "goban@pos.idserve.net", social: .kakao, nickname: "고바라바라만", authToken: "l3l9dxm", organizationId: 2),
         User(id: 5, email: "min@pos.idserve.net", social: .kakao, nickname: "오이는밍밍", authToken: "3o3kkd9", organizationId: 2)
     ]
@@ -43,35 +42,34 @@ extension Place {
     static let mockData: [Place] = [
         Place(id: 0,
               creator: User.mockData[0],
-              organizationId: Organization.mockData[0].id,
+              organizationId: 1,
               name: "순이",
               address: "경상북도 포항시 남구 지곡동 1-1",
               lat: "36.00922443856994",
               lan: "129.33335502427113",
               category: [Category.mockData[1], Category.mockData[2]],
-              evaluationSum: EvaluationSum.mockData[0],
-              reviews: []),
+              evaluationSum: EvaluationSum.mockData[0], reviews: []),
         Place(id: 1,
               creator: User.mockData[0],
-              organizationId: Organization.mockData[0].id,
+              organizationId: 0,
               name: "이태리파스타",
               address: "경상북도 포항시 남구 효자동 1-1",
               lat: "36.00922443856994",
               lan: "132.33335502427113",
               category: [Category.mockData[2], Category.mockData[4]],
-              evaluationSum: EvaluationSum.mockData[0], reviews: []),
+              evaluationSum: EvaluationSum.mockData[0], reviews: [Review.mockData[0], Review.mockData[1], Review.mockData[2]]),
         Place(id: 2,
               creator: User.mockData[0],
-              organizationId: Organization.mockData[0].id,
+              organizationId: 0,
               name: "담박집",
               address: "경상북도 포항시 남구 지곡동 63",
               lat: "36.00922443856994",
               lan: "129.3876",
               category: [Category.mockData[5], Category.mockData[7]],
-              evaluationSum: EvaluationSum.mockData[0], reviews: []),
+              evaluationSum: EvaluationSum.mockData[0], reviews: [Review.mockData[1], Review.mockData[2]]),
         Place(id: 3,
               creator: User.mockData[0],
-              organizationId: Organization.mockData[0].id,
+              organizationId: 0,
               name: "롯데리아",
               address: "경상북도 포항시 남구 지곡동 21",
               lat: "36.009224",
