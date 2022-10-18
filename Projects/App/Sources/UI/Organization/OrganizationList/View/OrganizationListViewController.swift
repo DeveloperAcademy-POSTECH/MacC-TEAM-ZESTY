@@ -8,8 +8,8 @@
 
 import Combine
 import UIKit
-import SnapKit
 import DesignSystem
+import SnapKit
 
 final class OrganizationListViewController: UIViewController {
     
