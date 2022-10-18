@@ -6,13 +6,15 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
+import Combine
+import SwiftUI
 import UIKit
 import SnapKit
 
 final class OrgDetailViewController: UIViewController {
 
-    // MARK: Properties
-    
+    // MARK: - Properties
+
     private let inviteButton = UIButton()
     private let orgName = UILabel()
     private let orgLogo = UIImageView()
@@ -21,21 +23,21 @@ final class OrgDetailViewController: UIViewController {
     private let orgPlace = UILabel()
     private let orgPlacePhoto = UILabel()
 
-    // MARK: LifeCycle
-    
+    // MARK: - LifeCycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         createLayout()
     }
 
-    // MARK: Function
-    
+    // MARK: - Function
+
 }
 
-extension OrgDetailViewController {
+// MARK: - UI Function
 
-    // MARK: UI Function
+extension OrgDetailViewController {
     
     private func configureUI() {
         view.backgroundColor = .systemGray3
@@ -100,32 +102,12 @@ extension OrgDetailViewController {
 
 }
 
-#if DEBUG
-import SwiftUI
+// MARK: - Previews
 
-@available(iOS 13, *)
-extension UIViewController {
-    private struct Preview: UIViewControllerRepresentable {
-        // this variable is used for injecting the current view controller
-        let viewController: UIViewController
-
-        func makeUIViewController(context: Context) -> UIViewController {
-            return viewController
-        }
-
-        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        }
-    }
-
-    func toPreview() -> some View {
-        // inject self (the current view controller) for the preview
-        Preview(viewController: self)
-    }
-}
-
-struct OrgDetailViewControllerPreview: PreviewProvider {
+struct OrgDetailPreview: PreviewProvider {
+    
     static var previews: some View {
         OrgDetailViewController().toPreview()
     }
+    
 }
-#endif
