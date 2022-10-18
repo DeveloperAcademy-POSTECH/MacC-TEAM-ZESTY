@@ -47,9 +47,8 @@ extension ShadowTextFieldView {
     }
     
     private func createLayout() {
-        // TODO: addSubViews extension으로 교체하기
-        [shadowView, backgroundView, leftImage, textField].forEach { self.addSubview($0) }
-
+        addSubviews([shadowView, backgroundView, leftImage, textField])
+        
         textField.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(12)
             make.bottom.equalToSuperview().inset(12)

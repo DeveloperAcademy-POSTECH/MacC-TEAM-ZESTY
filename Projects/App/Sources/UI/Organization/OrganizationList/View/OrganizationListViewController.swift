@@ -49,12 +49,11 @@ extension OrganizationListViewController {
             self.tableView.reloadData()}
         .store(in: &cancelBag)
         
-        searchingTextField
-            .textDidEndEditingPublisher
-            .compactMap { $0.text }
-            .receive(on: DispatchQueue.main)
-            .assign(to: \.userTextInput, on: viewModel)
-            .store(in: &cancelBag)
+        searchingTextField.textDidEndEditingPublisher
+                            .compactMap { $0.text }
+                            .receive(on: DispatchQueue.main)
+                            .assign(to: \.userTextInput, on: viewModel)
+                            .store(in: &cancelBag)
     }
     
 }
