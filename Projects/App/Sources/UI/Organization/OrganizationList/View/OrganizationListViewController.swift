@@ -99,6 +99,7 @@ extension OrganizationListViewController {
         
         tableView.dataSource = self
         tableView.register(OrganizationListCell.self, forCellReuseIdentifier: OrganizationListCell.identifier)
+        tableView.separatorStyle = .none
     }
     
     private func createLayout() {
