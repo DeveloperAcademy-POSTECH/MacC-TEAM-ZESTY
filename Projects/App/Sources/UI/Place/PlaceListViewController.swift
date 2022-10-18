@@ -17,10 +17,14 @@ final class PlaceListViewController: UIViewController {
     private var collectionView: UICollectionView!
     private var dataSource: DataSource!
     
+    private var searchBarItem = UIBarButtonItem()
+    private var profileBarItem = UIBarButtonItem()
+    
     // MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureUI()
         configureHierachy()
         configureDataSource()
         applySnapShot()
@@ -194,12 +198,35 @@ extension PlaceListViewController {
 
 }
 
+// MARK: - UI function
+
+extension PlaceListViewController {
+    
+    @objc func searchButtonPressed() {
+    }
+
+    @objc func profileButtonPressed() {
+    }
+    
+    private func configureUI() {
+        view.backgroundColor = .systemBackground
+        searchBarItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain,
+                                          target: self, action: #selector(searchButtonPressed))
+        profileBarItem = UIBarButtonItem(image: UIImage(systemName: "person.crop.circle"), style: .plain, target: self, action: #selector(profileButtonPressed))
+        searchBarItem.tintColor = .black
+        profileBarItem.tintColor = .black
+        navigationItem.rightBarButtonItems = [searchBarItem, profileBarItem]
+        navigationItem.title = "애플디벨로퍼아카데미"
+    }
+
+}
+
 // MARK: - Preview
 
 struct PlaceListViewControllerTemplatePreview: PreviewProvider {
     
     static var previews: some View {
-        PlaceListViewController().toPreview()
+        UINavigationController(rootViewController: PlaceListViewController()).toPreview()
     }
 
 }
