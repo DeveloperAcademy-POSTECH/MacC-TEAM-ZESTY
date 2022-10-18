@@ -50,7 +50,8 @@ extension OrganizationListViewController {
         .store(in: &cancelBag)
         
         searchingTextField
-            .userInputTextPublisher
+            .textDidEndEditingPublisher
+            .compactMap { $0.text }
             .receive(on: DispatchQueue.main)
             .assign(to: \.userTextInput, on: viewModel)
             .store(in: &cancelBag)
@@ -122,18 +123,4 @@ extension OrganizationListViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
     }
-}
-
-
-
-extension UITextField {
-    
-    var userInputTextPublisher: AnyPublisher<String, Never> {
-        NotificationCenter.default.publisher(for: UITextField.textDidEndEditingNotification,
-                                             object: self)
-        .compactMap { $0.object as? UITextField }
-        .compactMap { $0.text }
-        .eraseToAnyPublisher()
-    }
-    
 }
