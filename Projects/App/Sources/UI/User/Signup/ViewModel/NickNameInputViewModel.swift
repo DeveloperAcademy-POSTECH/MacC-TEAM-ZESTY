@@ -33,7 +33,7 @@ final class NickNameInputViewModel {
         $nickNameText
             .sink { [weak self] _ in
                 guard let self = self else { return }
-                if self.shouldDisplayWarning {
+                if self.shouldDisplayWarning == true {
                     self.shouldDisplayWarning = false
                 }
             }
