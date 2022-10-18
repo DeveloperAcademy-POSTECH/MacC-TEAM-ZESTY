@@ -19,6 +19,7 @@ final class PlaceListViewController: UIViewController {
     
     private var searchBarItem = UIBarButtonItem()
     private var profileBarItem = UIBarButtonItem()
+    private let registerButton = ShadowButtonView()
     
     // MARK: - LifeCycle
     
@@ -26,6 +27,7 @@ final class PlaceListViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         configureHierachy()
+        createLayout()
         configureDataSource()
         applySnapShot()
     }
@@ -218,6 +220,17 @@ extension PlaceListViewController {
         profileBarItem.tintColor = .black
         navigationItem.rightBarButtonItems = [searchBarItem, profileBarItem]
         navigationItem.title = "애플디벨로퍼아카데미"
+        
+        registerButton.button.setTitle("나의 맛집 등록하기", for: .normal)
+    }
+    
+    private func createLayout() {
+        view.addSubview(registerButton)
+        
+        registerButton.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview().inset(20)
+            $0.height.equalTo(50)
+        }
     }
 
 }
