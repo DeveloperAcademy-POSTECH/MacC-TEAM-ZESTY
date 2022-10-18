@@ -7,9 +7,9 @@
 //
 
 import Combine
-import DesignSystem
 import UIKit
 import SnapKit
+import DesignSystem
 
 final class OrganizationListViewController: UIViewController {
     
