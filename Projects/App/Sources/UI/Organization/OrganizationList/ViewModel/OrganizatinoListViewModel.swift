@@ -11,7 +11,7 @@ import Combine
 
 final class OrganizationListViewModel {
     
-    private var organizationArray: [Organization] = []
+    private var orgArray: [Organization] = []
     private var orgNameArray: [String] = []
     
     // Input
@@ -34,8 +34,8 @@ final class OrganizationListViewModel {
 extension OrganizationListViewModel {
     // TODO: useCase로 바꾸기
     private func setData() {
-        organizationArray = Organization.mockData
-        orgNameArray = organizationArray.map { $0.name }
+        orgArray = Organization.mockData
+        orgNameArray = orgArray.map { $0.name }
     }
     
     private func setInitialSearchedArray() {
