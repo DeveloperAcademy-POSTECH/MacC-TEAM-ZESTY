@@ -18,9 +18,6 @@ final class NickNameInputViewModel {
     @Published var isTextEmpty = true
     @Published var shouldDisplayWarning = false
     let isNickNameOverlapedSubject = PassthroughSubject<Bool, Never>()
-    
-    // Input & Output
-    @Published var isKeyboardShown = false
 
     private var cancelBag = Set<AnyCancellable>()
     
