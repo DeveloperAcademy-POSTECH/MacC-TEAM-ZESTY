@@ -49,12 +49,12 @@ extension OrganizationListCell {
     
     private func createLayout() {
         orgNameLabel.snp.makeConstraints { make in
-            make.left.equalTo(snp.left).inset(20)
+            make.left.equalToSuperview().inset(20)
             make.verticalEdges.equalToSuperview().inset(16)
         }
         
         disclosureIndicator.snp.makeConstraints { make in
-            make.right.equalTo(snp.right).inset(20)
+            make.right.equalToSuperview().inset(20)
             make.verticalEdges.equalToSuperview().inset(16)
         }
     }

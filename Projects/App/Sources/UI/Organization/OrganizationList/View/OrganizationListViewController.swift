@@ -112,15 +112,13 @@ extension OrganizationListViewController {
         
         searchingTextFieldView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
-            make.left.equalTo(view.snp.left).offset(20)
-            make.right.equalTo(view.snp.right).offset(-20)
+            make.horizontalEdges.equalToSuperview().inset(20)
             make.height.equalTo(45)
         }
         
         tableView.snp.makeConstraints { make in
             make.top.equalTo(searchingTextFieldView.snp.bottom).offset(16)
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
     }
