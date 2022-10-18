@@ -11,21 +11,22 @@ import Combine
 
 final class OrganizationListViewModel {
     
-    // Input
     private var organizationArray: [Organization] = []
     private var orgNameArray: [String] = []
+    
+    // Input
     @Published var userTextInput: String = "" {
         didSet {
-            searchingInput(userTextInput)
+            searchInput(userTextInput)
         }
     }
     
     // Output
-    @Published var searchingArray: [String] = []
+    @Published var searchedArray: [String] = []
     
     init() {
         setData()
-        setSearchingData()
+        setInitialSearchedArray()
     }
     
 }
@@ -37,19 +38,19 @@ extension OrganizationListViewModel {
         orgNameArray = organizationArray.map { $0.name }
     }
     
-    private func setSearchingData() {
-        searchingArray = orgNameArray
+    private func setInitialSearchedArray() {
+        searchedArray = orgNameArray
     }
     
-    private func searchingInput(_ input: String) {
+    private func searchInput(_ input: String) {
         if input.isEmpty {
-            searchingArray = orgNameArray
+            setInitialSearchedArray()
             return
         }
         if input.contains(" ") {
             let inputArray = input.components(separatedBy: " ")
 
-            searchingArray = orgNameArray.filter { orgName in
+            searchedArray = orgNameArray.filter { orgName in
                 var haveOrgName = false
                 for input in inputArray where orgName.contains(input) {
                         haveOrgName = true
@@ -57,7 +58,7 @@ extension OrganizationListViewModel {
                 return haveOrgName
             }
         } else {
-            self.searchingArray = self.orgNameArray.filter { $0.contains(input) }
+            self.searchedArray = self.orgNameArray.filter { $0.contains(input) }
         }
     }
 }

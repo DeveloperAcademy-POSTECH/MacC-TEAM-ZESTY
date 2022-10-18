@@ -79,7 +79,7 @@ extension OrganizationListViewController {
     }
     
     private func bindUI() {
-        self.viewModel.$searchingArray.sink { orgNameArray in
+        self.viewModel.$searchedArray.sink { orgNameArray in
             self.orgNameArray = orgNameArray
             self.tableView.reloadData()
         }.store(in: &subscriptionSet)
@@ -94,13 +94,13 @@ extension OrganizationListViewController {
 
 extension OrganizationListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return orgNameArray.count
+        return viewModel.searchedArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: OrganizationListCell.identifier, for: indexPath) as? OrganizationListCell
         guard let cell = cell else { return UITableViewCell()}
-        cell.orgNameLabel.text = orgNameArray[indexPath.row]
+        cell.orgNameLabel.text = viewModel.searchedArray[indexPath.row]
         
         return cell
     }
