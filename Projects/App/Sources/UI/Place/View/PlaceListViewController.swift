@@ -30,11 +30,9 @@ final class PlaceListViewController: UIViewController {
         applySnapShot()
     }
     
-    // MARK: - Function
-    
 }
 
-// MARK: - UI Function
+// MARK: - CollectionView Function
 
 extension PlaceListViewController: UICollectionViewDelegate {
 
