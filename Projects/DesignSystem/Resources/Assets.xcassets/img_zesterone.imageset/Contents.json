@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "img_zesterone.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

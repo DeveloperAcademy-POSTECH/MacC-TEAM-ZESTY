@@ -4,8 +4,7 @@ disabled_rules:
 - function_body_length
 
 excluded:
-  - Sources/Application/AppDelegate.swift
-  - Sources/Application/SceneDelegate.swift
+- Sources/Asset/Asset.swift
 
 identifier_name:
     excluded:
