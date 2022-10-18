@@ -58,6 +58,33 @@ extension OrganizationListViewController {
     
 }
 
+// MARK: Delegate
+
+extension OrganizationListViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.searchedArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: OrganizationListCell.identifier, for: indexPath) as? OrganizationListCell
+        guard let cell = cell else { return UITableViewCell() }
+        cell.orgNameLabel.text = viewModel.searchedArray[indexPath.row]
+        
+        return cell
+    }
+    
+}
+
+extension OrganizationListViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
+        return true
+    }
+    
+}
+
 extension OrganizationListViewController {
     
     // MARK: UI Function
@@ -97,30 +124,7 @@ extension OrganizationListViewController {
     }
 }
 
-extension OrganizationListViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.searchedArray.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: OrganizationListCell.identifier, for: indexPath) as? OrganizationListCell
-        guard let cell = cell else { return UITableViewCell() }
-        cell.orgNameLabel.text = viewModel.searchedArray[indexPath.row]
-        
-        return cell
-    }
-    
-}
 
-extension OrganizationListViewController: UITextFieldDelegate {
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        view.endEditing(true)
-        return true
-    }
-    
-}
 
 extension UITextField {
     
