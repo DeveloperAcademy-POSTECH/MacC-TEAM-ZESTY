@@ -23,6 +23,13 @@ class ReviewCell: UICollectionViewCell {
         return $0
     }(UIImageView(frame: .zero))
     
+    private lazy var shadowView: UIView = {
+        $0.backgroundColor = .black
+        $0.clipsToBounds = true
+        $0.layer.cornerRadius = 4
+        return $0
+    }(UIView())
+    
     private let emojiView: UIImageView = {
         $0.contentMode = .scaleToFill
         $0.image = UIImage(.img_good_circle)
@@ -70,9 +77,11 @@ extension ReviewCell {
     }
     
     func createLayout() {
-        contentView.addSubviews([imageView, emojiView, evalutationLabel, menuLabel, dateLabel])
-
+        contentView.addSubviews([imageView, shadowView, emojiView, evalutationLabel, menuLabel, dateLabel])
+        
         contentView.sendSubviewToBack(emojiView)
+        contentView.sendSubviewToBack(shadowView)
+        
         emojiView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().offset(9)
@@ -84,6 +93,11 @@ extension ReviewCell {
         }
         imageView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(15)
+            $0.leading.trailing.equalToSuperview()
+            $0.width.height.equalTo(167)
+        }
+        shadowView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(17)
             $0.leading.trailing.equalToSuperview()
             $0.width.height.equalTo(167)
         }
