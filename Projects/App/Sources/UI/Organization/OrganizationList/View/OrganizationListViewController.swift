@@ -43,7 +43,7 @@ final class OrganizationListViewController: UIViewController {
 extension OrganizationListViewController {
     
     private func bindUI() {
-        viewModel.$searchedArray
+        viewModel.$searchedOrgArray
         .sink {[weak self] _ in
             guard let self = self else { return }
             self.tableView.reloadData()}
@@ -63,13 +63,13 @@ extension OrganizationListViewController {
 extension OrganizationListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.searchedArray.count
+        return viewModel.searchedOrgArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: OrganizationListCell.identifier, for: indexPath) as? OrganizationListCell
         guard let cell = cell else { return UITableViewCell() }
-        cell.orgNameLabel.text = viewModel.searchedArray[indexPath.row]
+        cell.orgNameLabel.text = viewModel.searchedOrgArray[indexPath.row]
         
         return cell
     }

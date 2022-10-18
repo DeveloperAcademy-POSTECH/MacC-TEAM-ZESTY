@@ -22,7 +22,7 @@ final class OrganizationListViewModel {
     }
     
     // Output
-    @Published var searchedArray: [String] = []
+    @Published var searchedOrgArray: [String] = []
     
     init() {
         setData()
@@ -39,7 +39,7 @@ extension OrganizationListViewModel {
     }
     
     private func setInitialSearchedArray() {
-        searchedArray = orgNameArray
+        searchedOrgArray = orgNameArray
     }
     
     private func searchInput(_ input: String) {
@@ -50,7 +50,7 @@ extension OrganizationListViewModel {
         if input.contains(" ") {
             let inputArray = input.components(separatedBy: " ")
 
-            searchedArray = orgNameArray.filter { orgName in
+            searchedOrgArray = orgNameArray.filter { orgName in
                 var haveOrgName = false
                 for input in inputArray where orgName.contains(input) {
                         haveOrgName = true
@@ -58,7 +58,7 @@ extension OrganizationListViewModel {
                 return haveOrgName
             }
         } else {
-            self.searchedArray = self.orgNameArray.filter { $0.contains(input) }
+            self.searchedOrgArray = self.orgNameArray.filter { $0.contains(input) }
         }
     }
 }
