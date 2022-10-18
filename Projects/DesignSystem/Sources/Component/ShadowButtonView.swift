@@ -33,7 +33,7 @@ public final class ShadowButtonView: UIView {
         buttonShadowView.backgroundColor = state ? .lightGray : .black
     }
     
-    public func activateIndicator() {
+    public func startIndicator() {
         button.isUserInteractionEnabled = false
         
         activityIndicator.isHidden = false

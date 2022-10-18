@@ -41,7 +41,7 @@ final class NickNameInputViewController: UIViewController {
     // MARK: - Function
     
     @objc private func nextButtonClicked() {
-        nextButtonView.activateIndicator()
+        nextButtonView.startIndicator()
         nextButtonView.button.setAttributedTitle(NSAttributedString(string: ""), for: .normal)
         nextButtonView.button.imageView?.isHidden = true
         
