@@ -13,6 +13,7 @@ import DesignSystem
 final class PlaceListViewController: UIViewController {
     
     // MARK: - Properties
+    
     private var collectionView: UICollectionView!
     private var dataSource: DataSource!
     
@@ -34,22 +35,18 @@ final class PlaceListViewController: UIViewController {
 extension PlaceListViewController: UICollectionViewDelegate {
 
     private func configureHierachy() {
-        collectionView = UICollectionView(frame: view.frame, collectionViewLayout: createLayout())
+        collectionView = UICollectionView(frame: view.frame, collectionViewLayout: createCollectionViewLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = .clear
         collectionView.delegate = self
         view.addSubview(collectionView)
     }
     
-    private func createLayout() -> UICollectionViewLayout {
+    private func createCollectionViewLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { [unowned self] sectionIndex, _ in
             let sectionType = SectionType(index: sectionIndex)
             let section: NSCollectionLayoutSection
-            
-            let sectionHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(50))
-            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: sectionHeaderSize,
-                                                                            elementKind: Self.headerType,
-                                                                            alignment: .topLeading)
+            let supplymentaryView: NSCollectionLayoutBoundarySupplementaryItem
             
             switch sectionType {
             case .banner:
@@ -58,15 +55,15 @@ extension PlaceListViewController: UICollectionViewDelegate {
                 
             case .picked:
                 section = self.createSectionLayout(width: .fractionalWidth(0.35), height: .fractionalHeight(0.23))
-                section.boundarySupplementaryItems = [sectionHeader]
+                supplymentaryView = createSupplymentaryViewLayout(type: .header)
+                section.boundarySupplementaryItems = [supplymentaryView]
                 section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
                 
             case .whole:
                 section = self.createSectionLayout(width: .fractionalWidth(1), height: .fractionalHeight(0.4))
-                section.boundarySupplementaryItems = [sectionHeader]
-
+                supplymentaryView = createSupplymentaryViewLayout(type: .header)
+                section.boundarySupplementaryItems = [supplymentaryView]
             }
-            
             return section
         }
         return layout
@@ -84,16 +81,32 @@ extension PlaceListViewController: UICollectionViewDelegate {
         return section
     }
     
+    private func createSupplymentaryViewLayout(type: SupplementaryKind) -> NSCollectionLayoutBoundarySupplementaryItem {
+        let sectionHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(50))
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: sectionHeaderSize,
+                                                                        elementKind: SupplementaryKind.header.string,
+                                                                        alignment: .topLeading)
+        switch type {
+        case .header:
+            return sectionHeader
+        default:
+            return sectionHeader
+        }
+        
+    }
+    
     private func configureDataSource() {
         let etcCellRegisteration = UICollectionView.CellRegistration<UICollectionViewCell, Tmp> { cell, _, _ in
             cell.backgroundColor = .blue
+        }
+        let bannerRegisteration = UICollectionView.CellRegistration<BannerCell, Tmp> { _, _, _ in
         }
 
         dataSource = DataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
             guard let section = SectionType(rawValue: indexPath.section) else { return nil }
             switch section {
             case .banner:
-                return collectionView.dequeueConfiguredReusableCell(using: etcCellRegisteration, for: indexPath, item: item)
+                return collectionView.dequeueConfiguredReusableCell(using: bannerRegisteration, for: indexPath, item: item)
             case .picked:
                 return collectionView.dequeueConfiguredReusableCell(using: etcCellRegisteration, for: indexPath, item: item)
             case .whole:
@@ -101,15 +114,14 @@ extension PlaceListViewController: UICollectionViewDelegate {
             }
         })
 
-        typealias SupplymentaryViewRegistration = UICollectionView.SupplementaryRegistration<UICollectionReusableView>
+        typealias HeaderRegistration = UICollectionView.SupplementaryRegistration<UICollectionReusableView>
 
-        let headerRegisteration = SupplymentaryViewRegistration(elementKind: Self.headerType) { supplementaryView, _, _ in
-//            guard let section = Section(rawValue: index.section) else { return }
+        let headerRegisteration = HeaderRegistration(elementKind: SupplementaryKind.header.string) { supplementaryView, _, _ in
             supplementaryView.backgroundColor = .orange
         }
 
         dataSource.supplementaryViewProvider = { collectionView, _, index in
-            return self.collectionView.dequeueConfiguredReusableSupplementary(using: headerRegisteration, for: index)
+            return collectionView.dequeueConfiguredReusableSupplementary(using: headerRegisteration, for: index)
         }
     }
     
@@ -117,7 +129,7 @@ extension PlaceListViewController: UICollectionViewDelegate {
         var snapshot = Snapshot()
         let sections = SectionType.allCases
         snapshot.appendSections(sections)
-        snapshot.appendItems([Tmp(), Tmp(), Tmp()], toSection: .banner)
+        snapshot.appendItems([Tmp()], toSection: .banner)
         snapshot.appendItems([Tmp(), Tmp(), Tmp(), Tmp()], toSection: .picked)
         snapshot.appendItems([Tmp(), Tmp(), Tmp(), Tmp(), Tmp()], toSection: .whole)
         dataSource.apply(snapshot)
@@ -127,12 +139,24 @@ extension PlaceListViewController: UICollectionViewDelegate {
 
 extension PlaceListViewController {
     
-    typealias DataSource = UICollectionViewDiffableDataSource<SectionType, Tmp>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<SectionType, Tmp>
+    private typealias DataSource = UICollectionViewDiffableDataSource<SectionType, Tmp>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<SectionType, Tmp>
     
-    static let headerType = "section-header-element-kind"
-
-    enum SectionType: Int, CaseIterable {
+    private enum SupplementaryKind {
+        case header
+        case footer
+        
+        var string: String {
+            switch self {
+            case .header:
+                return "section-header-element-kind"
+            case .footer:
+                return "section-footer-element-kind"
+            }
+        }
+    }
+    
+    private enum SectionType: Int, CaseIterable {
         case banner
         case picked
         case whole
