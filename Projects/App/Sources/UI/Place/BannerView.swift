@@ -32,14 +32,6 @@ final class BannerCell: UICollectionViewCell {
     
 }
 
-struct BannerCellPreview: PreviewProvider {
-    
-    static var previews: some View {
-        BannerCell().toPreview()
-    }
-
-}
-
 struct BannerView: View {
 
     @State private var selected = 0
@@ -63,4 +55,12 @@ struct BannerView: View {
         
     }
     
+}
+
+struct BannerCellPreview: PreviewProvider {
+    
+    static var previews: some View {
+        BannerCell().toPreview()
+    }
+
 }
