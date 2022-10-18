@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-final class OrgListCell: UITableViewCell {
+final class OrganizationListCell: UITableViewCell {
     
     // MARK: Properties
     
@@ -32,7 +32,7 @@ final class OrgListCell: UITableViewCell {
     }
 }
 
-extension OrgListCell {
+extension OrganizationListCell {
     
     // MARK: UI Function
     

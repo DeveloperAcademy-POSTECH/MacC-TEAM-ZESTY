@@ -1,5 +1,5 @@
 //
-//  OrgSearchingViewController.swift
+//  OrganizationListViewController.swift
 //  App
 //
 //  Created by 김태호 on 2022/10/16.
@@ -52,7 +52,7 @@ extension OrganizationListViewController {
         titleLabel.font = UIFont.boldSystemFont(ofSize: 26)
         
         tableView.dataSource = self
-        tableView.register(OrgListCell.self, forCellReuseIdentifier: OrgListCell.identifier)
+        tableView.register(OrganizationListCell.self, forCellReuseIdentifier: OrganizationListCell.identifier)
     }
     
     private func createLayout() {
@@ -98,7 +98,7 @@ extension OrganizationListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: OrgListCell.identifier, for: indexPath) as? OrgListCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: OrganizationListCell.identifier, for: indexPath) as? OrganizationListCell
         guard let cell = cell else { return UITableViewCell()}
         cell.orgNameLabel.text = orgNameArray[indexPath.row]
         

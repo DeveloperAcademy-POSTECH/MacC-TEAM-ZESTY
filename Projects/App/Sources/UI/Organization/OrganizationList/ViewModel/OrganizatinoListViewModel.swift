@@ -1,5 +1,5 @@
 //
-//  OrgSearchingViewModel.swift
+//  OrganizatinoListViewModel.swift
 //  App
 //
 //  Created by 김태호 on 2022/10/16.
