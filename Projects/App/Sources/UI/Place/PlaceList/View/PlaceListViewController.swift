@@ -118,10 +118,11 @@ extension PlaceListViewController: UICollectionViewDelegate {
             }
         })
 
-        typealias HeaderRegistration = UICollectionView.SupplementaryRegistration<UICollectionReusableView>
+        typealias HeaderRegistration = UICollectionView.SupplementaryRegistration<PlaceListHeaderView>
 
-        let headerRegisteration = HeaderRegistration(elementKind: SupplementaryKind.header.string) { supplementaryView, _, _ in
-            supplementaryView.backgroundColor = .orange
+        let headerRegisteration = HeaderRegistration(elementKind: SupplementaryKind.header.string) { supplementaryView, _, index in
+            let title = SectionType(index: index.section).title
+            supplementaryView.configureUI(with: title)
         }
 
         dataSource.supplementaryViewProvider = { collectionView, _, index in
