@@ -6,20 +6,18 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
-import UIKit
 import Combine
-import SnapKit
 import DesignSystem
+import UIKit
+import SnapKit
 
 final class OrganizationListViewController: UIViewController {
     
     // MARK: Properties
     
-    private var viewModel = OrganizationListViewModel()
+    private let viewModel = OrganizationListViewModel()
     
-    private var subscriptionSet = Set<AnyCancellable>()
-    
-    private var orgNameArray: [String] = []
+    private var cancelBag = Set<AnyCancellable>()
     
     private let titleLabel = UILabel()
     private let searchingTextFieldView = ShadowTextFieldView()
@@ -37,6 +35,26 @@ final class OrganizationListViewController: UIViewController {
     }
     
     // MARK: Function
+    
+}
+
+// MARK: Bind UI
+
+extension OrganizationListViewController {
+    
+    private func bindUI() {
+        viewModel.$searchedArray
+        .sink {[weak self] _ in
+            guard let self = self else { return }
+            self.tableView.reloadData()}
+        .store(in: &cancelBag)
+        
+        searchingTextField
+            .userInputTextPublisher
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.userTextInput, on: viewModel)
+            .store(in: &cancelBag)
+    }
     
 }
 
@@ -77,43 +95,35 @@ extension OrganizationListViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
     }
-    
-    private func bindUI() {
-        self.viewModel.$searchedArray.sink { orgNameArray in
-            self.orgNameArray = orgNameArray
-            self.tableView.reloadData()
-        }.store(in: &subscriptionSet)
-        
-        self.searchingTextField
-            .userInputTextPublisher
-            .receive(on: DispatchQueue.main)
-            .assign(to: \.userTextInput, on: viewModel)
-            .store(in: &subscriptionSet)
-    }
 }
 
 extension OrganizationListViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.searchedArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: OrganizationListCell.identifier, for: indexPath) as? OrganizationListCell
-        guard let cell = cell else { return UITableViewCell()}
+        guard let cell = cell else { return UITableViewCell() }
         cell.orgNameLabel.text = viewModel.searchedArray[indexPath.row]
         
         return cell
     }
+    
 }
 
 extension OrganizationListViewController: UITextFieldDelegate {
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true)
+        view.endEditing(true)
         return true
     }
+    
 }
 
 extension UITextField {
+    
     var userInputTextPublisher: AnyPublisher<String, Never> {
         NotificationCenter.default.publisher(for: UITextField.textDidEndEditingNotification,
                                              object: self)
@@ -121,4 +131,5 @@ extension UITextField {
         .compactMap { $0.text }
         .eraseToAnyPublisher()
     }
+    
 }
