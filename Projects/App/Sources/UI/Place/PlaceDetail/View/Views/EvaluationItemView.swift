@@ -39,12 +39,9 @@ class EvaluationItemView: UIView {
         super.init(frame: frame)
     }
     
-    init(with viewModel: EvaluationViewModel) {
-        self.viewModel = viewModel
+    init() {
         super.init(frame: .zero)
-        
         createLayout()
-        configure(with: viewModel)
     }
     
     required init?(coder: NSCoder) {

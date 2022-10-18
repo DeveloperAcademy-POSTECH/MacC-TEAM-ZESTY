@@ -13,22 +13,22 @@ public final class ShadowView: UIView {
     
     private lazy var stackView = UIStackView()
     
-    private lazy var placeView: UIView = {
+    private lazy var contentView: UIView = {
         $0.backgroundColor = .white
         $0.layer.borderWidth = 2
         $0.layer.cornerRadius = 8
         return $0
     }(UIView())
     
-    private lazy var placeShadowView: UIView = {
+    private lazy var shadowView: UIView = {
         $0.backgroundColor = .black
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 8
         return $0
     }(UIView())
     
-    public init(initialDisable: Bool = false) {
-        super.init(frame: .zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         configureUI()
         createLayout()
     }
@@ -46,18 +46,18 @@ extension ShadowView {
     }
 
     private func createLayout() {
-        addSubviews([placeView, placeShadowView])
-        bringSubviewToFront(placeView)
+        addSubviews([contentView, shadowView])
+        bringSubviewToFront(contentView)
 
-        placeView.snp.makeConstraints {
+        contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
 
-        placeShadowView.snp.makeConstraints {
-            $0.leading.equalTo(placeView.snp.leading).offset(-4)
-            $0.top.equalTo(placeView.snp.top).offset(4)
-            $0.width.equalTo(placeView.snp.width)
-            $0.height.equalTo(placeView.snp.height)
+        shadowView.snp.makeConstraints {
+            $0.leading.equalTo(contentView.snp.leading).offset(-4)
+            $0.top.equalTo(contentView.snp.top).offset(4)
+            $0.width.equalTo(contentView.snp.width)
+            $0.height.equalTo(contentView.snp.height)
         }
     }
 
