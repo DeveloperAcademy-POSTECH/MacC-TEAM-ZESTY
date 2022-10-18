@@ -99,12 +99,11 @@ extension PlaceListViewController: UICollectionViewDelegate {
     }
     
     private func configureDataSource() {
-        let etcCellRegisteration = UICollectionView.CellRegistration<UICollectionViewCell, Tmp> { cell, _, _ in
-            cell.backgroundColor = .blue
-        }
         let bannerRegisteration = UICollectionView.CellRegistration<BannerCell, Tmp> { _, _, _ in
         }
         let pickedRegisteration = UICollectionView.CellRegistration<PickedPlaceCell, Tmp> { _, _, _ in
+        }
+        let wholeRegisteration = UICollectionView.CellRegistration<WholePlaceCell, Tmp> { _, _, _ in
         }
 
         dataSource = DataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
@@ -115,7 +114,7 @@ extension PlaceListViewController: UICollectionViewDelegate {
             case .picked:
                 return collectionView.dequeueConfiguredReusableCell(using: pickedRegisteration, for: indexPath, item: item)
             case .whole:
-                return collectionView.dequeueConfiguredReusableCell(using: etcCellRegisteration, for: indexPath, item: item)
+                return collectionView.dequeueConfiguredReusableCell(using: wholeRegisteration, for: indexPath, item: item)
             }
         })
 
