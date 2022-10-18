@@ -76,7 +76,7 @@ extension NickNameInputViewController {
                 if self.keyboardUpConstraints == nil {
                     guard let endFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
                     let endFrameHeight = endFrame.cgRectValue.height
-                    self.keyboardUpConstraints =  self.nextButtonView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -endFrameHeight - 20)
+                    self.keyboardUpConstraints = self.nextButtonView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -endFrameHeight - 20)
                     self.keyboardUpConstraints?.priority = .defaultLow
                 }
                 self.keyboardDownConstraints?.isActive = false
