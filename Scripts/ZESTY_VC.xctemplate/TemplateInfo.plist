@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>DefaultCompletionName</key>
+	<string>Feature</string>
+	<key>Kind</key>
+	<string>Xcode.IDEFoundation.TextSubstitutionFileTemplateKind</string>
+	<key>Description</key>
+	<string>This generates ZESTY project&apos;s View Controller Templates</string>
+	<key>Summary</key>
+	<string>This generates ZESTY project&apos;s View Controller Templates</string>
+	<key>SortOrder</key>
+	<string>30</string>
+	<key>Options</key>
+	<array>
+		<dict>
+			<key>Name</key>
+			<string>Scene Name</string>
+			<key>Description</key>
+			<string>Scene</string>
+			<key>Type</key>
+			<string>text</string>
+			<key>Required</key>
+			<true/>
+			<key>Identifier</key>
+			<string>sceneName</string>
+		</dict>
+		<dict>
+			<key>New item</key>
+			<string>파일 이름</string>
+			<key>Type</key>
+			<string>static</string>
+			<key>Identifier</key>
+			<string>productName</string>
+			<key>Default</key>
+			<string>___VARIABLE_sceneName:identifier___</string>
+		</dict>
+	</array>
+</dict>
+</plist>

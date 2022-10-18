@@ -6,26 +6,27 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
+import SwiftUI
 import UIKit
 
 final class ViewControllerTemplate: UIViewController {
     
-    // MARK: Properties
+    // MARK: - Properties
     
-    // MARK: LifeCycle
+    // MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
     }
     
-    // MARK: Function
+    // MARK: - Function
     
 }
 
+// MARK: - UI Function
+
 extension ViewController {
-    
-    // MARK: UI Function
     
     private func configureUI() {
         
@@ -35,4 +36,14 @@ extension ViewController {
         
     }
     
+}
+
+// MARK: - Preview
+
+struct ViewControllerTemplatePreview: PreviewProvider {
+    
+    static var previews: some View {
+        ViewControllerTemplate().toPreview()
+    }
+
 }

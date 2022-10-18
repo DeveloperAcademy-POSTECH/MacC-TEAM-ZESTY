@@ -1,6 +1,10 @@
 disabled_rules:
 - line_length
 - trailing_whitespace
+- function_body_length
+
+excluded:
+- Sources/Asset/Asset.swift
 
 identifier_name:
     excluded:

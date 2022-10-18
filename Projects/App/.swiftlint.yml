@@ -1,6 +1,7 @@
 disabled_rules:
 - line_length
 - trailing_whitespace
+- function_body_length
 
 excluded:
   - Sources/Application/AppDelegate.swift
