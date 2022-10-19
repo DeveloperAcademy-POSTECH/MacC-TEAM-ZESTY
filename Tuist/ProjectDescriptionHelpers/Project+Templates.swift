@@ -14,7 +14,7 @@ public extension Project {
         infoPlist: InfoPlist = .default
     ) -> Project {
         let settings: Settings = .settings(
-            base: [:],
+            base: ["KAKAO_NATIVE_APP_KEY":"667701f9e39590d7adf33d11cbb89746"],
             configurations: [
                 .debug(name: .debug),
                 .release(name: .release)
