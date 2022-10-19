@@ -34,7 +34,9 @@ extension ShadowTextFieldView {
         textField.textColor = .black
         textField.font = UIFont.boldSystemFont(ofSize: 16)
         
-        leftImage.image = UIImage(.magnifyingglass)
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .default)
+        leftImage.image = UIImage(systemName: "magnifyingglass", withConfiguration: imageConfig)
+        leftImage.tintColor = .gray
         
         backgroundView.backgroundColor = .white
         backgroundView.layer.borderWidth = 2

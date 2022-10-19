@@ -9,7 +9,6 @@
 import Foundation
 
 public enum Asset: String {
-    case magnifyingglass
     case btn_kakaologin
     case btn_applelogin
     case img_zesterone
