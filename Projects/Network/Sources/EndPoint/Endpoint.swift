@@ -13,18 +13,20 @@ final class Endpoint: Requestable {
     var scheme: String
     var host: String
     var path: String
+    var port: Int
     var method: HttpMethod
-    var queryParams: Encodable?
+    var queryParams: [String: String]?
     var bodyParams: Encodable?
     var multipart: [Multipart]?
     var boundary: String?
     var headers: [String: String]?
 
-    init(scheme: String = "https",
-         host: String = "",
+    init(scheme: String = "http",
+         host: String = "43.201.29.11",
          path: String = "",
+         port: Int = 8080,
          method: HttpMethod = .get,
-         queryParams: Encodable? = nil,
+         queryParams: [String: String]? = nil,
          bodyParams: Encodable? = nil,
          multipart: [Multipart]? = nil,
          boundary: String? = nil,
@@ -32,6 +34,7 @@ final class Endpoint: Requestable {
         self.scheme = scheme
         self.host = host
         self.path = path
+        self.port = port
         self.method = method
         self.queryParams = queryParams
         self.bodyParams = bodyParams
