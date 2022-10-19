@@ -14,12 +14,10 @@ final class OrganizationListViewModel {
     private var orgArray: [Organization] = []
     private var orgNameArray: [String] = []
     
+    private var cancelBag = Set<AnyCancellable>()
+    
     // Input
-    @Published var userTextInput: String = "" {
-        didSet {
-            searchInput(userTextInput)
-        }
-    }
+    @Published var userTextInput: String = ""
     
     // Output
     @Published var searchedOrgArray: [String] = []
@@ -27,6 +25,12 @@ final class OrganizationListViewModel {
     init() {
         setData()
         setInitialSearchedArray()
+        
+        $userTextInput
+            .sink { [weak self] userTextInput in
+                self?.searchInput(userTextInput)
+            }
+            .store(in: &cancelBag)
     }
     
 }
