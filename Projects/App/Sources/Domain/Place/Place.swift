@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Network
 
 struct Place {
     let id: Int
@@ -26,3 +27,22 @@ struct EvaluationSum {
     let soso: Int
     let bad: Int
 }
+
+extension Place {
+    
+    init(dto: PlaceListDTO) {
+        id = dto.id
+        creator = User.mockData[0]
+        organizationId = dto.organizations[0]
+        name = "name"
+        address = dto.address
+        lat = dto.latitude
+        lan = dto.longitude
+        category = Category.mockData
+        evaluationSum = EvaluationSum.mockData[0]
+        reviews = Review.mockData
+    }
+
+}
+
+
