@@ -30,6 +30,14 @@ final class PlaceListViewController: UIViewController {
         applySnapShot()
     }
     
+    // MARK: - Function
+    
+    @objc func searchButtonPressed() {
+    }
+
+    @objc func profileButtonPressed() {
+    }
+    
 }
 
 // MARK: - CollectionView Function
@@ -199,13 +207,7 @@ extension PlaceListViewController {
 // MARK: - UI function
 
 extension PlaceListViewController {
-    
-    @objc func searchButtonPressed() {
-    }
 
-    @objc func profileButtonPressed() {
-    }
-    
     private func configureUI() {
         view.backgroundColor = .systemBackground
         searchBarItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain,
