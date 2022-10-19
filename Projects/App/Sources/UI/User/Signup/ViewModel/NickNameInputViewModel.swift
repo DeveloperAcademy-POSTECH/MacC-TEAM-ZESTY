@@ -16,9 +16,8 @@ final class NickNameInputViewModel {
     
     // Output
     @Published var isTextEmpty = true
-    
-    // Input & Output
-    @Published var isKeyboardShown = false
+    @Published var shouldDisplayWarning = false
+    let isNickNameOverlapedSubject = PassthroughSubject<Bool, Never>()
 
     private var cancelBag = Set<AnyCancellable>()
     
@@ -27,10 +26,29 @@ final class NickNameInputViewModel {
             .map(isEmpty)
             .assign(to: \.isTextEmpty, on: self)
             .store(in: &cancelBag)
+        
+        $nickNameText
+            .sink { [weak self] _ in
+                if let self = self, self.shouldDisplayWarning {
+                    self.shouldDisplayWarning = false
+                }
+            }
+            .store(in: &cancelBag)
     }
     
     private func isEmpty(to text: String) -> Bool {
         return text.isEmpty
+    }
+    
+    func checkNickNameOverlaped() {
+        // TODO: UseCase와 통신하여 중복 체크
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            let result = Bool.random()
+            self.isNickNameOverlapedSubject.send(result)
+            if result {
+                self.shouldDisplayWarning = true
+            }
+        }
     }
     
     func isValid(for input: String) -> Bool {
