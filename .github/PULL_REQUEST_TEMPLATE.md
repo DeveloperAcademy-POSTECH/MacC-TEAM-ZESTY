@@ -20,7 +20,7 @@
 - [ ] 컨벤션 지켰는지 확인
 - [ ] final, private 제대로 넣었는지 확인
 - [ ] 다양한 디바이스에 레이아웃이 대응되는지 확인
-  - [ ] SE
+  - [ ] iPhone SE
   - [ ] iPhone 13
   - [ ] iPhone 13 Pro Max
 
