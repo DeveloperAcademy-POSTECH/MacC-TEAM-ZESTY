@@ -7,6 +7,7 @@
 //
 
 import AuthenticationServices
+import Combine
 import UIKit
 import SnapKit
 import DesignSystem
@@ -14,6 +15,8 @@ import DesignSystem
 final class ThirdPartyLoginViewController: UIViewController {
     
     // MARK: - Properties
+    
+    private let viewModel = ThirdPartyLoginViewModel()
     
     private let titleStackView = UIStackView()
     private let titleLabel = UILabel()
@@ -23,21 +26,42 @@ final class ThirdPartyLoginViewController: UIViewController {
     private let kakaoLoginButton = UIButton()
     private let appleLoginButton = UIButton()
     
+    private var cancelBag = Set<AnyCancellable>()
+    
     // MARK: - LifeCycle
     
     override func viewDidLoad() {
         configureUI()
         createLayout()
+        bindUI()
     }
     
     // MARK: - Function
     
     @objc func kakaoLoginButtonClicked() {
-        navigationController?.pushViewController(NickNameInputViewController(), animated: true)
+        viewModel.kakaoLogin()
     }
     
     @objc func appleLoginButtonClicked() {
         navigationController?.pushViewController(NickNameInputViewController(), animated: true)
+    }
+    
+}
+
+// MARK: - Bind Function
+
+extension ThirdPartyLoginViewController {
+    
+    private func bindUI() {
+        viewModel.$isLoggedIn
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoggedIn in
+                guard let self = self else { return }
+                if isLoggedIn {
+                    self.navigationController?.pushViewController(NickNameInputViewController(), animated: true)
+                }
+            }
+            .store(in: &cancelBag)
     }
     
 }
