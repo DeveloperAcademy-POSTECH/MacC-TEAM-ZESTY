@@ -48,8 +48,9 @@ struct BannerView: View {
             }
         }
         .onAppear {
-            UIPageControl.appearance().currentPageIndicatorTintColor = .black
-            UIPageControl.appearance().pageIndicatorTintColor = .black
+            let pageControl = UIPageControl.appearance(whenContainedInInstancesOf: [BannerCell.self])
+            pageControl.currentPageIndicatorTintColor = .black
+            pageControl.pageIndicatorTintColor = .black
         }
         .tabViewStyle(PageTabViewStyle())
         
