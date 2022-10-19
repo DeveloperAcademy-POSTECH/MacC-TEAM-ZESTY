@@ -12,8 +12,9 @@ protocol Requestable {
     var scheme: String { get }
     var host: String { get }
     var path: String { get }
+    var port: Int { get }
     var method: HttpMethod { get }
-    var queryParams: Encodable? { get }
+    var queryParams: [String: String]? { get }
     var bodyParams: Encodable? { get }
     var multipart: [Multipart]? { get }
     var boundary: String? { get }
@@ -41,14 +42,15 @@ extension Requestable {
         components.scheme = scheme
         components.host = host
         components.path = path
-        components.queryItems = try queryItems()
+        components.port = port
+        components.queryItems = queryItems()
 
         guard let url = components.url else { throw NetworkError.urlComponent }
         return url
     }
 
-    private func queryItems() throws -> [URLQueryItem]? {
-        if let queryParams = try queryParams?.toDictionary() {
+    private func queryItems() -> [URLQueryItem]? {
+        if let queryParams = queryParams {
             if !queryParams.isEmpty {
                 return queryParams.map { URLQueryItem(name: $0.key, value: "\($0.value)") }
             }
