@@ -99,8 +99,6 @@ extension PlaceListViewController: UICollectionViewDelegate {
         switch type {
         case .header:
             return sectionHeader
-        default:
-            return sectionHeader
         }
         
     }
@@ -154,14 +152,11 @@ extension PlaceListViewController {
     
     private enum SupplementaryKind {
         case header
-        case footer
         
         var string: String {
             switch self {
             case .header:
                 return "section-header-element-kind"
-            case .footer:
-                return "section-footer-element-kind"
             }
         }
     }
