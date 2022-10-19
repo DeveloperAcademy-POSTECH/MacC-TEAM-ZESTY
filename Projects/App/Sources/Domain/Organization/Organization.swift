@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Network
 
 struct Organization {
     let id: Int
@@ -16,4 +17,17 @@ struct Organization {
     let imageCount: Int
     let placeCount: Int
 //    let address: String
+}
+
+extension Organization {
+    
+    init(dto: OrganizationListDTO) {
+        id = dto.id
+        name = dto.name
+        domain = dto.domain
+        memberCount = 1
+        imageCount = 1
+        placeCount = 1
+    }
+
 }

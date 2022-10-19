@@ -22,6 +22,13 @@ public struct API {
         return networkService.request(with: endpoint, responseType: [PlaceListDTO].self)
     }
     
+    public static func fetchOrgList() -> AnyPublisher<[OrganizationListDTO], NetworkError> {
+        let header = ["Content-Type": "application/json"]
+        let endpoint = Endpoint(path: "/api/organizations", headers: header)
+        
+        return networkService.request(with: endpoint, responseType: [OrganizationListDTO].self)
+    }
+    
     // upload image
     public static func dispatchPlace(place: Any) -> Any {
         let boundary = UUID().uuidString
