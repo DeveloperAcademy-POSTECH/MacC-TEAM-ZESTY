@@ -15,7 +15,6 @@ final class PlaceListUseCase {
     private var cancelBag = Set<AnyCancellable>()
     
     func fetchPlaceList() {
-        print("ing...")
         API.fetchPlaceList()
             .sink { error in
                 print(error)
