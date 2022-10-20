@@ -57,7 +57,7 @@ extension Place {
               lat: "36.00922443856994",
               lan: "132.33335502427113",
               category: [Category.mockData[2], Category.mockData[4]],
-              evaluationSum: EvaluationSum.mockData[0], reviews: [Review.mockData[0], Review.mockData[1], Review.mockData[2]]),
+              evaluationSum: EvaluationSum.mockData[0], reviews: [Review.mockData[0],Review.mockData[1], Review.mockData[2]]),
         Place(id: 2,
               creator: User.mockData[0],
               organizationId: 0,
@@ -65,7 +65,7 @@ extension Place {
               address: "경상북도 포항시 남구 지곡동 63",
               lat: "36.00922443856994",
               lan: "129.3876",
-              category: [Category.mockData[5], Category.mockData[7]],
+              category: [Category.mockData[5], Category.mockData[5]],
               evaluationSum: EvaluationSum.mockData[0], reviews: [Review.mockData[1], Review.mockData[2]]),
         Place(id: 3,
               creator: User.mockData[0],
@@ -119,3 +119,4 @@ extension EvaluationSum {
         EvaluationSum(good: 2, soso: 23, bad: 2)
     ]
 }
+
