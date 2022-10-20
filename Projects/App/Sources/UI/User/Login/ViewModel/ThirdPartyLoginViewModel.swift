@@ -28,6 +28,10 @@ final class ThirdPartyLoginViewModel {
         }
     }
     
+    func appleLogin() {
+        
+    }
+    
     @MainActor
     private func kakaoLoginWithApp() async -> Bool {
         await withCheckedContinuation { continuation in
