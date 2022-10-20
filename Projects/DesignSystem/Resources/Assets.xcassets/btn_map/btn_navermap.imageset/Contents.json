@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "btn_navermap.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
