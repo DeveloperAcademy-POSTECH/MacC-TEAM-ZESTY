@@ -9,6 +9,10 @@
 import UIKit
 import SnapKit
 
+
+/// Main Title을 만들기 위한 UIView
+/// - title: 화면의 타이틀에 들어갈 문자열
+/// - subtitle: (옵셔널) 화면의 타이틀 밑에 들어갈 회색의 문자열
 public final class MainTitleView: UIView {
     
     private let titleLabel = UILabel()
