@@ -46,7 +46,7 @@ extension MainTitleView {
         addSubviews([titleLabel, subtitleLabel])
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(40)
+            make.top.equalToSuperview().inset(30)
             make.horizontalEdges.equalToSuperview().inset(20)
         }
         
