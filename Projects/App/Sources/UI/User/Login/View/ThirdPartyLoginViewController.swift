@@ -20,6 +20,7 @@ final class ThirdPartyLoginViewController: UIViewController {
     private let subtitleLabel = UILabel()
     private let backgroundImageView = UIImageView()
     private let loginStackView = UIStackView()
+    private let termsOfServiceLabel = UILabel()
     private let kakaoLoginButton = UIButton()
     private let appleLoginButton = UIButton()
     
@@ -31,6 +32,10 @@ final class ThirdPartyLoginViewController: UIViewController {
     }
     
     // MARK: - Function
+    
+    @objc private func termsOfServiceLabelClicked() {
+        
+    }
     
     @objc func kakaoLoginButtonClicked() {
         navigationController?.pushViewController(NickNameInputViewController(), animated: true)
@@ -55,8 +60,9 @@ extension ThirdPartyLoginViewController {
         titleStackView.axis = .vertical
         titleStackView.spacing = 12
         
-        titleLabel.text = "반가워요, ZESTER"
+        titleLabel.text = "안녕하세요,\n제스티입니다"
         titleLabel.font = .systemFont(ofSize: 26)
+        titleLabel.numberOfLines = 2
         
         subtitleLabel.text = "로그인하여 모든 맛집을 확인하세요."
         subtitleLabel.textColor = .gray
@@ -67,17 +73,29 @@ extension ThirdPartyLoginViewController {
         loginStackView.axis = .vertical
         loginStackView.spacing = 20
         
+        let termsOfServiceLabelText = "‘계속하기' 버튼을 누르시면\n이용약관에 동의하시게 됩니다."
+        let attributedText = NSMutableAttributedString(string: termsOfServiceLabelText,
+                                                       attributes: [.font: UIFont.preferredFont(forTextStyle: .footnote)])
+        attributedText.addAttribute(.underlineStyle,
+                                    value: NSUnderlineStyle.single.rawValue,
+                                    range: (termsOfServiceLabelText as NSString).range(of: "이용약관"))
+        termsOfServiceLabel.attributedText = attributedText
+        termsOfServiceLabel.textAlignment = .center
+        termsOfServiceLabel.numberOfLines = 2
+        termsOfServiceLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(termsOfServiceLabelClicked)))
+        termsOfServiceLabel.isUserInteractionEnabled = true
+        
         kakaoLoginButton.addTarget(self, action: #selector(kakaoLoginButtonClicked), for: .touchUpInside)
         kakaoLoginButton.setImage(UIImage(.btn_kakaologin), for: .normal)
-        kakaoLoginButton.imageView?.contentMode = .scaleAspectFit
+        kakaoLoginButton.imageView?.contentMode = .scaleAspectFill
         
         appleLoginButton.addTarget(self, action: #selector(appleLoginButtonClicked), for: .touchUpInside)
         appleLoginButton.setImage(UIImage(.btn_applelogin), for: .normal)
-        appleLoginButton.imageView?.contentMode = .scaleAspectFit
+        appleLoginButton.imageView?.contentMode = .scaleAspectFill
     }
     
     private func createLayout() {
-        view.addSubviews([titleStackView, backgroundImageView, loginStackView])
+        view.addSubviews([titleStackView, backgroundImageView, termsOfServiceLabel, loginStackView])
         titleStackView.addArrangedSubviews([titleLabel, subtitleLabel])
         loginStackView.addArrangedSubviews([kakaoLoginButton, appleLoginButton])
         
@@ -89,14 +107,19 @@ extension ThirdPartyLoginViewController {
         
         backgroundImageView.snp.makeConstraints { make in
             make.centerX.equalTo(view.snp.centerX)
-            make.centerY.equalTo(view.snp.centerY)
+            make.top.equalTo(titleStackView.snp.bottom).offset(88)
             make.width.equalTo(65)
             make.height.equalTo(209)
         }
         
+        termsOfServiceLabel.snp.makeConstraints { make in
+            make.top.equalTo(backgroundImageView.snp.bottom).offset(56)
+            make.centerX.equalTo(view.snp.centerX)
+        }
+        
         loginStackView.snp.makeConstraints { make in
-            make.top.equalTo(backgroundImageView.snp.bottom).offset(158)
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.top.equalTo(termsOfServiceLabel.snp.bottom).offset(20)
+            make.leading.trailing.equalToSuperview().inset(30)
         }
         
         kakaoLoginButton.snp.makeConstraints { make in

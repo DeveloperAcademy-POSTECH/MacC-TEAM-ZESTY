@@ -18,7 +18,7 @@ final class SignupCompleteViewController: UIViewController {
     private let titleLabel = UILabel()
     private let backgroundImageView = UIImageView()
     private let nickNameLabel = UILabel()
-    private let termsOfServiceLabel = UILabel()
+  
     private let startButtonView = ArrowButton()
     
     // MARK: - LifeCycle
@@ -30,10 +30,6 @@ final class SignupCompleteViewController: UIViewController {
     }
     
     // MARK: - Function
-    
-    @objc private func termsOfServiceLabelClicked() {
-        
-    }
     
 }
 
@@ -53,22 +49,10 @@ extension SignupCompleteViewController {
         nickNameLabel.text = "\(viewModel.userName)"
         nickNameLabel.font = .preferredFont(forTextStyle: .headline)
         
-        let termsOfServiceLabelText = "‘시작하기' 버튼을 누르시면\n이용약관에 동의하시게 됩니다."
-        let attributedText = NSMutableAttributedString(string: termsOfServiceLabelText,
-                                                       attributes: [.font: UIFont.preferredFont(forTextStyle: .footnote)])
-        attributedText.addAttribute(.underlineStyle,
-                                    value: NSUnderlineStyle.single.rawValue,
-                                    range: (termsOfServiceLabelText as NSString).range(of: "이용약관"))
-        termsOfServiceLabel.attributedText = attributedText
-        termsOfServiceLabel.textAlignment = .center
-        termsOfServiceLabel.numberOfLines = 2
-        termsOfServiceLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(termsOfServiceLabelClicked)))
-        termsOfServiceLabel.isUserInteractionEnabled = true
-        
     }
     
     private func createLayout() {
-        view.addSubviews([titleLabel, backgroundImageView, nickNameLabel, termsOfServiceLabel, startButtonView])
+        view.addSubviews([titleLabel, backgroundImageView, nickNameLabel, startButtonView])
         
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(view.snp.leading).offset(20)
@@ -85,11 +69,6 @@ extension SignupCompleteViewController {
         
         nickNameLabel.snp.makeConstraints { make in
             make.top.equalTo(backgroundImageView.snp.bottom).offset(16)
-            make.centerX.equalTo(view.snp.centerX)
-        }
-        
-        termsOfServiceLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(startButtonView.snp.top).offset(-16)
             make.centerX.equalTo(view.snp.centerX)
         }
         
