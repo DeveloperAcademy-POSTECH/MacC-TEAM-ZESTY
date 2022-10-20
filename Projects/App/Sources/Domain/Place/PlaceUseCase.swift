@@ -18,6 +18,7 @@ final class PlaceListUseCase {
         print("ing...")
         API.fetchPlaceList()
             .sink { error in
+                print(error)
             } receiveValue: { placeListDTOs in
                 let placeList = placeListDTOs.map { Place(dto: $0) }
             }
