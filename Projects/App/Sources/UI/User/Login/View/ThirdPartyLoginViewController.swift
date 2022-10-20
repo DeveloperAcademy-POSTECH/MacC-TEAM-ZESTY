@@ -18,7 +18,7 @@ final class ThirdPartyLoginViewController: UIViewController {
     private let titleStackView = UIStackView()
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
-    private let characterImageView = UIImageView()
+    private let backgroundImageView = UIImageView()
     private let loginStackView = UIStackView()
     private let kakaoLoginButton = UIButton()
     private let appleLoginButton = UIButton()
@@ -62,7 +62,7 @@ extension ThirdPartyLoginViewController {
         subtitleLabel.textColor = .gray
         subtitleLabel.font = .preferredFont(forTextStyle: .callout)
         
-        characterImageView.image = UIImage(.img_zesterthree)
+        backgroundImageView.image = UIImage(.img_login)
         
         loginStackView.axis = .vertical
         loginStackView.spacing = 20
@@ -77,7 +77,7 @@ extension ThirdPartyLoginViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([titleStackView, characterImageView, loginStackView])
+        view.addSubviews([titleStackView, backgroundImageView, loginStackView])
         titleStackView.addArrangedSubviews([titleLabel, subtitleLabel])
         loginStackView.addArrangedSubviews([kakaoLoginButton, appleLoginButton])
         
@@ -87,15 +87,15 @@ extension ThirdPartyLoginViewController {
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
         }
         
-        characterImageView.snp.makeConstraints { make in
+        backgroundImageView.snp.makeConstraints { make in
             make.centerX.equalTo(view.snp.centerX)
             make.centerY.equalTo(view.snp.centerY)
-            make.width.equalTo(212)
-            make.height.equalTo(100)
+            make.width.equalTo(65)
+            make.height.equalTo(209)
         }
         
         loginStackView.snp.makeConstraints { make in
-            make.top.equalTo(characterImageView.snp.bottom).offset(158)
+            make.top.equalTo(backgroundImageView.snp.bottom).offset(158)
             make.leading.trailing.equalToSuperview().inset(20)
         }
         

@@ -16,7 +16,7 @@ final class SignupCompleteViewController: UIViewController {
     private let viewModel = SignupCompleteViewModel()
     
     private let titleLabel = UILabel()
-    private let characterImageView = UIImageView()
+    private let backgroundImageView = UIImageView()
     private let nickNameLabel = UILabel()
     private let termsOfServiceLabel = UILabel()
     private let startButtonView = ArrowButton()
@@ -48,7 +48,7 @@ extension SignupCompleteViewController {
         titleLabel.font = .systemFont(ofSize: 26)
         titleLabel.numberOfLines = 2
         
-        characterImageView.image = UIImage(.img_zesterone)
+        backgroundImageView.image = UIImage(.img_signup)
         
         nickNameLabel.text = "\(viewModel.userName)"
         nickNameLabel.font = .preferredFont(forTextStyle: .headline)
@@ -68,7 +68,7 @@ extension SignupCompleteViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([titleLabel, characterImageView, nickNameLabel, termsOfServiceLabel, startButtonView])
+        view.addSubviews([titleLabel, backgroundImageView, nickNameLabel, termsOfServiceLabel, startButtonView])
         
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(view.snp.leading).offset(20)
@@ -76,15 +76,15 @@ extension SignupCompleteViewController {
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
         }
         
-        characterImageView.snp.makeConstraints { make in
+        backgroundImageView.snp.makeConstraints { make in
             make.centerX.equalTo(view.snp.centerX)
             make.centerY.equalTo(view.snp.centerY)
-            make.width.equalTo(120)
-            make.height.equalTo(150)
+            make.width.equalTo(127)
+            make.height.equalTo(127)
         }
         
         nickNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(characterImageView.snp.bottom).offset(16)
+            make.top.equalTo(backgroundImageView.snp.bottom).offset(16)
             make.centerX.equalTo(view.snp.centerX)
         }
         

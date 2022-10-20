@@ -11,6 +11,6 @@ import Foundation
 public enum Asset: String {
     case btn_kakaologin
     case btn_applelogin
-    case img_zesterone
-    case img_zesterthree
+    case img_login
+    case img_signup
 }
