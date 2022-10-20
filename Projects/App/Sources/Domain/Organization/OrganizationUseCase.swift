@@ -15,7 +15,6 @@ final class OrganizationListUseCase {
     private var cancelBag = Set<AnyCancellable>()
     
     func fetchOrganizationList() {
-        print("ing...")
         API.fetchOrgList()
             .sink { error in
                 print(error)
@@ -26,4 +25,3 @@ final class OrganizationListUseCase {
     }
     
 }
-
