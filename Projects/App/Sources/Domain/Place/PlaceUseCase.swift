@@ -17,7 +17,10 @@ final class PlaceListUseCase {
     func fetchPlaceList() {
         API.fetchPlaceList()
             .sink { error in
-                print(error)
+                switch error {
+                case .failure(let error): print(error.localizedString)
+                case .finished: break
+                }
             } receiveValue: { placeListDTOs in
                 let placeList = placeListDTOs.map { Place(dto: $0) }
             }

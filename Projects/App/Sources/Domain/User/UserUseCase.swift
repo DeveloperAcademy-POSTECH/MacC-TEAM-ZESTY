@@ -19,7 +19,10 @@ final class UserUseCase {
 
         API.postSignUp(userDTO: userDTO)
             .sink { error in
-                print(error)
+                switch error {
+                case .failure(let error): print(error.localizedString)
+                case .finished: break
+                }
             } receiveValue: { response in
                 print(response)
             }
