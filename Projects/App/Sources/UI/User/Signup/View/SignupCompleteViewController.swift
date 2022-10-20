@@ -18,8 +18,7 @@ final class SignupCompleteViewController: UIViewController {
     private let titleLabel = UILabel()
     private let backgroundImageView = UIImageView()
     private let nickNameLabel = UILabel()
-  
-    private let startButtonView = ArrowButton()
+    private let startButton = FullWidthBlackButton()
     
     // MARK: - LifeCycle
     
@@ -49,10 +48,12 @@ extension SignupCompleteViewController {
         nickNameLabel.text = "\(viewModel.userName)"
         nickNameLabel.font = .preferredFont(forTextStyle: .headline)
         
+        startButton.setAttributedTitle(NSMutableAttributedString(string: "우리 대학 맛집여정에 함께하기",
+                                                                     attributes: [.font: UIFont.systemFont(ofSize: 15, weight: .medium)]), for: .normal)
     }
     
     private func createLayout() {
-        view.addSubviews([titleLabel, backgroundImageView, nickNameLabel, startButtonView])
+        view.addSubviews([titleLabel, backgroundImageView, nickNameLabel, startButton])
         
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(view.snp.leading).offset(20)
@@ -72,9 +73,10 @@ extension SignupCompleteViewController {
             make.centerX.equalTo(view.snp.centerX)
         }
         
-        startButtonView.snp.makeConstraints { make in
+        startButton.snp.makeConstraints { make in
             make.centerX.equalTo(view.snp.centerX)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-64)
+            make.top.equalTo(nickNameLabel.snp.bottom).offset(203)
+            make.leading.trailing.equalToSuperview().inset(20)
         }
     }
     
