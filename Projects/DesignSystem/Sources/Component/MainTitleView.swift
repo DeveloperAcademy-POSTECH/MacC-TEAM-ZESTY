@@ -9,7 +9,6 @@
 import UIKit
 import SnapKit
 
-
 /// Main Title을 만들기 위한 UIView
 /// - title: 화면의 타이틀에 들어갈 문자열
 /// - subtitle: (옵셔널) 화면의 타이틀 밑에 들어갈 회색의 문자열
@@ -38,7 +37,7 @@ extension MainTitleView {
         titleLabel.numberOfLines = 0
         titleLabel.font = .systemFont(ofSize: 26, weight: .heavy)
         
-        subtitleLabel.textColor = .zestyColor(.gray8A8A8E)
+        subtitleLabel.textColor = .secondaryLabel
         subtitleLabel.numberOfLines = 0
         subtitleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
     }
