@@ -10,11 +10,14 @@ import Foundation
 
 public enum Color: String {
     case grayC5
-
+    case grayF6
+    
     var hexString: String {
         switch self {
         case .grayC5:
             return "#C5C5C5FF"
+        case .grayF6:
+            return "#F6F6F6"
         }
     }
 }

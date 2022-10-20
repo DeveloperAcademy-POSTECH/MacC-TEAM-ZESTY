@@ -13,4 +13,7 @@ public enum Asset: String {
     case btn_applelogin
     case img_zesterone
     case img_zesterthree
+    case img_good
+    case img_soso
+    case img_bad
 }
