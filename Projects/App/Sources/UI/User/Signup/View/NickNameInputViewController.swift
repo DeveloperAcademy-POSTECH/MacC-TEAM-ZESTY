@@ -20,7 +20,7 @@ final class NickNameInputViewController: UIViewController {
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
     private let nickNameTextField = UITextFieldPadding(top: 14, left: 20, bottom: 14, right: 20)
-    private let nextButtonView = ShadowButtonView(initialDisable: true)
+    private let nextButton = ArrowButton(initialDisable: true)
     private let warningLabel = UILabel()
     
     private var keyboardUpConstraints: NSLayoutConstraint?
@@ -41,9 +41,7 @@ final class NickNameInputViewController: UIViewController {
     // MARK: - Function
     
     @objc private func nextButtonClicked() {
-        nextButtonView.startIndicator()
-        nextButtonView.button.setAttributedTitle(NSAttributedString(string: ""), for: .normal)
-        nextButtonView.button.imageView?.isHidden = true
+        nextButton.startIndicator()
         
         viewModel.checkNickNameOverlaped()
     }
@@ -66,7 +64,7 @@ extension NickNameInputViewController {
         
         viewModel.$isTextEmpty
             .sink { [weak self] isTextEmpty in
-                self?.nextButtonView.setDisabled(isTextEmpty)
+                self?.nextButton.setDisabled(isTextEmpty)
             }
             .store(in: &cancelBag)
         
@@ -76,7 +74,7 @@ extension NickNameInputViewController {
                 if self.keyboardUpConstraints == nil {
                     guard let endFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
                     let endFrameHeight = endFrame.cgRectValue.height
-                    self.keyboardUpConstraints = self.nextButtonView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -endFrameHeight - 20)
+                    self.keyboardUpConstraints = self.nextButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -endFrameHeight - 20)
                     self.keyboardUpConstraints?.priority = .defaultLow
                 }
                 self.keyboardDownConstraints?.isActive = false
@@ -102,12 +100,9 @@ extension NickNameInputViewController {
         viewModel.isNickNameOverlapedSubject
             .sink { [weak self] isNickNameOverlaped in
                 guard let self = self else { return }
-                self.nextButtonView.stopIndicator()
-                self.nextButtonView.button.setAttributedTitle(NSAttributedString(string: "다음",
-                                                                                 attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)]), for: .normal)
-                self.nextButtonView.button.imageView?.isHidden = false
+                self.nextButton.stopIndicator()
                 if isNickNameOverlaped {
-                    self.nextButtonView.setDisabled(true)
+                    self.nextButton.setDisabled(true)
                 } else {
                     self.navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
                 }
@@ -127,7 +122,7 @@ extension NickNameInputViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        if nextButtonView.button.isUserInteractionEnabled {
+        if nextButton.isUserInteractionEnabled {
             nextButtonClicked()
         }
         return true
@@ -162,13 +157,7 @@ extension NickNameInputViewController {
         nickNameTextField.clipsToBounds = true
         nickNameTextField.layer.cornerRadius = 25
         
-        let arrowImageConfiguration = UIImage.SymbolConfiguration(pointSize: 17, weight: .regular, scale: .default)
-        let arrowImage = UIImage(systemName: "arrow.forward", withConfiguration: arrowImageConfiguration)
-        nextButtonView.button.setAttributedTitle(NSAttributedString(string: "다음",
-                                                                    attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)]), for: .normal)
-        nextButtonView.button.setImage(arrowImage, for: .normal)
-        nextButtonView.button.semanticContentAttribute = .forceRightToLeft
-        nextButtonView.button.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
+        nextButton.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
         
         warningLabel.text = "이미 있는 이름이에요"
         warningLabel.textColor = .red
@@ -177,21 +166,23 @@ extension NickNameInputViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([titleStackView, nickNameTextField, nextButtonView, warningLabel])
+        view.addSubviews([titleStackView, nickNameTextField, nextButton, warningLabel])
         titleStackView.addArrangedSubviews([titleLabel, subtitleLabel])
         
         titleStackView.snp.makeConstraints { make in
             make.leading.equalTo(view.snp.leading).offset(20)
             make.trailing.equalTo(view.snp.trailing).offset(-20)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(40)
         }
         
         nickNameTextField.snp.makeConstraints { make in
-            make.center.equalTo(view.snp.center)
+            make.centerX.equalTo(view.snp.centerX)
+            make.top.equalTo(titleStackView.snp.bottom).offset(142)
         }
         
-        nextButtonView.snp.makeConstraints { make in
+        nextButton.snp.makeConstraints { make in
             make.trailing.equalTo(view.snp.trailing).offset(-20)
+            make.width.height.equalTo(50)
         }
         
         warningLabel.snp.makeConstraints { make in
@@ -199,7 +190,7 @@ extension NickNameInputViewController {
             make.centerX.equalTo(view.snp.centerX)
         }
         
-        keyboardDownConstraints = nextButtonView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100)
+        keyboardDownConstraints = nextButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100)
         keyboardDownConstraints?.isActive = true
         keyboardDownConstraints?.priority = .defaultHigh
     }

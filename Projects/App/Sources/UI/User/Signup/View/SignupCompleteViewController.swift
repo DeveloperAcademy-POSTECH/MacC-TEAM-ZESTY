@@ -19,7 +19,7 @@ final class SignupCompleteViewController: UIViewController {
     private let characterImageView = UIImageView()
     private let nickNameLabel = UILabel()
     private let termsOfServiceLabel = UILabel()
-    private let startButtonView = ShadowButtonView()
+    private let startButtonView = ArrowButton()
     
     // MARK: - LifeCycle
     
@@ -65,8 +65,6 @@ extension SignupCompleteViewController {
         termsOfServiceLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(termsOfServiceLabelClicked)))
         termsOfServiceLabel.isUserInteractionEnabled = true
         
-        startButtonView.button.setAttributedTitle(NSAttributedString(string: "시작하기",
-                                                                     attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)]), for: .normal)
     }
     
     private func createLayout() {
