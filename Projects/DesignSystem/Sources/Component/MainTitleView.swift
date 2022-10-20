@@ -35,11 +35,11 @@ extension MainTitleView {
     
     private func configureUI() {
         titleLabel.numberOfLines = 0
-        titleLabel.font = .systemFont(ofSize: 26, weight: .heavy)
+        titleLabel.font = .systemFont(ofSize: 26, weight: .bold)
         
         subtitleLabel.textColor = .secondaryLabel
         subtitleLabel.numberOfLines = 0
-        subtitleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
+        subtitleLabel.font = .systemFont(ofSize: 16, weight: .regular)
     }
     
     private func createLayout() {
