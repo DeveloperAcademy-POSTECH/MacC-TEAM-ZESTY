@@ -17,7 +17,10 @@ final class OrganizationListUseCase {
     func fetchOrganizationList() {
         API.fetchOrgList()
             .sink { error in
-                print(error)
+                switch error {
+                case .failure(let error): print(error.localizedString)
+                case .finished: break
+                }
             } receiveValue: { orgListDTOs in
                 let orgList = orgListDTOs.map { Organization(dto: $0) }
             }
