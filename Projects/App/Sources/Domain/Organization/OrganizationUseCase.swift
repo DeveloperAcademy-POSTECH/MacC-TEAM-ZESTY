@@ -18,6 +18,7 @@ final class OrganizationListUseCase {
         print("ing...")
         API.fetchOrgList()
             .sink { error in
+                print(error)
             } receiveValue: { orgListDTOs in
                 let orgList = orgListDTOs.map { Organization(dto: $0) }
             }
