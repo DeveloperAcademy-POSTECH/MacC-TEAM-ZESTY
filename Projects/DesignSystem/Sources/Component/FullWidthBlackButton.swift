@@ -26,11 +26,11 @@ extension FullWidthBlackButton {
     
     private func configureUI() {
         configuration = .plain()
-        configuration?.contentInsets = .init(top: 17, leading: 0, bottom: 17, trailing: 0)
+        configuration?.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
         tintColor = .white
         backgroundColor = .black
         clipsToBounds = true
-        layer.cornerRadius = 27
+        layer.cornerRadius = 28
     }
     
     private func createLayout() {
