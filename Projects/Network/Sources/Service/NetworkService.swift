@@ -30,42 +30,29 @@ extension NetworkService {
     -> AnyPublisher<T, NetworkError> {
         do {
             let request = try endpoint.urlRequest()
-
+            
             return session.dataTaskPublisher(for: request)
-                .checkError()
-                .decode()
+                .mapError { error in
+                    NetworkError.invalidUrl(error)
+                }
+                .flatMap { (data, response) in
+                    guard let httpResponse = response as? HTTPURLResponse else {
+                        return Fail<T, NetworkError>(error: NetworkError.badResponse).eraseToAnyPublisher()
+                    }
+                    guard 200..<300 ~= httpResponse.statusCode else {
+                        return Fail<T, NetworkError>(error: NetworkError.status(httpResponse.statusCode)).eraseToAnyPublisher()
+                    }
+                    return Just(data)
+                        .decode(type: T.self, decoder: JSONDecoder())
+                        .mapError { error in
+                            NetworkError.decodingError(error)
+                        }
+                        .eraseToAnyPublisher()
+                }
+                .eraseToAnyPublisher()
         } catch {
-            return Fail(error: NetworkError.invalidUrlRequest).eraseToAnyPublisher()
+            return Fail(error: NetworkError.invalidUrlRequest(error)).eraseToAnyPublisher()
         }
-    }
-
-}
-
-// MARK: - Error Handling
-
-extension URLSession.DataTaskPublisher {
-
-    // TODO: Error Handling
-    func checkError() -> AnyPublisher<Data, NetworkError> {
-        self.mapError { _ in
-            NetworkError.invalidUrl
-        }
-        .map { (data, _) in
-            return data
-        }
-        .eraseToAnyPublisher()
-    }
-
-}
-
-extension AnyPublisher<Data, NetworkError> {
-
-    func decode<T: Decodable>() -> AnyPublisher<T, NetworkError> {
-        self.decode(type: T.self, decoder: JSONDecoder())
-        .mapError { _ in
-            NetworkError.decodingError
-        }
-        .eraseToAnyPublisher()
     }
 
 }
