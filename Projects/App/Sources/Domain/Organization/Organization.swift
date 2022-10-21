@@ -21,7 +21,7 @@ struct Organization {
 
 extension Organization {
     
-    init(dto: OrganizationListDTO) {
+    init(dto: OrganizationDTO) {
         id = dto.id
         name = dto.name
         domain = dto.domain

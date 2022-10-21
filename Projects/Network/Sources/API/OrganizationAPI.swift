@@ -13,11 +13,11 @@ public struct OrganizationAPI {
     
     static let networkService = NetworkService()
     
-    public static func fetchOrgList() -> AnyPublisher<[OrganizationListDTO], NetworkError> {
+    public static func fetchOrgList() -> AnyPublisher<OrganizationListDTO, NetworkError> {
         let header = ["Content-Type": "application/json"]
         let endpoint = Endpoint(path: "/api/organizations", headers: header)
         
-        return networkService.request(with: endpoint, responseType: [OrganizationListDTO].self)
+        return networkService.request(with: endpoint, responseType: OrganizationListDTO.self)
     }
 
 }

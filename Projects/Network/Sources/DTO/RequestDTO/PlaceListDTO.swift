@@ -8,7 +8,9 @@
 
 import Foundation
 
-public struct PlaceListDTO: Decodable {
+public typealias PlaceListDTO = [PlaceDTO]
+
+public struct PlaceDTO: Decodable {
     public let id: Int
     public let address: String
     public let latitude: String
