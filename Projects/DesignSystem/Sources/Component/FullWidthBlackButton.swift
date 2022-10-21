@@ -20,6 +20,13 @@ public final class FullWidthBlackButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
+    public override func setTitle(_ title: String?, for state: UIControl.State) {
+        guard let title = title else { return }
+        let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 15, weight: .medium)]
+        let attributedString = NSAttributedString(string: title, attributes: attributes)
+        setAttributedTitle(attributedString, for: state)
+    }
+    
 }
 
 extension FullWidthBlackButton {
