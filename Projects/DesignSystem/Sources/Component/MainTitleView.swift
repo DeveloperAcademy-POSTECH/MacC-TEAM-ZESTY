@@ -21,13 +21,11 @@ public final class MainTitleView: UIView {
     private let subtitleLabel = UILabel()
     private let titleStackView = UIStackView()
     
-    public init(title: String, subtitle: String? = "") {
+    public init(title: String, subtitle: String = "") {
         super.init(frame: .zero)
         
         titleLabel.text = title
         subtitleLabel.text = subtitle
-        
-        guard let subtitle = subtitle else {return}
         
         configureUI(subTitle: subtitle)
         createLayout(subtitle: subtitle)
