@@ -15,14 +15,14 @@ final class PlaceListUseCase {
     private var cancelBag = Set<AnyCancellable>()
     
     func fetchPlaceList() {
-        API.fetchPlaceList()
+        PlaceAPI.fetchPlaceList()
             .sink { error in
                 switch error {
                 case .failure(let error): print(error.localizedString)
                 case .finished: break
                 }
-            } receiveValue: { placeListDTOs in
-                let placeList = placeListDTOs.map { Place(dto: $0) }
+            } receiveValue: { placeListDTO in
+                let placeList = placeListDTO.map { Place(dto: $0) }
             }
             .store(in: &cancelBag)
     }

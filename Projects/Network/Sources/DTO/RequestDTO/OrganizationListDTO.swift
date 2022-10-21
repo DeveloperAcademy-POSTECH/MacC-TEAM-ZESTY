@@ -8,7 +8,9 @@
 
 import Foundation
 
-public struct OrganizationListDTO: Decodable {
+public typealias OrganizationListDTO = [OrganizationDTO]
+
+public struct OrganizationDTO: Decodable {
     public let id: Int
     public let name: String
     public let domain: String

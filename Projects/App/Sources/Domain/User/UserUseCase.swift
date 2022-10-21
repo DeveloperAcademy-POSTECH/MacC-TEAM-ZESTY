@@ -17,7 +17,7 @@ final class UserUseCase {
     func postSignUpUser() {
         let userDTO = SignUpUserDTO(id: 1, email: "tmdgusya@suwon.ac.kr", organizationName: "수원대학교")
 
-        API.postSignUp(userDTO: userDTO)
+        UserAPI.postSignUp(userDTO: userDTO)
             .sink { error in
                 switch error {
                 case .failure(let error): print(error.localizedString)
