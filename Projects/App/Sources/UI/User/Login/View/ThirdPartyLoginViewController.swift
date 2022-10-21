@@ -26,13 +26,6 @@ final class ThirdPartyLoginViewController: UIViewController {
     private let kakaoLoginButton = UIButton()
     private let appleLoginButton = UIButton()
     
-    private let authorizationController: ASAuthorizationController = {
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        let request = appleIDProvider.createRequest()
-        request.requestedScopes = [.fullName]
-        return ASAuthorizationController(authorizationRequests: [request])
-    }()
-    
     private var cancelBag = Set<AnyCancellable>()
     
     // MARK: - LifeCycle
@@ -41,7 +34,6 @@ final class ThirdPartyLoginViewController: UIViewController {
         configureUI()
         createLayout()
         bindUI()
-        setupASAuthorizationController()
     }
     
     // MARK: - Function
@@ -51,13 +43,7 @@ final class ThirdPartyLoginViewController: UIViewController {
     }
     
     @objc func appleLoginButtonClicked() {
-        authorizationController.performRequests()
-//        navigationController?.pushViewController(NickNameInputViewController(), animated: true)
-    }
-    
-    private func setupASAuthorizationController() {
-        authorizationController.delegate = self
-        authorizationController.presentationContextProvider = self
+        navigationController?.pushViewController(NickNameInputViewController(), animated: true)
     }
     
 }
@@ -78,20 +64,6 @@ extension ThirdPartyLoginViewController {
             .store(in: &cancelBag)
     }
     
-}
-
-// MARK: - Delegate
-
-extension ThirdPartyLoginViewController: ASAuthorizationControllerDelegate {
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        viewModel.appleLogin()
-    }
-}
-
-extension ThirdPartyLoginViewController: ASAuthorizationControllerPresentationContextProviding {
-    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        return self.view.window!
-    }
 }
 
 // MARK: - UI Function
@@ -124,7 +96,7 @@ extension ThirdPartyLoginViewController {
         kakaoLoginButton.imageView?.contentMode = .scaleAspectFit
         
         appleLoginButton.addTarget(self, action: #selector(appleLoginButtonClicked), for: .touchUpInside)
-        appleLoginButton.setImage(DesignSystemAsset.Assets.btnApplelogin.image, for: .normal)
+        appleLoginButton.setImage(UIImage(.btn_applelogin), for: .normal)
         appleLoginButton.imageView?.contentMode = .scaleAspectFit
     }
     
