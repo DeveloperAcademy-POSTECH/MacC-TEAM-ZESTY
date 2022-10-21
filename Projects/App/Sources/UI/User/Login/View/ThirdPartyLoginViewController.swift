@@ -69,6 +69,7 @@ extension ThirdPartyLoginViewController {
         subtitleLabel.font = .preferredFont(forTextStyle: .callout)
         
         backgroundImageView.image = UIImage(.img_login)
+        backgroundImageView.contentMode = .scaleAspectFit
         
         loginStackView.axis = .vertical
         loginStackView.spacing = 20
@@ -100,25 +101,24 @@ extension ThirdPartyLoginViewController {
         loginStackView.addArrangedSubviews([kakaoLoginButton, appleLoginButton])
         
         titleStackView.snp.makeConstraints { make in
-            make.leading.equalTo(view.snp.leading).offset(20)
-            make.trailing.equalTo(view.snp.trailing).offset(-20)
+            make.leading.trailing.equalToSuperview().inset(20)
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
+            make.height.equalTo(140)
         }
         
         backgroundImageView.snp.makeConstraints { make in
             make.centerX.equalTo(view.snp.centerX)
             make.top.equalTo(titleStackView.snp.bottom).offset(88)
-            make.width.equalTo(65)
-            make.height.equalTo(209)
+            make.bottom.equalTo(termsOfServiceLabel.snp.bottom).offset(-100)
         }
         
         termsOfServiceLabel.snp.makeConstraints { make in
-            make.top.equalTo(backgroundImageView.snp.bottom).offset(56)
+            make.bottom.equalTo(loginStackView.snp.top).offset(-20)
             make.centerX.equalTo(view.snp.centerX)
         }
         
         loginStackView.snp.makeConstraints { make in
-            make.top.equalTo(termsOfServiceLabel.snp.bottom).offset(20)
+            make.bottom.equalTo(view.snp.bottom).offset(-30)
             make.leading.trailing.equalToSuperview().inset(30)
         }
         
