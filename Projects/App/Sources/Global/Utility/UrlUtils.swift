@@ -10,7 +10,7 @@ import UIKit
 
 class UrlUtils {
 
-    static func openExternalLink(urlStr: String, _ handler:(() -> Void)? = nil) {
+    static func openExternalLink(urlStr: String, _ handler: (() -> Void)? = nil) {
         
         // 인코딩 -> 한글, 특수 문자 등 처리
         let encoded = urlStr.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
