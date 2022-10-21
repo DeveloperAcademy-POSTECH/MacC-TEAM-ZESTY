@@ -11,8 +11,8 @@ import Foundation
 protocol Requestable {
     var scheme: String { get }
     var host: String { get }
-    var path: String { get }
     var port: Int { get }
+    var path: String { get }
     var method: HttpMethod { get }
     var queryParams: [String: String]? { get }
     var bodyParams: Encodable? { get }

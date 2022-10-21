@@ -12,8 +12,8 @@ final class Endpoint: Requestable {
 
     var scheme: String
     var host: String
-    var path: String
     var port: Int
+    var path: String
     var method: HttpMethod
     var queryParams: [String: String]?
     var bodyParams: Encodable?
@@ -22,9 +22,9 @@ final class Endpoint: Requestable {
     var headers: [String: String]?
 
     init(scheme: String = "http",
-         host: String = "43.201.29.11",
+         host: String = Environment.ZESTY_HOST,
+         port: Int = Environment.PORT,
          path: String = "",
-         port: Int = 8080,
          method: HttpMethod = .get,
          queryParams: [String: String]? = nil,
          bodyParams: Encodable? = nil,
