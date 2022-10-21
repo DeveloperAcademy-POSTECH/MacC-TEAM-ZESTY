@@ -17,8 +17,8 @@ import SnapKit
 ///
 /// top constraint와 너비만 지정해주면 됩니다
 public final class MainTitleView: UIView {
-    private let titleLabel = UILabel()
-    private let subtitleLabel = UILabel()
+    public var titleLabel = UILabel()
+    public var subtitleLabel = UILabel()
     private let titleStackView = UIStackView()
     
     public init(title: String, subtitle: String = "") {
