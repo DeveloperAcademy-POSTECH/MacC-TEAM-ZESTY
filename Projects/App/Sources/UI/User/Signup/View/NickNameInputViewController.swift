@@ -179,7 +179,6 @@ extension NickNameInputViewController {
         
         nextButton.snp.makeConstraints { make in
             make.trailing.equalTo(view.snp.trailing).offset(-20)
-            make.width.height.equalTo(50)
         }
         
         warningLabel.snp.makeConstraints { make in

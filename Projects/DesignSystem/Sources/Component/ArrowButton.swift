@@ -1,5 +1,5 @@
 //
-//  shadowButton.swift
+//  ArrowButton.swift
 //  DesignSystem
 //
 //  Created by Lee Myeonghwan on 2022/10/13.
@@ -9,6 +9,11 @@
 import UIKit
 import SnapKit
 
+/// 오른쪽 방향의 화살표가 있는 동그란 형태의  UIButton
+/// - init(initialDisable: Bool) 로 초기 버튼의 diable 상태를 지정해줄 수 있습니다.
+///
+/// 높이는 50 point로 설정되어 있습니다.
+/// 버튼의 x축 y축 constraints 를 잡아줘야 합니다.
 public final class ArrowButton: UIButton {
     
     private let activityIndicator = UIActivityIndicatorView()
@@ -73,6 +78,7 @@ extension ArrowButton {
         activityIndicator.snp.makeConstraints { make in
             make.centerX.equalTo(snp.centerX)
             make.centerY.equalTo(snp.centerY)
+            make.width.height.equalTo(50)
         }
     }
     
