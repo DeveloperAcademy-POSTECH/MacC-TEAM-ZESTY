@@ -11,13 +11,14 @@ import UIKit
 import SnapKit
 import SwiftUI
 
-final class NewPlaceDetailViewController: UIViewController {
+final class PlaceDetailViewController: UIViewController {
     
     // MARK: - Properties
     private let cancelBag = Set<AnyCancellable>()
     private let viewModel = PlaceDetailViewModel()
     private let place: Place = Place.mockData[0]
-    private let reviews: [Review] = [Review.mockData[0], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3], Review.mockData[0], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3]]
+//    private let reviews: [Review] = [Review.mockData[0], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3], Review.mockData[0], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3]]
+    private let reviews: [Review] = []
     
     private let tableView = UITableView(frame: CGRect.zero, style: .grouped)
     
@@ -35,7 +36,7 @@ final class NewPlaceDetailViewController: UIViewController {
 
 // MARK: - UI Function
 
-extension NewPlaceDetailViewController {
+extension PlaceDetailViewController {
     
     private func configureUI() {
         tableView.backgroundColor = .white
@@ -45,6 +46,7 @@ extension NewPlaceDetailViewController {
         tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.register(PlaceInfoHeaderView.self, forHeaderFooterViewReuseIdentifier: "PlaceInfoHeaderView")
         tableView.register(ReviewCell.self, forCellReuseIdentifier: "ReviewCell")
+        tableView.register(EmptyReviewCell.self, forCellReuseIdentifier: "EmptyReviewCell")
         tableView.separatorStyle = .none
     }
     
@@ -60,25 +62,34 @@ extension NewPlaceDetailViewController {
 
 // MARK: - UITableViewDataSource
 
-extension NewPlaceDetailViewController: UITableViewDataSource {
+extension PlaceDetailViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return reviews.count
+        return reviews.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ReviewCell", for: indexPath)
-                as? ReviewCell else { return UITableViewCell() }
-        cell.selectionStyle = .none
-        cell.setup(with: reviews[indexPath.row])
-        return cell
-        
+        switch reviews.count == 0 {
+        case true:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "EmptyReviewCell", for: indexPath)
+                    as? EmptyReviewCell else { return UITableViewCell() }
+            cell.selectionStyle = .none
+            return cell
+            
+        case false:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ReviewCell", for: indexPath)
+                    as? ReviewCell else { return UITableViewCell() }
+            cell.setup(with: reviews[indexPath.row])
+            cell.selectionStyle = .none
+            return cell
+        }
     }
     
 }
 
 // MARK: - UITableViewDelegate
-extension NewPlaceDetailViewController: UITableViewDelegate {
+extension PlaceDetailViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 330
