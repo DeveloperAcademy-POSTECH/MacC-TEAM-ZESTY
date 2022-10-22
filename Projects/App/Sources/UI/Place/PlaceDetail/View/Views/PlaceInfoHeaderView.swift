@@ -14,27 +14,37 @@ class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     
     // MARK: - Properties
     
-    private lazy var placeView = ShadowView()
+    private lazy var placeView = UIView()
     private var kakaoUrl = ""
     private var naverUrl = ""
     
+    private lazy var categoryTagLabel: BasePaddingLabel = {
+        $0.font = .systemFont(ofSize: 11, weight: .bold)
+        $0.textColor = .white
+        $0.backgroundColor = .black
+        $0.layer.cornerRadius = 12
+        $0.layer.masksToBounds = true
+        return $0
+    }(BasePaddingLabel())
+    
+    private lazy var addReviewButton: UIButton = {
+        $0.setImage(UIImage(.btn_side_plus), for: .normal)
+        $0.addTarget(self, action: #selector(addReviewButtonDidTap), for: .touchUpInside)
+        return $0
+    }(UIButton(type: .custom))
+
     private lazy var placeNameLabel: UILabel = {
         $0.text = "(가게이름없음)"
-        $0.font = .systemFont(ofSize: 25, weight: .bold)
+        $0.textColor = .black
+        $0.font = .systemFont(ofSize: 26, weight: .semibold)
         return $0
     }(UILabel())
-    
-    private lazy var evaluationTitleLabel: UILabel = {
-        $0.text = "평가"
-        $0.font = .systemFont(ofSize: 11, weight: .regular)
-        $0.textColor = .zestyColor(.gray3C3C43)?.withAlphaComponent(0.6)
-        return $0
-    }(UILabel())
-    
+
     private lazy var evaluationStackView: UIStackView = {
         $0.axis = .horizontal
-        $0.spacing = 16
-        $0.distribution = .fillEqually
+        $0.spacing = 15
+        $0.distribution = .equalSpacing
+        $0.alignment = .leading
         return $0
     }(UIStackView())
     
@@ -42,11 +52,11 @@ class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     private var sosoView = EvaluationItemView()
     private var badView = EvaluationItemView()
     
-    private let imageView: UIImageView = {
-        $0.contentMode = .scaleAspectFit
-        $0.image = UIImage(.img_good)
+    private lazy var addressView: UIView = {
+        $0.backgroundColor = .zestyColor(.grayF6)
+        $0.layer.cornerRadius = 10
         return $0
-    }(UIImageView())
+    }(UIView())
     
     private lazy var addressLabel: UILabel = {
         $0.text = "경북 포항시 남구 효자동 11길 24-1 1층 요기쿠시동"
@@ -56,47 +66,31 @@ class PlaceInfoHeaderView: UITableViewHeaderFooterView {
         return $0
     }(UILabel())
     
-    private lazy var reportButton: UIButton = {
-        let customAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 11, weight: .regular),
-            .foregroundColor: UIColor.zestyColor(.gray3C3C43)?.withAlphaComponent(0.3) ?? UIColor.systemGray,
-            .underlineStyle: NSUnderlineStyle.single.rawValue
-        ]
-        let attributeString = NSMutableAttributedString(
-            string: "정보가 잘못됐나요?",
-            attributes: customAttributes
-        )
-        $0.setAttributedTitle(attributeString, for: .normal)
-        $0.addTarget(self, action: #selector(reportPlaceDetail), for: .touchUpInside)
-        return $0
-    }(UIButton())
-    
-    private lazy var addressView: UIStackView = {
-        $0.axis = .horizontal
-        $0.spacing = 8
-        $0.distribution = .equalSpacing
-        return $0
-    }(UIStackView())
-    
     private lazy var naverButton: UIButton = {
         $0.setImage(UIImage(.btn_navermap), for: .normal)
+        $0.isUserInteractionEnabled = true
         $0.addTarget(self, action: #selector(openNaverMap), for: .touchUpInside)
         return $0
     }(UIButton(type: .custom))
     
     private lazy var kakaoButton: UIButton = {
         $0.setImage(UIImage(.btn_kakaomap), for: .normal)
+        $0.isUserInteractionEnabled = true
         $0.addTarget(self, action: #selector(openKakaoMap), for: .touchUpInside)
         return $0
     }(UIButton(type: .custom))
     
-    private lazy var categoryCollectionView = CategoryCollectionView()
-    
     private lazy var reviewTitleLabel: UILabel = {
         $0.text = "리뷰"
-        $0.font = .systemFont(ofSize: 20, weight: .bold)
+        $0.textColor = .black
+        $0.font = .systemFont(ofSize: 26, weight: .bold)
         return $0
     }(UILabel())
+    
+    private lazy var lineView: UIView = {
+        $0.backgroundColor = .black
+        return $0
+    }(UIView())
     
     // MARK: - LifeCycle
     
@@ -117,11 +111,19 @@ class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     }
     
     @objc func openKakaoMap() {
-        UrlUtils.openExternalLink(urlStr: kakaoUrl)
+        kakaoButton.showAnimation {
+            UrlUtils.openExternalLink(urlStr: self.kakaoUrl)
+        }
     }
     
     @objc func openNaverMap() {
-        UrlUtils.openExternalLink(urlStr: naverUrl)
+        naverButton.showAnimation {
+            UrlUtils.openExternalLink(urlStr: self.naverUrl)
+        }
+    }
+    
+    @objc func addReviewButtonDidTap() {
+        // 리뷰하기 추가버트
     }
     
 }
@@ -130,7 +132,8 @@ extension PlaceInfoHeaderView {
     
     public func setUp(with place: Place) {
         
-        categoryCollectionView.setupData(tagList: place.category)
+        categoryTagLabel.text = place.category[0].name
+        
         placeNameLabel.text = place.name
         
         addressLabel.text = place.address
@@ -149,92 +152,86 @@ extension PlaceInfoHeaderView {
 extension PlaceInfoHeaderView {
     
     private func configureUI() {
-
+        self.backgroundColor = .white
     }
     
     private func createLayout() {
-        self.addSubviews([placeView, reviewTitleLabel])
-        contentView.backgroundColor = .red
+
+        self.addSubviews([placeView, addReviewButton])
         
         contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.height.equalTo(500)
+            make.height.equalTo(320)
         }
         
-        placeView.addSubviews([placeNameLabel, evaluationTitleLabel, evaluationStackView, addressView, reportButton, categoryCollectionView])
+        addReviewButton.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(23)
+            $0.trailing.equalToSuperview().offset(1)
+            $0.height.equalTo(65)
+        }
+        
+        placeView.addSubviews([categoryTagLabel, placeNameLabel, categoryTagLabel, evaluationStackView, addressView, lineView, reviewTitleLabel, lineView])
         
         placeView.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(4)
-            $0.height.equalTo(366)
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
-        reviewTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(placeView.snp.bottom).offset(44)
+        categoryTagLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(23)
+            $0.leading.equalToSuperview()
+            $0.height.equalTo(24)
+        }
+
+        placeNameLabel.snp.makeConstraints {
+            $0.top.equalTo(categoryTagLabel.snp.bottom).offset(12)
             $0.leading.equalToSuperview()
         }
-        
-        placeNameLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(32)
-            $0.centerX.equalToSuperview()
-        }
 
-        categoryCollectionView.snp.makeConstraints {
-            $0.top.equalTo(placeNameLabel.snp.bottom).offset(10)
-            $0.centerX.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(10)
-            $0.height.equalTo(30)
-        }
-
-        evaluationTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(categoryCollectionView.snp.bottom).offset(40)
-            $0.centerX.equalToSuperview()
-        }
-
+        evaluationStackView.backgroundColor = .blue
         evaluationStackView.snp.makeConstraints {
-            $0.top.equalTo(evaluationTitleLabel.snp.bottom).offset(5)
-            $0.centerX.equalToSuperview()
-            $0.width.equalTo(160)
-            $0.height.equalTo(70)
-        }
-        
-        evaluationStackView.addArrangedSubviews([goodView, sosoView, badView])
-
-        goodView.snp.makeConstraints {
-            $0.width.height.equalTo(40)
-        }
-
-        sosoView.snp.makeConstraints {
-            $0.width.height.equalTo(40)
-        }
-        badView.snp.makeConstraints {
-            $0.width.height.equalTo(40)
+            $0.top.equalTo(placeNameLabel.snp.bottom).offset(25)
+            $0.leading.equalToSuperview()
+            $0.height.equalTo(25)
+            $0.width.equalTo(200)
         }
 
         addressView.snp.makeConstraints {
-            $0.top.equalTo(evaluationStackView.snp.bottom).offset(40)
-            $0.leading.trailing.equalToSuperview().inset(32)
-            $0.height.equalTo(36)
+            $0.top.equalTo(evaluationStackView.snp.bottom).offset(30)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(70)
         }
 
-        addressView.addArrangedSubviews([addressLabel, naverButton, kakaoButton])
-        addressView.setCustomSpacing(8, after: addressLabel)
-
+        addressView.addSubviews([addressLabel, naverButton, kakaoButton])
+        
         addressLabel.snp.makeConstraints {
-            $0.width.equalTo(190)
+            $0.leading.equalToSuperview().inset(20)
+            $0.top.bottom.equalToSuperview().inset(16)
+            $0.width.lessThanOrEqualTo(200)
         }
-
+        
         naverButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(20)
             $0.width.height.equalTo(36)
+            $0.top.bottom.equalToSuperview().inset(16)
         }
-
+        
         kakaoButton.snp.makeConstraints {
+            $0.trailing.equalTo(naverButton.snp.leading).offset(-8)
             $0.width.height.equalTo(36)
+            $0.top.bottom.equalToSuperview().inset(16)
         }
 
-        reportButton.snp.makeConstraints {
-            $0.top.equalTo(addressView.snp.bottom).offset(10)
-            $0.centerX.equalToSuperview()
+        reviewTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(addressLabel.snp.bottom).offset(50)
+            $0.leading.equalToSuperview()
+        }
+        
+        lineView.snp.makeConstraints {
+            $0.height.equalTo(3)
+            $0.width.equalTo(20)
+            $0.centerX.equalTo(reviewTitleLabel.snp.centerX)
+            $0.top.equalTo(reviewTitleLabel.snp.bottom).offset(5)
         }
         
     }
