@@ -54,7 +54,7 @@ final class NickNameInputViewModel {
     func isValid(for input: String) -> Bool {
         let maxNickNameCount = 6
         let isBackSpace = strcmp(input.cString(using: .utf8), "\\b") == -92
-        if (nickNameText.count < maxNickNameCount && checkValidCharacter(to: input)) || isBackSpace {
+        if (nickNameText.count <= maxNickNameCount && checkValidCharacter(to: input)) || isBackSpace {
             return true
         }
         return false

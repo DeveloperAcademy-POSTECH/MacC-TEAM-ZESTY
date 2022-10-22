@@ -107,6 +107,16 @@ extension NickNameInputViewController {
                 }
             }
             .store(in: &cancelBag)
+        
+        nickNameTextField.textDidChangePublisher
+            .receive(on: DispatchQueue.main)
+            .compactMap { $0.text }
+            .sink { text in
+                if text.count > 6 {
+                    self.nickNameTextField.text?.removeLast()
+                }
+            }
+            .store(in: &cancelBag)
     }
     
 }
