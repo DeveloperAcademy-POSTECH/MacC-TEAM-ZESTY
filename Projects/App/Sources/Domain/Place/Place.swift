@@ -31,16 +31,32 @@ struct EvaluationSum {
 extension Place {
     
     init(dto: PlaceDTO) {
-        id = dto.id
+        id = 1
         creator = User.mockData[0]
-        organizationId = dto.organizations[0]
-        name = "name"
-        address = dto.address
-        lat = dto.latitude
-        lan = dto.longitude
+        organizationId = 0
+        name = dto.shopName
+        address = ""
+        lat = ""
+        lan = ""
         category = Category.mockData
-        evaluationSum = EvaluationSum.mockData[0]
-        reviews = Review.mockData
+        evaluationSum = EvaluationSum(dto: dto.evaluations)
+        reviews = dto.reviewContent.map { Review($0) }
     }
 
+}
+
+extension EvaluationSum {
+    
+    init(dto: EvaluationDTO?) {
+        if let dto = dto {
+            good = dto.one
+            soso = dto.two
+            bad = dto.three
+        } else {
+            good = 0
+            soso = 0
+            bad = 0
+        }
+    }
+    
 }
