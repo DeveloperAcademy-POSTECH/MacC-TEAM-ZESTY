@@ -39,7 +39,7 @@ struct BannerView: View {
     var body: some View {
         TabView(selection: $selected) {
             ForEach(0..<4) { index in
-                Text("\(index)")
+                BannerSubview()
                     .tag(index)
                     .tabItem {
                         Image(systemName: (selected == index ? "circle.fill" : "circle"))
@@ -53,7 +53,7 @@ struct BannerView: View {
             pageControl.pageIndicatorTintColor = .black
         }
         .tabViewStyle(PageTabViewStyle())
-        
+        .frame(height: 300)
     }
     
 }

@@ -20,17 +20,24 @@ public final class FullWidthBlackButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
+    public override func setTitle(_ title: String?, for state: UIControl.State) {
+        guard let title = title else { return }
+        let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 15, weight: .medium)]
+        let attributedString = NSAttributedString(string: title, attributes: attributes)
+        setAttributedTitle(attributedString, for: state)
+    }
+    
 }
 
 extension FullWidthBlackButton {
     
     private func configureUI() {
         configuration = .plain()
-        configuration?.contentInsets = .init(top: 17, leading: 0, bottom: 17, trailing: 0)
+        configuration?.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
         tintColor = .white
         backgroundColor = .black
         clipsToBounds = true
-        layer.cornerRadius = 27
+        layer.cornerRadius = 28
     }
     
     private func createLayout() {

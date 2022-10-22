@@ -19,6 +19,7 @@ final class PlaceListViewController: UIViewController {
     
     private var searchBarItem = UIBarButtonItem()
     private var profileBarItem = UIBarButtonItem()
+    private let registerButton = ShadowButtonView()
     
     // MARK: - LifeCycle
     
@@ -26,6 +27,7 @@ final class PlaceListViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         configureHierachy()
+        createLayout()
         configureDataSource()
         applySnapShot()
     }
@@ -60,20 +62,21 @@ extension PlaceListViewController: UICollectionViewDelegate {
             
             switch sectionType {
             case .banner:
-                section = self.createSectionLayout(width: .fractionalWidth(1), height: .fractionalHeight(0.4))
+                section = self.createSectionLayout(width: .fractionalWidth(1), height: .estimated(100))
                 section.orthogonalScrollingBehavior = .groupPagingCentered
                 
             case .picked:
-                section = self.createSectionLayout(width: .fractionalWidth(0.35), height: .fractionalHeight(0.23))
+                section = self.createSectionLayout(width: .fractionalWidth(0.35), height: .estimated(100))
                 supplymentaryView = createSupplymentaryViewLayout(type: .header)
                 section.boundarySupplementaryItems = [supplymentaryView]
                 section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
                 
             case .whole:
-                section = self.createSectionLayout(width: .fractionalWidth(1), height: .fractionalHeight(0.4))
+                section = self.createSectionLayout(width: .fractionalWidth(1), height: .estimated(100))
                 supplymentaryView = createSupplymentaryViewLayout(type: .header)
                 section.boundarySupplementaryItems = [supplymentaryView]
             }
+            section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
             return section
         }
         return layout
@@ -81,7 +84,7 @@ extension PlaceListViewController: UICollectionViewDelegate {
     
     private func createSectionLayout(width: NSCollectionLayoutDimension,
                                      height: NSCollectionLayoutDimension) -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(100))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         let groupSize = NSCollectionLayoutSize(widthDimension: width, heightDimension: height)
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
@@ -104,10 +107,11 @@ extension PlaceListViewController: UICollectionViewDelegate {
     }
     
     private func configureDataSource() {
-        let etcCellRegisteration = UICollectionView.CellRegistration<UICollectionViewCell, Tmp> { cell, _, _ in
-            cell.backgroundColor = .blue
-        }
         let bannerRegisteration = UICollectionView.CellRegistration<BannerCell, Tmp> { _, _, _ in
+        }
+        let pickedRegisteration = UICollectionView.CellRegistration<PickedPlaceCell, Tmp> { _, _, _ in
+        }
+        let wholeRegisteration = UICollectionView.CellRegistration<WholePlaceCell, Tmp> { _, _, _ in
         }
 
         dataSource = DataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
@@ -116,16 +120,17 @@ extension PlaceListViewController: UICollectionViewDelegate {
             case .banner:
                 return collectionView.dequeueConfiguredReusableCell(using: bannerRegisteration, for: indexPath, item: item)
             case .picked:
-                return collectionView.dequeueConfiguredReusableCell(using: etcCellRegisteration, for: indexPath, item: item)
+                return collectionView.dequeueConfiguredReusableCell(using: pickedRegisteration, for: indexPath, item: item)
             case .whole:
-                return collectionView.dequeueConfiguredReusableCell(using: etcCellRegisteration, for: indexPath, item: item)
+                return collectionView.dequeueConfiguredReusableCell(using: wholeRegisteration, for: indexPath, item: item)
             }
         })
 
-        typealias HeaderRegistration = UICollectionView.SupplementaryRegistration<UICollectionReusableView>
+        typealias HeaderRegistration = UICollectionView.SupplementaryRegistration<PlaceListHeaderView>
 
-        let headerRegisteration = HeaderRegistration(elementKind: SupplementaryKind.header.string) { supplementaryView, _, _ in
-            supplementaryView.backgroundColor = .orange
+        let headerRegisteration = HeaderRegistration(elementKind: SupplementaryKind.header.string) { supplementaryView, _, index in
+            let title = SectionType(index: index.section).title
+            supplementaryView.configureUI(with: title)
         }
 
         dataSource.supplementaryViewProvider = { collectionView, _, index in
@@ -212,6 +217,17 @@ extension PlaceListViewController {
         profileBarItem.tintColor = .black
         navigationItem.rightBarButtonItems = [searchBarItem, profileBarItem]
         navigationItem.title = "애플디벨로퍼아카데미"
+        
+        registerButton.button.setTitle("나의 맛집 등록하기", for: .normal)
+    }
+    
+    private func createLayout() {
+        view.addSubview(registerButton)
+        
+        registerButton.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview().inset(20)
+            $0.height.equalTo(50)
+        }
     }
 
 }
