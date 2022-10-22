@@ -7,6 +7,7 @@
 //
 
 import AuthenticationServices
+import SwiftUI
 import UIKit
 import DesignSystem
 import SnapKit
@@ -15,9 +16,7 @@ final class ThirdPartyLoginViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let titleStackView = UIStackView()
-    private let titleLabel = UILabel()
-    private let subtitleLabel = UILabel()
+    private let mainTitleView = MainTitleView(title: "안녕하세요,\n제스티입니다", subtitle: "로그인하여 모든 맛집을 확인하세요.")
     private let backgroundImageView = UIImageView()
     private let loginStackView = UIStackView()
     private let termsOfServiceLabel = UILabel()
@@ -57,17 +56,6 @@ extension ThirdPartyLoginViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = .black
         
-        titleStackView.axis = .vertical
-        titleStackView.spacing = 12
-        
-        titleLabel.text = "안녕하세요,\n제스티입니다"
-        titleLabel.font = .systemFont(ofSize: 26)
-        titleLabel.numberOfLines = 2
-        
-        subtitleLabel.text = "로그인하여 모든 맛집을 확인하세요."
-        subtitleLabel.textColor = .gray
-        subtitleLabel.font = .preferredFont(forTextStyle: .callout)
-        
         backgroundImageView.image = UIImage(.img_login)
         backgroundImageView.contentMode = .scaleAspectFit
         
@@ -96,11 +84,10 @@ extension ThirdPartyLoginViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([titleStackView, backgroundImageView, termsOfServiceLabel, loginStackView])
-        titleStackView.addArrangedSubviews([titleLabel, subtitleLabel])
+        view.addSubviews([mainTitleView, backgroundImageView, termsOfServiceLabel, loginStackView])
         loginStackView.addArrangedSubviews([kakaoLoginButton, appleLoginButton])
         
-        titleStackView.snp.makeConstraints { make in
+        mainTitleView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(20)
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
             make.height.equalTo(140)
@@ -108,7 +95,7 @@ extension ThirdPartyLoginViewController {
         
         backgroundImageView.snp.makeConstraints { make in
             make.centerX.equalTo(view.snp.centerX)
-            make.top.equalTo(titleStackView.snp.bottom).offset(20)
+            make.top.equalTo(mainTitleView.snp.bottom).offset(20)
             make.bottom.equalTo(termsOfServiceLabel.snp.top).offset(-20)
         }
         
@@ -130,4 +117,12 @@ extension ThirdPartyLoginViewController {
         }
     }
     
+}
+
+struct ThirdPartyLoginViewTemplatePreview: PreviewProvider {
+    
+    static var previews: some View {
+        ThirdPartyLoginViewController().toPreview()
+    }
+
 }
