@@ -42,8 +42,8 @@ class PlaceInfoHeaderView: UITableViewHeaderFooterView {
 
     private lazy var evaluationStackView: UIStackView = {
         $0.axis = .horizontal
-        $0.spacing = 15
-        $0.distribution = .equalSpacing
+        $0.spacing = 10
+        $0.distribution = .fillEqually
         $0.alignment = .leading
         return $0
     }(UIStackView())
@@ -159,9 +159,9 @@ extension PlaceInfoHeaderView {
 
         self.addSubviews([placeView, addReviewButton])
         
-        contentView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.height.equalTo(320)
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+            $0.height.equalTo(330)
         }
         
         addReviewButton.snp.makeConstraints {
@@ -175,6 +175,7 @@ extension PlaceInfoHeaderView {
         placeView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.height.equalTo(320)
         }
         
         categoryTagLabel.snp.makeConstraints {
@@ -188,12 +189,12 @@ extension PlaceInfoHeaderView {
             $0.leading.equalToSuperview()
         }
 
-        evaluationStackView.backgroundColor = .blue
+        evaluationStackView.addArrangedSubviews([goodView, sosoView, badView])
         evaluationStackView.snp.makeConstraints {
             $0.top.equalTo(placeNameLabel.snp.bottom).offset(25)
             $0.leading.equalToSuperview()
             $0.height.equalTo(25)
-            $0.width.equalTo(200)
+            $0.width.equalTo(150)
         }
 
         addressView.snp.makeConstraints {
