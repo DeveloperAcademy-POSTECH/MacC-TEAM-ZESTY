@@ -70,7 +70,6 @@ extension SignupCompleteViewController {
         }
         
         startButton.snp.makeConstraints { make in
-            make.centerX.equalTo(view.snp.centerX)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
