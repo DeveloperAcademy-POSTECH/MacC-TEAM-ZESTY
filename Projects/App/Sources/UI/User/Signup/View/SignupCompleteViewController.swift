@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 import DesignSystem
 
 final class SignupCompleteViewController: UIViewController {
@@ -15,7 +16,7 @@ final class SignupCompleteViewController: UIViewController {
     
     private let viewModel = SignupCompleteViewModel()
     
-    private let titleLabel = UILabel()
+    private let titleLabel = MainTitleView(title: "고반님\n환영합니다🎉")
     private let backgroundImageView = UIImageView()
     private let nickNameLabel = UILabel()
     private let startButton = FullWidthBlackButton()
@@ -38,15 +39,11 @@ extension SignupCompleteViewController {
     
     private func configureUI() {
         view.backgroundColor = .white
-        
-        titleLabel.text = "\(viewModel.userName)님,\n환영합니다 🎉"
-        titleLabel.font = .systemFont(ofSize: 26)
-        titleLabel.numberOfLines = 2
-        
+
         backgroundImageView.image = UIImage(.img_signup)
         
         nickNameLabel.text = "\(viewModel.userName)"
-        nickNameLabel.font = .preferredFont(forTextStyle: .headline)
+        nickNameLabel.font = .systemFont(ofSize: 17, weight: .bold)
         
         startButton.setAttributedTitle(NSMutableAttributedString(string: "우리 대학 맛집여정에 함께하기",
                                                                      attributes: [.font: UIFont.systemFont(ofSize: 15, weight: .medium)]), for: .normal)
@@ -56,10 +53,8 @@ extension SignupCompleteViewController {
         view.addSubviews([titleLabel, backgroundImageView, nickNameLabel, startButton])
         
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(view.snp.leading).offset(20)
-            make.trailing.equalTo(view.snp.trailing).offset(-20)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
-            make.height.equalTo(140)
+            make.leading.equalTo(view.snp.leading)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
         
         backgroundImageView.snp.makeConstraints { make in
@@ -81,4 +76,12 @@ extension SignupCompleteViewController {
         }
     }
     
+}
+
+struct SignupCompleteViewTemplatePreview: PreviewProvider {
+    
+    static var previews: some View {
+        SignupCompleteViewController().toPreview()
+    }
+
 }

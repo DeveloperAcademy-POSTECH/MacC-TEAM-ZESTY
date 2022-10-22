@@ -90,8 +90,7 @@ extension ThirdPartyLoginViewController {
         
         mainTitleView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
-            make.height.equalTo(140)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
         
         backgroundImageView.snp.makeConstraints { make in

@@ -17,7 +17,7 @@ final class NickNameInputViewController: UIViewController {
     
     private let viewModel = NickNameInputViewModel()
     
-    private let mainTitleView = MainTitleView(title: "멋진 이름을 알려주세요", subtitle: "언제든지 변경할 수 있어요.")
+    private let mainTitleView = MainTitleView(title: "닉네임을 알려주세요", subtitle: "언제든지 변경할 수 있어요.")
     private let nickNameTextField = UITextFieldPadding(top: 14, left: 20, bottom: 14, right: 20)
     private let nextButton = ArrowButton(initialDisable: true)
     private let warningLabel = UILabel()
@@ -139,7 +139,7 @@ extension NickNameInputViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = .black
     
-        nickNameTextField.attributedPlaceholder = .init(attributedString: NSAttributedString(string: "이름", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]))
+        nickNameTextField.attributedPlaceholder = .init(attributedString: NSAttributedString(string: "닉네임", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]))
         nickNameTextField.font = .preferredFont(forTextStyle: .body)
         nickNameTextField.textColor = .white
         nickNameTextField.backgroundColor = .black
@@ -159,12 +159,12 @@ extension NickNameInputViewController {
         
         mainTitleView.snp.makeConstraints { make in
             make.leading.equalTo(view.snp.leading)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(30)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
         
         nickNameTextField.snp.makeConstraints { make in
             make.centerX.equalTo(view.snp.centerX)
-            make.top.equalTo(mainTitleView.snp.bottom).offset(142)
+            make.centerY.equalTo(view.snp.centerY)
         }
         
         nextButton.snp.makeConstraints { make in
