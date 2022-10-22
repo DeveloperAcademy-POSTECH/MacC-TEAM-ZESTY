@@ -10,11 +10,20 @@ import Foundation
 
 struct User {
     let id: Int
-    let email: String
+    let email: String?
     let social: SocialProvider
-    let nickname: String
+    let nickname: String?
     let authToken: String
-    let organizationId: Int // [Int]
+    let organizationId: Int? // [Int]
+    
+    init(id: Int, email: String? = nil, social: SocialProvider, nickname: String? = nil, authToken: String, organizationId: Int? = nil) {
+        self.id = id
+        self.email = email
+        self.social = social
+        self.nickname = nickname
+        self.authToken = authToken
+        self.organizationId = organizationId
+    }
 }
 
 enum SocialProvider: String {

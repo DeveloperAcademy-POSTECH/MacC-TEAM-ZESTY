@@ -20,5 +20,12 @@ public struct UserAPI {
         
         return networkService.request(with: endpoint, responseType: String.self)
     }
+    
+    public static func postRefreshToken(accessToken: String) -> AnyPublisher<UserOauthDTO, NetworkError> {
+        let header = ["Content-Type": "application/json"]
+        let endpoint = Endpoint(path: "/login/oauth2/code/kakao", method: .get, queryParams: ["authToken": accessToken], headers: header)
+        
+        return networkService.request(with: endpoint, responseType: UserOauthDTO.self)
+    }
 
 }

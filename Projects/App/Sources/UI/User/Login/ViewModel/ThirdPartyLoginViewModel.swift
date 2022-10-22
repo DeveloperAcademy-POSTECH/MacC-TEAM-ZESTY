@@ -12,6 +12,11 @@ import KakaoSDKUser
 
 final class ThirdPartyLoginViewModel {
     
+    let useCase = UserUseCase()
+    
+    var user: User? = UserDefaults.standard.user
+    var accessToken: String?
+    
     // output
     @Published var isLoggedIn = false
     
@@ -25,17 +30,24 @@ final class ThirdPartyLoginViewModel {
                 // 카카오 계정으로 로그인
                 isLoggedIn = await kakaoLoginWithAccount()
             }
+            if isLoggedIn {
+                guard let accessToken = self.accessToken else { return }
+                useCase.postAccessTokenUser(accessToken: accessToken)
+            }
         }
     }
     
     @MainActor
     private func kakaoLoginWithApp() async -> Bool {
         await withCheckedContinuation { continuation in
-            UserApi.shared.loginWithKakaoTalk {(_, error) in
+            UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
                 if let error = error {
                     print(error)
                     continuation.resume(returning: false)
                 } else {
+                    if let accessToken = oauthToken?.accessToken {
+                        self.accessToken = accessToken
+                    }
                     continuation.resume(returning: true)
                 }
             }
@@ -45,11 +57,14 @@ final class ThirdPartyLoginViewModel {
     @MainActor
     private func kakaoLoginWithAccount() async -> Bool {
         await withCheckedContinuation { continuation in
-            UserApi.shared.loginWithKakaoAccount {(_, error) in
+            UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
                 if let error = error {
                     print(error)
                     continuation.resume(returning: false)
                 } else {
+                    if let accessToken = oauthToken?.accessToken {
+                        self.accessToken = accessToken
+                    }
                     continuation.resume(returning: true)
                 }
             }
