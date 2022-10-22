@@ -88,8 +88,8 @@ extension ThirdPartyLoginViewController {
         loginStackView.addArrangedSubviews([kakaoLoginButton, appleLoginButton])
         
         mainTitleView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
             make.height.equalTo(140)
         }
         
@@ -101,6 +101,7 @@ extension ThirdPartyLoginViewController {
         
         termsOfServiceLabel.snp.makeConstraints { make in
             make.bottom.equalTo(loginStackView.snp.top).offset(-20)
+            make.height.greaterThanOrEqualTo(40)
             make.centerX.equalTo(view.snp.centerX)
         }
         
