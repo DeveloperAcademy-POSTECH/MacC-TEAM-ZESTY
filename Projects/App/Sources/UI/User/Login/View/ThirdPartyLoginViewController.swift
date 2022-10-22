@@ -108,8 +108,8 @@ extension ThirdPartyLoginViewController {
         
         backgroundImageView.snp.makeConstraints { make in
             make.centerX.equalTo(view.snp.centerX)
-            make.top.equalTo(titleStackView.snp.bottom).offset(88)
-            make.bottom.equalTo(termsOfServiceLabel.snp.bottom).offset(-100)
+            make.top.equalTo(titleStackView.snp.bottom).offset(20)
+            make.bottom.equalTo(termsOfServiceLabel.snp.top).offset(-20)
         }
         
         termsOfServiceLabel.snp.makeConstraints { make in
