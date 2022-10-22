@@ -25,6 +25,7 @@ class EvaluationItemView: UIView {
     }(UIImageView())
     
     private let countLabel: UILabel = {
+        $0.textColor = .label
         $0.font = .systemFont(ofSize: 13, weight: .regular)
         $0.text = "\(0)"
         return $0

@@ -97,7 +97,7 @@ class ReviewCell: UITableViewCell {
 extension ReviewCell {
     
     private func configureUI() {
-        self.backgroundColor = .white
+        self.backgroundColor = .zestyColor(.background)
     }
     
     private func createLayout() {
