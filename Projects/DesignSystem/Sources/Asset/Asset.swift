@@ -16,7 +16,7 @@ public enum Asset: String {
 
     case img_zesterone
     case img_zesterthree
-    case img_good
-    case img_soso
-    case img_bad
+    case img_reviewfriends_good
+    case img_reviewfriends_soso
+    case img_reviewfriends_bad
 }
