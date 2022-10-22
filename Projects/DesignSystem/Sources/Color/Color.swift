@@ -9,6 +9,7 @@
 import Foundation
 
 public enum Color: String {
+    case dim
     case grayC5
     case grayF6
     case gray3C3C43
@@ -24,6 +25,8 @@ public enum Color: String {
             return "#3C3C43FF"
         case .whiteEBEBF5:
             return "#EBEBF5FF"
+        case .dim:
+            return "#545454FF"
             
         }
     }
