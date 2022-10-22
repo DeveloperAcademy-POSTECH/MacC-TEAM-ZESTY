@@ -51,11 +51,11 @@ class EvaluationItemView: UIView {
             
             switch viewModel.evaluation {
             case .good:
-                self.imageView.image = UIImage(.img_reviewfriends_good_25)
+                self.imageView.image = UIImage(.img_reviewfriends_good_30)
             case .soso:
-                self.imageView.image = UIImage(.img_reviewfriends_soso_25)
+                self.imageView.image = UIImage(.img_reviewfriends_soso_30)
             case .bad:
-                self.imageView.image = UIImage(.img_reviewfriends_bad_25)
+                self.imageView.image = UIImage(.img_reviewfriends_bad_30)
             }
             
         }
@@ -76,7 +76,7 @@ extension EvaluationItemView {
         
         imageView.snp.makeConstraints {
             $0.top.bottom.leading.equalToSuperview()
-            $0.width.height.equalTo(25)
+            $0.width.height.equalTo(35)
         }
         
         countLabel.snp.makeConstraints {

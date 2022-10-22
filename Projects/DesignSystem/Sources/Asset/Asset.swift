@@ -21,6 +21,9 @@ public enum Asset: String {
     case img_reviewfriends_good_45
     case img_reviewfriends_soso_45
     case img_reviewfriends_bad_45
+    case img_reviewfriends_good_30
+    case img_reviewfriends_soso_30
+    case img_reviewfriends_bad_30
     case img_reviewfriends_good_25
     case img_reviewfriends_soso_25
     case img_reviewfriends_bad_25

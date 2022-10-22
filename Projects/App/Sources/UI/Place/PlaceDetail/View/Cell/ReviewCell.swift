@@ -13,9 +13,10 @@ import Kingfisher
 class ReviewCell: UITableViewCell {
 
     // MARK: - Properties
-    
+
     private let reviewImageView: UIImageView = {
         $0.image = UIImage(named: "test-pasta")
+        $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 16
         $0.layer.masksToBounds = true
         return $0
@@ -28,9 +29,10 @@ class ReviewCell: UITableViewCell {
     }(UIImageView(frame: .zero))
     
     private let menuLabel: UILabel = {
-        $0.font = .systemFont(ofSize: 20, weight: .semibold)
+        $0.font = .systemFont(ofSize: 20, weight: .black)
         $0.textColor = .white
         $0.textAlignment = .left
+        $0.numberOfLines = 2
         return $0
     }(UILabel())
     
@@ -87,6 +89,7 @@ class ReviewCell: UITableViewCell {
             }
         }
     }
+        
 }
 
     // MARK: - UI Function
@@ -112,17 +115,19 @@ extension ReviewCell {
         }
         
         emojiView.snp.makeConstraints {
-            $0.top.equalTo(reviewImageView.snp.top).inset(25)
+            $0.top.equalTo(reviewImageView.snp.top).inset(20)
             $0.trailing.equalTo(reviewImageView.snp.trailing).inset(15)
             $0.width.height.equalTo(60)
         }
         
         menuLabel.snp.makeConstraints {
             $0.leading.equalTo(reviewImageView.snp.leading).inset(20)
+            $0.trailing.equalTo(reviewImageView.snp.trailing).inset(20)
             $0.bottom.equalTo(dateLabel.snp.top).offset(-5)
         }
         dateLabel.snp.makeConstraints {
             $0.leading.equalTo(reviewImageView.snp.leading).inset(20)
+            $0.trailing.equalTo(reviewImageView.snp.trailing).inset(20)
             $0.bottom.equalTo(reviewImageView.snp.bottom).inset(20)
         }
           

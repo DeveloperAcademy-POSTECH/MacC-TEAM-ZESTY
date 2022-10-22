@@ -39,14 +39,6 @@ class PlaceInfoHeaderView: UITableViewHeaderFooterView {
         $0.font = .systemFont(ofSize: 26, weight: .semibold)
         return $0
     }(UILabel())
-
-    private lazy var evaluationStackView: UIStackView = {
-        $0.axis = .horizontal
-        $0.spacing = 10
-        $0.distribution = .fillEqually
-        $0.alignment = .leading
-        return $0
-    }(UIStackView())
     
     private var goodView = EvaluationItemView()
     private var sosoView = EvaluationItemView()
@@ -165,12 +157,12 @@ extension PlaceInfoHeaderView {
         }
         
         addReviewButton.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(23)
+            $0.top.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(1)
             $0.height.equalTo(65)
         }
         
-        placeView.addSubviews([categoryTagLabel, placeNameLabel, categoryTagLabel, evaluationStackView, addressView, lineView, reviewTitleLabel, lineView])
+        placeView.addSubviews([categoryTagLabel, placeNameLabel, categoryTagLabel, goodView, sosoView, badView, addressView, lineView, reviewTitleLabel, lineView])
         
         placeView.snp.makeConstraints {
             $0.top.equalToSuperview()
@@ -185,20 +177,33 @@ extension PlaceInfoHeaderView {
         }
 
         placeNameLabel.snp.makeConstraints {
-            $0.top.equalTo(categoryTagLabel.snp.bottom).offset(12)
+            $0.top.equalTo(categoryTagLabel.snp.bottom).offset(10)
             $0.leading.equalToSuperview()
         }
 
-        evaluationStackView.addArrangedSubviews([goodView, sosoView, badView])
-        evaluationStackView.snp.makeConstraints {
-            $0.top.equalTo(placeNameLabel.snp.bottom).offset(25)
+        goodView.snp.makeConstraints {
+            $0.top.equalTo(placeNameLabel.snp.bottom).offset(20)
             $0.leading.equalToSuperview()
-            $0.height.equalTo(25)
-            $0.width.equalTo(150)
+            $0.height.equalTo(35)
+            $0.width.equalTo(60)
         }
-
+        
+        sosoView.snp.makeConstraints {
+            $0.top.equalTo(placeNameLabel.snp.bottom).offset(20)
+            $0.leading.equalTo(goodView.snp.trailing).offset(10)
+            $0.height.equalTo(35)
+            $0.width.equalTo(60)
+        }
+        
+        badView.snp.makeConstraints {
+            $0.top.equalTo(placeNameLabel.snp.bottom).offset(20)
+            $0.leading.equalTo(sosoView.snp.trailing).offset(10)
+            $0.height.equalTo(35)
+            $0.width.equalTo(60)
+        }
+        
         addressView.snp.makeConstraints {
-            $0.top.equalTo(evaluationStackView.snp.bottom).offset(30)
+            $0.top.equalTo(goodView.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(70)
         }
@@ -229,7 +234,7 @@ extension PlaceInfoHeaderView {
         }
         
         lineView.snp.makeConstraints {
-            $0.height.equalTo(3)
+            $0.height.equalTo(4)
             $0.width.equalTo(20)
             $0.centerX.equalTo(reviewTitleLabel.snp.centerX)
             $0.top.equalTo(reviewTitleLabel.snp.bottom).offset(5)

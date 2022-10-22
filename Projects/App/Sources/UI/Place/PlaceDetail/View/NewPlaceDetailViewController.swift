@@ -17,7 +17,7 @@ final class NewPlaceDetailViewController: UIViewController {
     private let cancelBag = Set<AnyCancellable>()
     private let viewModel = PlaceDetailViewModel()
     private let place: Place = Place.mockData[0]
-    private let reviews: [Review] = [Review.mockData[1], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3]]
+    private let reviews: [Review] = [Review.mockData[0], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3], Review.mockData[0], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3]]
     
     private let tableView = UITableView(frame: CGRect.zero, style: .grouped)
     
