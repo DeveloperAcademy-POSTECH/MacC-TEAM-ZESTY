@@ -73,6 +73,7 @@ extension ThirdPartyLoginViewController {
         termsOfServiceLabel.numberOfLines = 2
         termsOfServiceLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(termsOfServiceLabelClicked)))
         termsOfServiceLabel.isUserInteractionEnabled = true
+        termsOfServiceLabel.textColor = UIColor.zestyColor(.gray3C3C43)
         
         kakaoLoginButton.addTarget(self, action: #selector(kakaoLoginButtonClicked), for: .touchUpInside)
         kakaoLoginButton.setImage(UIImage(.btn_kakaologin), for: .normal)
