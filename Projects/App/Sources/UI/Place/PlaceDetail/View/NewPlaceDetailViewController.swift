@@ -38,10 +38,14 @@ final class NewPlaceDetailViewController: UIViewController {
 extension NewPlaceDetailViewController {
     
     private func configureUI() {
+        tableView.backgroundColor = .white
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.showsVerticalScrollIndicator = false
         tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.register(PlaceInfoHeaderView.self, forHeaderFooterViewReuseIdentifier: "PlaceInfoHeaderView")
+        tableView.register(ReviewCell.self, forCellReuseIdentifier: "ReviewCell")
+        tableView.separatorStyle = .none
     }
     
     private func createLayout() {
@@ -62,17 +66,26 @@ extension NewPlaceDetailViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.text = "\(indexPath.row)"
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ReviewCell", for: indexPath)
+                as? ReviewCell else { return UITableViewCell() }
+        cell.selectionStyle = .none
+        cell.setup(with: reviews[indexPath.row])
         return cell
+        
     }
     
 }
 
 // MARK: - UITableViewDelegate
 extension NewPlaceDetailViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 330
+    }
+    
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return 400
+        return 350
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -80,6 +93,7 @@ extension NewPlaceDetailViewController: UITableViewDelegate {
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "PlaceInfoHeaderView") as? PlaceInfoHeaderView else {
             return UIView()
         }
+        header.setUp(with: Place.mockData[0])
         
         return header
     }
