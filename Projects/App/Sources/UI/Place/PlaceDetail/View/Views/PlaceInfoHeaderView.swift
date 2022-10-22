@@ -144,7 +144,7 @@ extension PlaceInfoHeaderView {
 extension PlaceInfoHeaderView {
     
     private func configureUI() {
-        self.backgroundColor = .white
+        self.backgroundColor = .zestyColor(.background)
     }
     
     private func createLayout() {
