@@ -4,6 +4,9 @@
 .AppleDouble
 .LSOverride
 
+# Environment File
+Environment.swift
+
 # Icon must end with two
 Icon
 

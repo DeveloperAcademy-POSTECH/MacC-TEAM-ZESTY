@@ -12,7 +12,6 @@ public enum Color: String {
     case grayC5
     case grayF6
     case gray3C3C43
-
     var hexString: String {
         switch self {
         case .grayC5:

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Network
 
 struct Place {
     let id: Int
@@ -25,4 +26,37 @@ struct EvaluationSum {
     let good: Int
     let soso: Int
     let bad: Int
+}
+
+extension Place {
+    
+    init(dto: PlaceDTO) {
+        id = 1
+        creator = User.mockData[0]
+        organizationId = 0
+        name = dto.shopName
+        address = ""
+        lat = ""
+        lan = ""
+        category = Category.mockData
+        evaluationSum = EvaluationSum(dto: dto.evaluations)
+        reviews = dto.reviewContent.map { Review($0) }
+    }
+
+}
+
+extension EvaluationSum {
+    
+    init(dto: EvaluationDTO?) {
+        if let dto = dto {
+            good = dto.one
+            soso = dto.two
+            bad = dto.three
+        } else {
+            good = 0
+            soso = 0
+            bad = 0
+        }
+    }
+    
 }
