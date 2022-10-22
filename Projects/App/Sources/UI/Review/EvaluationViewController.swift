@@ -103,7 +103,7 @@ struct EvaluationPreview: PreviewProvider {
     // TODO: previewDevice ZESTY_TEMPLATE에 추가하기
     
     static var previews: some View {
-        EvaluationViewController().toPreview()
+        UINavigationController(rootViewController: EvaluationViewController()).toPreview()
 //            .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
 //            .previewDevice(PreviewDevice(rawValue: "iPhone 13 Pro Max"))
 //            .previewDevice(PreviewDevice(rawValue: "iPhone 13"))
