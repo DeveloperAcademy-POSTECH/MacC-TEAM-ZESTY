@@ -112,7 +112,7 @@ extension NickNameInputViewController {
             .receive(on: DispatchQueue.main)
             .compactMap { $0.text }
             .sink { text in
-                if text.count > self.viewModel.maxNickNameInputLength {
+                if text.count > self.viewModel.maxNickNameLength {
                     self.nickNameTextField.text?.removeLast()
                 }
             }

@@ -19,7 +19,7 @@ final class NickNameInputViewModel {
     @Published var shouldDisplayWarning = false
     let isNickNameOverlapedSubject = PassthroughSubject<Bool, Never>()
     
-    let maxNickNameInputLength = 6
+    let maxNickNameLength = 6
 
     private var cancelBag = Set<AnyCancellable>()
     
@@ -55,7 +55,7 @@ final class NickNameInputViewModel {
     
     func isValid(for input: String) -> Bool {
         let isBackSpace = strcmp(input.cString(using: .utf8), "\\b") == -92
-        if (nickNameText.count <= maxNickNameInputLength && checkValidCharacter(to: input)) || isBackSpace {
+        if (nickNameText.count <= maxNickNameLength && checkValidCharacter(to: input)) || isBackSpace {
             return true
         }
         return false
