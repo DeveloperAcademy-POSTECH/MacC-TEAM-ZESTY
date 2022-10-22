@@ -30,7 +30,7 @@ final class UserUseCase {
     }
     
     func postAccessTokenUser(accessToken: String) {
-        UserAPI.postAccessTokenToken(accessToken: accessToken)
+        UserAPI.postAccessToken(accessToken: accessToken)
             .sink { error in
                 switch error {
                 case .failure(let error): print(error.localizedString)
