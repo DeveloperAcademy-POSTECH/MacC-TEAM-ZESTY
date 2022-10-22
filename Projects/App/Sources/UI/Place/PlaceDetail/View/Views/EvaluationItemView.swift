@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DesignSystem
 import SnapKit
 
 struct EvaluationViewModel {
@@ -54,13 +55,13 @@ class EvaluationItemView: UIView {
         switch viewModel.evaluation {
         case .good:
             titleLabel.text = "맛집"
-            imageView.image = UIImage(.img_good)
+            imageView.image = UIImage(.img_reviewfriends_good)
         case .soso:
             titleLabel.text = "무난"
-            imageView.image = UIImage(.img_soso)
+            imageView.image = UIImage(.img_reviewfriends_soso)
         case .bad:
             titleLabel.text = "별로"
-            imageView.image = UIImage(.img_bad)
+            imageView.image = UIImage(.img_reviewfriends_bad)
         }
         
     }

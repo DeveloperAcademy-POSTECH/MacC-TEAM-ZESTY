@@ -22,11 +22,11 @@ final class EvaluationButton: UIView {
         var image: UIImage? {
             switch self {
             case .good:
-                return UIImage(.img_good)
+                return UIImage(.img_reviewfriends_good)
             case .soso:
-                return UIImage(.img_soso)
+                return UIImage(.img_reviewfriends_soso)
             case .bad:
-                return UIImage(.img_bad)
+                return UIImage(.img_reviewfriends_bad)
             }
         }
         

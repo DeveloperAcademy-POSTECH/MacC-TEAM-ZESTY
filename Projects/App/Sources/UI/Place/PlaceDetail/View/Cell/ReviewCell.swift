@@ -31,8 +31,8 @@ class ReviewCell: UICollectionViewCell {
     }(UIView())
     
     private let emojiView: UIImageView = {
-        $0.contentMode = .scaleToFill
-        $0.image = UIImage(.img_good_circle)
+//        $0.contentMode = .scaleToFill
+//        $0.image = UIImage(.img_good_circle)
         return $0
     }(UIImageView(frame: .zero))
     
@@ -117,17 +117,17 @@ extension ReviewCell {
         menuLabel.text = review.menuName
         dateLabel.text = review.createdAt.formatted("yyyy/MM/dd")
           
-        switch review.evaluation {
-        case .good:
-            evalutationLabel.text = "맛집"
-            emojiView.image = UIImage(.img_good_circle)
-        case .soso:
-            evalutationLabel.text = "무난"
-            emojiView.image = UIImage(.img_soso_circle)
-        case .bad:
-            evalutationLabel.text = "별로"
-            emojiView.image = UIImage(.img_bad_circle)
-        }
+//        switch review.evaluation {
+//        case .good:
+//            evalutationLabel.text = "맛집"
+//            emojiView.image = UIImage(.img_good_circle)
+//        case .soso:
+//            evalutationLabel.text = "무난"
+//            emojiView.image = UIImage(.img_soso_circle)
+//        case .bad:
+//            evalutationLabel.text = "별로"
+//            emojiView.image = UIImage(.img_bad_circle)
+//        }
         
     }
 }
