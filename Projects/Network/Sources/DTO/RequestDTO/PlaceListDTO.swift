@@ -11,12 +11,20 @@ import Foundation
 public typealias PlaceListDTO = [PlaceDTO]
 
 public struct PlaceDTO: Decodable {
-    public let id: Int
-    public let address: String
-    public let latitude: String
-    public let longitude: String
-    public let organizations: [Int]
-    public let creator: Int
-    public let createdAt: String
-    public let updatedAt: String
+    public let shopName: String
+    public let evaluations: EvaluationDTO
+    public let reviewContent: [ReviewDTO]
+}
+
+public struct EvaluationDTO: Decodable {
+    public let one: Int
+    public let two: Int
+    public let three: Int
+}
+
+public struct ReviewDTO: Decodable {
+    public let menuname: String
+    public let image: String
+    public let reviewer: Int
+    public let registeredAt: String
 }
