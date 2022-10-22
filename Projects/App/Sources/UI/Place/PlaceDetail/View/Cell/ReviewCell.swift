@@ -106,12 +106,12 @@ extension ReviewCell {
         contentView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.width.equalToSuperview()
-            $0.height.equalTo(330)
+            $0.height.equalTo(UIScreen.main.isWiderThan425pt ? 365 : 330)
         }
         
         reviewImageView.snp.makeConstraints {
             $0.center.equalToSuperview()
-            $0.width.height.equalTo(300)
+            $0.width.height.equalTo(UIScreen.main.isWiderThan425pt ? 330 : 300)
         }
         
         emojiView.snp.makeConstraints {

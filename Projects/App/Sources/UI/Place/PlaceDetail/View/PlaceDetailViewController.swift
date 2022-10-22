@@ -110,7 +110,11 @@ extension PlaceDetailViewController: UITableViewDataSource {
 extension PlaceDetailViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 330
+        if UIScreen.main.isWiderThan425pt {
+            return 365
+        } else {
+            return 330
+        }
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
