@@ -36,11 +36,8 @@ extension NetworkService {
                     NetworkError.invalidUrl(error)
                 }
                 .flatMap { (data, response) in
-                    guard let httpResponse = response as? HTTPURLResponse else {
-                        return Fail<T, NetworkError>(error: NetworkError.badResponse).eraseToAnyPublisher()
-                    }
-                    guard 200..<300 ~= httpResponse.statusCode else {
-                        return Fail<T, NetworkError>(error: NetworkError.status(httpResponse.statusCode)).eraseToAnyPublisher()
+                    if let error = self.checkError(data: data, response: response) {
+                        return Fail<T, NetworkError>(error: error).eraseToAnyPublisher()
                     }
                     return Just(data)
                         .decode(type: T.self, decoder: JSONDecoder())
@@ -53,6 +50,24 @@ extension NetworkService {
         } catch {
             return Fail(error: NetworkError.invalidUrlRequest(error)).eraseToAnyPublisher()
         }
+    }
+    
+    private func checkError(data: Data, response: URLResponse) -> NetworkError? {
+        guard let httpResponse = response as? HTTPURLResponse else {
+            return NetworkError.badResponse
+        }
+        if let responseBody = String(data: data, encoding: String.Encoding.utf8) {
+            switch httpResponse.statusCode {
+            case 300..<400: return .redirection(responseBody)
+            case 400: return .badRequest(responseBody)
+            case 401: return .unauthorized(responseBody)
+            case 403: return .forbidden(responseBody)
+            case 404: return .notFound(responseBody)
+            case 500...: return .serverError(responseBody)
+            default: return nil
+            }
+        }
+        return .unknown("response body -> string 전환 실패")
     }
 
 }
