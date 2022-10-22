@@ -19,7 +19,7 @@ final class PlaceListViewController: UIViewController {
     
     private var searchBarItem = UIBarButtonItem()
     private var profileBarItem = UIBarButtonItem()
-    private let registerButton = ShadowButtonView()
+    private let registerButton = FullWidthBlackButton()
     
     // MARK: - LifeCycle
     
@@ -218,7 +218,7 @@ extension PlaceListViewController {
         navigationItem.rightBarButtonItems = [searchBarItem, profileBarItem]
         navigationItem.title = "애플디벨로퍼아카데미"
         
-        registerButton.button.setTitle("나의 맛집 등록하기", for: .normal)
+        registerButton.setTitle("나의 맛집 등록하기", for: .normal)
     }
     
     private func createLayout() {

@@ -21,4 +21,6 @@ public enum Asset: String {
     case img_soso_circle
     case img_good_circle
     case img_bad_circle
+    case img_signup
+    case img_login
 }
