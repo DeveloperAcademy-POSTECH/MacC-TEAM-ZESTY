@@ -59,13 +59,14 @@ extension SignupCompleteViewController {
             make.leading.equalTo(view.snp.leading).offset(20)
             make.trailing.equalTo(view.snp.trailing).offset(-20)
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
+            make.height.equalTo(140)
         }
         
         backgroundImageView.snp.makeConstraints { make in
             make.centerX.equalTo(view.snp.centerX)
             make.centerY.equalTo(view.snp.centerY)
-            make.width.equalTo(127)
-            make.height.equalTo(127)
+            make.height.equalTo(130)
+            make.width.equalTo(130)
         }
         
         nickNameLabel.snp.makeConstraints { make in
@@ -75,7 +76,7 @@ extension SignupCompleteViewController {
         
         startButton.snp.makeConstraints { make in
             make.centerX.equalTo(view.snp.centerX)
-            make.top.equalTo(nickNameLabel.snp.bottom).offset(203)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
     }

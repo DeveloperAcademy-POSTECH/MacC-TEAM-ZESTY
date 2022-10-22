@@ -118,7 +118,7 @@ extension ThirdPartyLoginViewController {
         }
         
         loginStackView.snp.makeConstraints { make in
-            make.bottom.equalTo(view.snp.bottom).offset(-30)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-30)
             make.leading.trailing.equalToSuperview().inset(30)
         }
         
