@@ -17,7 +17,8 @@ final class ReviewRegisterViewController: UIViewController {
     // MARK: - Properties
     private var cancelBag = Set<AnyCancellable>()
     
-    private let titleView = UIView()
+    private let safeArea = UIView()
+    private let titleView = MainTitleView(title: "요기쿠시동에서 무엇을 드셨나요?")
     private let containerView = UIView()
     private let backgroundView = UIView()
     private let plusImageView = UIImageView()
@@ -45,10 +46,9 @@ extension ReviewRegisterViewController {
     
     private func configureUI() {
         view.backgroundColor = .systemBackground
-        navigationController?.navigationItem.backButtonDisplayMode = .minimal
+        navigationController?.navigationBar.topItem?.title = ""
+        navigationController?.navigationBar.tintColor = .black
         
-        titleView.backgroundColor = .gray
-
         var config = UIImage.SymbolConfiguration(paletteColors: [.darkGray])
         config = config.applying(UIImage.SymbolConfiguration(weight: .semibold) )
         let plusImage = UIImage(systemName: "plus", withConfiguration: config)
@@ -72,12 +72,23 @@ extension ReviewRegisterViewController {
     }
     
     private func createLayout() {
+        safeArea.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(safeArea)
+        
+        let guide = view.safeAreaLayoutGuide
+        safeArea.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
+        safeArea.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
+        safeArea.leadingAnchor.constraint(equalTo: guide.leadingAnchor).isActive = true
+        safeArea.trailingAnchor.constraint(equalTo: guide.trailingAnchor).isActive = true
+        
         view.addSubviews([titleView, containerView, registerButton])
         containerView.addSubviews([backgroundView, plusImageView,
                                        imageButton, menuTextField, underline])
         
         titleView.snp.makeConstraints {
-            $0.top.horizontalEdges.equalToSuperview()
+            $0.top.equalTo(safeArea)
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(40)
             $0.height.equalTo(135)
         }
         containerView.snp.makeConstraints {
