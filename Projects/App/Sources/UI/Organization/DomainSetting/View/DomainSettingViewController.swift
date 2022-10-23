@@ -17,8 +17,6 @@ final class DomainSettingViewController: UIViewController {
     
     private let viewModel = DomainSettingViewModel()
     
-    private var cancelBag = Set<AnyCancellable>()
-    
     private let mainTitleView = MainTitleView(title: "학교 이메일을 알려주세요", subtitle: "학교 인증에 사용돼요.")
     private let domainInputBox = UIView()
     private let domainStackView = UIStackView()
@@ -29,7 +27,6 @@ final class DomainSettingViewController: UIViewController {
     private let arrowButton = UIButton()
     
     private var keyboardUpConstraints: NSLayoutConstraint?
-    private var keyboardDownConstraints: NSLayoutConstraint?
     
     private var isButtonValid: Bool = false
     
@@ -51,6 +48,7 @@ final class DomainSettingViewController: UIViewController {
 // MARK: - Bind Function
 
 extension DomainSettingViewController {
+    
     private func bindUI() {
         domainTextField.textDidChangePublisher
                         .compactMap { $0.text }
@@ -65,7 +63,21 @@ extension DomainSettingViewController {
                 self?.arrowButton.tintColor = isValid ? .black : .lightGray
             }
             .store(in: &cancelBag)
+        
+        NotificationCenter.default.publisher(for: UIApplication.keyboardWillShowNotification)
+            .sink { [weak self] notification in
+                guard let self = self else { return }
+                if self.keyboardUpConstraints == nil {
+                    guard let endFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+                    let endFrameHeight = endFrame.cgRectValue.height
+                    self.keyboardUpConstraints = self.arrowButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -endFrameHeight - 20)
+                    self.keyboardUpConstraints?.priority = .defaultLow
+                }
+                self.keyboardUpConstraints?.isActive = true
+            }
+            .store(in: &cancelBag)
     }
+    
 }
 
 // MARK: - UI Function
@@ -88,6 +100,7 @@ extension DomainSettingViewController {
         domainTextField.attributedPlaceholder = .init(attributedString: NSAttributedString(string: "이메일", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
         domainTextField.textColor = .white
         domainTextField.font = .systemFont(ofSize: 17, weight: .medium)
+        domainTextField.keyboardType = .asciiCapable
         
         domainPlaceholder.textColor = .white
         domainPlaceholder.text = "@pos.idserve.net"
@@ -95,7 +108,7 @@ extension DomainSettingViewController {
         domainPlaceholder.setContentCompressionResistancePriority(.init(1000), for: .horizontal)
         
         // TODO: Component로 변경
-        arrowButton.tintColor = .darkGray
+        arrowButton.tintColor = .lightGray
         arrowButton.backgroundColor = .white
         arrowButton.configuration = .plain()
         arrowButton.configuration?.contentInsets = .init(top: 14.5, leading: 15, bottom: 14.5, trailing: 15)
@@ -134,7 +147,6 @@ extension DomainSettingViewController {
         }
         
         arrowButton.snp.makeConstraints { make in
-            make.top.equalTo(domainInputBox.snp.bottom).offset(89)
             make.right.equalToSuperview().inset(20)
         }
     }
