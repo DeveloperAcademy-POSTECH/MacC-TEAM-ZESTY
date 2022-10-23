@@ -11,6 +11,8 @@ import Foundation
 
 final class NickNameInputViewModel {
     
+    let useCase = UserUseCase()
+    
     // Input
     @Published var nickNameText = ""
     
@@ -41,7 +43,6 @@ final class NickNameInputViewModel {
     }
     
     func checkNickNameOverlaped() {
-        // TODO: UseCase와 통신하여 중복 체크
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             let result = Bool.random()
             self.isNickNameOverlapedSubject.send(result)

@@ -42,4 +42,30 @@ final class UserUseCase {
             .store(in: &cancelBag)
     }
     
+    func getNicknameValidationUser(nickname: String) {
+        UserAPI.getNicknameValidation(nickname: nickname)
+            .sink { error in
+                switch error {
+                case .failure(let error): print(error.localizedString)
+                case .finished: break
+                }
+            } receiveValue: { validation in
+                print("validation: \(validation)")
+            }
+            .store(in: &cancelBag)
+    }
+    
+    func putNicknameUser(authorization: String) {
+        UserAPI.putNickname(authorization: authorization)
+            .sink { error in
+                switch error {
+                case .failure(let error): print(error.localizedString)
+                case .finished: break
+                }
+            } receiveValue: { response in
+                print("response: \(response)")
+            }
+            .store(in: &cancelBag)
+    }
+    
 }
