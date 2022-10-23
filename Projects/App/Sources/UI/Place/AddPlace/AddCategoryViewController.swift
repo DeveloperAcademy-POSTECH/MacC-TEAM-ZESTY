@@ -27,6 +27,13 @@ final class AddCategoryViewController: UIViewController {
     
     private lazy var categoryCollectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: createCollecionViewLayout())
     
+    private lazy var addPlaceButton: UIButton = {
+        $0.configuration = .borderedTinted()
+        $0.setTitle("맛집 등록하기", for: .normal)
+        $0.addTarget(self, action: #selector(addPlaceButtonDidTap), for: .touchUpInside)
+        return $0
+    }(UIButton())
+    
     // MARK: - LifeCycle
     
     override func viewDidLoad() {
@@ -39,6 +46,10 @@ final class AddCategoryViewController: UIViewController {
     // MARK: - Function
     @objc func backButtonDidTap() {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func addPlaceButtonDidTap() {
+        self.navigationController?.pushViewController(AddPlaceResultViewController(), animated: true)
     }
     
 }
@@ -64,7 +75,7 @@ extension AddCategoryViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([titleView, categoryCollectionView])
+        view.addSubviews([titleView, categoryCollectionView, addPlaceButton])
         
         titleView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
@@ -75,6 +86,12 @@ extension AddCategoryViewController {
             $0.horizontalEdges.equalToSuperview().inset(20)
             $0.top.equalTo(titleView.snp.bottom).offset(25)
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(90)
+        }
+        
+        addPlaceButton.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(45)
         }
         
     }
