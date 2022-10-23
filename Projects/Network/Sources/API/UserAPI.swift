@@ -28,10 +28,10 @@ public struct UserAPI {
         return networkService.request(with: endpoint, responseType: UserOauthDTO.self)
     }
     
-    public static func getNicknameValidation(nickname: String) -> AnyPublisher<UserOauthDTO, NetworkError> {
+    public static func getNicknameValidation(nickname: String) -> AnyPublisher<Bool, NetworkError> {
         let header = ["Content-Type": "application/json"]
         let endpoint = Endpoint(path: "/api/users/validate/nickname", method: .get, queryParams: ["nickname": nickname], headers: header)
-        return networkService.request(with: endpoint, responseType: UserOauthDTO.self)
+        return networkService.request(with: endpoint)
     }
     
     public static func putNickname(authorization: String) -> AnyPublisher<UserOauthDTO, NetworkError> {
