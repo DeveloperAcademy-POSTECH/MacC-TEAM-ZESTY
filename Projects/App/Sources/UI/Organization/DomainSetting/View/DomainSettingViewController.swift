@@ -25,9 +25,15 @@ final class DomainSettingViewController: UIViewController {
     private let domainTextField = UITextField()
     private let domainPlaceholder = UILabel()
     
+    // TODO: component로 변경하기
     private let arrowButton = UIButton()
     
+    private var keyboardUpConstraints: NSLayoutConstraint?
+    private var keyboardDownConstraints: NSLayoutConstraint?
+    
     private var isButtonValid: Bool = false
+    
+    private var cancelBag = Set<AnyCancellable>()
     
     // MARK: - LifeCycle
     
@@ -42,20 +48,21 @@ final class DomainSettingViewController: UIViewController {
     
 }
 
-// MARK: - Bind UI
+// MARK: - Bind Function
+
 extension DomainSettingViewController {
     private func bindUI() {
         domainTextField.textDidChangePublisher
                         .compactMap { $0.text }
-                        .receive(on: DispatchQueue.main)
                         .assign(to: \.userEmail, on: viewModel)
                         .store(in: &cancelBag)
         
         viewModel.$isEmailValid
             .sink {[weak self] isValid in
+                // TODO: button disalbed로 변경하기
                 print(isValid)
-                self?.arrowButton.backgroundColor = isValid ? .white : .gray
-                self?.arrowButton.tintColor = isValid ? .black : .darkGray
+                self?.arrowButton.layer.borderColor = isValid ? UIColor.black.cgColor : UIColor.lightGray.cgColor
+                self?.arrowButton.tintColor = isValid ? .black : .lightGray
             }
             .store(in: &cancelBag)
     }
@@ -76,7 +83,8 @@ extension DomainSettingViewController {
         domainStackView.axis = .horizontal
         domainStackView.distribution = .fill
         domainStackView.alignment = .fill
-        
+       
+        domainTextField.becomeFirstResponder()
         domainTextField.attributedPlaceholder = .init(attributedString: NSAttributedString(string: "이메일", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
         domainTextField.textColor = .white
         domainTextField.font = .systemFont(ofSize: 17, weight: .medium)
@@ -88,12 +96,13 @@ extension DomainSettingViewController {
         
         // TODO: Component로 변경
         arrowButton.tintColor = .darkGray
-        arrowButton.backgroundColor = .gray
+        arrowButton.backgroundColor = .white
         arrowButton.configuration = .plain()
         arrowButton.configuration?.contentInsets = .init(top: 14.5, leading: 15, bottom: 14.5, trailing: 15)
         arrowButton.clipsToBounds = true
         arrowButton.layer.borderWidth = 2
         arrowButton.layer.cornerRadius = 25
+        arrowButton.layer.borderColor = UIColor.black.cgColor
 
         let arrowImageConfiguration = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .default)
         let arrowImage = UIImage(systemName: "arrow.forward", withConfiguration: arrowImageConfiguration)
@@ -112,10 +121,10 @@ extension DomainSettingViewController {
         }
         
         domainInputBox.snp.makeConstraints { make in
+            make.top.equalTo(mainTitleView.snp.bottom).offset(160)
+            make.centerX.equalToSuperview()
             make.height.equalTo(50)
             make.width.lessThanOrEqualTo(310)
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview()
         }
         
         domainStackView.snp.makeConstraints { make in
@@ -125,7 +134,7 @@ extension DomainSettingViewController {
         }
         
         arrowButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(20)
+            make.top.equalTo(domainInputBox.snp.bottom).offset(89)
             make.right.equalToSuperview().inset(20)
         }
     }
