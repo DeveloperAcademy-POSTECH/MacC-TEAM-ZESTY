@@ -15,9 +15,6 @@ class PlaceDetailViewModel {
     enum Input {
         case viewDidLoad
         case addReviewBtnDidTap
-        case kakaoBtnDidTap
-        case naverBtnDidTap
-        case nextCursorDidTrigger
     }
     
     enum Output {
@@ -26,34 +23,29 @@ class PlaceDetailViewModel {
         case fetchReviewListFail(error: Error)
         case fetchReviewListSucceed(list: [Review])
     }
-    
-    private var cursor = 1
-    private let reviewWindow = 10 // 몇개단위로 가는지
-    
+     
     private var cancelBag = Set<AnyCancellable>()
     
     private let output: PassthroughSubject<Output, Never> = .init()
-    private let usecase: PlaceDetailUseCase
+    private let useCase: PlaceDetailUseCase
+    
+    var place: Place?
+    var reviews: [Review] = []
     
     init(placeDetailUseCase: PlaceDetailUseCase = PlaceDetailUseCase()) {
-        self.usecase = placeDetailUseCase
+        self.useCase = placeDetailUseCase
     }
     
-    // MARK: - transmutation : Input -> Output (transmute)
-    func transmute(input: AnyPublisher<Input, Never>) -> AnyPublisher<Output, Never> {
+    // MARK: - transform : Input -> Output
+    func transform(input: AnyPublisher<Input, Never>) -> AnyPublisher<Output, Never> {
         
         input.sink { [weak self] event in
             switch event {
             case .viewDidLoad:
                 self?.fetchPlaceInfo(id: 1)
-            case .nextCursorDidTrigger:
-                self?.loadMoreReviews()
+                self?.fetchReviews()
             case .addReviewBtnDidTap:
                 self?.routeTo()
-            case .kakaoBtnDidTap:
-                self?.openKakaoMap()
-            case .naverBtnDidTap:
-                self?.openNaverMap()
 
             }
         }.store(in: &cancelBag)
@@ -64,29 +56,25 @@ class PlaceDetailViewModel {
     // MARK: - functions
     
     private func fetchPlaceInfo(id: Int) {
-           
-        // 할일: loadReviews
+        useCase.fetchPlaceDetail(with: id).sink { [weak self] completion in
+            if case .failure(let error) = completion {
+                self?.output.send(.fetchPlaceInfoFail(error: error))
+            }
+        } receiveValue: { [weak self] place in
+            self?.place = place
+            self?.output.send(.fetchPlaceDidSucceed(place: place))
+        }
+        .store(in: &cancelBag)
     }
     
-    private func loadReviews() {
-        
-    }
-    
-    private func loadMoreReviews() {
-        
-    }
-    
-    private func openKakaoMap() {
-        
-    }
-    
-    private func openNaverMap() {
+    // 리뷰가져오기
+    private func fetchReviews() {
         
     }
     
     // 리뷰추가화면전환
     private func routeTo() {
-        
+        // TO-DO: place id, name
     }
       
 }
