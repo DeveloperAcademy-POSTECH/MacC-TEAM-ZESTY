@@ -11,7 +11,7 @@ import Network
 
 struct Place {
     let id: Int
-    let creator: User
+    let creator: User?
     let organizationId: Int
     let name: String
     let address: String
@@ -41,6 +41,21 @@ extension Place {
         category = Category.mockData
         evaluationSum = EvaluationSum(dto: dto.evaluations)
         reviews = dto.reviewContent.map { Review($0) }
+    }
+    
+    init(detailDTO dto: PlaceDetailDTO) {
+        id = dto.placeID
+        creator = nil
+        organizationId = -1
+        name = dto.placeName
+        address = dto.address
+        lat = dto.lat
+        lan = dto.long
+        category = [Category(id: dto.category.id, name: dto.category.name)]
+        evaluationSum = EvaluationSum(good: dto.evaluationSummary.goodCount,
+                                      soso: dto.evaluationSummary.sosoCount,
+                                      bad: dto.evaluationSummary.badCount)
+        reviews = []
     }
 
 }
