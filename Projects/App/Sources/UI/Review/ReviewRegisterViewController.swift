@@ -16,8 +16,11 @@ final class ReviewRegisterViewController: UIViewController {
     
     // MARK: - Properties
     private var cancelBag = Set<AnyCancellable>()
+    private let keyboardShowPublisher = NotificationCenter.default.publisher(for: UIApplication.keyboardWillShowNotification)
+    private let keyboardHidePublisher = NotificationCenter.default.publisher(for: UIApplication.keyboardWillHideNotification)
     
     private let safeArea = UIView()
+    private let keyboardSafeArea = UIView()
     private let titleView = MainTitleView(title: "요기쿠시동에서 무엇을 드셨나요?")
     private let containerView = UIView()
     private let backgroundView = UIView()
@@ -34,6 +37,7 @@ final class ReviewRegisterViewController: UIViewController {
         
         configureUI()
         createLayout()
+        bindKeyboardAction()
     }
 
     // MARK: - Function
@@ -81,7 +85,8 @@ extension ReviewRegisterViewController {
         safeArea.leadingAnchor.constraint(equalTo: guide.leadingAnchor).isActive = true
         safeArea.trailingAnchor.constraint(equalTo: guide.trailingAnchor).isActive = true
         
-        view.addSubviews([titleView, containerView, registerButton])
+        view.addSubviews([keyboardSafeArea, titleView,
+                          containerView, registerButton])
         containerView.addSubviews([backgroundView, plusImageView,
                                        imageButton, menuTextField, underline])
         
@@ -91,6 +96,7 @@ extension ReviewRegisterViewController {
             $0.trailing.equalToSuperview().inset(40)
             $0.height.equalTo(135)
         }
+        
         containerView.snp.makeConstraints {
             $0.center.equalToSuperview()
             $0.height.equalToSuperview().multipliedBy(0.3)
@@ -120,8 +126,85 @@ extension ReviewRegisterViewController {
             $0.bottom.equalTo(menuTextField.snp.bottom).offset(5)
             $0.height.equalTo(3)
         }
+        
         registerButton.snp.makeConstraints {
             $0.horizontalEdges.bottom.equalToSuperview().inset(20)
+        }
+    }
+    
+    private func bindKeyboardAction() {
+        keyboardShowPublisher
+            .sink { [weak self] notification in
+                guard let self = self else { return }
+                guard let endFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+                let endFrameHeight = endFrame.cgRectValue.height
+                
+                UIView.animate(withDuration: 2) {
+                    self.updateLayout(isKeyboardShown: true, with: endFrameHeight)
+                }
+                self.view.layoutIfNeeded()
+            }
+            .store(in: &cancelBag)
+        keyboardHidePublisher
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                
+                UIView.animate(withDuration: 2) {
+                    self.updateLayout(isKeyboardShown: false)
+                }
+                self.view.layoutIfNeeded()
+            }
+            .store(in: &cancelBag)
+    }
+    
+    private func updateLayout(isKeyboardShown: Bool, with keyboardHeight: CGFloat? = nil) {
+        if isKeyboardShown {
+            let containerHeight = containerView.snp.height
+            guard let keyboardHeight = keyboardHeight else { return }
+            
+            keyboardSafeArea.snp.remakeConstraints {
+                $0.top.equalTo(safeArea.snp.top)
+                $0.horizontalEdges.equalToSuperview()
+                $0.bottom.equalTo(registerButton.snp.top).inset(20)
+            }
+            titleView.snp.remakeConstraints {
+                $0.height.equalTo(0).priority(800)
+            }
+            titleView.titleLabel.snp.remakeConstraints {
+                $0.height.equalTo(0).priority(800)
+            }
+
+            containerView.snp.remakeConstraints {
+                $0.center.equalTo(keyboardSafeArea.snp.center)
+                $0.height.equalTo(containerHeight)
+                $0.width.equalTo(containerView.snp.height).multipliedBy(0.75)
+            }
+            registerButton.snp.remakeConstraints {
+                $0.horizontalEdges.equalToSuperview().inset(20)
+                $0.bottom.equalToSuperview().inset(keyboardHeight + 20)
+                $0.height.equalTo(55)
+            }
+        } else {
+            titleView.snp.remakeConstraints {
+                $0.top.equalTo(safeArea)
+                $0.leading.equalToSuperview()
+                $0.trailing.equalToSuperview().inset(40)
+                $0.height.equalTo(135)
+            }
+            titleView.titleLabel.snp.remakeConstraints {
+                $0.top.equalToSuperview()
+                $0.horizontalEdges.equalToSuperview()
+                $0.height.greaterThanOrEqualTo(31)
+            }
+            containerView.snp.remakeConstraints {
+                $0.center.equalToSuperview()
+                $0.height.equalToSuperview().multipliedBy(0.3)
+                $0.width.equalTo(containerView.snp.height).multipliedBy(0.75)
+            }
+            registerButton.snp.remakeConstraints {
+                $0.horizontalEdges.bottom.equalToSuperview().inset(20)
+                $0.height.equalTo(55)
+            }
         }
     }
     
