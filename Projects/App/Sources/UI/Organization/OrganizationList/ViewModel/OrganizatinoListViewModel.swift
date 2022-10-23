@@ -6,8 +6,8 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 final class OrganizationListViewModel {
     

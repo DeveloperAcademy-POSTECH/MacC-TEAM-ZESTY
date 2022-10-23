@@ -15,19 +15,25 @@ final class DomainSettingViewController: UIViewController {
 
     // MARK: - Properties
     
-    private let cancelBag = Set<AnyCancellable>()
+    private let viewModel = DomainSettingViewModel()
     
-    private let mainTitleView = MainTitleView(title: "학교 이메일을 알려주세요",
-                                              subtitle: "학교 인증에 사용돼요.")
+    private var cancelBag = Set<AnyCancellable>()
+    
+    private let mainTitleView = MainTitleView(title: "학교 이메일을 알려주세요", subtitle: "학교 인증에 사용돼요.")
     private let domainInputBox = UIView()
     private let domainStackView = UIStackView()
     private let domainTextField = UITextField()
     private let domainPlaceholder = UILabel()
     
+    private let arrowButton = UIButton()
+    
+    private var isButtonValid: Bool = false
+    
     // MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bindUI()
         configureUI()
         createLayout()
     }
@@ -36,11 +42,32 @@ final class DomainSettingViewController: UIViewController {
     
 }
 
+// MARK: - Bind UI
+extension DomainSettingViewController {
+    private func bindUI() {
+        domainTextField.textDidChangePublisher
+                        .compactMap { $0.text }
+                        .receive(on: DispatchQueue.main)
+                        .assign(to: \.userEmail, on: viewModel)
+                        .store(in: &cancelBag)
+        
+        viewModel.$isEmailValid
+            .sink {[weak self] isValid in
+                print(isValid)
+                self?.arrowButton.backgroundColor = isValid ? .white : .gray
+                self?.arrowButton.tintColor = isValid ? .black : .darkGray
+            }
+            .store(in: &cancelBag)
+    }
+}
+
 // MARK: - UI Function
 
 extension DomainSettingViewController {
     
     private func configureUI() {
+        view.backgroundColor = .white
+        
         domainInputBox.backgroundColor = .black
         domainInputBox.layer.cornerRadius = 25
         domainInputBox.layer.masksToBounds = true
@@ -58,10 +85,23 @@ extension DomainSettingViewController {
         domainPlaceholder.text = "@pos.idserve.net"
         domainPlaceholder.font = .systemFont(ofSize: 17, weight: .medium)
         domainPlaceholder.setContentCompressionResistancePriority(.init(1000), for: .horizontal)
+        
+        // TODO: Component로 변경
+        arrowButton.tintColor = .darkGray
+        arrowButton.backgroundColor = .gray
+        arrowButton.configuration = .plain()
+        arrowButton.configuration?.contentInsets = .init(top: 14.5, leading: 15, bottom: 14.5, trailing: 15)
+        arrowButton.clipsToBounds = true
+        arrowButton.layer.borderWidth = 2
+        arrowButton.layer.cornerRadius = 25
+
+        let arrowImageConfiguration = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .default)
+        let arrowImage = UIImage(systemName: "arrow.forward", withConfiguration: arrowImageConfiguration)
+        arrowButton.setImage(arrowImage, for: .normal)
     }
     
     private func createLayout() {
-        view.addSubviews([mainTitleView, domainInputBox])
+        view.addSubviews([mainTitleView, domainInputBox, arrowButton])
         
         domainInputBox.addSubview(domainStackView)
         domainStackView.addArrangedSubviews([domainTextField, domainPlaceholder])
@@ -82,6 +122,11 @@ extension DomainSettingViewController {
             make.verticalEdges.equalToSuperview().inset(14)
             make.horizontalEdges.equalToSuperview().inset(20)
             make.width.lessThanOrEqualTo(270)
+        }
+        
+        arrowButton.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().inset(20)
+            make.right.equalToSuperview().inset(20)
         }
     }
     
