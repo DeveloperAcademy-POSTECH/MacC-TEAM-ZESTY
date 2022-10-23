@@ -36,6 +36,16 @@ final class NickNameInputViewModel {
                 }
             }
             .store(in: &cancelBag)
+        
+        useCase.isNickNameOverlapedSubject
+            .sink { [weak self] isNickNameOverlaped in
+                guard let self = self else { return }
+                self.isNickNameOverlapedSubject.send(isNickNameOverlaped)
+                if isNickNameOverlaped {
+                    self.shouldDisplayWarning = true
+                }
+            }
+            .store(in: &cancelBag)
     }
     
     private func isEmpty(to text: String) -> Bool {
@@ -43,13 +53,7 @@ final class NickNameInputViewModel {
     }
     
     func checkNickNameOverlaped() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            let result = Bool.random()
-            self.isNickNameOverlapedSubject.send(result)
-            if result {
-                self.shouldDisplayWarning = true
-            }
-        }
+        useCase.getNicknameValidationUser(nickname: nickNameText)
     }
     
     func isValid(for input: String) -> Bool {

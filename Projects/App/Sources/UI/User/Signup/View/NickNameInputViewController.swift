@@ -93,6 +93,7 @@ extension NickNameInputViewController {
             .store(in: &cancelBag)
         
         viewModel.$shouldDisplayWarning
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] shouldDisplayWarning in
                 guard let self = self else { return }
                 self.warningLabel.isHidden = !shouldDisplayWarning
@@ -100,6 +101,7 @@ extension NickNameInputViewController {
             .store(in: &cancelBag)
         
         viewModel.isNickNameOverlapedSubject
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] isNickNameOverlaped in
                 guard let self = self else { return }
                 self.nextButtonView.stopIndicator()

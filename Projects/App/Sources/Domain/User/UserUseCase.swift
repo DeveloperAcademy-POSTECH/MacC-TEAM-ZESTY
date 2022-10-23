@@ -12,6 +12,10 @@ import Network
 
 final class UserUseCase {
     
+    // output
+    
+    let isNickNameOverlapedSubject = PassthroughSubject<Bool, Never>()
+    
     private var cancelBag = Set<AnyCancellable>()
 
     func postSignUpUser() {
@@ -50,12 +54,14 @@ final class UserUseCase {
                 case .finished: break
                 }
             } receiveValue: { validation in
-                print("validation: \(validation)")
+                self.isNickNameOverlapedSubject.send(!validation)
             }
             .store(in: &cancelBag)
     }
     
-    func putNicknameUser(authorization: String) {
+    func putNicknameUser() {
+        guard let authorization = UserDefaults.standard.user?.authToken else { return }
+        print("authorization \(authorization)")
         UserAPI.putNickname(authorization: authorization)
             .sink { error in
                 switch error {
