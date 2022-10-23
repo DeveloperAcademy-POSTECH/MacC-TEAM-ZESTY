@@ -12,11 +12,13 @@ import KakaoSDKUser
 
 final class ThirdPartyLoginViewModel {
     
-    let useCase = UserLoginUseCase()
-    var accessToken: String?
+    private let useCase = UserLoginUseCase()
+    private var accessToken: String?
+    
+    // Input
+    private let isLoggedInSubject = PassthroughSubject<Bool, Never>()
     
     // Output
-    let isLoggedInSubject = PassthroughSubject<Bool, Never>()
     let isUserRegisteredSubject = PassthroughSubject<Bool, Never>()
     
     private var cancelBag = Set<AnyCancellable>()
