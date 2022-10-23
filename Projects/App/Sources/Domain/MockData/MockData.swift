@@ -13,7 +13,7 @@ extension Category {
         Category(id: 1, name: "중식", imageURL: "https://user-images.githubusercontent.com/63157395/197410852-94dfcfb0-ebf5-48a4-af1a-5b4af65e8691.png"),
         Category(id: 2, name: "일식", imageURL: "https://user-images.githubusercontent.com/63157395/197410856-08e53c4c-29d3-4726-8600-f990f51be411.png"),
         Category(id: 3, name: "양식", imageURL: "https://user-images.githubusercontent.com/63157395/197410863-c948f14f-240b-4bb2-9733-06a244f52064.png"),
-        Category(id: 4, name: "아시안", imageURL: "https://user-images.githubusercontent.com/63157395/197408861-959911d0-787e-4341-850f-18adc96974ad.svg"),
+        Category(id: 4, name: "아시안", imageURL: "https://user-images.githubusercontent.com/63157395/197410896-9e18c0be-c298-4ddb-86b3-f2c636a0f180.png"),
         Category(id: 5, name: "분식", imageURL: "https://user-images.githubusercontent.com/63157395/197410849-98a47f44-674b-434a-9af8-54983f75a556.png"),
         Category(id: 6, name: "치킨", imageURL: "https://user-images.githubusercontent.com/63157395/197410851-8b192127-e86f-440d-8477-4a360261e89e.png"),
         Category(id: 7, name: "패스트푸드", imageURL: "https://user-images.githubusercontent.com/63157395/197410854-05805190-8281-44e5-8de8-5e212a32c76f.png"),
