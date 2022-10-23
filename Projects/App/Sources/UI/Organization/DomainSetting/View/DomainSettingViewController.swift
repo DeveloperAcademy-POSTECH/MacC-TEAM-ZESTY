@@ -57,19 +57,11 @@ extension DomainSettingViewController {
         viewModel.$isEmailValid
             .sink {[weak self] isValid in
                 // TODO: button disalbed로 변경하기
-                self?.arrowButton.layer.borderColor = isValid ? UIColor.black.cgColor : UIColor.lightGray.cgColor
-                self?.arrowButton.tintColor = isValid ? .black : .lightGray
-            }
-            .store(in: &cancelBag)
-        
-        viewModel.$isDuplicateEamil
-            .sink {[weak self] isDuplicateEmail  in
                 guard let self = self else { return }
-                self.domainDuplicatedLabel.isHidden = !isDuplicateEmail
-            
+                self.arrowButton.layer.borderColor = isValid ? UIColor.black.cgColor : UIColor.lightGray.cgColor
+                self.arrowButton.tintColor = isValid ? .black : .lightGray
             }
             .store(in: &cancelBag)
-        
         NotificationCenter.default.publisher(for: UIApplication.keyboardWillShowNotification)
             .sink { [weak self] notification in
                 guard let self = self else { return }

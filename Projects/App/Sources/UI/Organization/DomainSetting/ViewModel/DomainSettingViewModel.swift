@@ -17,8 +17,7 @@ final class DomainSettingViewModel {
     @Published var isEmailValid = false
     @Published var isDuplicateEamil = false
     
-    private var orgArray: [Organization] = []
-    private var orgDomain: String = ""
+    var orgDomain: String = ""
     
     private var cancelBag = Set<AnyCancellable>()
     
@@ -33,7 +32,9 @@ final class DomainSettingViewModel {
 // MARK: - Logic
 
 extension DomainSettingViewModel {
+    
     private func checkEmailValid(email: String) -> Bool {
         return !email.isEmpty
     }
+    
 }
