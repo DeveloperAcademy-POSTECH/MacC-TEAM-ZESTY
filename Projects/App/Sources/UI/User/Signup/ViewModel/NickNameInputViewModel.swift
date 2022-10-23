@@ -20,7 +20,7 @@ final class NickNameInputViewModel {
     @Published var isTextEmpty = true
     @Published var shouldDisplayWarning = false
     let isNickNameOverlapedSubject = PassthroughSubject<Bool, Never>()
-    let isUserRegisteredSubject = PassthroughSubject<Bool, Never>()
+    let isNickNameChangedSubject = PassthroughSubject<Bool, Never>()
 
     private var cancelBag = Set<AnyCancellable>()
     
@@ -50,10 +50,10 @@ final class NickNameInputViewModel {
             }
             .store(in: &cancelBag)
         
-        useCase.isUserRegisteredSubject
-            .sink { [weak self] isUserRegistered in
+        useCase.isNickNameChangedSubject
+            .sink { [weak self] isNickNameChanged in
                 guard let self = self else { return }
-                self.isUserRegisteredSubject.send(isUserRegistered)
+                self.isNickNameChangedSubject.send(isNickNameChanged)
             }
             .store(in: &cancelBag)
         

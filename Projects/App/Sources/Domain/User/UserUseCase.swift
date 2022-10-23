@@ -13,8 +13,9 @@ import Network
 final class UserUseCase {
     
     // output
-    let isNickNameOverlapedSubject = PassthroughSubject<Bool, Never>()
     let isUserRegisteredSubject = PassthroughSubject<Bool, Never>()
+    let isNickNameOverlapedSubject = PassthroughSubject<Bool, Never>()
+    let isNickNameChangedSubject = PassthroughSubject<Bool, Never>()
     
     private var cancelBag = Set<AnyCancellable>()
 
@@ -40,7 +41,9 @@ final class UserUseCase {
                 case .failure(let error): print(error.localizedString)
                 case .finished: break
                 }
-            } receiveValue: { userOauthDTO in
+            } receiveValue: { [weak self] userOauthDTO in
+                guard let self = self else { return }
+                self.isUserRegisteredSubject.send(true)
                 UserDefaults.standard.authToken = userOauthDTO.authToken
             }
             .store(in: &cancelBag)
@@ -73,8 +76,7 @@ final class UserUseCase {
             } receiveValue: { [weak self] _ in
                 guard let self = self else { return }
                 UserDefaults.standard.userName = nickname
-                self.isUserRegisteredSubject.send(true)
-                print("useCase isUserRegistered send true")
+                self.isNickNameChangedSubject.send(true)
             }
             .store(in: &cancelBag)
     }

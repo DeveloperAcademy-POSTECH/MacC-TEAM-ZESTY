@@ -111,15 +111,14 @@ extension NickNameInputViewController {
                 if isNickNameOverlaped {
                     self.nextButtonView.setDisabled(true)
                 }
-//                    self.navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
             }
             .store(in: &cancelBag)
         
-        viewModel.isUserRegisteredSubject
+        viewModel.isNickNameChangedSubject
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] isUserRegistered in
+            .sink { [weak self] isNickNameChanged in
                 guard let self = self else { return }
-                if isUserRegistered {
+                if isNickNameChanged {
                     self.navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
                 }
             }

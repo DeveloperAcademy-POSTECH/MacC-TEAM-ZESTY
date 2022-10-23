@@ -53,11 +53,11 @@ final class ThirdPartyLoginViewController: UIViewController {
 extension ThirdPartyLoginViewController {
     
     private func bindUI() {
-        viewModel.$isLoggedIn
+        viewModel.isUserRegisteredSubject
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] isLoggedIn in
+            .sink { [weak self] isUserRegistered in
                 guard let self = self else { return }
-                if isLoggedIn {
+                if isUserRegistered {
                     self.navigationController?.pushViewController(NickNameInputViewController(), animated: true)
                 }
             }
