@@ -14,7 +14,6 @@ final class ThirdPartyLoginViewModel {
     
     let useCase = UserUseCase()
     
-    var user: User? = UserDefaults.standard.user
     var accessToken: String?
     
     // output

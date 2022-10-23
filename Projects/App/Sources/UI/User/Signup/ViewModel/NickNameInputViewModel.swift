@@ -20,6 +20,7 @@ final class NickNameInputViewModel {
     @Published var isTextEmpty = true
     @Published var shouldDisplayWarning = false
     let isNickNameOverlapedSubject = PassthroughSubject<Bool, Never>()
+    let isUserRegisteredSubject = PassthroughSubject<Bool, Never>()
 
     private var cancelBag = Set<AnyCancellable>()
     
@@ -43,9 +44,19 @@ final class NickNameInputViewModel {
                 self.isNickNameOverlapedSubject.send(isNickNameOverlaped)
                 if isNickNameOverlaped {
                     self.shouldDisplayWarning = true
+                } else {
+                    self.useCase.putNicknameUser(nickname: self.nickNameText)
                 }
             }
             .store(in: &cancelBag)
+        
+        useCase.isUserRegisteredSubject
+            .sink { [weak self] isUserRegistered in
+                guard let self = self else { return }
+                self.isUserRegisteredSubject.send(isUserRegistered)
+            }
+            .store(in: &cancelBag)
+        
     }
     
     private func isEmpty(to text: String) -> Bool {

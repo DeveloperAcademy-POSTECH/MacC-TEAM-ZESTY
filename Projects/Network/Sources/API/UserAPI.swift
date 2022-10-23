@@ -34,10 +34,10 @@ public struct UserAPI {
         return networkService.request(with: endpoint)
     }
     
-    public static func putNickname(authorization: String) -> AnyPublisher<UserOauthDTO, NetworkError> {
-        let header = ["Content-Type": "application/json"]
-        let endpoint = Endpoint(path: "/api/users/nickname", method: .put, queryParams: ["authorization": authorization], headers: header)
-        return networkService.request(with: endpoint, responseType: UserOauthDTO.self)
+    public static func putNickname(authorization: String, nickname: String) -> AnyPublisher<Bool, NetworkError> {
+        let header = ["Content-Type": "application/json", "Authorization": "\(authorization)"]
+        let endpoint = Endpoint(path: "/api/users/nickname", method: .put, bodyParams: ["nickname": nickname], headers: header)
+        return networkService.request(with: endpoint)
     }
 
 }

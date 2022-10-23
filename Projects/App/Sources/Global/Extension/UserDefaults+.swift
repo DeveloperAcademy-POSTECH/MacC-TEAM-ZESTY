@@ -10,15 +10,27 @@ import Foundation
 
 extension UserDefaults {
     
-    var user: User? {
+    var authToken: String? {
         get {
-            guard let user = UserDefaults.standard.value(forKey: "User") as? User else {
+            guard let authToken = UserDefaults.standard.value(forKey: "authToken") as? String else {
                 return nil
             }
-            return user
+            return authToken
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: "User")
+            UserDefaults.standard.set(newValue, forKey: "authToken")
+        }
+    }
+    
+    var userName: String? {
+        get {
+            guard let userName = UserDefaults.standard.value(forKey: "userName") as? String else {
+                return nil
+            }
+            return userName
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "userName")
         }
     }
     
