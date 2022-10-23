@@ -42,6 +42,10 @@ final class ReviewRegisterViewController: UIViewController {
 
     // MARK: - Function
     
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
 }
 
 // MARK: - UI Function
@@ -67,6 +71,9 @@ extension ReviewRegisterViewController {
         menuTextField.placeholder = "음식 이름"
         menuTextField.textAlignment = .center
         menuTextField.layer.masksToBounds = true
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
         
         underline.clipsToBounds = true
         underline.layer.cornerRadius = 1
@@ -159,7 +166,6 @@ extension ReviewRegisterViewController {
     
     private func updateLayout(isKeyboardShown: Bool, with keyboardHeight: CGFloat? = nil) {
         if isKeyboardShown {
-            let containerHeight = containerView.snp.height
             guard let keyboardHeight = keyboardHeight else { return }
             
             keyboardSafeArea.snp.remakeConstraints {
@@ -168,15 +174,15 @@ extension ReviewRegisterViewController {
                 $0.bottom.equalTo(registerButton.snp.top).inset(20)
             }
             titleView.snp.remakeConstraints {
-                $0.height.equalTo(0).priority(800)
+                $0.top.equalToSuperview().offset(-20)
+                $0.leading.equalToSuperview()
+                $0.trailing.equalToSuperview().inset(40)
+                $0.height.equalTo(135)
             }
-            titleView.titleLabel.snp.remakeConstraints {
-                $0.height.equalTo(0).priority(800)
-            }
-
+            titleView.willHide(with: 1)
             containerView.snp.remakeConstraints {
                 $0.center.equalTo(keyboardSafeArea.snp.center)
-                $0.height.equalTo(containerHeight)
+                $0.height.equalToSuperview().multipliedBy(0.3)
                 $0.width.equalTo(containerView.snp.height).multipliedBy(0.75)
             }
             registerButton.snp.remakeConstraints {
@@ -191,11 +197,7 @@ extension ReviewRegisterViewController {
                 $0.trailing.equalToSuperview().inset(40)
                 $0.height.equalTo(135)
             }
-            titleView.titleLabel.snp.remakeConstraints {
-                $0.top.equalToSuperview()
-                $0.horizontalEdges.equalToSuperview()
-                $0.height.greaterThanOrEqualTo(31)
-            }
+            titleView.willShow(with: 1)
             containerView.snp.remakeConstraints {
                 $0.center.equalToSuperview()
                 $0.height.equalToSuperview().multipliedBy(0.3)
@@ -216,6 +218,28 @@ struct ReviewRegisterPreview: PreviewProvider {
     
     static var previews: some View {
         UINavigationController(rootViewController: ReviewRegisterViewController()).toPreview()
+    }
+    
+}
+
+extension UIView {
+    
+    func willHide(with duration: CGFloat) {
+        UIView.animateKeyframes(withDuration: duration, delay: 0) {
+            self.alpha = 0
+        } completion: { _ in
+            self.alpha = 1
+            self.isHidden = true
+        }
+    }
+
+    func willShow(with duration: CGFloat) {
+        self.isHidden = false
+        self.alpha = 0
+        UIView.animateKeyframes(withDuration: duration, delay: 0) {
+            self.alpha = 1
+        } completion: { _ in
+        }
     }
     
 }
