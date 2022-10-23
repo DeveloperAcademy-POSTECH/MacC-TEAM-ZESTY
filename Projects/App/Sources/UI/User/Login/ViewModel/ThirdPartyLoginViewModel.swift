@@ -47,8 +47,8 @@ final class ThirdPartyLoginViewModel {
     @MainActor
     func kakaoLogin() {
         Task {
-            // 카카오 앱으로 로그인
             if UserApi.isKakaoTalkLoginAvailable() {
+                // 카카오 앱으로 로그인
                 kakaoLoginWithApp()
             } else {
                 // 카카오 계정으로 로그인
