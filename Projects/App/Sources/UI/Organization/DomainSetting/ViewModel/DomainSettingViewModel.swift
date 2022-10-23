@@ -15,6 +15,7 @@ final class DomainSettingViewModel {
     
     // output
     @Published var isEmailValid = false
+    @Published var isDuplicateEamil = false
     
     private var orgArray: [Organization] = []
     private var orgDomain: String = ""
@@ -33,7 +34,6 @@ final class DomainSettingViewModel {
 
 extension DomainSettingViewModel {
     private func checkEmailValid(email: String) -> Bool {
-        print("변경이 일어났습니다 : \(email)")
         return !email.isEmpty
     }
 }

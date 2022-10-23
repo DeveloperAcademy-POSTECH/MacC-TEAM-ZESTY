@@ -21,15 +21,14 @@ final class DomainSettingViewController: UIViewController {
     private let domainInputBox = UIView()
     private let domainStackView = UIStackView()
     private let domainTextField = UITextField()
+    private let domainDuplicatedLabel = UILabel()
     private let domainPlaceholder = UILabel()
     
     // TODO: component로 변경하기
     private let arrowButton = UIButton()
     
     private var keyboardUpConstraints: NSLayoutConstraint?
-    
-    private var isButtonValid: Bool = false
-    
+
     private var cancelBag = Set<AnyCancellable>()
     
     // MARK: - LifeCycle
@@ -58,9 +57,16 @@ extension DomainSettingViewController {
         viewModel.$isEmailValid
             .sink {[weak self] isValid in
                 // TODO: button disalbed로 변경하기
-                print(isValid)
                 self?.arrowButton.layer.borderColor = isValid ? UIColor.black.cgColor : UIColor.lightGray.cgColor
                 self?.arrowButton.tintColor = isValid ? .black : .lightGray
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.$isDuplicateEamil
+            .sink {[weak self] isDuplicateEmail  in
+                guard let self = self else { return }
+                self.domainDuplicatedLabel.isHidden = !isDuplicateEmail
+            
             }
             .store(in: &cancelBag)
         
@@ -107,6 +113,10 @@ extension DomainSettingViewController {
         domainPlaceholder.font = .systemFont(ofSize: 17, weight: .medium)
         domainPlaceholder.setContentCompressionResistancePriority(.init(1000), for: .horizontal)
         
+        domainDuplicatedLabel.textColor = .red
+        domainDuplicatedLabel.text = "이미 사용된 이메일이에요."
+        domainDuplicatedLabel.font = .systemFont(ofSize: 13, weight: .regular)
+        
         // TODO: Component로 변경
         arrowButton.tintColor = .lightGray
         arrowButton.backgroundColor = .white
@@ -115,7 +125,7 @@ extension DomainSettingViewController {
         arrowButton.clipsToBounds = true
         arrowButton.layer.borderWidth = 2
         arrowButton.layer.cornerRadius = 25
-        arrowButton.layer.borderColor = UIColor.black.cgColor
+        arrowButton.layer.borderColor = UIColor.lightGray.cgColor
 
         let arrowImageConfiguration = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .default)
         let arrowImage = UIImage(systemName: "arrow.forward", withConfiguration: arrowImageConfiguration)
@@ -123,7 +133,7 @@ extension DomainSettingViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([mainTitleView, domainInputBox, arrowButton])
+        view.addSubviews([mainTitleView, domainInputBox, domainDuplicatedLabel, arrowButton])
         
         domainInputBox.addSubview(domainStackView)
         domainStackView.addArrangedSubviews([domainTextField, domainPlaceholder])
@@ -144,6 +154,11 @@ extension DomainSettingViewController {
             make.verticalEdges.equalToSuperview().inset(14)
             make.horizontalEdges.equalToSuperview().inset(20)
             make.width.lessThanOrEqualTo(270)
+        }
+        
+        domainDuplicatedLabel.snp.makeConstraints { make in
+            make.top.equalTo(domainInputBox.snp.bottom).offset(15)
+            make.centerX.equalToSuperview()
         }
         
         arrowButton.snp.makeConstraints { make in
