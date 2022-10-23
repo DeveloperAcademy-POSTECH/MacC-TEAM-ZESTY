@@ -12,7 +12,7 @@ import KakaoSDKUser
 
 final class ThirdPartyLoginViewModel {
     
-    let useCase = UserUseCase()
+    let useCase = UserLoginUseCase()
     var accessToken: String?
     
     // Output
