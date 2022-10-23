@@ -6,6 +6,7 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
+import Combine
 import UIKit
 import SnapKit
 import DesignSystem
@@ -13,6 +14,9 @@ import DesignSystem
 final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     
     // MARK: - Properties
+    private let viewModel = PlaceDetailViewModel()
+    private let input: PassthroughSubject<PlaceDetailViewModel.Input, Never> = .init()
+    private var cancelBag = Set<AnyCancellable>()
     
     private lazy var placeView = UIView()
     private var kakaoUrl = ""
@@ -34,7 +38,6 @@ final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     }(UIButton(type: .custom))
 
     private lazy var placeNameLabel: UILabel = {
-        $0.text = "(가게이름없음)"
         $0.textColor = .black
         $0.font = .systemFont(ofSize: 26, weight: .bold)
         return $0
@@ -90,6 +93,7 @@ final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     
     override init(reuseIdentifier: String?) {
        super.init(reuseIdentifier: reuseIdentifier)
+        bind()
         configureUI()
         createLayout()
     }
@@ -118,27 +122,27 @@ final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     
     @objc func addReviewButtonDidTap() {
         // 리뷰하기 추가버트
+        input.send(.addReviewBtnDidTap)
     }
     
-}
-
-extension PlaceInfoHeaderView {
-    
     public func setUp(with place: Place) {
-        
         categoryTagLabel.text = place.category[0].name
-        
         placeNameLabel.text = place.name
-        
         addressLabel.text = place.address
         kakaoUrl = "https://map.kakao.com/link/to/\(place.name),\(place.lat),\(place.lan)"
         naverUrl = "http://app.map.naver.com/launchApp/?version=11&menu=navigation&elat=\(place.lat)&elng=\(place.lan)&etitle=\(place.name)"
-        
         goodView.configure(with: EvaluationViewModel(evaluation: .good, count: place.evaluationSum.good))
         sosoView.configure(with: EvaluationViewModel(evaluation: .soso, count: place.evaluationSum.soso))
         badView.configure(with: EvaluationViewModel(evaluation: .bad, count: place.evaluationSum.bad))
     }
-        
+    
+}
+
+// MARK: - Binding
+extension PlaceInfoHeaderView {
+    private func bind() {
+        let output = viewModel.transform(input: input.eraseToAnyPublisher())
+    }
 }
 
 // MARK: - UI Function

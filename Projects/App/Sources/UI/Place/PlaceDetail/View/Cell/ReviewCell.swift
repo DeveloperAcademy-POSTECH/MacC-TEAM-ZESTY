@@ -14,6 +14,8 @@ final class ReviewCell: UITableViewCell {
 
     // MARK: - Properties
 
+    private let cardView = UIView()
+    
     private let reviewImageView: UIImageView = {
         $0.image = UIImage(named: "test-pasta")
         $0.contentMode = .scaleToFill
@@ -77,7 +79,7 @@ final class ReviewCell: UITableViewCell {
             
             self.reviewImageView.kf.setImage(with: URL(string: review.imageURL ?? ""))
             self.menuLabel.text = review.menuName
-            self.dateLabel.text = review.createdAt.formatted("yyyy/MM/dd")
+            self.dateLabel.text = review.createdAt.formatted("yyyy.MM.dd")
 
             switch review.evaluation {
             case .good:
@@ -98,11 +100,11 @@ extension ReviewCell {
     
     private func configureUI() {
         self.backgroundColor = .zestyColor(.background)
-        
+        self.cardView.layer.applyFigmaShadow()
     }
     
     private func createLayout() {
-        contentView.addSubviews([reviewImageView, emojiView, menuLabel, dateLabel])
+        contentView.addSubviews([cardView])
         
         contentView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
@@ -110,6 +112,13 @@ extension ReviewCell {
             $0.height.equalTo(UIScreen.main.isWiderThan425pt ? 365 : 330)
         }
         
+        cardView.addSubviews([reviewImageView, emojiView, menuLabel, dateLabel])
+        
+        cardView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.width.height.equalTo(UIScreen.main.isWiderThan425pt ? 330 : 300)
+        }
+
         reviewImageView.snp.makeConstraints {
             $0.center.equalToSuperview()
             $0.width.height.equalTo(UIScreen.main.isWiderThan425pt ? 330 : 300)

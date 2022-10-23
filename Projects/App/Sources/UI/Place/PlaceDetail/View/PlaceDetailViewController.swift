@@ -14,10 +14,12 @@ import SwiftUI
 final class PlaceDetailViewController: UIViewController {
     
     // MARK: - Properties
-    private let cancelBag = Set<AnyCancellable>()
     private let viewModel = PlaceDetailViewModel()
-    private let place: Place = Place.mockData[0]
-    private let reviews: [Review] = [Review.mockData[0], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3], Review.mockData[0], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3]]
+    private let input: PassthroughSubject<PlaceDetailViewModel.Input, Never> = .init()
+    private var cancelBag = Set<AnyCancellable>()
+    
+    private var place: Place?
+    private var reviews: [Review] = [Review.mockData[0], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3], Review.mockData[0], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3]]
     
     private let tableView = UITableView(frame: CGRect.zero, style: .grouped)
     
@@ -25,15 +27,55 @@ final class PlaceDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bind()
+        input.send(.viewDidLoad)
         setNavigationBar()
         configureUI()
         createLayout()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+    }
+    
     // MARK: - Function
     @objc func backButtonClicked() {
         // pop
+        self.navigationController?.popViewController(animated: true)
     }
+}
+
+// MARK: - Binding
+
+extension PlaceDetailViewController {
+    
+    private func bind() {
+        let output = viewModel.transform(input: input.eraseToAnyPublisher())
+        
+        output
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                switch state {
+                // TO-DO: API 전체 다 붙이고 주석삭제
+                case .fetchPlaceDidSucceed(let place):
+//                    print("✅ 장소 성공: \(place)")
+                    self?.place = place
+                    self?.setNavigationBar()
+                    self?.navigationItem.title = place.name
+                    self?.tableView.reloadData()
+                case .fetchPlaceInfoFail(let error):
+//                    print("❌ 장소 실패")
+                    print(error.localizedDescription)
+                case .fetchReviewListSucceed(let reviews):
+                    print("✅ 리뷰리스트 성공: \(reviews)")
+                case .fetchReviewListFail(let error):
+                    print("❌ 리뷰리스트 실패")
+                    print(error.localizedDescription)
+                }
+            }.store(in: &cancelBag)
+    }
+
 }
 
 // MARK: - UI Function
@@ -61,7 +103,6 @@ extension PlaceDetailViewController {
     }
     
     private func setNavigationBar() {
-        navigationItem.title = place.name
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)
         ]
@@ -122,12 +163,10 @@ extension PlaceDetailViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "PlaceInfoHeaderView") as? PlaceInfoHeaderView else {
             return UIView()
         }
-        header.setUp(with: Place.mockData[0])
-        
+        header.setUp(with: place ?? Place.empty)
         return header
     }
 }

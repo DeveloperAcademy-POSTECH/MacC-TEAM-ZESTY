@@ -8,6 +8,8 @@
 
 import Foundation
 
+public typealias PlaceDetailDTOResult = [PlaceDetailDTO] // 서버에서 데이터 잘못내려줘서 임시로
+
 public struct PlaceDetailDTO: Decodable {
     public let placeID: Int
     public let placeName, address, lat, long: String
