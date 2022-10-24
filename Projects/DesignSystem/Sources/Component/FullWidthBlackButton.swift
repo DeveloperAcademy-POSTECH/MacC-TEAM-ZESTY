@@ -1,5 +1,5 @@
 //
-//  WideBlackButton.swift
+//  FullWidthBlackButton.swift
 //  DesignSystem
 //
 //  Created by Lee Myeonghwan on 2022/10/20.
@@ -8,6 +8,11 @@
 
 import UIKit
 
+/// 가로를 꽉 채우는 형태의 검은색 UIButton
+/// - override func setTitle: 버튼의 타이틀을 NSAttributeString으로 set 해줍니다.
+///
+/// 높이는 55 point로 정해져 있습니다.
+/// 좌,우 constarints 와 Y축을 지정해주면 됩니다.
 public final class FullWidthBlackButton: UIButton {
     
     public init() {
