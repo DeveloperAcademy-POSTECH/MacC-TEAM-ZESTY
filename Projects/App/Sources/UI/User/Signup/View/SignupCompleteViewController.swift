@@ -44,8 +44,7 @@ extension SignupCompleteViewController {
         nickNameLabel.text = "\(viewModel.userName)"
         nickNameLabel.font = .systemFont(ofSize: 17, weight: .bold)
         
-        startButton.setAttributedTitle(NSMutableAttributedString(string: "우리 대학 맛집여정에 함께하기",
-                                                                     attributes: [.font: UIFont.systemFont(ofSize: 15, weight: .medium)]), for: .normal)
+        startButton.setTitle("우리 대학 맛집여정에 함께하기", for: .normal)
     }
     
     private func createLayout() {
