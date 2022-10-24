@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "img_signup.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

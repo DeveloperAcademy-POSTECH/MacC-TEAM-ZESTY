@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Network
 
 struct Review {
     let id: Int
@@ -23,4 +24,18 @@ enum Evaluation {
     case good
     case soso
     case bad
+}
+
+extension Review {
+    
+    init(_ dto: ReviewDTO) {
+        id = 0
+        placeId = 0
+        reviewer = User.mockData[0]
+        evaluation = .good
+        menuName = dto.menuname
+        imageURL = dto.image
+        createdAt = Date()
+    }
+    
 }

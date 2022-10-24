@@ -16,14 +16,13 @@ final class NickNameInputViewController: UIViewController {
     
     private let viewModel = NickNameInputViewModel()
     
-    private let titleStackView = UIStackView()
-    private let titleLabel = UILabel()
-    private let subtitleLabel = UILabel()
+    private let mainTitleView = MainTitleView(title: "닉네임을 알려주세요", subtitle: "언제든지 변경할 수 있어요.")
+    private let nickNameTextFieldUIView = UIView()
     private let nickNameTextField = UITextFieldPadding(top: 14, left: 20, bottom: 14, right: 20)
-    private let nextButtonView = ShadowButtonView(initialDisable: true)
+    private let nextButton = ArrowButton(initialDisable: true)
+    private let warningLabel = UILabel()
     
-    private var keyboardUpConstraints: NSLayoutConstraint?
-    private var keyboardDownConstraints: NSLayoutConstraint?
+    private var keyboardEndFrameHeight: CGFloat?
     
     private var cancelBag = Set<AnyCancellable>()
     
@@ -40,13 +39,15 @@ final class NickNameInputViewController: UIViewController {
     // MARK: - Function
     
     @objc private func nextButtonClicked() {
-        navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
+        nextButton.startIndicator()
+        
+        viewModel.checkNickNameOverlaped()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         nickNameTextField.resignFirstResponder()
     }
-
+    
 }
 
 // MARK: - Bind Function
@@ -59,27 +60,58 @@ extension NickNameInputViewController {
             .assign(to: \.nickNameText, on: viewModel)
             .store(in: &cancelBag)
         
-        nickNameTextField.textDidBeignEditingPublisher
-            .map { _ in return true }
-            .assign(to: \.isKeyboardShown, on: viewModel)
-            .store(in: &cancelBag)
-        
-        nickNameTextField.textDidEndEditingPublisher
-            .map { _ in return false }
-            .assign(to: \.isKeyboardShown, on: viewModel)
-            .store(in: &cancelBag)
-        
         viewModel.$isTextEmpty
             .sink { [weak self] isTextEmpty in
-                self?.nextButtonView.setDisabled(isTextEmpty)
+                self?.nextButton.setDisabled(isTextEmpty)
             }
             .store(in: &cancelBag)
         
-        viewModel.$isKeyboardShown
-            .sink { [weak self] isKeyboardShown in
+        NotificationCenter.default.publisher(for: UIApplication.keyboardWillShowNotification)
+            .sink { [weak self] notification in
                 guard let self = self else { return }
-                self.keyboardUpConstraints?.isActive = isKeyboardShown
-                self.keyboardDownConstraints?.isActive = !isKeyboardShown
+                if self.keyboardEndFrameHeight == nil {
+                    guard let endFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+                    self.keyboardEndFrameHeight = endFrame.cgRectValue.height
+                }
+                self.remakeConstraintsByKeyboard(.show)
+                self.view.layoutIfNeeded()
+            }
+            .store(in: &cancelBag)
+        
+        NotificationCenter.default.publisher(for: UIApplication.keyboardWillHideNotification)
+            .sink { [weak self ] _ in
+                guard let self = self else { return }
+                self.remakeConstraintsByKeyboard(.hide)
+                self.view.layoutIfNeeded()
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.$shouldDisplayWarning
+            .sink { [weak self] shouldDisplayWarning in
+                guard let self = self else { return }
+                self.warningLabel.isHidden = !shouldDisplayWarning
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.isNickNameOverlapedSubject
+            .sink { [weak self] isNickNameOverlaped in
+                guard let self = self else { return }
+                self.nextButton.stopIndicator()
+                if isNickNameOverlaped {
+                    self.nextButton.setDisabled(true)
+                } else {
+                    self.navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
+                }
+            }
+            .store(in: &cancelBag)
+        
+        nickNameTextField.textDidChangePublisher
+            .receive(on: DispatchQueue.main)
+            .compactMap { $0.text }
+            .sink { text in
+                if text.count > self.viewModel.maxNickNameLength {
+                    self.nickNameTextField.text?.removeLast()
+                }
             }
             .store(in: &cancelBag)
     }
@@ -96,7 +128,9 @@ extension NickNameInputViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        nextButtonClicked()
+        if nextButton.isUserInteractionEnabled {
+            nextButtonClicked()
+        }
         return true
     }
     
@@ -109,58 +143,101 @@ extension NickNameInputViewController {
     private func configureUI() {
         view.backgroundColor = .white
         
+        navigationController?.navigationBar.isHidden = true
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = .black
-        
-        titleStackView.axis = .vertical
-        titleStackView.spacing = 12
-        
-        titleLabel.text = "멋진 이름을 알려주세요"
-        titleLabel.font = .systemFont(ofSize: 26)
-        
-        subtitleLabel.text = "언제든지 변경할 수 있어요."
-        subtitleLabel.textColor = .gray
-        subtitleLabel.font = .preferredFont(forTextStyle: .callout)
-        
-        nickNameTextField.attributedPlaceholder = .init(attributedString: NSAttributedString(string: "이름", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]))
+    
+        nickNameTextField.becomeFirstResponder()
+        nickNameTextField.attributedPlaceholder = .init(attributedString: NSAttributedString(string: "닉네임", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]))
         nickNameTextField.font = .preferredFont(forTextStyle: .body)
         nickNameTextField.textColor = .white
         nickNameTextField.backgroundColor = .black
         nickNameTextField.clipsToBounds = true
         nickNameTextField.layer.cornerRadius = 25
         
-        let arrowImageConfiguration = UIImage.SymbolConfiguration(pointSize: 17, weight: .regular, scale: .default)
-        let arrowImage = UIImage(systemName: "arrow.forward", withConfiguration: arrowImageConfiguration)
-        nextButtonView.button.setAttributedTitle(NSAttributedString(string: "다음",
-                                                                    attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)]), for: .normal)
-        nextButtonView.button.setImage(arrowImage, for: .normal)
-        nextButtonView.button.semanticContentAttribute = .forceRightToLeft
-        nextButtonView.button.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
+        nextButton.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
+        
+        warningLabel.text = "이미 있는 이름이에요"
+        warningLabel.textColor = .red
+        warningLabel.font = .preferredFont(forTextStyle: .footnote)
+        warningLabel.isHidden = true
     }
     
     private func createLayout() {
-        view.addSubviews([titleStackView, nickNameTextField, nextButtonView])
-        titleStackView.addArrangedSubviews([titleLabel, subtitleLabel])
+        view.addSubviews([mainTitleView, nickNameTextFieldUIView, nextButton, warningLabel])
+        nickNameTextFieldUIView.addSubview(nickNameTextField)
         
-        titleStackView.snp.makeConstraints { make in
-            make.leading.equalTo(view.snp.leading).offset(20)
-            make.trailing.equalTo(view.snp.trailing).offset(-20)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
+        mainTitleView.snp.makeConstraints { make in
+            make.leading.equalTo(view.snp.leading)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+        }
+        
+        nickNameTextFieldUIView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(mainTitleView.snp.bottom)
+            make.bottom.equalTo(view.snp.bottom)
         }
         
         nickNameTextField.snp.makeConstraints { make in
-            make.center.equalTo(view.snp.center)
+            make.centerX.equalTo(nickNameTextFieldUIView.snp.centerX)
+            make.centerY.equalTo(nickNameTextFieldUIView.snp.centerY)
         }
         
-        nextButtonView.snp.makeConstraints { make in
+        nextButton.snp.makeConstraints { make in
             make.trailing.equalTo(view.snp.trailing).offset(-20)
+            make.bottom.equalTo(view.snp.bottom).offset(-100)
         }
         
-        keyboardUpConstraints = nextButtonView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor, constant: -20)
-        keyboardDownConstraints = nextButtonView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.bottomAnchor, constant: -100)
-        keyboardUpConstraints?.priority = .defaultLow
-        keyboardDownConstraints?.priority = .defaultLow
-        keyboardDownConstraints?.isActive = true
+        warningLabel.snp.makeConstraints { make in
+            make.top.equalTo(nickNameTextField.snp.bottom).offset(14)
+            make.centerX.equalTo(view.snp.centerX)
+        }
+    }
+    
+    private func remakeConstraintsByKeyboard(_ state: KeyboardState) {
+        guard let keyboardEndFrameHeight = self.keyboardEndFrameHeight else { return }
+        switch state {
+        case .show:
+            nextButton.snp.remakeConstraints { make in
+                make.trailing.equalTo(view.snp.trailing).offset(-20)
+                make.bottom.equalTo(view.snp.bottom).offset(-keyboardEndFrameHeight-20)
+            }
+            self.nickNameTextFieldUIView.snp.remakeConstraints { make in
+                make.leading.trailing.equalToSuperview()
+                make.top.equalTo(mainTitleView.snp.top)
+                make.bottom.equalTo(view.snp.bottom).offset(-keyboardEndFrameHeight)
+            }
+        case .hide:
+            nextButton.snp.remakeConstraints { make in
+                make.trailing.equalTo(view.snp.trailing).offset(-20)
+                make.bottom.equalTo(view.snp.bottom).offset(-100)
+            }
+            self.nickNameTextFieldUIView.snp.remakeConstraints { make in
+                make.leading.trailing.equalToSuperview()
+                make.top.equalTo(mainTitleView.snp.top)
+                make.bottom.equalTo(view.snp.bottom)
+            }
+        }
     }
     
 }
+
+extension NickNameInputViewController {
+    private enum KeyboardState {
+        case show
+        case hide
+    }
+}
+
+#if DEBUG
+import SwiftUI
+struct NickNameInputViewTemplatePreview: PreviewProvider {
+    
+    static var previews: some View {
+        NickNameInputViewController().toPreview()
+    }
+
+}
+#endif
