@@ -22,9 +22,13 @@ final class AddPlaceResultViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         createLayout()
+        setNavigationBar()
     }
     
     // MARK: - Function
+    @objc func backButtonDidTap() {
+        self.navigationController?.popViewController(animated: true)
+    }
     
 }
 
@@ -46,6 +50,12 @@ extension AddPlaceResultViewController {
     
     private func createLayout() {
         
+    }
+    
+    private func setNavigationBar() {
+        let leftBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonDidTap))
+        leftBarButton.tintColor = .label
+        navigationItem.leftBarButtonItem = leftBarButton
     }
     
 }
