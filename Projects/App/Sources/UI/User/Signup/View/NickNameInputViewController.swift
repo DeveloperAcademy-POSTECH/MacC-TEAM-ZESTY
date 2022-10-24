@@ -229,6 +229,7 @@ extension NickNameInputViewController {
     }
 }
 
+#if DEBUG
 struct NickNameInputViewTemplatePreview: PreviewProvider {
     
     static var previews: some View {
@@ -236,3 +237,4 @@ struct NickNameInputViewTemplatePreview: PreviewProvider {
     }
 
 }
+#endif

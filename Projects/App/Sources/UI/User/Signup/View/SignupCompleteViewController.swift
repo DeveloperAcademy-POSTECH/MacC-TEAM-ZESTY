@@ -77,6 +77,7 @@ extension SignupCompleteViewController {
     
 }
 
+#if DEBUG
 struct SignupCompleteViewTemplatePreview: PreviewProvider {
     
     static var previews: some View {
@@ -84,3 +85,4 @@ struct SignupCompleteViewTemplatePreview: PreviewProvider {
     }
 
 }
+#endif

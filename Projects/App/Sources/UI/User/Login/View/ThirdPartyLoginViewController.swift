@@ -120,6 +120,7 @@ extension ThirdPartyLoginViewController {
     
 }
 
+#if DEBUG
 struct ThirdPartyLoginViewTemplatePreview: PreviewProvider {
     
     static var previews: some View {
@@ -127,3 +128,4 @@ struct ThirdPartyLoginViewTemplatePreview: PreviewProvider {
     }
 
 }
+#endif
