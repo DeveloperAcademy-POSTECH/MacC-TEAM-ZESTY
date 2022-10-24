@@ -17,7 +17,8 @@ final class AddPlaceSearchViewController: UIViewController {
     private let viewModel = AddPlaceViewModel()
     private var cancelBag = Set<AnyCancellable>()
     
-    private var searchResults: [Place] = Place.mockData
+    private var searchResults: [Place] = []
+//    private var searchResults: [Place] = Place.mockData
     
     private lazy var searchingTextFieldView = SearchTextField()
     private lazy var tableView = UITableView(frame: CGRect.zero, style: .grouped)
@@ -109,6 +110,15 @@ extension AddPlaceSearchViewController {
 extension AddPlaceSearchViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchResults.count == 0 {
+            if searchingTextFieldView.textField.text == "" {
+                tableView.setEmptyView(message: "등록하려는 맛집을 검색해주세요.", type: .search)
+            } else {
+                tableView.setEmptyView(message: "검색 결과가 없어요.", type: .noresult)
+            }
+        } else {
+            tableView.restore()
+        }
         return searchResults.count
     }
     
