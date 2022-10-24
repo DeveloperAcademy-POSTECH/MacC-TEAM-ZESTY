@@ -119,12 +119,14 @@ extension ReviewCell {
             $0.width.height.equalTo(UIScreen.main.isWiderThan425pt ? 330 : 300)
         }
 
+        
+        
+        self.setImageViewBackgroundGradient()
+        
         reviewImageView.snp.makeConstraints {
             $0.center.equalToSuperview()
             $0.width.height.equalTo(UIScreen.main.isWiderThan425pt ? 330 : 300)
         }
-        
-        self.setImageViewBackgroundGradient()
         
         emojiView.snp.makeConstraints {
             $0.top.equalTo(reviewImageView.snp.top).inset(20)
