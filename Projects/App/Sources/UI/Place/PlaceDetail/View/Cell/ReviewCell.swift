@@ -16,7 +16,7 @@ final class ReviewCell: UITableViewCell {
 
     private let reviewImageView: UIImageView = {
         $0.image = UIImage(named: "test-pasta")
-        $0.contentMode = .scaleAspectFit
+        $0.contentMode = .scaleToFill
         $0.layer.cornerRadius = 16
         $0.layer.masksToBounds = true
         return $0
