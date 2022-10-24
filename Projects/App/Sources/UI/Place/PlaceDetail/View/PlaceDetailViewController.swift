@@ -34,11 +34,6 @@ final class PlaceDetailViewController: UIViewController {
         createLayout()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-    }
-    
     // MARK: - Function
     @objc func backButtonClicked() {
         // pop
