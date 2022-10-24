@@ -146,9 +146,7 @@ extension ReviewRegisterViewController {
                 guard let endFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
                 let endFrameHeight = endFrame.cgRectValue.height
                 
-                UIView.animate(withDuration: 2) {
-                    self.updateLayout(isKeyboardShown: true, with: endFrameHeight)
-                }
+                self.updateLayout(isKeyboardShown: true, with: endFrameHeight)
                 self.view.layoutIfNeeded()
             }
             .store(in: &cancelBag)
@@ -156,9 +154,7 @@ extension ReviewRegisterViewController {
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 
-                UIView.animate(withDuration: 2) {
-                    self.updateLayout(isKeyboardShown: false)
-                }
+                self.updateLayout(isKeyboardShown: false)
                 self.view.layoutIfNeeded()
             }
             .store(in: &cancelBag)
