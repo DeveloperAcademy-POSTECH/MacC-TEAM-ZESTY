@@ -7,7 +7,6 @@
 //
 
 import AuthenticationServices
-import SwiftUI
 import UIKit
 import DesignSystem
 import SnapKit
@@ -121,6 +120,7 @@ extension ThirdPartyLoginViewController {
 }
 
 #if DEBUG
+import SwiftUI
 struct ThirdPartyLoginViewTemplatePreview: PreviewProvider {
     
     static var previews: some View {

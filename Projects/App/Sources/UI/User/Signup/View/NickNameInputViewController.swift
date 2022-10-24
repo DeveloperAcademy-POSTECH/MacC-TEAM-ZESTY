@@ -7,7 +7,6 @@
 //
 
 import Combine
-import SwiftUI
 import UIKit
 import DesignSystem
 
@@ -230,6 +229,7 @@ extension NickNameInputViewController {
 }
 
 #if DEBUG
+import SwiftUI
 struct NickNameInputViewTemplatePreview: PreviewProvider {
     
     static var previews: some View {

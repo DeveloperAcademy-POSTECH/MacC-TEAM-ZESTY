@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftUI
 import DesignSystem
 
 final class SignupCompleteViewController: UIViewController {
@@ -78,6 +77,7 @@ extension SignupCompleteViewController {
 }
 
 #if DEBUG
+import SwiftUI
 struct SignupCompleteViewTemplatePreview: PreviewProvider {
     
     static var previews: some View {
