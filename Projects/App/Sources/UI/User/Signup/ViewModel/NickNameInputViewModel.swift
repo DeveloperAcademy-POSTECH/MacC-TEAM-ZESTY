@@ -18,6 +18,8 @@ final class NickNameInputViewModel {
     @Published var isTextEmpty = true
     @Published var shouldDisplayWarning = false
     let isNickNameOverlapedSubject = PassthroughSubject<Bool, Never>()
+    
+    let maxNickNameLength = 6
 
     private var cancelBag = Set<AnyCancellable>()
     
@@ -52,9 +54,8 @@ final class NickNameInputViewModel {
     }
     
     func isValid(for input: String) -> Bool {
-        let maxNickNameCount = 6
         let isBackSpace = strcmp(input.cString(using: .utf8), "\\b") == -92
-        if (nickNameText.count < maxNickNameCount && checkValidCharacter(to: input)) || isBackSpace {
+        if (nickNameText.count <= maxNickNameLength && checkValidCharacter(to: input)) || isBackSpace {
             return true
         }
         return false
@@ -62,7 +63,7 @@ final class NickNameInputViewModel {
 
     private func checkValidCharacter(to string: String) -> Bool {
         do {
-            let regex = try NSRegularExpression(pattern: "^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\\s]$", options: .caseInsensitive)
+            let regex = try NSRegularExpression(pattern: "^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ]$", options: .caseInsensitive)
             if regex.firstMatch(in: string, options: NSRegularExpression.MatchingOptions.reportCompletion, range: .init(location: 0, length: string.count)) != nil {
                 return true
             }
