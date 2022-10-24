@@ -79,6 +79,13 @@ extension ReviewCardView {
         nicknameLabel.text = "아보카도"
         nicknameLabel.font = .preferredFont(forTextStyle: .callout).bold()
         nicknameLabel.textColor = isImage ? .white : .label
+
+        dateStaticLabel.text = "Date"
+        dateStaticLabel.font = .preferredFont(forTextStyle: .caption2)
+        dateStaticLabel.textColor = .white
+        dateLabel.text = "2020.10.21"
+        dateLabel.font = .preferredFont(forTextStyle: .callout).bold()
+        dateLabel.textColor = .white
         
         evaluationImageView.image = UIImage(.img_reviewfriends_good)
         evaluationImageView.addShadow(opacity: 0.1, radius: 2)
@@ -136,6 +143,14 @@ extension ReviewCardView {
             menuImageView.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
+            dateStaticLabel.snp.makeConstraints {
+                $0.horizontalEdges.equalToSuperview()
+                $0.height.equalTo(13)
+            }
+            dateLabel.snp.makeConstraints {
+                $0.horizontalEdges.equalToSuperview()
+                $0.height.equalTo(21)
+            }
             evaluationImageView.snp.makeConstraints {
                 $0.trailing.bottom.equalToSuperview().inset(30)
                 $0.width.equalToSuperview().multipliedBy(0.2)
@@ -180,7 +195,7 @@ extension ReviewCardView {
 struct ReviewCardPreview: PreviewProvider {
     
     static var previews: some View {
-        ReviewCardView().toPreview() //image: UIImage(.img_mockmenu)
+        ReviewCardView(image: UIImage(.img_mockmenu)).toPreview()
             .frame(width: 300, height: 400)
 //            .frame(width: 250, height: 320)
     }
