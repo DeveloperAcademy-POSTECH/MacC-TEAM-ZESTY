@@ -98,6 +98,7 @@ extension ReviewCell {
     
     private func configureUI() {
         self.backgroundColor = .zestyColor(.background)
+        
     }
     
     private func createLayout() {
@@ -113,6 +114,8 @@ extension ReviewCell {
             $0.center.equalToSuperview()
             $0.width.height.equalTo(UIScreen.main.isWiderThan425pt ? 330 : 300)
         }
+        
+        self.setImageViewBackgroundGradient()
         
         emojiView.snp.makeConstraints {
             $0.top.equalTo(reviewImageView.snp.top).inset(20)
@@ -132,4 +135,22 @@ extension ReviewCell {
         }
           
     }
+      
+    private func setImageViewBackgroundGradient() {
+        self.layoutIfNeeded()
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.locations = [0.0, 1.0]
+        let colors: [CGColor] = [
+           .init(red: 0, green: 0, blue: 0, alpha: 0),
+           .init(red: 0, green: 0, blue: 0, alpha: 1)
+        ]
+        gradient.colors = colors
+        gradient.startPoint = CGPoint(x: 0.0, y: 0.71)
+        gradient.endPoint = CGPoint(x: 0.0, y: 1.0)
+        gradient.frame = .init(x: 0, y: 0,
+                               width: self.reviewImageView.frame.width,
+                               height: self.reviewImageView.frame.height)
+        self.reviewImageView.layer.insertSublayer(gradient, at: 0)
+    }
+
 }
