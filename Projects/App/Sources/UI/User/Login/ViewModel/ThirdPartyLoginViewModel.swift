@@ -46,20 +46,16 @@ final class ThirdPartyLoginViewModel {
         useCase.postAccessTokenUser(accessToken: accessToken)
     }
     
-    @MainActor
     func kakaoLogin() {
-        Task {
-            if UserApi.isKakaoTalkLoginAvailable() {
-                // 카카오 앱으로 로그인
-                kakaoLoginWithApp()
-            } else {
-                // 카카오 계정으로 로그인
-                kakaoLoginWithAccount()
-            }
+        if UserApi.isKakaoTalkLoginAvailable() {
+            // 카카오 앱으로 로그인
+            kakaoLoginWithApp()
+        } else {
+            // 카카오 계정으로 로그인
+            kakaoLoginWithAccount()
         }
     }
     
-    @MainActor
     private func kakaoLoginWithApp() {
         UserApi.shared.loginWithKakaoTalk { [weak self](oauthToken, error) in
             guard let self = self else { return }
@@ -74,7 +70,6 @@ final class ThirdPartyLoginViewModel {
         }
     }
     
-    @MainActor
     private func kakaoLoginWithAccount() {
         UserApi.shared.loginWithKakaoAccount { [weak self] (oauthToken, error) in
             guard let self = self else { return }
