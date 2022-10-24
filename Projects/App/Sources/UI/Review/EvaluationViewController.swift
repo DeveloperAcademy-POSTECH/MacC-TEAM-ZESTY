@@ -75,7 +75,7 @@ extension EvaluationViewController {
         
         evaluationStackView.axis = .horizontal
         evaluationStackView.spacing = 15
-        evaluationStackView.distribution = .fillEqually
+        evaluationStackView.distribution = .equalSpacing
         
         goodButton.button.addTarget(self, action: #selector(goodButtonTouched), for: .touchUpInside)
         sosoButton.button.addTarget(self, action: #selector(sosoButtonTouched), for: .touchUpInside)
@@ -87,9 +87,7 @@ extension EvaluationViewController {
         evaluationStackView.addArrangedSubviews([goodButton, sosoButton, badButton])
         
         evaluationStackView.snp.makeConstraints {
-            $0.centerX.centerY.equalToSuperview()
-            $0.horizontalEdges.equalToSuperview().inset(35)
-            $0.height.equalTo(evaluationStackView.snp.width).multipliedBy(0.45)
+            $0.center.equalToSuperview()
         }
     }
     
