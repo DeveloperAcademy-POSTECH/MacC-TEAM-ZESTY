@@ -135,7 +135,7 @@ extension ReviewRegisterViewController {
         }
         
         registerButton.snp.makeConstraints {
-            $0.horizontalEdges.bottom.equalToSuperview().inset(20)
+            $0.horizontalEdges.bottom.equalTo(safeArea).inset(20)
         }
     }
     
@@ -204,7 +204,7 @@ extension ReviewRegisterViewController {
                 $0.width.equalTo(containerView.snp.height).multipliedBy(0.75)
             }
             registerButton.snp.remakeConstraints {
-                $0.horizontalEdges.bottom.equalToSuperview().inset(20)
+                $0.horizontalEdges.bottom.equalTo(safeArea).inset(20)
                 $0.height.equalTo(55)
             }
         }
