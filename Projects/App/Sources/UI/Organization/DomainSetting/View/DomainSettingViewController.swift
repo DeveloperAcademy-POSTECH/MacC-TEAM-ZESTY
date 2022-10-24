@@ -93,6 +93,9 @@ extension DomainSettingViewController {
     private func configureUI() {
         view.backgroundColor = .white
         
+        self.navigationController?.navigationBar.tintColor = .black
+        self.navigationController?.navigationBar.topItem?.title = ""
+        
         emailInputView.backgroundColor = .black
         emailInputView.layer.cornerRadius = 25
         emailInputView.layer.masksToBounds = true
