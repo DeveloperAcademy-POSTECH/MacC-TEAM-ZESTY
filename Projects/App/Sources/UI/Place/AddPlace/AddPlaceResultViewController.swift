@@ -17,6 +17,7 @@ final class AddPlaceResultViewController: UIViewController {
     // MARK: - Properties
     private let viewModel = AddPlaceViewModel()
     private var cancelBag = Set<AnyCancellable>()
+    private let isSE = UIScreen.main.isLessThan376pt && !UIDevice.current.hasNotch
     
     private lazy var titleView = MainTitleView(title: "맛집 등록 완료 🎉")
     
@@ -38,7 +39,7 @@ final class AddPlaceResultViewController: UIViewController {
         $0.font = .systemFont(ofSize: 11, weight: .bold)
         $0.textColor = .white
         $0.backgroundColor = .zestyColor(.point)
-        $0.layer.cornerRadius = 12
+        $0.layer.cornerRadius = 10
         $0.layer.masksToBounds = true
         return $0
     }(BasePaddingLabel())
@@ -46,14 +47,15 @@ final class AddPlaceResultViewController: UIViewController {
     private lazy var placeNameLabel: UILabel = {
         $0.text = "요기쿠시동"
         $0.textColor = .label
-        $0.font = .systemFont(ofSize: 22, weight: .bold)
+        $0.font = .systemFont(ofSize: isSE ? 20 : 22, weight: .bold)
+        $0.numberOfLines = 0
         return $0
     }(UILabel())
     
     private lazy var addressLabel: UILabel = {
-        $0.text = "경북 포항시 남구 효자동 11길 24-1 1층 요기쿠시동"
+        $0.text = "경북 포항시 남구 효자동 11길 24-1 1층 요기쿠시동 "
         $0.textColor = .secondaryLabel
-        $0.font = .systemFont(ofSize: 12, weight: .regular)
+        $0.font = .systemFont(ofSize: isSE ? 10 : 12, weight: .regular)
         $0.numberOfLines = 0
         return $0
     }(UILabel())
@@ -61,42 +63,43 @@ final class AddPlaceResultViewController: UIViewController {
     private lazy var orgTitle: UILabel = {
         $0.text = "Orgnization"
         $0.textColor = .tertiaryLabel
-        $0.font = .systemFont(ofSize: 11, weight: .regular)
+        $0.font = .systemFont(ofSize: isSE ? 9 : 11, weight: .regular)
         return $0
     }(UILabel())
     
     private lazy var creatorTitle: UILabel = {
         $0.text = "Registered by"
         $0.textColor = .tertiaryLabel
-        $0.font = .systemFont(ofSize: 11, weight: .regular)
+        $0.font = .systemFont(ofSize: isSE ? 9 : 11, weight: .regular)
         return $0
     }(UILabel())
     
     private lazy var dateTitle: UILabel = {
         $0.text = "Date"
         $0.textColor = .tertiaryLabel
-        $0.font = .systemFont(ofSize: 11, weight: .regular)
+        $0.font = .systemFont(ofSize: isSE ? 9 : 11, weight: .regular)
         return $0
     }(UILabel())
     
     private lazy var orgLabel: UILabel = {
-        $0.text = "애플디벨로퍼아카데미"
+        $0.text = "대학이름"
         $0.textColor = .zestyColor(.gray3C)
-        $0.font = .systemFont(ofSize: 11, weight: .regular)
+        $0.font = .systemFont(ofSize: isSE ? 13 : 16, weight: .medium)
+        $0.numberOfLines = 0
         return $0
     }(UILabel())
     
     private lazy var creatorLabel: UILabel = {
-        $0.text = "아보카도"
+        $0.text = "만든사람"
         $0.textColor = .zestyColor(.gray3C)
-        $0.font = .systemFont(ofSize: 11, weight: .regular)
+        $0.font = .systemFont(ofSize: isSE ? 13 : 16, weight: .medium)
         return $0
     }(UILabel())
     
     private lazy var dateLabel: UILabel = {
-        $0.text = "2022.10.18"
+        $0.text = "YYYY.MM.DD"
         $0.textColor = .zestyColor(.gray3C)
-        $0.font = .systemFont(ofSize: 11, weight: .regular)
+        $0.font = .systemFont(ofSize: isSE ? 13 : 16, weight: .medium)
         return $0
     }(UILabel())
     
@@ -162,19 +165,75 @@ extension AddPlaceResultViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([titleView, ticketImageView, saveButton, doneButton])
+        view.addSubviews([titleView, ticketImageView, iconView,
+                          categoryTagLabel, placeNameLabel, addressLabel,
+                          orgTitle, creatorTitle, dateTitle,
+                          orgLabel, creatorLabel, dateLabel,
+                          saveButton, doneButton])
         
         titleView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.horizontalEdges.equalToSuperview().inset(20)
         }
-        view.sendSubviewToBack(ticketImageView)
         
         ticketImageView.snp.makeConstraints {
             $0.top.equalTo(titleView.snp.bottom).multipliedBy(1.035)
             $0.centerX.equalToSuperview()
             $0.width.equalToSuperview().multipliedBy(0.77)
             $0.height.equalToSuperview().multipliedBy(0.59)
+        }
+        
+        orgTitle.snp.makeConstraints {
+            $0.top.equalTo(ticketImageView).offset(30)
+            $0.leading.trailing.equalTo(ticketImageView).inset(isSE ? 40 : 25)
+        }
+        
+        orgLabel.snp.makeConstraints {
+            $0.top.equalTo(orgTitle.snp.bottom).offset(4)
+            $0.leading.trailing.equalTo(ticketImageView).inset(isSE ? 40 : 25)
+        }
+        
+        creatorTitle.snp.makeConstraints {
+            $0.top.equalTo(orgLabel.snp.bottom).offset(20)
+            $0.leading.trailing.equalTo(ticketImageView).inset(isSE ? 40 : 25)
+        }
+        
+        creatorLabel.snp.makeConstraints {
+            $0.top.equalTo(creatorTitle.snp.bottom).offset(4)
+            $0.leading.trailing.equalTo(ticketImageView).inset(isSE ? 40 : 25)
+        }
+        
+        dateTitle.snp.makeConstraints {
+            $0.top.equalTo(creatorLabel.snp.bottom).offset(20)
+            $0.leading.trailing.equalTo(ticketImageView).inset(isSE ? 40 : 25)
+        }
+        
+        dateLabel.snp.makeConstraints {
+            $0.top.equalTo(dateTitle.snp.bottom).offset(4)
+            $0.leading.trailing.equalTo(ticketImageView).inset(isSE ? 40 : 25)
+        }
+        
+        categoryTagLabel.snp.makeConstraints {
+            $0.bottom.equalTo(placeNameLabel.snp.top).offset(-4)
+            $0.leading.equalTo(ticketImageView).inset(isSE ? 40 : 25)
+        }
+
+        placeNameLabel.snp.makeConstraints {
+            $0.bottom.equalTo(addressLabel.snp.top).offset(-4)
+            $0.leading.equalTo(ticketImageView).inset(isSE ? 40 : 25)
+            $0.trailing.equalTo(iconView.snp.leading).offset(-10)
+        }
+
+        addressLabel.snp.makeConstraints {
+            $0.bottom.equalTo(ticketImageView.snp.bottom).offset(isSE ? -100 : -130)
+            $0.leading.equalTo(ticketImageView).inset(isSE ? 40 : 25)
+            $0.trailing.equalTo(iconView.snp.leading).offset(isSE ? -8 : -10)
+        }
+
+        iconView.snp.makeConstraints {
+            $0.bottom.equalTo(ticketImageView.snp.bottom).offset(isSE ? -100 : -130)
+            $0.trailing.equalTo(ticketImageView).offset(-40)
+            $0.width.height.equalTo(isSE ? 55 : 65)
         }
         
         saveButton.snp.makeConstraints {

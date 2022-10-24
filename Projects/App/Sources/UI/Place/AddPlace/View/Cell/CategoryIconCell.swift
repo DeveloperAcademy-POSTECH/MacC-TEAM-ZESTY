@@ -13,6 +13,7 @@ import DesignSystem
 final class CategoryIconCell: UICollectionViewCell {
     
     var viewModel: Category?
+    private let isSE = UIScreen.main.isLessThan376pt && !UIDevice.current.hasNotch
     
     private let cellView = UIView()
     
@@ -28,7 +29,6 @@ final class CategoryIconCell: UICollectionViewCell {
         $0.font = .systemFont(ofSize: 14, weight: .medium)
         return $0
     }(UILabel())
-    
     
     override var isSelected: Bool {
         didSet {
@@ -53,7 +53,7 @@ final class CategoryIconCell: UICollectionViewCell {
         imageView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(UIScreen.main.isWiderThan425pt ? 25 : 15 )
             $0.centerX.equalToSuperview()
-            $0.width.height.equalTo(UIScreen.main.isLessThan376pt ? 50 : 65)
+            $0.width.height.equalTo(isSE ? 50 : 65)
             $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
