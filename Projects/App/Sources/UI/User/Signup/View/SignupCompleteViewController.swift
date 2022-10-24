@@ -15,7 +15,7 @@ final class SignupCompleteViewController: UIViewController {
     
     private let viewModel = SignupCompleteViewModel()
     
-    private let titleLabel = MainTitleView(title: "고반님\n환영합니다🎉")
+    private lazy var titleLabel = MainTitleView(title: "\(viewModel.userName)\n환영합니다🎉")
     private let backgroundImageView = UIImageView()
     private let nickNameLabel = UILabel()
     private let startButton = FullWidthBlackButton()
