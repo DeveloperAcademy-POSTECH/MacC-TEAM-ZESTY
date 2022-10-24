@@ -88,6 +88,8 @@ extension EvaluationButton {
     
     private func configureUI(type: EvaluationType) {
         evaluationIcon.image = type.image
+        evaluationIcon.contentMode = .scaleAspectFit
+        
         evaluationLabel.text = type.desc
         evaluationLabel.textAlignment = .center
         evaluationLabel.font = .systemFont(ofSize: 13, weight: .medium)
@@ -98,7 +100,7 @@ extension EvaluationButton {
         backgroundView.backgroundColor = .zestyColor(.grayF6)
         
         evaluationStackView.axis = .vertical
-        evaluationStackView.spacing = 16
+        evaluationStackView.spacing = 10
         evaluationStackView.distribution = .equalSpacing
     }
     

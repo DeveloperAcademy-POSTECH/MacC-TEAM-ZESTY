@@ -74,7 +74,7 @@ extension EvaluationViewController {
         view.backgroundColor = .systemBackground
         
         evaluationStackView.axis = .horizontal
-        evaluationStackView.spacing = 10
+        evaluationStackView.spacing = 15
         evaluationStackView.distribution = .fillEqually
         
         goodButton.button.addTarget(self, action: #selector(goodButtonTouched), for: .touchUpInside)
