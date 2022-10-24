@@ -112,7 +112,7 @@ extension AddPlaceSearchViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchResults.count == 0 {
             if searchingTextFieldView.textField.text == "" {
-                tableView.setEmptyView(message: "등록하려는 맛집을 검색해주세요.", type: .search)
+                tableView.setEmptyView(message: "등록하려는 맛집을\n검색해주세요.", type: .search)
             } else {
                 tableView.setEmptyView(message: "검색 결과가 없어요.", type: .noresult)
             }
