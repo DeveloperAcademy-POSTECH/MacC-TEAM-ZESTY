@@ -19,6 +19,7 @@ final class AddPlaceSearchViewController: UIViewController {
     
     private var searchResults: [Place] = []
 //    private var searchResults: [Place] = Place.mockData
+    private var tmpText = ""
     
     private lazy var searchingTextFieldView = SearchTextField()
     private lazy var tableView = UITableView(frame: CGRect.zero, style: .grouped)
@@ -42,6 +43,8 @@ final class AddPlaceSearchViewController: UIViewController {
         setNavigationBar()
         configureUI()
         createLayout()
+        searchingTextFieldView.textField.delegate = self
+        searchingTextFieldView.textField.becomeFirstResponder()
     }
     
     // MARK: - Function
@@ -51,6 +54,10 @@ final class AddPlaceSearchViewController: UIViewController {
     
     @objc func searchButtonDidTap() {
         print("검색버튼이 눌렸어요")
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        searchingTextFieldView.textField.resignFirstResponder()
     }
     
 }
@@ -141,6 +148,23 @@ extension AddPlaceSearchViewController: UITableViewDelegate {
         return 82
     }
 
+}
+
+// MARK: - UITextFieldDelegate
+
+extension AddPlaceSearchViewController: UITextFieldDelegate {
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        tmpText = string // combine 으로 해야함
+        tableView.reloadData()
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
 }
 
 /*
