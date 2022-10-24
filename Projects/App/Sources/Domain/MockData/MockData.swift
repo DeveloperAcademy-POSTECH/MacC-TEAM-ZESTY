@@ -44,7 +44,7 @@ extension Place {
               creator: User.mockData[0],
               organizationId: 1,
               name: "순이",
-              address: "경상북도 포항시 남구 지곡동 1-1",
+              address: "경상북도 포항시 남구 지곡동 1-1 경상북도 포항시 남구 지곡동 1시 남구 지곡동 1-1경상북도 포항시 남구 지곡동 1-1",
               lat: "36.00922443856994",
               lan: "129.33335502427113",
               category: [Category.mockData[1], Category.mockData[2]],

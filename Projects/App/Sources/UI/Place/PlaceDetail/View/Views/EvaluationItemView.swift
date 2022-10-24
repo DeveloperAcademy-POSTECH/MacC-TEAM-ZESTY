@@ -20,7 +20,7 @@ class EvaluationItemView: UIView {
     private var viewModel: EvaluationViewModel?
     
     private let imageView: UIImageView = {
-        $0.contentMode = .scaleToFill
+        $0.contentMode = .scaleAspectFit
         return $0
     }(UIImageView())
     
@@ -77,7 +77,7 @@ extension EvaluationItemView {
         
         imageView.snp.makeConstraints {
             $0.top.bottom.leading.equalToSuperview()
-            $0.width.height.equalTo(35)
+            $0.width.height.equalTo(30)
         }
         
         countLabel.snp.makeConstraints {

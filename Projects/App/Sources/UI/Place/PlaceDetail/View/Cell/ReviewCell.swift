@@ -10,21 +10,21 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-class ReviewCell: UITableViewCell {
+final class ReviewCell: UITableViewCell {
 
     // MARK: - Properties
 
     private let reviewImageView: UIImageView = {
         $0.image = UIImage(named: "test-pasta")
-        $0.contentMode = .scaleAspectFill
+        $0.contentMode = .scaleAspectFit
         $0.layer.cornerRadius = 16
         $0.layer.masksToBounds = true
         return $0
     }(UIImageView())
     
     private let emojiView: UIImageView = {
-        $0.contentMode = .scaleToFill
-        $0.image = UIImage(.img_reviewfriends_good_45)
+        $0.contentMode = .scaleAspectFit
+        $0.image = UIImage(.img_reviewfriends_good_60)
         return $0
     }(UIImageView(frame: .zero))
     
@@ -116,7 +116,7 @@ extension ReviewCell {
         
         emojiView.snp.makeConstraints {
             $0.top.equalTo(reviewImageView.snp.top).inset(20)
-            $0.trailing.equalTo(reviewImageView.snp.trailing).inset(15)
+            $0.trailing.equalTo(reviewImageView.snp.trailing).inset(20)
             $0.width.height.equalTo(60)
         }
         

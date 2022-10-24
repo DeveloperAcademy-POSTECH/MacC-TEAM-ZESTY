@@ -36,7 +36,7 @@ class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     private lazy var placeNameLabel: UILabel = {
         $0.text = "(가게이름없음)"
         $0.textColor = .black
-        $0.font = .systemFont(ofSize: 26, weight: .semibold)
+        $0.font = .systemFont(ofSize: 26, weight: .bold)
         return $0
     }(UILabel())
     
@@ -52,9 +52,9 @@ class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     
     private lazy var addressLabel: UILabel = {
         $0.text = "경북 포항시 남구 효자동 11길 24-1 1층 요기쿠시동"
-        $0.textColor = .zestyColor(.gray3C3C43)?.withAlphaComponent(0.6)
+        $0.textColor = .secondaryLabel
         $0.font = .systemFont(ofSize: 11, weight: .regular)
-        $0.numberOfLines = 2
+        $0.numberOfLines = 0
         return $0
     }(UILabel())
     
@@ -81,6 +81,8 @@ class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     
     private lazy var lineView: UIView = {
         $0.backgroundColor = .black
+        $0.layer.cornerRadius = 1
+        $0.layer.masksToBounds = true
         return $0
     }(UIView())
     
@@ -171,7 +173,7 @@ extension PlaceInfoHeaderView {
         }
         
         categoryTagLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(23)
+            $0.top.equalToSuperview().offset(20)
             $0.leading.equalToSuperview()
             $0.height.equalTo(24)
         }
@@ -184,21 +186,18 @@ extension PlaceInfoHeaderView {
         goodView.snp.makeConstraints {
             $0.top.equalTo(placeNameLabel.snp.bottom).offset(20)
             $0.leading.equalToSuperview()
-            $0.height.equalTo(35)
             $0.width.equalTo(60)
         }
         
         sosoView.snp.makeConstraints {
             $0.top.equalTo(placeNameLabel.snp.bottom).offset(20)
             $0.leading.equalTo(goodView.snp.trailing).offset(10)
-            $0.height.equalTo(35)
             $0.width.equalTo(60)
         }
         
         badView.snp.makeConstraints {
             $0.top.equalTo(placeNameLabel.snp.bottom).offset(20)
             $0.leading.equalTo(sosoView.snp.trailing).offset(10)
-            $0.height.equalTo(35)
             $0.width.equalTo(60)
         }
         
@@ -212,7 +211,8 @@ extension PlaceInfoHeaderView {
         
         addressLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(20)
-            $0.top.bottom.equalToSuperview().inset(16)
+            $0.trailing.equalTo(kakaoButton.snp.leading).offset(-20)
+            $0.centerY.equalToSuperview()
             $0.width.lessThanOrEqualTo(200)
         }
         

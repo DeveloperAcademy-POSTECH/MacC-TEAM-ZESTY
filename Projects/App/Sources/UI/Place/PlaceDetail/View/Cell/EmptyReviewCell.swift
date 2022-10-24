@@ -32,7 +32,7 @@ class EmptyReviewCell: UITableViewCell {
         $0.text = "아직 사진리뷰가 없어요"
         $0.font = .systemFont(ofSize: 13, weight: .regular)
         $0.textColor = .zestyColor(.dim)
-        $0.textAlignment = .left
+        $0.textAlignment = .center
         return $0
     }(UILabel())
     
