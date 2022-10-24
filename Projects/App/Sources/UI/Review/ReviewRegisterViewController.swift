@@ -7,7 +7,6 @@
 //
 
 import Combine
-import SwiftUI
 import UIKit
 import DesignSystem
 import SnapKit
@@ -210,6 +209,9 @@ extension ReviewRegisterViewController {
 
 // MARK: - Previews
 
+#if DEBUG
+import SwiftUI
+
 struct ReviewRegisterPreview: PreviewProvider {
     
     static var previews: some View {
@@ -217,3 +219,4 @@ struct ReviewRegisterPreview: PreviewProvider {
     }
     
 }
+#endif

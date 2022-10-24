@@ -7,7 +7,6 @@
 //
 
 import Combine
-import SwiftUI
 import UIKit
 import SnapKit
 
@@ -98,6 +97,9 @@ extension EvaluationViewController {
 
 // MARK: - Previews
 
+#if DEBUG
+import SwiftUI
+
 struct EvaluationPreview: PreviewProvider {
     
     // TODO: previewDevice ZESTY_TEMPLATE에 추가하기
@@ -111,3 +113,4 @@ struct EvaluationPreview: PreviewProvider {
     }
     
 }
+#endif

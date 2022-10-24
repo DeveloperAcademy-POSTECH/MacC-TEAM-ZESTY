@@ -7,7 +7,6 @@
 //
 
 import Combine
-import SwiftUI
 import UIKit
 import DesignSystem
 import SnapKit
@@ -133,6 +132,9 @@ extension EvaluationButton {
 
 // MARK: - Previews
 
+#if DEBUG
+import SwiftUI
+
 struct EvaluationButtonPreview: PreviewProvider {
     
     static var previews: some View {
@@ -140,3 +142,4 @@ struct EvaluationButtonPreview: PreviewProvider {
     }
     
 }
+#endif

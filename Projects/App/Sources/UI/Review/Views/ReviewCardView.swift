@@ -7,7 +7,6 @@
 //
 
 import Combine
-import SwiftUI
 import UIKit
 import SnapKit
 
@@ -48,6 +47,9 @@ extension ReviewCardView {
 
 // MARK: - Previews
 
+#if DEBUG
+import SwiftUI
+
 struct ReviewCardPreview: PreviewProvider {
     
     static var previews: some View {
@@ -55,3 +57,4 @@ struct ReviewCardPreview: PreviewProvider {
     }
     
 }
+#endif
