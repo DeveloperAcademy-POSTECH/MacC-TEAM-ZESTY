@@ -12,7 +12,7 @@ final public class PaddingLabel: UILabel {
     
     private var padding = UIEdgeInsets(top: 6.0, left: 10.0, bottom: 6.0, right: 10.0)
 
-    convenience init(padding: UIEdgeInsets? = nil) {
+    convenience public init(padding: UIEdgeInsets? = nil) {
         self.init()
         if let padding = padding {
             self.padding = padding
