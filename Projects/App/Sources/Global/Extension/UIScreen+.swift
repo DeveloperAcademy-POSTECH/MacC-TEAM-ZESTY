@@ -9,8 +9,9 @@
 import UIKit
 
 public extension UIScreen {
-  /// - Mini, SE: 375.0
-  /// - pro: 390.0
-  /// - pro max: 428.0
-  var isWiderThan425pt: Bool { self.bounds.size.width > 425 }
+    /// - Mini, SE: 375.0
+    /// - pro: 390.0
+    /// - pro max: 428.0
+    var isWiderThan425pt: Bool { self.bounds.size.width > 425 } // MAX
+    var isLessThan376pt: Bool { self.bounds.size.width < 376 } // MINI
 }

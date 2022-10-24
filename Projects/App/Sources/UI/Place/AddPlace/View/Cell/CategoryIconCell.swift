@@ -75,11 +75,3 @@ final class CategoryIconCell: UICollectionViewCell {
     }
 
 }
-
-public extension UIScreen {
-  /// - Mini, SE: 375.0
-  /// - pro: 390.0
-  /// - pro max: 428.0
-  var isWiderThan425pt: Bool { self.bounds.size.width > 425 }
-  var isLessThan376pt: Bool { self.bounds.size.width < 376 }
-}
