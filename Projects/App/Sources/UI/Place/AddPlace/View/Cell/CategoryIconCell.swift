@@ -30,7 +30,6 @@ final class CategoryIconCell: UICollectionViewCell {
     }(UILabel())
     
     
-    
     override var isSelected: Bool {
         didSet {
             if isSelected {

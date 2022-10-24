@@ -46,5 +46,7 @@ public enum Asset: String {
     
     // img
     case img_ticket_bg
+    case img_ticket_top
+    case img_ticket_bottom
     
 }
