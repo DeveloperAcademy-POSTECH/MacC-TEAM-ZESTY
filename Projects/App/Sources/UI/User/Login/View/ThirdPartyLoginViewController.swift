@@ -77,11 +77,11 @@ extension ThirdPartyLoginViewController {
         
         kakaoLoginButton.addTarget(self, action: #selector(kakaoLoginButtonClicked), for: .touchUpInside)
         kakaoLoginButton.setImage(UIImage(.btn_kakaologin), for: .normal)
-        kakaoLoginButton.imageView?.contentMode = .scaleAspectFill
+        kakaoLoginButton.imageView?.contentMode = .scaleAspectFit
         
         appleLoginButton.addTarget(self, action: #selector(appleLoginButtonClicked), for: .touchUpInside)
         appleLoginButton.setImage(UIImage(.btn_applelogin), for: .normal)
-        appleLoginButton.imageView?.contentMode = .scaleAspectFill
+        appleLoginButton.imageView?.contentMode = .scaleAspectFit
     }
     
     private func createLayout() {
@@ -111,10 +111,10 @@ extension ThirdPartyLoginViewController {
         }
         
         kakaoLoginButton.snp.makeConstraints { make in
-            make.height.equalTo(50)
+            make.height.equalTo(55)
         }
         appleLoginButton.snp.makeConstraints { make in
-            make.height.equalTo(50)
+            make.height.equalTo(55)
         }
     }
     
