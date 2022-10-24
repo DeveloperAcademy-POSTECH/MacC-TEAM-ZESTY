@@ -69,6 +69,7 @@ extension DomainSettingViewController {
                 guard let self = self else { return }
                 self.emailDuplicatedLabel.isHidden = !isDuplicateEmail
             }
+            .store(in: &cancelBag)
         
         NotificationCenter.default.publisher(for: UIApplication.keyboardWillShowNotification)
             .sink { [weak self] notification in
