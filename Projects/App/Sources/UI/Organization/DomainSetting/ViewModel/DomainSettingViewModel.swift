@@ -15,7 +15,7 @@ final class DomainSettingViewModel {
     
     // output
     @Published var isEmailValid = false
-    @Published var isDuplicateEamil = false
+    @Published var isDuplicateEmail = false
     
     var orgDomain: String = ""
     

@@ -17,11 +17,12 @@ final class DomainSettingViewController: UIViewController {
     
     private let viewModel = DomainSettingViewModel()
     
-    private let mainTitleView = MainTitleView(title: "학교 이메일을 알려주세요", subtitle: "학교 인증에 사용돼요.")
-    private let domainInputBox = UIView()
-    private let domainStackView = UIStackView()
-    private let domainTextField = UITextField()
-    private let domainDuplicatedLabel = UILabel()
+    private let mainTitleView = MainTitleView(title: "학교 이메일을 알려주세요",
+                                              subtitle: "학교 인증에 사용돼요.")
+    private let emailInputView = UIView()
+    private let emailStackView = UIStackView()
+    private let emailTextField = UITextField()
+    private let emailDuplicatedLabel = UILabel()
     private let domainPlaceholder = UILabel()
     
     // TODO: component로 변경하기
@@ -49,7 +50,7 @@ final class DomainSettingViewController: UIViewController {
 extension DomainSettingViewController {
     
     private func bindUI() {
-        domainTextField.textDidChangePublisher
+        emailTextField.textDidChangePublisher
                         .compactMap { $0.text }
                         .assign(to: \.userEmail, on: viewModel)
                         .store(in: &cancelBag)
@@ -62,6 +63,13 @@ extension DomainSettingViewController {
                 self.arrowButton.tintColor = isValid ? .black : .lightGray
             }
             .store(in: &cancelBag)
+        
+        viewModel.$isDuplicateEmail
+            .sink { [weak self] isDuplicateEmail in
+                guard let self = self else { return }
+                self.emailDuplicatedLabel.isHidden = !isDuplicateEmail
+            }
+        
         NotificationCenter.default.publisher(for: UIApplication.keyboardWillShowNotification)
             .sink { [weak self] notification in
                 guard let self = self else { return }
@@ -85,29 +93,29 @@ extension DomainSettingViewController {
     private func configureUI() {
         view.backgroundColor = .white
         
-        domainInputBox.backgroundColor = .black
-        domainInputBox.layer.cornerRadius = 25
-        domainInputBox.layer.masksToBounds = true
+        emailInputView.backgroundColor = .black
+        emailInputView.layer.cornerRadius = 25
+        emailInputView.layer.masksToBounds = true
         
-        domainStackView.spacing = 10
-        domainStackView.axis = .horizontal
-        domainStackView.distribution = .fill
-        domainStackView.alignment = .fill
+        emailStackView.spacing = 10
+        emailStackView.axis = .horizontal
+        emailStackView.distribution = .fill
+        emailStackView.alignment = .fill
        
-        domainTextField.becomeFirstResponder()
-        domainTextField.attributedPlaceholder = .init(attributedString: NSAttributedString(string: "이메일", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
-        domainTextField.textColor = .white
-        domainTextField.font = .systemFont(ofSize: 17, weight: .medium)
-        domainTextField.keyboardType = .asciiCapable
+        emailTextField.becomeFirstResponder()
+        emailTextField.attributedPlaceholder = .init(attributedString: NSAttributedString(string: "이메일", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
+        emailTextField.textColor = .white
+        emailTextField.font = .systemFont(ofSize: 17, weight: .medium)
+        emailTextField.keyboardType = .asciiCapable
         
         domainPlaceholder.textColor = .white
         domainPlaceholder.text = "@pos.idserve.net"
         domainPlaceholder.font = .systemFont(ofSize: 17, weight: .medium)
         domainPlaceholder.setContentCompressionResistancePriority(.init(1000), for: .horizontal)
         
-        domainDuplicatedLabel.textColor = .red
-        domainDuplicatedLabel.text = "이미 사용된 이메일이에요."
-        domainDuplicatedLabel.font = .systemFont(ofSize: 13, weight: .regular)
+        emailDuplicatedLabel.textColor = .red
+        emailDuplicatedLabel.text = "이미 사용된 이메일이에요."
+        emailDuplicatedLabel.font = .systemFont(ofSize: 13, weight: .regular)
         
         // TODO: Component로 변경
         arrowButton.tintColor = .lightGray
@@ -125,31 +133,31 @@ extension DomainSettingViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([mainTitleView, domainInputBox, domainDuplicatedLabel, arrowButton])
+        view.addSubviews([mainTitleView, emailInputView, emailDuplicatedLabel, arrowButton])
         
-        domainInputBox.addSubview(domainStackView)
-        domainStackView.addArrangedSubviews([domainTextField, domainPlaceholder])
+        emailInputView.addSubview(emailStackView)
+        emailStackView.addArrangedSubviews([emailTextField, domainPlaceholder])
         
         mainTitleView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.horizontalEdges.equalToSuperview()
         }
         
-        domainInputBox.snp.makeConstraints { make in
+        emailInputView.snp.makeConstraints { make in
             make.top.equalTo(mainTitleView.snp.bottom).offset(160)
             make.centerX.equalToSuperview()
             make.height.equalTo(50)
             make.width.lessThanOrEqualTo(310)
         }
         
-        domainStackView.snp.makeConstraints { make in
+        emailStackView.snp.makeConstraints { make in
             make.verticalEdges.equalToSuperview().inset(14)
             make.horizontalEdges.equalToSuperview().inset(20)
             make.width.lessThanOrEqualTo(270)
         }
         
-        domainDuplicatedLabel.snp.makeConstraints { make in
-            make.top.equalTo(domainInputBox.snp.bottom).offset(15)
+        emailDuplicatedLabel.snp.makeConstraints { make in
+            make.top.equalTo(emailInputView.snp.bottom).offset(15)
             make.centerX.equalToSuperview()
         }
         
