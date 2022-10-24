@@ -19,7 +19,7 @@ final class ReviewCardViewController: UIViewController {
     
     private let safeArea = UIView()
     private let titleView = MainTitleView(title: "리뷰 등록 완료 🎉")
-    private let cardView = ReviewCardView()
+    private var cardView: ReviewCardView!
     private let saveButton = UIButton()
     private let completeButton = FullWidthBlackButton()
     
@@ -45,7 +45,11 @@ final class ReviewCardViewController: UIViewController {
 extension ReviewCardViewController {
     
     private func configureUI() {
-        var config = UIImage.SymbolConfiguration(paletteColors: [.red])
+        view.backgroundColor = .systemBackground
+        
+        cardView = ReviewCardView(image: UIImage(.img_mockmenu))
+        
+        let config = UIImage.SymbolConfiguration(paletteColors: [.red])
         let downloadImage = UIImage(systemName: "square.and.arrow.down", withConfiguration: config)
         saveButton.setImage(downloadImage, for: .normal)
         saveButton.setTitle(" 리뷰 카드 저장하기", for: .normal)
@@ -97,6 +101,10 @@ struct ReviewCardVCPreview: PreviewProvider {
     
     static var previews: some View {
         UINavigationController(rootViewController: ReviewCardViewController()).toPreview()
+            .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
+//            .previewDevice(PreviewDevice(rawValue: "iPhone 13 Pro Max"))
+//            .previewDevice(PreviewDevice(rawValue: "iPhone 13"))
+//            .previewDevice(PreviewDevice(rawValue: "iPad mini (6th generation)"))
     }
     
 }

@@ -30,14 +30,15 @@ final class ReviewCardView: UIView {
     private let placeAddressLabel = UILabel()
     
     private let evaluationImageView = UIImageView()
+    private let backgroundView = UIView()
     private let menuImageView = UIImageView()
     
     // MARK: - LifeCycle
     
-    init() {
+    init(menu: String? = nil, image: UIImage? = nil) {
         super.init(frame: .zero)
-        configureUI()
-        createLayout()
+        configureUI(with: image)
+        createLayout(isMenuImageExist: image != nil)
     }
 
     required init?(coder: NSCoder) {
@@ -52,10 +53,21 @@ final class ReviewCardView: UIView {
 
 extension ReviewCardView {
     
-    private func configureUI() {
+    private func configureUI(with image: UIImage?) {
+        let isImage = image != nil
+        
+        clipsToBounds = true
         layer.cornerRadius = 16
         backgroundColor = .white
         addShadow(opacity: 0.6, radius: 3)
+        
+        menuImageView.image = image
+        menuImageView.clipsToBounds = true
+        menuImageView.layer.cornerRadius = 16
+        backgroundView.backgroundColor = .black
+        backgroundView.clipsToBounds = true
+        backgroundView.layer.opacity = 0.6
+        backgroundView.layer.cornerRadius = 16
         
         userStackView.axis = .vertical
         userStackView.distribution = .equalSpacing
@@ -63,9 +75,10 @@ extension ReviewCardView {
         
         nicknameStaticLabel.text = "Reviewed by"
         nicknameStaticLabel.font = .preferredFont(forTextStyle: .caption2)
-        nicknameStaticLabel.textColor = .secondaryLabel
+        nicknameStaticLabel.textColor = isImage ? .white : .secondaryLabel
         nicknameLabel.text = "아보카도"
         nicknameLabel.font = .preferredFont(forTextStyle: .callout).bold()
+        nicknameLabel.textColor = isImage ? .white : .label
         
         evaluationImageView.image = UIImage(.img_reviewfriends_good)
         evaluationImageView.addShadow(opacity: 0.1, radius: 2)
@@ -84,16 +97,18 @@ extension ReviewCardView {
         
         placeNameLabel.text = "요기쿠시동"
         placeNameLabel.font = .preferredFont(forTextStyle: .title2).bold()
+        placeNameLabel.textColor = isImage ? .white : .label
         placeNameLabel.numberOfLines = 2
         placeAddressLabel.text = "경북 포항시 남구 효자동길6번길 34-1 1층 요기쿠시동"
         placeAddressLabel.font = .preferredFont(forTextStyle: .caption1)
-        placeAddressLabel.textColor = .secondaryLabel
+        placeAddressLabel.textColor = isImage ? .white : .secondaryLabel
         placeAddressLabel.numberOfLines = 2
     }
     
-    private func createLayout() {
+    private func createLayout(isMenuImageExist: Bool) {
         addSubviews([
-            userStackView, placeStackView, evaluationImageView, menuImageView
+            menuImageView, backgroundView, userStackView, placeStackView,
+            evaluationImageView
         ])
         userStackView.addArrangedSubviews([
             nicknameStaticLabel, nicknameLabel, dateStaticLabel, dateLabel
@@ -106,24 +121,42 @@ extension ReviewCardView {
             $0.top.horizontalEdges.equalToSuperview().inset(30)
         }
         nicknameStaticLabel.snp.makeConstraints {
-            $0.top.horizontalEdges.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(13)
         }
         nicknameLabel.snp.makeConstraints {
-            $0.bottom.horizontalEdges.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(21)
         }
         
-        evaluationImageView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.centerY.equalToSuperview().multipliedBy(0.8)
-            $0.width.equalToSuperview().multipliedBy(0.4)
-            $0.height.equalTo(evaluationImageView.snp.width)
-        }
-        
-        placeStackView.snp.makeConstraints {
-            $0.horizontalEdges.bottom.equalToSuperview().inset(30)
-            $0.height.greaterThanOrEqualTo(88)
+        if isMenuImageExist {
+            backgroundView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+            menuImageView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
+            }
+            evaluationImageView.snp.makeConstraints {
+                $0.trailing.bottom.equalToSuperview().inset(30)
+                $0.width.equalToSuperview().multipliedBy(0.2)
+                $0.height.equalTo(evaluationImageView.snp.width)
+            }
+            placeStackView.snp.makeConstraints {
+                $0.leading.bottom.equalToSuperview().inset(30)
+                $0.trailing.equalTo(evaluationImageView.snp.leading).offset(-10)
+                $0.height.greaterThanOrEqualTo(88)
+            }
+        } else {
+            evaluationImageView.snp.makeConstraints {
+                $0.centerX.equalToSuperview()
+                $0.centerY.equalToSuperview().multipliedBy(0.8)
+                $0.width.equalToSuperview().multipliedBy(0.4)
+                $0.height.equalTo(evaluationImageView.snp.width)
+            }
+            placeStackView.snp.makeConstraints {
+                $0.horizontalEdges.bottom.equalToSuperview().inset(30)
+                $0.height.greaterThanOrEqualTo(88)
+            }
         }
         categoryLabel.snp.makeConstraints {
             $0.leading.equalToSuperview()
@@ -147,7 +180,7 @@ extension ReviewCardView {
 struct ReviewCardPreview: PreviewProvider {
     
     static var previews: some View {
-        ReviewCardView().toPreview()
+        ReviewCardView().toPreview() //image: UIImage(.img_mockmenu)
             .frame(width: 300, height: 400)
 //            .frame(width: 250, height: 320)
     }
