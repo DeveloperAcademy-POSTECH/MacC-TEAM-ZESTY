@@ -16,7 +16,6 @@ final class ReviewCardViewController: UIViewController {
     // MARK: - Properties
     private let cancelBag = Set<AnyCancellable>()
     
-    private let safeArea = UIView()
     private let titleView = MainTitleView(title: "리뷰 등록 완료 🎉")
     private var cardView: ReviewCardView!
     private let saveButton = UIButton()
@@ -84,19 +83,10 @@ extension ReviewCardViewController {
     }
     
     private func createLayout() {
-        safeArea.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(safeArea)
-        
-        let guide = view.safeAreaLayoutGuide
-        safeArea.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
-        safeArea.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
-        safeArea.leadingAnchor.constraint(equalTo: guide.leadingAnchor).isActive = true
-        safeArea.trailingAnchor.constraint(equalTo: guide.trailingAnchor).isActive = true
-        
         view.addSubviews([titleView, cardView, saveButton, completeButton])
         
         titleView.snp.makeConstraints {
-            $0.top.equalTo(safeArea.snp.top)
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.horizontalEdges.equalToSuperview()
         }
         cardView.snp.makeConstraints {
@@ -111,7 +101,8 @@ extension ReviewCardViewController {
             $0.height.equalTo(20)
         }
         completeButton.snp.makeConstraints {
-            $0.horizontalEdges.bottom.equalTo(safeArea).inset(20)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide.snp.horizontalEdges).inset(20)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(20)
         }
     }
     

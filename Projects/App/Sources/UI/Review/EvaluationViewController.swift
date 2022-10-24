@@ -16,7 +16,6 @@ final class EvaluationViewController: UIViewController {
     // MARK: - Properties
     private let cancelBag = Set<AnyCancellable>()
     
-    private let safeArea = UIView()
     private let titleView = MainTitleView(title: "요기쿠시동, 어땠나요?")
     private let evaluationStackView = UIStackView()
     private let goodButton = EvaluationButton(type: .good)
@@ -83,20 +82,12 @@ extension EvaluationViewController {
     }
     
     private func createLayout() {
-        safeArea.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(safeArea)
-        
-        let guide = view.safeAreaLayoutGuide
-        safeArea.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
-        safeArea.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
-        safeArea.leadingAnchor.constraint(equalTo: guide.leadingAnchor).isActive = true
-        safeArea.trailingAnchor.constraint(equalTo: guide.trailingAnchor).isActive = true
-        
         view.addSubviews([titleView, evaluationStackView])
         evaluationStackView.addArrangedSubviews([goodButton, sosoButton, badButton])
 
         titleView.snp.makeConstraints {
-            $0.top.leading.equalTo(safeArea)
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             $0.width.equalTo(260)
         }
         evaluationStackView.snp.makeConstraints {
