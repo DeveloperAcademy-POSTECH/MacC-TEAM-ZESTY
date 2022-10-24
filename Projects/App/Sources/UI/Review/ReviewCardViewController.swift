@@ -16,6 +16,8 @@ final class ReviewCardViewController: UIViewController {
     // MARK: - Properties
     private let cancelBag = Set<AnyCancellable>()
     
+    private let cardView = ReviewCardView()
+    
     // MARK: - LifeCycle
     
     override func viewDidLoad() {
@@ -33,11 +35,15 @@ final class ReviewCardViewController: UIViewController {
 extension ReviewCardViewController {
     
     private func configureUI() {
-        
+        view.addSubview(cardView)
     }
     
     private func createLayout() {
-        
+        cardView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(45)
+            $0.height.equalTo(cardView.snp.width).multipliedBy(1.3)
+        }
     }
     
 }
