@@ -12,7 +12,7 @@ import DesignSystem
 import SnapKit
 
 final class DomainSettingViewController: UIViewController {
-    
+
     // MARK: - Properties
     
     private let viewModel = DomainSettingViewModel()
@@ -30,7 +30,7 @@ final class DomainSettingViewController: UIViewController {
     private let arrowButton = UIButton()
     
     private var keyboardUpConstraints: NSLayoutConstraint?
-    
+
     private var cancelBag = Set<AnyCancellable>()
     
     // MARK: - LifeCycle
@@ -103,7 +103,7 @@ extension DomainSettingViewController {
         emailStackView.axis = .horizontal
         emailStackView.distribution = .fill
         emailStackView.alignment = .fill
-        
+
         emailTextField.becomeFirstResponder()
         emailTextField.attributedPlaceholder = .init(attributedString: NSAttributedString(string: "이메일", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
         emailTextField.textColor = .white
@@ -154,7 +154,7 @@ extension DomainSettingViewController {
         keyboardSafeArea.snp.makeConstraints { make in
             make.top.equalTo(mainTitleView.snp.bottom)
             make.horizontalEdges.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(keyboardHeight)
+            make.bottom.equalToSuperview().inset(keyboardHeight)
         }
         
         emailInputView.snp.makeConstraints { make in
