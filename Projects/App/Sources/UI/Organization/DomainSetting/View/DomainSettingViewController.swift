@@ -12,13 +12,14 @@ import DesignSystem
 import SnapKit
 
 final class DomainSettingViewController: UIViewController {
-
+    
     // MARK: - Properties
     
     private let viewModel = DomainSettingViewModel()
     
     private let mainTitleView = MainTitleView(title: "학교 이메일을 알려주세요",
                                               subtitle: "학교 인증에 사용돼요.")
+    private let keyboardSafeArea = UIView()
     private let emailInputView = UIView()
     private let emailStackView = UIStackView()
     private let emailTextField = UITextField()
@@ -29,7 +30,7 @@ final class DomainSettingViewController: UIViewController {
     private let arrowButton = UIButton()
     
     private var keyboardUpConstraints: NSLayoutConstraint?
-
+    
     private var cancelBag = Set<AnyCancellable>()
     
     // MARK: - LifeCycle
@@ -51,9 +52,9 @@ extension DomainSettingViewController {
     
     private func bindUI() {
         emailTextField.textDidChangePublisher
-                        .compactMap { $0.text }
-                        .assign(to: \.userEmail, on: viewModel)
-                        .store(in: &cancelBag)
+            .compactMap { $0.text }
+            .assign(to: \.userEmail, on: viewModel)
+            .store(in: &cancelBag)
         
         viewModel.$isEmailValid
             .sink {[weak self] isValid in
@@ -74,13 +75,10 @@ extension DomainSettingViewController {
         NotificationCenter.default.publisher(for: UIApplication.keyboardWillShowNotification)
             .sink { [weak self] notification in
                 guard let self = self else { return }
-                if self.keyboardUpConstraints == nil {
-                    guard let endFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-                    let endFrameHeight = endFrame.cgRectValue.height
-                    self.keyboardUpConstraints = self.arrowButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -endFrameHeight - 20)
-                    self.keyboardUpConstraints?.priority = .defaultLow
-                }
-                self.keyboardUpConstraints?.isActive = true
+                guard let endFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+                let endFrameHeight = endFrame.cgRectValue.height
+                
+                self.updateLayout(keyboardHeight: endFrameHeight)
             }
             .store(in: &cancelBag)
     }
@@ -105,7 +103,7 @@ extension DomainSettingViewController {
         emailStackView.axis = .horizontal
         emailStackView.distribution = .fill
         emailStackView.alignment = .fill
-       
+        
         emailTextField.becomeFirstResponder()
         emailTextField.attributedPlaceholder = .init(attributedString: NSAttributedString(string: "이메일", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
         emailTextField.textColor = .white
@@ -130,14 +128,16 @@ extension DomainSettingViewController {
         arrowButton.layer.borderWidth = 2
         arrowButton.layer.cornerRadius = 25
         arrowButton.layer.borderColor = UIColor.lightGray.cgColor
-
+        
         let arrowImageConfiguration = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .default)
         let arrowImage = UIImage(systemName: "arrow.forward", withConfiguration: arrowImageConfiguration)
         arrowButton.setImage(arrowImage, for: .normal)
     }
     
     private func createLayout() {
-        view.addSubviews([mainTitleView, emailInputView, emailDuplicatedLabel, arrowButton])
+        view.addSubviews([mainTitleView, keyboardSafeArea])
+        
+        keyboardSafeArea.addSubviews([emailInputView, emailDuplicatedLabel, arrowButton])
         
         emailInputView.addSubview(emailStackView)
         emailStackView.addArrangedSubviews([emailTextField, domainPlaceholder])
@@ -146,9 +146,19 @@ extension DomainSettingViewController {
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.horizontalEdges.equalToSuperview()
         }
+    }
+    
+    private func updateLayout(keyboardHeight: CGFloat? = nil) {
+        guard let keyboardHeight = keyboardHeight else { return }
+        
+        keyboardSafeArea.snp.makeConstraints { make in
+            make.top.equalTo(mainTitleView.snp.bottom)
+            make.horizontalEdges.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(keyboardHeight)
+        }
         
         emailInputView.snp.makeConstraints { make in
-            make.top.equalTo(mainTitleView.snp.bottom).offset(160)
+            make.centerY.equalToSuperview()
             make.centerX.equalToSuperview()
             make.height.equalTo(50)
             make.width.lessThanOrEqualTo(310)
@@ -167,6 +177,7 @@ extension DomainSettingViewController {
         
         arrowButton.snp.makeConstraints { make in
             make.right.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().inset(20)
         }
     }
     
