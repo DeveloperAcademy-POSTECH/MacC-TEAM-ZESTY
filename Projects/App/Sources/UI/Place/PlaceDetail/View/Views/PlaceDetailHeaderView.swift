@@ -44,7 +44,7 @@ class PlaceDetailHeaderView: UICollectionReusableView {
     
     private let imageView: UIImageView = {
         $0.contentMode = .scaleAspectFit
-        $0.image = UIImage(.img_reviewfriends_good)
+        $0.image = UIImage(.img_good)
         return $0
     }(UIImageView())
     
