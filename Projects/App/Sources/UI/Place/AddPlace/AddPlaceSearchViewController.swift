@@ -17,7 +17,7 @@ final class AddPlaceSearchViewController: UIViewController {
     private let viewModel = AddPlaceViewModel()
     private var cancelBag = Set<AnyCancellable>()
     
-    private var results: [Place] = Place.mockData
+    private var searchResults: [Place] = Place.mockData
     
     private lazy var searchingTextFieldView = SearchTextField()
     private lazy var tableView = UITableView(frame: CGRect.zero, style: .grouped)
@@ -60,9 +60,13 @@ extension AddPlaceSearchViewController {
     
     private func configureUI() {
         view.backgroundColor = .white // zestyColor(.backgroundColor)
+        tableView.backgroundColor = .white // zestyColor(.backgroundColor)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.showsVerticalScrollIndicator = false
+        tableView.estimatedRowHeight = UITableView.automaticDimension
+        tableView.register(SearchResultCell.self, forCellReuseIdentifier: "SearchResultCell")
+        tableView.separatorStyle = .none
     }
     
     private func createLayout() {
@@ -105,12 +109,16 @@ extension AddPlaceSearchViewController {
 extension AddPlaceSearchViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 30
+        return searchResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+         
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultCell", for: indexPath) as? SearchResultCell else { return UITableViewCell() }
         
-        return UITableViewCell()
+        cell.setup(with: searchResults[indexPath.row])
+        cell.selectionStyle = .none
+        return cell
 
     }
     
@@ -118,11 +126,11 @@ extension AddPlaceSearchViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension AddPlaceSearchViewController: UITableViewDelegate {
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 82
     }
-    
+
 }
 
 /*
