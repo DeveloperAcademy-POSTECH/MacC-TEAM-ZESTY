@@ -18,12 +18,12 @@ final class NickNameInputViewController: UIViewController {
     private let viewModel = NickNameInputViewModel()
     
     private let mainTitleView = MainTitleView(title: "닉네임을 알려주세요", subtitle: "언제든지 변경할 수 있어요.")
+    private let nickNameTextFieldUIView = UIView()
     private let nickNameTextField = UITextFieldPadding(top: 14, left: 20, bottom: 14, right: 20)
     private let nextButton = ArrowButton(initialDisable: true)
     private let warningLabel = UILabel()
     
-    private var keyboardUpConstraints: NSLayoutConstraint?
-    private var keyboardDownConstraints: NSLayoutConstraint?
+    private var keyboardEndFrameHeight: CGFloat?
     
     private var cancelBag = Set<AnyCancellable>()
     
@@ -70,22 +70,20 @@ extension NickNameInputViewController {
         NotificationCenter.default.publisher(for: UIApplication.keyboardWillShowNotification)
             .sink { [weak self] notification in
                 guard let self = self else { return }
-                if self.keyboardUpConstraints == nil {
+                if self.keyboardEndFrameHeight == nil {
                     guard let endFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-                    let endFrameHeight = endFrame.cgRectValue.height
-                    self.keyboardUpConstraints = self.nextButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -endFrameHeight - 20)
-                    self.keyboardUpConstraints?.priority = .defaultLow
+                    self.keyboardEndFrameHeight = endFrame.cgRectValue.height
                 }
-                self.keyboardDownConstraints?.isActive = false
-                self.keyboardUpConstraints?.isActive = true
+                self.remakeConstraintsByKeyboard(.show)
+                self.view.layoutIfNeeded()
             }
             .store(in: &cancelBag)
         
         NotificationCenter.default.publisher(for: UIApplication.keyboardWillHideNotification)
             .sink { [weak self ] _ in
                 guard let self = self else { return }
-                self.keyboardUpConstraints?.isActive = false
-                self.keyboardDownConstraints?.isActive = true
+                self.remakeConstraintsByKeyboard(.hide)
+                self.view.layoutIfNeeded()
             }
             .store(in: &cancelBag)
         
@@ -149,6 +147,7 @@ extension NickNameInputViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = .black
     
+        nickNameTextField.becomeFirstResponder()
         nickNameTextField.attributedPlaceholder = .init(attributedString: NSAttributedString(string: "닉네임", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]))
         nickNameTextField.font = .preferredFont(forTextStyle: .body)
         nickNameTextField.textColor = .white
@@ -165,32 +164,69 @@ extension NickNameInputViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([mainTitleView, nickNameTextField, nextButton, warningLabel])
+        view.addSubviews([mainTitleView, nickNameTextFieldUIView, nextButton, warningLabel])
+        nickNameTextFieldUIView.addSubview(nickNameTextField)
         
         mainTitleView.snp.makeConstraints { make in
             make.leading.equalTo(view.snp.leading)
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
         
+        nickNameTextFieldUIView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(mainTitleView.snp.bottom)
+            make.bottom.equalTo(view.snp.bottom)
+        }
+        
         nickNameTextField.snp.makeConstraints { make in
-            make.centerX.equalTo(view.snp.centerX)
-            make.centerY.equalTo(view.snp.centerY)
+            make.centerX.equalTo(nickNameTextFieldUIView.snp.centerX)
+            make.centerY.equalTo(nickNameTextFieldUIView.snp.centerY)
         }
         
         nextButton.snp.makeConstraints { make in
             make.trailing.equalTo(view.snp.trailing).offset(-20)
+            make.bottom.equalTo(view.snp.bottom).offset(-100)
         }
         
         warningLabel.snp.makeConstraints { make in
             make.top.equalTo(nickNameTextField.snp.bottom).offset(14)
             make.centerX.equalTo(view.snp.centerX)
         }
-        
-        keyboardDownConstraints = nextButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100)
-        keyboardDownConstraints?.isActive = true
-        keyboardDownConstraints?.priority = .defaultHigh
     }
     
+    private func remakeConstraintsByKeyboard(_ state: KeyboardState) {
+        guard let keyboardEndFrameHeight = self.keyboardEndFrameHeight else { return }
+        switch state {
+        case .show:
+            nextButton.snp.remakeConstraints { make in
+                make.trailing.equalTo(view.snp.trailing).offset(-20)
+                make.bottom.equalTo(view.snp.bottom).offset(-keyboardEndFrameHeight-20)
+            }
+            self.nickNameTextFieldUIView.snp.remakeConstraints { make in
+                make.leading.trailing.equalToSuperview()
+                make.top.equalTo(mainTitleView.snp.top)
+                make.bottom.equalTo(view.snp.bottom).offset(-keyboardEndFrameHeight)
+            }
+        case .hide:
+            nextButton.snp.remakeConstraints { make in
+                make.trailing.equalTo(view.snp.trailing).offset(-20)
+                make.bottom.equalTo(view.snp.bottom).offset(-100)
+            }
+            self.nickNameTextFieldUIView.snp.remakeConstraints { make in
+                make.leading.trailing.equalToSuperview()
+                make.top.equalTo(mainTitleView.snp.top)
+                make.bottom.equalTo(view.snp.bottom)
+            }
+        }
+    }
+    
+}
+
+extension NickNameInputViewController {
+    private enum KeyboardState {
+        case show
+        case hide
+    }
 }
 
 struct NickNameInputViewTemplatePreview: PreviewProvider {
