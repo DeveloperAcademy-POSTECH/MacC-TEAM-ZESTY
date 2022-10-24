@@ -17,6 +17,8 @@ final class AddPlaceSearchViewController: UIViewController {
     private let viewModel = AddPlaceViewModel()
     private var cancelBag = Set<AnyCancellable>()
     
+    private var results: [Place] = Place.mockData
+    
     private lazy var searchingTextFieldView = SearchTextField()
     private lazy var tableView = UITableView(frame: CGRect.zero, style: .grouped)
     
@@ -58,6 +60,9 @@ extension AddPlaceSearchViewController {
     
     private func configureUI() {
         view.backgroundColor = .white // zestyColor(.backgroundColor)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.showsVerticalScrollIndicator = false
     }
     
     private func createLayout() {
@@ -76,6 +81,11 @@ extension AddPlaceSearchViewController {
             make.width.height.equalTo(45)
         }
         
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(searchingTextFieldView.snp.bottom)
+            make.trailing.leading.bottom.equalToSuperview()
+        }
+        
     }
     
     private func setNavigationBar() {
@@ -86,6 +96,31 @@ extension AddPlaceSearchViewController {
         let leftBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonDidTap))
         leftBarButton.tintColor = .label
         navigationItem.leftBarButtonItem = leftBarButton
+    }
+    
+}
+
+// MARK: - UITableViewDataSource
+
+extension AddPlaceSearchViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 30
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        return UITableViewCell()
+
+    }
+    
+}
+
+// MARK: - UITableViewDelegate
+extension AddPlaceSearchViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 82
     }
     
 }
