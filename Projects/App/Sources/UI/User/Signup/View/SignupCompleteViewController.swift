@@ -15,11 +15,10 @@ final class SignupCompleteViewController: UIViewController {
     
     private let viewModel = SignupCompleteViewModel()
     
-    private let titleLabel = UILabel()
-    private let characterImageView = UIImageView()
+    private let titleLabel = MainTitleView(title: "고반님\n환영합니다🎉")
+    private let backgroundImageView = UIImageView()
     private let nickNameLabel = UILabel()
-    private let termsOfServiceLabel = UILabel()
-    private let startButtonView = ShadowButtonView()
+    private let startButton = FullWidthBlackButton()
     
     // MARK: - LifeCycle
     
@@ -31,10 +30,6 @@ final class SignupCompleteViewController: UIViewController {
     
     // MARK: - Function
     
-    @objc private func termsOfServiceLabelClicked() {
-        
-    }
-    
 }
 
 // MARK: - UI Function
@@ -44,61 +39,52 @@ extension SignupCompleteViewController {
     private func configureUI() {
         view.backgroundColor = .white
         
-        titleLabel.text = "\(viewModel.userName)님,\n환영합니다 🎉"
-        titleLabel.font = .systemFont(ofSize: 26)
-        titleLabel.numberOfLines = 2
-        
-        characterImageView.image = UIImage(.img_zesterone)
+        navigationController?.navigationBar.isHidden = true
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+
+        backgroundImageView.image = UIImage(.img_signup)
         
         nickNameLabel.text = "\(viewModel.userName)"
-        nickNameLabel.font = .preferredFont(forTextStyle: .headline)
+        nickNameLabel.font = .systemFont(ofSize: 17, weight: .bold)
         
-        let termsOfServiceLabelText = "‘시작하기' 버튼을 누르시면\n이용약관에 동의하시게 됩니다."
-        let attributedText = NSMutableAttributedString(string: termsOfServiceLabelText,
-                                                       attributes: [.font: UIFont.preferredFont(forTextStyle: .footnote)])
-        attributedText.addAttribute(.underlineStyle,
-                                    value: NSUnderlineStyle.single.rawValue,
-                                    range: (termsOfServiceLabelText as NSString).range(of: "이용약관"))
-        termsOfServiceLabel.attributedText = attributedText
-        termsOfServiceLabel.textAlignment = .center
-        termsOfServiceLabel.numberOfLines = 2
-        termsOfServiceLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(termsOfServiceLabelClicked)))
-        termsOfServiceLabel.isUserInteractionEnabled = true
-        
-        startButtonView.button.setAttributedTitle(NSAttributedString(string: "시작하기",
-                                                                     attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)]), for: .normal)
+        startButton.setTitle("우리 대학 맛집여정에 함께하기", for: .normal)
     }
     
     private func createLayout() {
-        view.addSubviews([titleLabel, characterImageView, nickNameLabel, termsOfServiceLabel, startButtonView])
+        view.addSubviews([titleLabel, backgroundImageView, nickNameLabel, startButton])
         
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(view.snp.leading).offset(20)
-            make.trailing.equalTo(view.snp.trailing).offset(-20)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
+            make.leading.equalTo(view.snp.leading)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
         
-        characterImageView.snp.makeConstraints { make in
+        backgroundImageView.snp.makeConstraints { make in
             make.centerX.equalTo(view.snp.centerX)
             make.centerY.equalTo(view.snp.centerY)
-            make.width.equalTo(120)
-            make.height.equalTo(150)
+            make.height.equalTo(130)
+            make.width.equalTo(130)
         }
         
         nickNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(characterImageView.snp.bottom).offset(16)
+            make.top.equalTo(backgroundImageView.snp.bottom).offset(16)
             make.centerX.equalTo(view.snp.centerX)
         }
         
-        termsOfServiceLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(startButtonView.snp.top).offset(-16)
-            make.centerX.equalTo(view.snp.centerX)
-        }
-        
-        startButtonView.snp.makeConstraints { make in
-            make.centerX.equalTo(view.snp.centerX)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-64)
+        startButton.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-20)
+            make.leading.trailing.equalToSuperview().inset(20)
         }
     }
     
 }
+
+#if DEBUG
+import SwiftUI
+struct SignupCompleteViewTemplatePreview: PreviewProvider {
+    
+    static var previews: some View {
+        SignupCompleteViewController().toPreview()
+    }
+
+}
+#endif
