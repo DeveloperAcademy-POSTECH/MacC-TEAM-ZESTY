@@ -42,6 +42,10 @@ final class ReviewRegisterViewController: UIViewController {
 
     // MARK: - Function
     
+    @objc func registerButtonTouched() {
+        navigationController?.pushViewController(ReviewCardViewController(), animated: true)
+    }
+    
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
@@ -80,6 +84,7 @@ extension ReviewRegisterViewController {
         underline.backgroundColor = .black
         
         registerButton.setTitle("사진 없이 리뷰 등록", for: .normal)
+        registerButton.addTarget(self, action: #selector(registerButtonTouched), for: .touchUpInside)
     }
     
     private func createLayout() {

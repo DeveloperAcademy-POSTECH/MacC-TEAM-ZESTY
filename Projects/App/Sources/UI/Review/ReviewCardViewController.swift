@@ -32,10 +32,24 @@ final class ReviewCardViewController: UIViewController {
     }
     
     // MARK: - Function
+    
+    @objc func backButtonTouched() {
+        popTo(EvaluationViewController.self)
+    }
+
     @objc func saveButtonTouched() {
+        popTo(EvaluationViewController.self)
     }
     
     @objc func completeButtonTouched() {
+        popTo(EvaluationViewController.self)
+    }
+    
+    private func popTo<T>(_ viewController: T.Type) {
+        let targetVC = navigationController?.viewControllers.filter { $0 is T }
+        if let targetVC = targetVC, !targetVC.isEmpty {
+            navigationController?.popToViewController(targetVC[0], animated: true)
+        }
     }
     
 }
@@ -46,6 +60,15 @@ extension ReviewCardViewController {
     
     private func configureUI() {
         view.backgroundColor = .systemBackground
+        navigationController?.navigationBar.topItem?.title = ""
+        
+        let xmarkConfig = UIImage.SymbolConfiguration(weight: .bold)
+        let backImage = UIImage(systemName: "xmark", withConfiguration: xmarkConfig)
+        navigationController?.navigationBar.backIndicatorImage = backImage
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = backImage
+        
+        let backButton = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backButtonTouched))
+        navigationItem.leftBarButtonItem = backButton
         
         cardView = ReviewCardView(image: UIImage(.img_mockmenu))
         
