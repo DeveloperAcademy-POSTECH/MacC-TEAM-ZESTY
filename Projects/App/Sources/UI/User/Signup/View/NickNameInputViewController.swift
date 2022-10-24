@@ -100,7 +100,7 @@ extension NickNameInputViewController {
                 guard let self = self else { return }
                 self.nextButton.stopIndicator()
                 if isNickNameOverlaped {
-                    self.nextButtonView.setDisabled(true)
+                    self.nextButton.setDisabled(true)
                 }
             }
             .store(in: &cancelBag)
