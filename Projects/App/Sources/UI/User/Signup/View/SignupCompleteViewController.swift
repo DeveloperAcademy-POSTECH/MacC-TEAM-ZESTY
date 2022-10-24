@@ -38,6 +38,9 @@ extension SignupCompleteViewController {
     
     private func configureUI() {
         view.backgroundColor = .white
+        
+        navigationController?.navigationBar.isHidden = true
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
 
         backgroundImageView.image = UIImage(.img_signup)
         
