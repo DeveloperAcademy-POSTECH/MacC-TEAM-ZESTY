@@ -11,7 +11,7 @@ import DesignSystem
 import SnapKit
 import Kingfisher
 
-class EmptyReviewCell: UITableViewCell {
+final class EmptyReviewCell: UITableViewCell {
 
     // MARK: - Properties
 

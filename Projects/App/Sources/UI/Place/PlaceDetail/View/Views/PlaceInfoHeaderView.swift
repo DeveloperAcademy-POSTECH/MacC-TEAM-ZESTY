@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import DesignSystem
 
-class PlaceInfoHeaderView: UITableViewHeaderFooterView {
+final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     
     // MARK: - Properties
     
