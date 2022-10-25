@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct CategoryDTO: Codable {
+public struct CategoryDTO: Decodable {
     public let id: Int
     public let name: String
     public let img: String

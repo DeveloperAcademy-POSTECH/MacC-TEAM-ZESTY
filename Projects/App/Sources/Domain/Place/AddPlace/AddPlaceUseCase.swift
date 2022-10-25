@@ -14,15 +14,46 @@ protocol AddPlaceUseCaseType {
     func searchKakaoPlaces(with name: String) -> AnyPublisher<[KakaoPlace], Error>
     func checkRegisterdPlace(with kakaoPlaceId: Int) -> AnyPublisher<Bool, Error>
     func fetchCategories() -> AnyPublisher<[Category], Error>
+    func addNewPlace(with place: KakaoPlace, category: Int) -> AnyPublisher<PlaceResult, Error>
 }
 
 final class AddPlaceUseCase: AddPlaceUseCaseType {
-    
+
     private var cancelBag = Set<AnyCancellable>()
     private let output: PassthroughSubject<[KakaoPlace], Error> = .init()
     private let outputBool: PassthroughSubject<Bool, Error> = .init()
-    private let outpuCategories: PassthroughSubject<[Category], Error> = .init()
+    private let outputCategories: PassthroughSubject<[Category], Error> = .init()
+    private let outputPlace: PassthroughSubject<PlaceResult, Error> = .init()
 
+    func addNewPlace(with place: KakaoPlace, category: Int) -> AnyPublisher<PlaceResult, Error> {
+        
+        // TODO: TEMP USER -> userdefaults 이용필요
+        let user = 11
+        let org = 400
+        let placeDTO = PlacePostDTO(address: place.address,
+                                    name: place.placeName,
+                                    latitude: place.lat,
+                                    longitude: place.lon,
+                                    category: category,
+                                    organizations: org,
+                                    creator: user,
+                                    placeImage: "",
+                                    kakaoPlaceID: place.kakaoPlaceId)
+        
+        PlaceAPI.postPlace(with: placeDTO)
+            .sink { error in
+                switch error {
+                case .failure(let error): print(error.localizedString)
+                case .finished: break
+                }
+            } receiveValue: { [weak self] placeResDTO in
+                let place = PlaceResult(dto: placeResDTO)
+                self?.outputPlace.send(place)
+            }.store(in: &cancelBag)
+   
+        return outputPlace.eraseToAnyPublisher()
+    }
+ 
     func searchKakaoPlaces(with name: String) -> AnyPublisher<[KakaoPlace], Error> {
         PlaceAPI.getKakaoPlaceList(placeName: name)
             .sink { error in
@@ -74,14 +105,13 @@ final class AddPlaceUseCase: AddPlaceUseCaseType {
                 let categories = categoryListDTO.map {
                     Category(id: $0.id, name: $0.name, imageURL: $0.img)
                 }
-                self?.outpuCategories.send(categories)
+                self?.outputCategories.send(categories)
             }
             .store(in: &cancelBag)
         
-        return outpuCategories.eraseToAnyPublisher()
-        
+        return outputCategories.eraseToAnyPublisher()
     }
-     
+
 }
 
 enum AddPlaceError: Error {

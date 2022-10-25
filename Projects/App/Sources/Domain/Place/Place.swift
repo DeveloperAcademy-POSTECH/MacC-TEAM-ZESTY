@@ -12,12 +12,12 @@ import Network
 struct Place {
     let id: Int
     let kakaoPlaceId: Int
-    let creator: User
+    let creator: User?
     let organizationId: Int
     let name: String
     let address: String
     let lat: String
-    let lan: String
+    let lon: String
     let category: [Category]
     let evaluationSum: EvaluationSum
     let reviews: [Review] // Preview Image
@@ -39,7 +39,7 @@ extension Place {
         name = dto.shopName
         address = ""
         lat = ""
-        lan = ""
+        lon = ""
         category = Category.mockData
         evaluationSum = EvaluationSum(dto: dto.evaluations)
         reviews = dto.reviewContent.map { Review($0) }
