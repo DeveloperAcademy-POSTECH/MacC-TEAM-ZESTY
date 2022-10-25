@@ -1,5 +1,5 @@
 //
-//  WholePlaceCell.swift
+//  PlaceCell.swift
 //  App
 //
 //  Created by 리아 on 2022/10/18.
@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-final class WholePlaceCell: UITableViewCell {
+final class PlaceCell: UITableViewCell {
     // TODO: 리뷰가 없는 상황을 가정한 cell입니다. 변경 예정
     private let viewModel = PlaceCellVeiwModel(placeName: "쌀국수 집을 하려다가 망한\n소바집인데 쌀국수가 잘팔리는 곳", category: Category(id: 2, name: "일식"), goodCount: 17, sosoCount: 2, badCount: 4, menuName: nil, reviewImage: nil)
     
@@ -54,7 +54,7 @@ final class WholePlaceCell: UITableViewCell {
 
 // MARK: - UI Function
 
-extension WholePlaceCell {
+extension PlaceCell {
     
     func configureUI() {
         configureGradientView()
@@ -160,7 +160,7 @@ import SwiftUI
 struct WholePlaceCellPreview: PreviewProvider {
     
     static var previews: some View {
-        WholePlaceCell().toPreview()
+        PlaceCell().toPreview()
     }
     
 }

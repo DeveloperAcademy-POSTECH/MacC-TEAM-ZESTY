@@ -36,7 +36,7 @@ extension SubPlaceListViewControllerViewController {
     private func configureUI() {
         tableView.backgroundColor = .clear
         tableView.dataSource = self
-        tableView.register(WholePlaceCell.self, forCellReuseIdentifier: WholePlaceCell.identifier)
+        tableView.register(PlaceCell.self, forCellReuseIdentifier: PlaceCell.identifier)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 300
         tableView.separatorStyle = .none
@@ -57,7 +57,7 @@ extension SubPlaceListViewControllerViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: WholePlaceCell.identifier, for: indexPath) as? WholePlaceCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: PlaceCell.identifier, for: indexPath) as? PlaceCell
         guard let cell = cell else { return UITableViewCell() }
         
         return cell
