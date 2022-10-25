@@ -53,7 +53,7 @@ extension Review {
         }()
         menuName = dto.menuName
         imageURL = dto.image
-        createdAt = Date()
+        createdAt = dto.createdAt.toDate()!
     }
     
 }
