@@ -82,7 +82,7 @@ extension WholePlaceCell {
         placeNameLabel.numberOfLines = 2
         placeNameLabel.font = .systemFont(ofSize: 20, weight: .bold)
         
-        emojiStackView.spacing = 15
+        emojiStackView.spacing = 12
         emojiStackView.axis = .horizontal
         emojiStackView.distribution = .fill
     }
@@ -139,7 +139,7 @@ extension WholePlaceCell {
             make.top.equalTo(placeNameLabel.snp.bottom).offset(10)
             make.left.equalToSuperview().inset(20)
             make.bottom.equalToSuperview().inset(20)
-            make.width.greaterThanOrEqualTo(165)
+            make.width.greaterThanOrEqualTo(130)
         }
     }
     
