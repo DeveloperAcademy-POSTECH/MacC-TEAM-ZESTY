@@ -23,7 +23,7 @@ public extension ReviewDetailDTO {
     static let mock = ReviewDetailDTO(id: 0,
                                       evaluation: 0,
                                       reviewer: ReviewUserDTO(nickname: "아보카도"),
-                                      image: "https://unsplash.com/photos/UC0HZdUitWY",
+                                      image: "https://user-images.githubusercontent.com/73650994/197834443-84b791e5-b244-4cbb-b70a-61e89e3e16f4.png",
                                       place: ReviewPlaceDTO(id: 0,
                                                             name: "요기쿠시동",
                                                             address: "경북 포항시 남구 효자동길6번길 34-1 1층 요기쿠시동",

@@ -28,7 +28,7 @@ extension ReviewRegisterUseCase {
         let user = UserDefaults.standard.userID ?? 6
         let reviewDTO = RegisterReviewDTO(placeId: placeId,
                                    menuName: menuName,
-                                   image: image?.pngData()?.base64EncodedString(),
+                                   image: "https://user-images.githubusercontent.com/73650994/197836640-616d1451-7ac9-492d-bf6e-d9d125f9ac44.png",
                                    grade: grade.rawValue,
                                    reviewer: user)
         

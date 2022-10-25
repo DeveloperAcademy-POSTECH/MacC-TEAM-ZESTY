@@ -27,7 +27,7 @@ final class ReviewRegisterViewModel {
     
     // Output
     struct Result {
-        var image: UIImage? = UIImage()
+        var image: String? = ""
         var evaluation: Evaluation = .soso
         var reviewer: String = ""
         var registeredAt: String = ""
@@ -68,7 +68,7 @@ extension ReviewRegisterViewModel {
                 }
             } receiveValue: { [weak self] review in
                 guard let self = self else { return }
-                self.result = Result(image: review.image.loadImage(),
+                self.result = Result(image: review.image,
                                      evaluation: Evaluation(review.evaluation),
                                      reviewer: review.reviewer.nickname,
                                      registeredAt: Date.getStringToDate(review.createdAt).getDateToString(format: "yy.MM.dd"),

@@ -63,7 +63,7 @@ extension ReviewCardView {
                 print(result)
                 guard let self = self else { return }
                 
-                self.menuImageView.image = result.image
+                self.menuImageView.load(url: result.image)
                 self.evaluationImageView.image = result.evaluation.image
                 self.nicknameLabel.text = result.reviewer
                 self.dateLabel.text = result.registeredAt
