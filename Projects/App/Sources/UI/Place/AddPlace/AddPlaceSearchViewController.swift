@@ -153,7 +153,7 @@ extension AddPlaceSearchViewController: UITableViewDelegate {
 extension AddPlaceSearchViewController: UITextFieldDelegate {
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        tableView.reloadData()
+//        tableView.reloadData()
         return true
     }
 
