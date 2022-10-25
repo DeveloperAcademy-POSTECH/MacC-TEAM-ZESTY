@@ -15,7 +15,7 @@ final class ThirdPartyLoginViewModel {
     private let useCase = UserLoginUseCase()
     
     // Input
-    private let isLoggedInSubject = PassthroughSubject<String, Never>()
+    private let publishAccessTokenSubject = PassthroughSubject<String, Never>()
     
     // Output
     let isUserRegisteredSubject = PassthroughSubject<Bool, Never>()
@@ -23,7 +23,7 @@ final class ThirdPartyLoginViewModel {
     private var cancelBag = Set<AnyCancellable>()
     
     init() {
-        isLoggedInSubject
+        publishAccessTokenSubject
             .sink { [weak self] accessToken in
                 guard let self = self else { return }
                 self.useCase.postAccessTokenUser(accessToken: accessToken)
@@ -55,7 +55,7 @@ final class ThirdPartyLoginViewModel {
                 print(error)
             } else {
                 if let accessToken = oauthToken?.accessToken {
-                    self.isLoggedInSubject.send(accessToken)
+                    self.publishAccessTokenSubject.send(accessToken)
                 }
             }
         }
@@ -68,7 +68,7 @@ final class ThirdPartyLoginViewModel {
                 print(error)
             } else {
                 if let accessToken = oauthToken?.accessToken {
-                    self.isLoggedInSubject.send(accessToken)
+                    self.publishAccessTokenSubject.send(accessToken)
                 }
             }
         }
