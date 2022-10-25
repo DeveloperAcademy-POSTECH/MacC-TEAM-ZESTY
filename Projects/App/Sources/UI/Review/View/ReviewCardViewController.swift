@@ -7,6 +7,7 @@
 //
 
 import Combine
+import Photos
 import UIKit
 import DesignSystem
 import SnapKit
@@ -38,17 +39,15 @@ final class ReviewCardViewController: UIViewController {
         createLayout()
     }
     
+}
     // MARK: - Function
-    
+ 
+extension ReviewCardViewController {
+
     @objc func backButtonTouched() {
         popTo(EvaluationViewController.self)
     }
 
-    // TODO: save image to user's gallery
-    @objc func saveButtonTouched() {
-        popTo(EvaluationViewController.self)
-    }
-    
     @objc func completeButtonTouched() {
         popTo(EvaluationViewController.self)
     }
@@ -60,6 +59,22 @@ final class ReviewCardViewController: UIViewController {
         }
     }
     
+    // TODO: Toast - noti image save completion
+    @objc func saveButtonTouched() {
+        let reviewCard = cardView.transfromToImage() ?? UIImage()
+        saveImage(with: reviewCard)
+    }
+    
+    func saveImage(with image: UIImage) {
+        PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+            guard status == .authorized else { return }
+            
+            PHPhotoLibrary.shared().performChanges({
+                PHAssetChangeRequest.creationRequestForAsset(from: image)
+            }, completionHandler: nil)
+        }
+    }
+
 }
 
 // MARK: - UI Function
