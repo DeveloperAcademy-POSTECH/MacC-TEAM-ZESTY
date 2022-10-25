@@ -55,7 +55,6 @@ final class ReviewCardView: UIView {
 
 extension ReviewCardView {
     
-    // TODO: binding 구현
     private func bind() {
         viewModel.$result
             .sink { [weak self] result in

@@ -44,6 +44,7 @@ final class ReviewCardViewController: UIViewController {
         popTo(EvaluationViewController.self)
     }
 
+    // TODO: save image to user's gallery
     @objc func saveButtonTouched() {
         popTo(EvaluationViewController.self)
     }
