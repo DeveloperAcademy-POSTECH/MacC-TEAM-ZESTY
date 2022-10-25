@@ -57,7 +57,10 @@ extension ReviewCardView {
     
     private func bind() {
         viewModel.$result
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
+                print(result)
                 guard let self = self else { return }
                 
                 self.menuImageView.image = result.image
