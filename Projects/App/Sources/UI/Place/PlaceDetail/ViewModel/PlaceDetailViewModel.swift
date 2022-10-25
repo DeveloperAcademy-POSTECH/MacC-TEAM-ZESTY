@@ -23,7 +23,7 @@ class PlaceDetailViewModel {
         case fetchReviewListFail(error: Error)
         case fetchReviewListSucceed(list: [Review])
     }
-     
+    
     private var cancelBag = Set<AnyCancellable>()
     
     private let output: PassthroughSubject<Output, Never> = .init()
@@ -46,7 +46,7 @@ class PlaceDetailViewModel {
                 self?.fetchReviews()
             case .addReviewBtnDidTap:
                 self?.routeTo()
-
+                
             }
         }.store(in: &cancelBag)
         
@@ -56,15 +56,16 @@ class PlaceDetailViewModel {
     // MARK: - functions
     
     private func fetchPlaceInfo(id: Int) {
-        useCase.fetchPlaceDetail(with: id).sink { [weak self] completion in
-            if case .failure(let error) = completion {
-                self?.output.send(.fetchPlaceInfoFail(error: error))
+        useCase.fetchPlaceDetail(with: id)
+            .sink { [weak self] completion in
+                if case .failure(let error) = completion {
+                    self?.output.send(.fetchPlaceInfoFail(error: error))
+                }
+            } receiveValue: { [weak self] place in
+                self?.place = place
+                self?.output.send(.fetchPlaceDidSucceed(place: place))
             }
-        } receiveValue: { [weak self] place in
-            self?.place = place
-            self?.output.send(.fetchPlaceDidSucceed(place: place))
-        }
-        .store(in: &cancelBag)
+            .store(in: &cancelBag)
     }
     
     // 리뷰가져오기
@@ -76,5 +77,5 @@ class PlaceDetailViewModel {
     private func routeTo() {
         // TO-DO: place id, name
     }
-      
+    
 }
