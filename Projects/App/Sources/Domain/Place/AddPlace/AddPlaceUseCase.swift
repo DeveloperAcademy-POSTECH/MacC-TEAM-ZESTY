@@ -13,13 +13,15 @@ import Network
 protocol AddPlaceUseCaseType {
     func searchKakaoPlaces(with name: String) -> AnyPublisher<[KakaoPlace], Error>
     func checkRegisterdPlace(with kakaoPlaceId: Int) -> AnyPublisher<Bool, Error>
+    func fetchCategories() -> AnyPublisher<[Category], Error>
 }
 
-final class AddPlaceUseCase {
+final class AddPlaceUseCase: AddPlaceUseCaseType {
     
     private var cancelBag = Set<AnyCancellable>()
     private let output: PassthroughSubject<[KakaoPlace], Error> = .init()
     private let outputBool: PassthroughSubject<Bool, Error> = .init()
+    private let outpuCategories: PassthroughSubject<[Category], Error> = .init()
 
     func searchKakaoPlaces(with name: String) -> AnyPublisher<[KakaoPlace], Error> {
         PlaceAPI.getKakaoPlaceList(placeName: name)
@@ -61,6 +63,25 @@ final class AddPlaceUseCase {
                 return .none
             }.eraseToAnyPublisher()
     }
+    func fetchCategories() -> AnyPublisher<[Category], Error> {
+        CategoryAPI.fetchCategoryList()
+            .sink { error in
+                switch error {
+                case .failure(let error): print(error.localizedString)
+                case .finished: break
+                }
+            } receiveValue: { [weak self] categoryListDTO in
+                let categories = categoryListDTO.map {
+                    Category(id: $0.id, name: $0.name, imageURL: $0.img)
+                }
+                self?.outpuCategories.send(categories)
+            }
+            .store(in: &cancelBag)
+        
+        return outpuCategories.eraseToAnyPublisher()
+        
+    }
+     
 }
 
 enum AddPlaceError: Error {
