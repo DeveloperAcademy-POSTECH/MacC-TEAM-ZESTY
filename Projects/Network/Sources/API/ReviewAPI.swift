@@ -20,5 +20,13 @@ public struct ReviewAPI {
         
         return networkService.request(with: endpoint, responseType: String.self) // responsable type
     }
+    
+    public static func postReview(with DTO: RegisterReviewDTO) -> AnyPublisher<ReviewDetailDTO, NetworkError> {
+        return Just(ReviewDetailDTO.mock)
+            .mapError { _ in
+                NetworkError.unknown("will never be executed")
+            }
+            .eraseToAnyPublisher()
+    }
 
 }

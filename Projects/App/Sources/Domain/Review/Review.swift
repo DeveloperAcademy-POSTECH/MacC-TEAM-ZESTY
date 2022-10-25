@@ -20,10 +20,19 @@ struct Review {
 //    let updatedAt: Date
 }
 
-enum Evaluation {
+enum Evaluation: Int, CaseIterable {
     case good
     case soso
     case bad
+    
+    init(_ num: Int) {
+        switch num {
+        case 0: self = .good
+        case 1: self = .soso
+        case 2: self = .bad
+        default: self = .soso
+        }
+    }
 }
 
 extension Review {
@@ -36,6 +45,16 @@ extension Review {
         menuName = dto.menuname
         imageURL = dto.image
         createdAt = Date()
+    }
+    
+    init(_ dto: ReviewDetailDTO) {
+        id = dto.id
+        placeId = dto.place.id
+        reviewer = User(dto.reviewer)
+        evaluation =  Evaluation(dto.evaluation)
+        menuName = dto.menuName
+        imageURL = dto.image
+        createdAt = Date.getStringToDate(dto.createdAt)
     }
     
 }
