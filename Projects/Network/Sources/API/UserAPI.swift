@@ -20,5 +20,24 @@ public struct UserAPI {
         
         return networkService.request(with: endpoint, responseType: String.self)
     }
+    
+    public static func postAccessToken(accessToken: String) -> AnyPublisher<UserOauthDTO, NetworkError> {
+        let header = ["Content-Type": "application/json"]
+        let endpoint = Endpoint(path: "/login/oauth2/code/kakao", method: .get, queryParams: ["authToken": accessToken], headers: header)
+        
+        return networkService.request(with: endpoint, responseType: UserOauthDTO.self)
+    }
+    
+    public static func getNicknameValidation(nickname: String) -> AnyPublisher<Bool, NetworkError> {
+        let header = ["Content-Type": "application/json"]
+        let endpoint = Endpoint(path: "/api/users/validate/nickname", method: .get, queryParams: ["nickname": nickname], headers: header)
+        return networkService.request(with: endpoint)
+    }
+    
+    public static func putNickname(authorization: String, nickname: String) -> AnyPublisher<Bool, NetworkError> {
+        let header = ["Content-Type": "application/json", "Authorization": "\(authorization)"]
+        let endpoint = Endpoint(path: "/api/users/nickname", method: .put, bodyParams: ["nickname": nickname], headers: header)
+        return networkService.request(with: endpoint)
+    }
 
 }

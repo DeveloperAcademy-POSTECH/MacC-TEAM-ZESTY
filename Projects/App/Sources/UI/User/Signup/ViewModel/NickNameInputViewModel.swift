@@ -11,6 +11,8 @@ import Foundation
 
 final class NickNameInputViewModel {
     
+    private let useCase = UserSignupUseCase()
+    
     // Input
     @Published var nickNameText = ""
     
@@ -18,6 +20,7 @@ final class NickNameInputViewModel {
     @Published var isTextEmpty = true
     @Published var shouldDisplayWarning = false
     let isNickNameOverlapedSubject = PassthroughSubject<Bool, Never>()
+    let isNickNameChangedSubject = PassthroughSubject<Bool, Never>()
     
     let maxNickNameLength = 6
 
@@ -36,6 +39,26 @@ final class NickNameInputViewModel {
                 }
             }
             .store(in: &cancelBag)
+        
+        useCase.isNickNameOverlapedSubject
+            .sink { [weak self] isNickNameOverlaped in
+                guard let self = self else { return }
+                self.isNickNameOverlapedSubject.send(isNickNameOverlaped)
+                if isNickNameOverlaped {
+                    self.shouldDisplayWarning = true
+                } else {
+                    self.useCase.putNicknameUser(nickname: self.nickNameText)
+                }
+            }
+            .store(in: &cancelBag)
+        
+        useCase.isNickNameChangedSubject
+            .sink { [weak self] isNickNameChanged in
+                guard let self = self else { return }
+                self.isNickNameChangedSubject.send(isNickNameChanged)
+            }
+            .store(in: &cancelBag)
+        
     }
     
     private func isEmpty(to text: String) -> Bool {
@@ -43,14 +66,7 @@ final class NickNameInputViewModel {
     }
     
     func checkNickNameOverlaped() {
-        // TODO: UseCase와 통신하여 중복 체크
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            let result = Bool.random()
-            self.isNickNameOverlapedSubject.send(result)
-            if result {
-                self.shouldDisplayWarning = true
-            }
-        }
+        useCase.getNicknameValidationUser(nickname: nickNameText)
     }
     
     func isValid(for input: String) -> Bool {

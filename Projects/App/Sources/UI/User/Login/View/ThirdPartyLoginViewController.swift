@@ -7,6 +7,7 @@
 //
 
 import AuthenticationServices
+import Combine
 import UIKit
 import DesignSystem
 import SnapKit
@@ -17,16 +18,20 @@ final class ThirdPartyLoginViewController: UIViewController {
     
     private let mainTitleView = MainTitleView(title: "안녕하세요,\n제스티입니다", subtitle: "로그인하여 모든 맛집을 확인하세요.")
     private let backgroundImageView = UIImageView()
+    private let viewModel = ThirdPartyLoginViewModel()
     private let loginStackView = UIStackView()
     private let termsOfServiceLabel = UILabel()
     private let kakaoLoginButton = UIButton()
     private let appleLoginButton = UIButton()
+    
+    private var cancelBag = Set<AnyCancellable>()
     
     // MARK: - LifeCycle
     
     override func viewDidLoad() {
         configureUI()
         createLayout()
+        bindUI()
     }
     
     // MARK: - Function
@@ -36,11 +41,29 @@ final class ThirdPartyLoginViewController: UIViewController {
     }
     
     @objc func kakaoLoginButtonClicked() {
-        navigationController?.pushViewController(NickNameInputViewController(), animated: true)
+        viewModel.kakaoLogin()
     }
     
     @objc func appleLoginButtonClicked() {
         navigationController?.pushViewController(NickNameInputViewController(), animated: true)
+    }
+    
+}
+
+// MARK: - Bind Function
+
+extension ThirdPartyLoginViewController {
+    
+    private func bindUI() {
+        viewModel.isUserRegisteredSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isUserRegistered in
+                guard let self = self else { return }
+                if isUserRegistered {
+                    self.navigationController?.pushViewController(NickNameInputViewController(), animated: true)
+                }
+            }
+            .store(in: &cancelBag)
     }
     
 }

@@ -11,6 +11,6 @@ import UIKit
 
 final class SignupCompleteViewModel {
         
-    let userName = "고반"
+    let userName = UserDefaults.standard.userName ?? "unknown"
     
 }

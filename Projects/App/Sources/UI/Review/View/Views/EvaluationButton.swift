@@ -60,6 +60,8 @@ extension EvaluationButton {
     
     private func configureUI(type: Evaluation) {
         evaluationIcon.image = type.image
+        evaluationIcon.contentMode = .scaleAspectFit
+        
         evaluationLabel.text = type.desc
         evaluationLabel.textAlignment = .center
         evaluationLabel.font = .systemFont(ofSize: 13, weight: .medium)
@@ -70,30 +72,30 @@ extension EvaluationButton {
         backgroundView.backgroundColor = .zestyColor(.grayF6)
         
         evaluationStackView.axis = .vertical
-        evaluationStackView.spacing = 16
+        evaluationStackView.spacing = 10
         evaluationStackView.distribution = .equalSpacing
     }
     
     private func createLayout() {
         addSubviews([backgroundView, evaluationStackView, button])
         
+        snp.makeConstraints {
+            $0.width.equalTo(100)
+            $0.height.equalTo(128)
+        }
         backgroundView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         evaluationStackView.snp.makeConstraints {
-            $0.centerX.centerY.equalToSuperview()
-            $0.width.equalToSuperview().multipliedBy(0.6)
+            $0.edges.equalToSuperview().inset(20)
         }
         evaluationStackView.addArrangedSubviews([evaluationIcon, evaluationLabel])
         evaluationIcon.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.width.equalToSuperview()
-            $0.height.equalTo(evaluationIcon.snp.width)
+            $0.width.height.equalTo(60)
         }
         evaluationLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.width.greaterThanOrEqualTo(30)
-            $0.height.equalTo(21)
         }
         button.snp.makeConstraints {
             $0.edges.equalToSuperview()

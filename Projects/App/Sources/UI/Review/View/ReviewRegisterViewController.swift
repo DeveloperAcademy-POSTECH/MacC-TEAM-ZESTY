@@ -112,8 +112,7 @@ extension ReviewRegisterViewController {
         titleView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(40)
-            $0.height.equalTo(135)
+            $0.trailing.equalToSuperview()
         }
         
         containerView.snp.makeConstraints {
@@ -136,7 +135,6 @@ extension ReviewRegisterViewController {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(backgroundView.snp.bottom).offset(30)
             $0.bottom.equalToSuperview()
-            $0.height.greaterThanOrEqualTo(30)
             $0.width.lessThanOrEqualTo(view.snp.width).inset(40)
         }
         underline.snp.makeConstraints {
@@ -185,8 +183,7 @@ extension ReviewRegisterViewController {
             titleView.snp.remakeConstraints {
                 $0.top.equalToSuperview().offset(-20)
                 $0.leading.equalToSuperview()
-                $0.trailing.equalToSuperview().inset(40)
-                $0.height.equalTo(135)
+                $0.trailing.equalToSuperview()
             }
             titleView.willHide(with: 1)
             containerView.snp.remakeConstraints {
@@ -203,8 +200,7 @@ extension ReviewRegisterViewController {
             titleView.snp.remakeConstraints {
                 $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
                 $0.leading.equalToSuperview()
-                $0.trailing.equalToSuperview().inset(40)
-                $0.height.equalTo(135)
+                $0.trailing.equalToSuperview()
             }
             titleView.willShow(with: 1)
             containerView.snp.remakeConstraints {

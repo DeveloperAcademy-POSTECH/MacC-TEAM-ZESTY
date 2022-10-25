@@ -18,9 +18,11 @@ final class ReviewCardView: UIView {
     private var cancelBag = Set<AnyCancellable>()
     private let viewModel: ReviewRegisterViewModel
     
-    private let userStackView = UIStackView()
+    private let nameStackView = UIStackView()
     private let nicknameStaticLabel = UILabel()
     private let nicknameLabel = UILabel()
+    
+    private let dateStackView = UIStackView()
     private let dateStaticLabel = UILabel()
     private let dateLabel = UILabel()
     
@@ -89,12 +91,16 @@ extension ReviewCardView {
         menuImageView.layer.cornerRadius = 16
         backgroundView.backgroundColor = .black
         backgroundView.clipsToBounds = true
-        backgroundView.layer.opacity = 0.6
+        backgroundView.layer.opacity = 0.4
         backgroundView.layer.cornerRadius = 16
         
-        userStackView.axis = .vertical
-        userStackView.distribution = .equalSpacing
-        userStackView.spacing = 4
+        nameStackView.axis = .vertical
+        nameStackView.distribution = .equalSpacing
+        nameStackView.spacing = 4
+        
+        dateStackView.axis = .vertical
+        dateStackView.distribution = .equalSpacing
+        dateStackView.spacing = 4
         
         nicknameStaticLabel.text = "Reviewed by"
         nicknameStaticLabel.font = .preferredFont(forTextStyle: .caption2)
@@ -123,39 +129,44 @@ extension ReviewCardView {
         
         placeNameLabel.font = .preferredFont(forTextStyle: .title2).bold()
         placeNameLabel.textColor = isMenuImageExist ? .white : .label
-        placeNameLabel.numberOfLines = 2
+        placeNameLabel.numberOfLines = 0
         placeAddressLabel.font = .preferredFont(forTextStyle: .caption1)
         placeAddressLabel.textColor = isMenuImageExist ? .white : .secondaryLabel
-        placeAddressLabel.numberOfLines = 2
+        placeAddressLabel.numberOfLines = 0
     }
     
     private func createLayout() {
         let isMenuImageExist = viewModel.image != nil
         
         addSubviews([
-            menuImageView, backgroundView, userStackView, placeStackView,
-            evaluationImageView
+            menuImageView, backgroundView, nameStackView, dateStackView,
+            placeStackView, evaluationImageView
         ])
-        userStackView.addArrangedSubviews([
-            nicknameStaticLabel, nicknameLabel, dateStaticLabel, dateLabel
+        nameStackView.addArrangedSubviews([
+            nicknameStaticLabel, nicknameLabel
+        ])
+        dateStackView.addArrangedSubviews([
+            dateStaticLabel, dateLabel
         ])
         placeStackView.addArrangedSubviews([
             categoryLabel, placeNameLabel, placeAddressLabel
         ])
         
-        userStackView.snp.makeConstraints {
+        nameStackView.snp.makeConstraints {
             $0.top.horizontalEdges.equalToSuperview().inset(30)
         }
         nicknameStaticLabel.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(13)
         }
         nicknameLabel.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(21)
         }
         
         if isMenuImageExist {
+            dateStackView.snp.makeConstraints {
+                $0.top.equalTo(nameStackView.snp.bottom).offset(10)
+                $0.horizontalEdges.equalToSuperview().inset(30)
+            }
             backgroundView.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
@@ -164,11 +175,9 @@ extension ReviewCardView {
             }
             dateStaticLabel.snp.makeConstraints {
                 $0.horizontalEdges.equalToSuperview()
-                $0.height.equalTo(13)
             }
             dateLabel.snp.makeConstraints {
                 $0.horizontalEdges.equalToSuperview()
-                $0.height.equalTo(21)
             }
             evaluationImageView.snp.makeConstraints {
                 $0.trailing.bottom.equalToSuperview().inset(30)
@@ -178,7 +187,6 @@ extension ReviewCardView {
             placeStackView.snp.makeConstraints {
                 $0.leading.bottom.equalToSuperview().inset(30)
                 $0.trailing.equalTo(evaluationImageView.snp.leading).offset(-10)
-                $0.height.greaterThanOrEqualTo(88)
             }
         } else {
             evaluationImageView.snp.makeConstraints {
@@ -189,7 +197,6 @@ extension ReviewCardView {
             }
             placeStackView.snp.makeConstraints {
                 $0.horizontalEdges.bottom.equalToSuperview().inset(30)
-                $0.height.greaterThanOrEqualTo(88)
             }
         }
         categoryLabel.snp.makeConstraints {
@@ -199,11 +206,9 @@ extension ReviewCardView {
         }
         placeNameLabel.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
-            $0.height.greaterThanOrEqualTo(28)
         }
         placeAddressLabel.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
-            $0.height.greaterThanOrEqualTo(16)
         }
     }
     

@@ -47,4 +47,10 @@ public enum Asset: String {
     case img_mockmenu
     case img_signup
     case img_login
+    
+    // img
+    case img_ticket_bg
+    case img_ticket_top
+    case img_ticket_bottom
+    
 }
