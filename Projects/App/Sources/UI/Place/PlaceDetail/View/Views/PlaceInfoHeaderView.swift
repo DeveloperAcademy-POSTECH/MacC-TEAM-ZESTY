@@ -121,7 +121,6 @@ final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     }
     
     @objc func addReviewButtonDidTap() {
-        // 리뷰하기 추가버트
         input.send(.addReviewBtnDidTap)
     }
     
