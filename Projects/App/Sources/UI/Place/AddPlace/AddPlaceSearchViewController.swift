@@ -47,11 +47,10 @@ final class AddPlaceSearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setNavigationBar()
+        bind()
         configureUI()
         createLayout()
-        searchingTextFieldView.textField.delegate = self
-        searchingTextFieldView.textField.becomeFirstResponder()
+
     }
     
     // MARK: - Function
@@ -60,7 +59,7 @@ final class AddPlaceSearchViewController: UIViewController {
     }
     
     @objc func searchButtonDidTap() {
-//        print("검색버튼이 눌렸어요")
+        input.send(.searchBtnDidTap(placeName: searchingTextFieldView.textField.text ?? "" ))
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -84,8 +83,10 @@ extension AddPlaceSearchViewController {
                     print("✅✅✅✅ 결과 가져오는데 실패햇습니다")
                     print(error.localizedDescription)
                 case .serachPlaceDidSucceed(let results):
-                    self?.searchResults = results
                     print("✅✅✅✅결과 가져오는데 성공햇습니다")
+                    self?.searchResults = results
+                    self?.tableView.reloadData()
+                    print(results)
                 case .existingPlace:
                     print("✅✅✅✅이미 존재하는 장소입니다.")
                 case .addSelectedPlace:
@@ -101,8 +102,11 @@ extension AddPlaceSearchViewController {
 extension AddPlaceSearchViewController {
     
     private func configureUI() {
-        view.backgroundColor = .white // zestyColor(.backgroundColor)
-        tableView.backgroundColor = .white // zestyColor(.backgroundColor)
+        view.backgroundColor = .white
+        
+        setNavigationBar()
+        
+        tableView.backgroundColor = .white
         tableView.delegate = self
         tableView.dataSource = self
         tableView.showsVerticalScrollIndicator = false
@@ -110,6 +114,9 @@ extension AddPlaceSearchViewController {
         tableView.register(SearchResultCell.self, forCellReuseIdentifier: "SearchResultCell")
         tableView.separatorStyle = .none
         tableView.keyboardDismissMode = .onDrag
+        
+        searchingTextFieldView.textField.delegate = self
+        searchingTextFieldView.textField.becomeFirstResponder()
     }
     
     private func createLayout() {
@@ -157,6 +164,7 @@ extension AddPlaceSearchViewController: UITableViewDataSource {
                 tableView.setEmptyView(message: "등록하려는 맛집을\n검색해주세요.", type: .search)
             } else {
                 tableView.setEmptyView(message: "검색 결과가 없어요.", type: .noresult)
+                
             }
         } else {
             tableView.restore()
@@ -188,12 +196,7 @@ extension AddPlaceSearchViewController: UITableViewDelegate {
 // MARK: - UITextFieldDelegate
 
 extension AddPlaceSearchViewController: UITextFieldDelegate {
-
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        tableView.reloadData()
-        return true
-    }
-
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

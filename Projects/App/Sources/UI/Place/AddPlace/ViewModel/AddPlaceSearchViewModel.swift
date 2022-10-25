@@ -56,7 +56,16 @@ class AddPlaceSearchViewModel {
     
     // MARK: - functions
     private func searchPlace(name: String) {
-        // API
+        useCase.searchKakaoPlaces(with: name)
+            .sink { [weak self] completion in
+                if case .failure(let error) = completion {
+                    self?.output.send(.serachPlaceFail(error: error))
+                }
+            } receiveValue: { [weak self] kakaoPlaces in
+                self?.searchResults = kakaoPlaces
+                self?.output.send(.serachPlaceDidSucceed(results: kakaoPlaces))
+            }
+            .store(in: &cancelBag)
     }
     
     private func selectPlaceToAdd(place: KakaoPlace) {
@@ -68,7 +77,6 @@ class AddPlaceSearchViewModel {
         // 등록이 가능한 경우
     }
       
-    
     private func routeTo() {
         
     }

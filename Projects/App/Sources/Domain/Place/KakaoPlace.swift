@@ -7,11 +7,24 @@
 //
 
 import Foundation
+import Network
 
 struct KakaoPlace {
-    let id: Int
+    let kakaoPlaceId: Int
     let placeName: String
-    let latitude: String
-    let longitude: String
-    let roadAddress: String
+    let lat: String
+    let lon: String
+    let address: String
+}
+
+extension KakaoPlace {
+    
+    init(dto: KakaoPlaceDTO) {
+        kakaoPlaceId = dto.id
+        placeName = dto.placeName
+        lat = dto.latitude
+        lon = dto.longitude
+        address = dto.roadAddress
+    }
+    
 }

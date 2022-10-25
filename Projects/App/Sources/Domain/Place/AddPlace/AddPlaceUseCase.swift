@@ -11,34 +11,33 @@ import Foundation
 import Network
 
 protocol AddPlaceUseCaseType {
-//    func fetchPlaceDetail(with placeId: Int) -> AnyPublisher<Place, Error>
-//    func fetchReviewList(with placeId: Int) -> AnyPublisher<[Review], Error>
+    func searchKakaoPlaces(with name: String) -> AnyPublisher<[KakaoPlace], Error>
 }
 
 final class AddPlaceUseCase {
     
     private var cancelBag = Set<AnyCancellable>()
-    private let outputPlace: PassthroughSubject<Place, Error> = .init()
-    private let outputReview: PassthroughSubject<[Review], Error> = .init()
+    private let output: PassthroughSubject<[KakaoPlace], Error> = .init()
+
+    func searchKakaoPlaces(with name: String) -> AnyPublisher<[KakaoPlace], Error> {
+        PlaceAPI.getKakaoPlaceList(placeName: name)
+            .sink { error in
+                switch error {
+                case .failure(let error): print(error.localizedString)
+                case .finished: break
+                }
+            } receiveValue: { [weak self] kakaoPlaceListDTO in
+                let searchResults = kakaoPlaceListDTO.map {
+                    KakaoPlace(dto: $0)
+                }
+                self?.output.send(searchResults)
+            }
+            .store(in: &cancelBag)
+
+        return output.eraseToAnyPublisher()
+    }
+    
 //
-//    func fetchPlaceDetail(with placeId: Int) -> AnyPublisher<Place, Error> {
-//        PlaceAPI.fetchPlaceDetail(placeId: placeId)
-//            .sink { error in
-//                switch error {
-//                case .failure(let error): print(error.localizedString)
-//                case .finished: break
-//                }
-//            } receiveValue: { [weak self] placeDetailDTO in
-//                let place = Place(detailDTO: placeDetailDTO[0])
-//                self?.outputPlace.send(place)
-//            }
-//            .store(in: &cancelBag)
-//
-//        return outputPlace.eraseToAnyPublisher()
-//
-//    }
-//
-//    func fetchReviewList(with placeId: Int) -> AnyPublisher<[Review], Error> {
 //        PlaceAPI.fetchReviewList(placeId: placeId)
 //            .sink { error in
 //                switch error {
@@ -53,6 +52,5 @@ final class AddPlaceUseCase {
 //            .store(in: &cancelBag)
 //
 //        return outputReview.eraseToAnyPublisher()
-//    }
     
 }

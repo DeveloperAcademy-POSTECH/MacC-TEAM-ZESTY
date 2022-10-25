@@ -65,7 +65,7 @@ final class SearchResultCell: UITableViewCell {
     func setup(with place: KakaoPlace) {
         DispatchQueue.main.async {
             self.nameLabel.text = place.placeName
-            self.addressLabel.text = place.roadAddress
+            self.addressLabel.text = place.address
         }
     }
     
