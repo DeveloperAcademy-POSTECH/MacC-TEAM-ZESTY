@@ -24,7 +24,7 @@ let project = Project.makeModule(
         .package(product: "KakaoSDK"),
         .package(product: "SnapKit"),
         .package(product: "Kingfisher"),
-        .package(product: "FirebaseAnalytics"),
+        .package(product: "FirebaseAnalytics")
     ],
     resources: ["Resources/**"],
     infoPlist: .file(path: "Sources/Application/Info.plist")
