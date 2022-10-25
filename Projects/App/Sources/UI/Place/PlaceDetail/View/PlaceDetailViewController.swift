@@ -62,18 +62,14 @@ extension PlaceDetailViewController {
                 switch state {
                 // TO-DO: API 전체 다 붙이고 주석삭제
                 case .fetchPlaceDidSucceed(let place):
-                    print("✅ 장소 성공: \(place)")
                     self?.setNavigationBar()
                     self?.navigationItem.title = place.name
                     self?.tableView.reloadData()
                 case .fetchPlaceInfoFail(let error):
-                    print("❌ 장소 실패")
                     print(error.localizedDescription)
                 case .fetchReviewListSucceed(let reviews):
-                    print("✅ 리뷰리스트 성공: \(reviews)")
                     self?.reviews = reviews
                 case .fetchReviewListFail(let error):
-                    print("❌ 리뷰리스트 실패")
                     self?.reviews = []
                     print(error.localizedDescription)
                 }

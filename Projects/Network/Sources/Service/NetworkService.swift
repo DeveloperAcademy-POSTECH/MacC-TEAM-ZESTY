@@ -15,40 +15,52 @@ protocol NetworkServable {
 }
 
 final class NetworkService: NetworkServable {
-    
+
     private let session: URLSession
-    
+
     init(session: URLSession = .shared) {
         self.session = session
     }
-    
+
 }
 
 extension NetworkService {
-    
-    func request<E: Requestable, T: Decodable>(with endpoint: E, responseType: T.Type)
-    -> AnyPublisher<T, NetworkError> {
+
+    func request<E: Requestable>(with endpoint: E)
+    -> AnyPublisher<Bool, NetworkError> {
         do {
             let request = try endpoint.urlRequest()
-            
-            print("""
-                🚀🚀🚀REQUEST🚀🚀🚀
-                \(request)
-                """)
             
             return session.dataTaskPublisher(for: request)
                 .mapError { error in
                     NetworkError.invalidUrl(error)
                 }
                 .flatMap { (data, response) in
-                    print("""
-                          📨📨📨RESPONSE📨📨📨
-                          \(response)
-                          """)
-                    print("""
-                          📦📦📦BODY📦📦📦
-                          \(String(data: data, encoding: .utf8) ?? "")
-                          """)
+                    if let error = self.checkError(data: data, response: response) {
+                        return Fail<Bool, NetworkError>(error: error).eraseToAnyPublisher()
+                    }
+                    return Just(true)
+                        .mapError { _ in
+                            NetworkError.unknown("실행되지 않을 에러")
+                        }
+                        .eraseToAnyPublisher()
+                }
+                .eraseToAnyPublisher()
+        } catch {
+            return Fail(error: NetworkError.invalidUrlRequest(error)).eraseToAnyPublisher()
+        }
+    }
+    
+    func request<E: Requestable, T: Decodable>(with endpoint: E, responseType: T.Type)
+    -> AnyPublisher<T, NetworkError> {
+        do {
+            let request = try endpoint.urlRequest()
+            
+            return session.dataTaskPublisher(for: request)
+                .mapError { error in
+                    NetworkError.invalidUrl(error)
+                }
+                .flatMap { (data, response) in
                     if let error = self.checkError(data: data, response: response) {
                         return Fail<T, NetworkError>(error: error).eraseToAnyPublisher()
                     }
@@ -71,16 +83,17 @@ extension NetworkService {
         }
         if let responseBody = String(data: data, encoding: String.Encoding.utf8) {
             switch httpResponse.statusCode {
+            case 200..<300: return nil
             case 300..<400: return .redirection(responseBody)
             case 400: return .badRequest(responseBody)
             case 401: return .unauthorized(responseBody)
             case 403: return .forbidden(responseBody)
             case 404: return .notFound(responseBody)
-            case 500: return .serverError(responseBody)
-            default: return nil
+            case 500...: return .serverError(responseBody)
+            default: return .unknown("\(httpResponse.statusCode)")
             }
         }
         return .unknown("response body -> string 전환 실패")
     }
-    
+
 }

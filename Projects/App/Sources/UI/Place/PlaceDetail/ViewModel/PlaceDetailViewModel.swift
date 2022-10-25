@@ -70,7 +70,6 @@ class PlaceDetailViewModel {
             .store(in: &cancelBag)
     }
     
-    // 리뷰가져오기
     private func fetchReviews(id: Int) {
         useCase.fetchReviewList(with: id)
             .sink { [weak self] completion in
@@ -84,9 +83,10 @@ class PlaceDetailViewModel {
             .store(in: &cancelBag)
     }
     
-    // 리뷰추가화면전환
     private func routeTo() {
-        // TO-DO: place id, name
+        // TODO: 화면연결
+        // let viewModel = ReviewRegisterViewModel(placeId: place?.id, placeName: place?.name)
+        // EvaluationViewController(viewModel: viewModel)
     }
     
     func getPlace() -> Place {
