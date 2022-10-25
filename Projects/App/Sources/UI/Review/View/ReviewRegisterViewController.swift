@@ -20,11 +20,13 @@ final class ReviewRegisterViewController: UIViewController {
     private let keyboardShowPublisher = NotificationCenter.default.publisher(for: UIApplication.keyboardWillShowNotification)
     private let keyboardHidePublisher = NotificationCenter.default.publisher(for: UIApplication.keyboardWillHideNotification)
     
+    private let imagePickerController = UIImagePickerController()
     private let keyboardSafeArea = UIView()
     private let titleView = MainTitleView()
     private let containerView = UIView()
     private let backgroundView = UIView()
     private let plusImageView = UIImageView()
+    private let menuImageView = UIImageView()
     private let imageButton = UIButton()
     private let menuTextField = UITextField()
     private let underline = UIView()
@@ -48,10 +50,29 @@ final class ReviewRegisterViewController: UIViewController {
         createLayout()
         bindKeyboardAction()
     }
-
-    // MARK: - Function
     
-    // TODO: 갤러리에서 사진 가져오기, plusImageView.image 갈아끼기
+}
+
+// MARK: - Function
+
+extension ReviewRegisterViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    @objc func openGallery() {
+        self.imagePickerController.delegate = self
+        self.imagePickerController.sourceType = .photoLibrary
+        present(self.imagePickerController, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            menuImageView.image = image
+        }
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
     
     @objc func registerButtonTouched() {
         viewModel.image = plusImageView.image
@@ -84,9 +105,12 @@ extension ReviewRegisterViewController {
         backgroundView.backgroundColor = .zestyColor(.grayF6)
         backgroundView.clipsToBounds = true
         backgroundView.layer.cornerRadius = 10
+        menuImageView.clipsToBounds = true
+        menuImageView.layer.cornerRadius = 10
         
         imageButton.clipsToBounds = true
         imageButton.layer.cornerRadius = 10
+        imageButton.addTarget(self, action: #selector(openGallery), for: .touchUpInside)
         
         menuTextField.placeholder = "음식 이름"
         menuTextField.textAlignment = .center
@@ -106,7 +130,7 @@ extension ReviewRegisterViewController {
     private func createLayout() {
         view.addSubviews([keyboardSafeArea, titleView,
                           containerView, registerButton])
-        containerView.addSubviews([backgroundView, plusImageView,
+        containerView.addSubviews([backgroundView, plusImageView, menuImageView,
                                        imageButton, menuTextField, underline])
         
         titleView.snp.makeConstraints {
@@ -127,6 +151,9 @@ extension ReviewRegisterViewController {
         plusImageView.snp.makeConstraints {
             $0.center.equalTo(backgroundView.snp.center)
             $0.width.height.equalTo(35)
+        }
+        menuImageView.snp.makeConstraints {
+            $0.edges.equalTo(backgroundView.snp.edges)
         }
         imageButton.snp.makeConstraints {
             $0.edges.equalTo(backgroundView.snp.edges)
