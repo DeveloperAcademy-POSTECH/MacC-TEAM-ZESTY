@@ -6,12 +6,16 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
+import Combine
 import UIKit
 import SnapKit
 
 final class SearchResultCell: UITableViewCell {
     
     // MARK: - Properties
+    
+    private let input: PassthroughSubject<AddPlaceSearchViewModel.Input, Never> = .init()
+    private var kakaoPlace: KakaoPlace?
     
     private let nameLabel: UILabel = {
         $0.font = .systemFont(ofSize: 16, weight: .medium)
@@ -41,6 +45,9 @@ final class SearchResultCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+        if selected == true {
+            input.send(.placeResultCellDidTap(kakaoPlace: kakaoPlace!))
+        }
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -62,13 +69,14 @@ final class SearchResultCell: UITableViewCell {
     }
     
     // MARK: - Function
-    func setup(with place: KakaoPlace) {
+    func bind(with place: KakaoPlace, viewModel: AddPlaceSearchViewModel) {
+        _ = viewModel.transform(input: input.eraseToAnyPublisher())
         DispatchQueue.main.async {
+            self.kakaoPlace = place
             self.nameLabel.text = place.placeName
             self.addressLabel.text = place.address
         }
     }
-    
 }
 
 // MARK: - UI Function

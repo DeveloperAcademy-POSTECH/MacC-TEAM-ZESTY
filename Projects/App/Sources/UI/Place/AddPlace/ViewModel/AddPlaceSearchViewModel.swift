@@ -13,16 +13,16 @@ import Network
 class AddPlaceSearchViewModel {
     
     enum Input {
-        case viewDidLoad
         case searchBtnDidTap(placeName: String)
-        case placeResultCellDidTap
+        case placeResultCellDidTap(kakaoPlace: KakaoPlace)
     }
     
     enum Output {
-        case serachPlaceFail(error: Error)
-        case serachPlaceDidSucceed(results: [KakaoPlace])
+        case searchPlaceFail(error: Error)
+        case searchPlaceDidSucceed(results: [KakaoPlace])
         case existingPlace
-        case addSelectedPlace
+        case addSelectedPlaceFail(error: Error)
+        case addSelectedPlaceDidSucceed(kakaoPlace: KakaoPlace)
     }
     
     private var cancelBag = Set<AnyCancellable>()
@@ -41,13 +41,10 @@ class AddPlaceSearchViewModel {
         
         input.sink { [weak self] event in
             switch event {
-            case .viewDidLoad:
-                print("viewdidload")
             case .searchBtnDidTap(let placeName):
                 self?.searchPlace(name: placeName)
-            case .placeResultCellDidTap:
-                self?.routeTo()
-                
+            case .placeResultCellDidTap(let kakaoPlace):
+                self?.selectPlaceToAdd(place: kakaoPlace)
             }
         }.store(in: &cancelBag)
         
@@ -59,26 +56,30 @@ class AddPlaceSearchViewModel {
         useCase.searchKakaoPlaces(with: name)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
-                    self?.output.send(.serachPlaceFail(error: error))
+                    self?.output.send(.searchPlaceFail(error: error))
                 }
             } receiveValue: { [weak self] kakaoPlaces in
                 self?.searchResults = kakaoPlaces
-                self?.output.send(.serachPlaceDidSucceed(results: kakaoPlaces))
+                self?.output.send(.searchPlaceDidSucceed(results: kakaoPlaces))
             }
             .store(in: &cancelBag)
     }
     
     private func selectPlaceToAdd(place: KakaoPlace) {
-        
-        // API
-        
-        // 이미 존재하는 경우
-        
-        // 등록이 가능한 경우
-    }
-      
-    private func routeTo() {
-        
+        useCase.checkRegisterdPlace(with: place.kakaoPlaceId)
+            .first()
+            .sink { [weak self] completion in
+                if case .failure(let error) = completion {
+                    self?.output.send(.addSelectedPlaceFail(error: error))
+                }
+            } receiveValue: { [weak self] result in
+                if result {
+                    self?.output.send(.existingPlace)
+                } else {
+                    self?.output.send(.addSelectedPlaceDidSucceed(kakaoPlace: place))
+                }
+            }
+            .store(in: &cancelBag)
     }
     
 }

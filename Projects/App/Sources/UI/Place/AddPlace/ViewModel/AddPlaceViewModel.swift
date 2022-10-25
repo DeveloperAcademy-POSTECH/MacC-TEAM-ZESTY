@@ -29,11 +29,13 @@ class AddPlaceViewModel {
     private let output: PassthroughSubject<Output, Never> = .init()
     private let useCase: AddPlaceUseCase
     
+    private var kakaoPlace: KakaoPlace
     private var place: Place?
     private var reviews: [Review] = []
     
-    init(useCase: AddPlaceUseCase = AddPlaceUseCase()) {
+    init(useCase: AddPlaceUseCase = AddPlaceUseCase(), kakaoPlace: KakaoPlace) {
         self.useCase = useCase
+        self.kakaoPlace = kakaoPlace
     }
     
     // MARK: - transform : Input -> Output
@@ -44,7 +46,7 @@ class AddPlaceViewModel {
             case .viewDidLoad:
 //                self?.fetchPlaceInfo(id: self?.placeId ?? -1)
 //                self?.fetchReviews(id: self?.placeId ?? -1)
-                print("viewdidload")
+                print("viewdidload") // ✅
             case .addReviewBtnDidTap:
                 self?.routeTo()
                 

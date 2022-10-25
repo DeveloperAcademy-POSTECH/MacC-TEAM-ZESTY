@@ -53,6 +53,11 @@ final class AddPlaceSearchViewController: UIViewController {
 
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+ 
+    }
+    
     // MARK: - Function
     @objc func backButtonDidTap() {
         self.navigationController?.popViewController(animated: true)
@@ -79,18 +84,23 @@ extension AddPlaceSearchViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
                 switch state {
-                case .serachPlaceFail(let error):
-                    print("✅✅✅✅ 결과 가져오는데 실패햇습니다")
+                case .searchPlaceFail(let error):
                     print(error.localizedDescription)
-                case .serachPlaceDidSucceed(let results):
-                    print("✅✅✅✅결과 가져오는데 성공햇습니다")
+                case .searchPlaceDidSucceed(let results):
                     self?.searchResults = results
                     self?.tableView.reloadData()
-                    print(results)
                 case .existingPlace:
-                    print("✅✅✅✅이미 존재하는 장소입니다.")
-                case .addSelectedPlace:
-                    print("✅✅✅✅다음페이지로 전환")
+                    let alert = UIAlertController(title: "등록된 맛집",
+                                                  message: "우리 대학에 이미 등록된 맛집이에요.",
+                                                  preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "확인", style: .default)
+                    alert.addAction(okAction)
+                    self?.present(alert, animated: false)
+                case .addSelectedPlaceFail(let error):
+                    print(error.localizedDescription)
+                case .addSelectedPlaceDidSucceed(let kakaoPlace):
+                    let viewModel = AddPlaceViewModel(kakaoPlace: kakaoPlace)
+                    self?.navigationController?.pushViewController(AddCategoryViewController(viewModel: viewModel), animated: true)
                 }
             }.store(in: &cancelBag)
         
@@ -176,7 +186,7 @@ extension AddPlaceSearchViewController: UITableViewDataSource {
          
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultCell", for: indexPath) as? SearchResultCell else { return UITableViewCell() }
         
-        cell.setup(with: searchResults[indexPath.row])
+        cell.bind(with: searchResults[indexPath.row], viewModel: viewModel)
         cell.selectionStyle = .none
         return cell
 

@@ -159,7 +159,6 @@ extension AddCategoryViewController: UICollectionViewDelegate, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedIcon = categories[indexPath.row].name
-        print("선택된 셀 : \(selectedIcon)")
     }
     
 }

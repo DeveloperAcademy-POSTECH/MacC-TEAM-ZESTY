@@ -12,12 +12,14 @@ import Network
 
 protocol AddPlaceUseCaseType {
     func searchKakaoPlaces(with name: String) -> AnyPublisher<[KakaoPlace], Error>
+    func checkRegisterdPlace(with kakaoPlaceId: Int) -> AnyPublisher<Bool, Error>
 }
 
 final class AddPlaceUseCase {
     
     private var cancelBag = Set<AnyCancellable>()
     private let output: PassthroughSubject<[KakaoPlace], Error> = .init()
+    private let outputBool: PassthroughSubject<Bool, Error> = .init()
 
     func searchKakaoPlaces(with name: String) -> AnyPublisher<[KakaoPlace], Error> {
         PlaceAPI.getKakaoPlaceList(placeName: name)
@@ -35,6 +37,22 @@ final class AddPlaceUseCase {
             .store(in: &cancelBag)
 
         return output.eraseToAnyPublisher()
+
+    }
+    
+    func checkRegisterdPlace(with kakaoPlaceId: Int) -> AnyPublisher<Bool, Error> {
+        PlaceAPI.checkRegisterdPlace(kakaoPlaceId: kakaoPlaceId)
+            .sink { error in
+                switch error {
+                case .failure(let error): print(error.localizedString)
+                case .finished: break
+                }
+            } receiveValue: { [weak self] isRegisterd in
+                self?.outputBool.send(isRegisterd)
+            }
+            .store(in: &cancelBag)
+
+        return outputBool.eraseToAnyPublisher()
     }
     
 //
