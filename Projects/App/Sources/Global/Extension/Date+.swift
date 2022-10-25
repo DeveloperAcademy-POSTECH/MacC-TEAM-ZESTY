@@ -37,7 +37,6 @@ extension Date {
         - string: 서버에서 받은 String Date (ex : "2022-05-26T18:06:55Z")
      - Returns: 변형한 Date
     */
-    // TODO: 달이 18월 이런 식으로 잘못 나옴.. ㅠㅠ
     public static func getStringToDate(_ string: String) -> Self {
         let expectedFormat = Date.ISO8601FormatStyle()
         let date = try? Date(string, strategy: expectedFormat)

@@ -71,7 +71,7 @@ extension ReviewRegisterViewModel {
                 self.result = Result(image: review.image.loadImage(),
                                      evaluation: Evaluation(review.evaluation),
                                      reviewer: review.reviewer.nickname,
-                                     registeredAt: Date.getStringToDate(review.createdAt).getDateToString(format: "yy.mm.dd"),
+                                     registeredAt: Date.getStringToDate(review.createdAt).getDateToString(format: "yy.MM.dd"),
                                      category: review.place.category.name,
                                      placeName: review.place.name,
                                      placeAddress: review.place.address)
