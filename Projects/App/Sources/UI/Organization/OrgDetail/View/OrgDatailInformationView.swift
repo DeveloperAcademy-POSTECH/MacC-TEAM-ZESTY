@@ -10,7 +10,7 @@ import UIKit
 import DesignSystem
 import SnapKit
 
-final class OrgDetailCell: UIView {
+final class OrgDetailInformationView: UIView {
 
     // MARK: - Properties
     private let logo = UIImageView()
@@ -33,10 +33,10 @@ final class OrgDetailCell: UIView {
 }
 
 // MARK: - UI Function
-extension OrgDetailCell {
+extension OrgDetailInformationView {
 
     private func configureUI() {
-        backgroundColor = .systemIndigo
+        backgroundColor = .zestyColor(.background)
         
         logo.image = UIImage(.img_reviewfriends_together)
         logo.contentMode = .scaleAspectFit
@@ -74,7 +74,7 @@ import SwiftUI
 struct OrgDetailCellPreview: PreviewProvider {
 
     static var previews: some View {
-        OrgDetailCell().toPreview()
+        OrgDetailInformationView().toPreview()
     }
 
 }

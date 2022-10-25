@@ -18,9 +18,9 @@ final class OrgDetailViewController: UIViewController {
     private let inviteButton = FullWidthBlackButton()
     private let orgName = UILabel()
     
-    private var orgDetailCell1 = OrgDetailCell()
-    private var orgDetailCell2 = OrgDetailCell()
-    private var orgDetailCell3 = OrgDetailCell()
+    private var orgDetailCell1 = OrgDetailInformationView()
+    private var orgDetailCell2 = OrgDetailInformationView()
+    private var orgDetailCell3 = OrgDetailInformationView()
 
     // MARK: - LifeCycle
 
@@ -47,9 +47,9 @@ extension OrgDetailViewController {
         orgName.textAlignment = .center
         orgName.numberOfLines = 2
         
-        orgDetailCell1 = OrgDetailCell()
-        orgDetailCell2 = OrgDetailCell()
-        orgDetailCell3 = OrgDetailCell()
+        orgDetailCell1 = OrgDetailInformationView()
+        orgDetailCell2 = OrgDetailInformationView()
+        orgDetailCell3 = OrgDetailInformationView()
         
         inviteButton.setTitle("우리학교 사람들 초대하기", for: .normal)
     }
