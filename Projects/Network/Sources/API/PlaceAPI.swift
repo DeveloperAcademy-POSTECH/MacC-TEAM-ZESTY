@@ -27,7 +27,8 @@ public struct PlaceAPI {
         let endpoint = Endpoint(path: "/api/places/\(placeId)", headers: header)
         
         return networkService.request(with: endpoint, responseType: PlaceDetailDTOResult.self)
-
     }
+    
+    
 
 }

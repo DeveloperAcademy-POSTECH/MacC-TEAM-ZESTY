@@ -18,7 +18,9 @@ final class PlaceDetailViewController: UIViewController {
     private let input: PassthroughSubject<PlaceDetailViewModel.Input, Never> = .init()
     private var cancelBag = Set<AnyCancellable>()
     
+    private var placeId: Int = 6
     private var place: Place?
+    
     private var reviews: [Review] = [Review.mockData[0], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3], Review.mockData[0], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3]]
     
     private let tableView = UITableView(frame: CGRect.zero, style: .grouped)
@@ -28,7 +30,7 @@ final class PlaceDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
-        input.send(.viewDidLoad)
+        input.send(.viewDidLoad(placeId: placeId))
         setNavigationBar()
         configureUI()
         createLayout()

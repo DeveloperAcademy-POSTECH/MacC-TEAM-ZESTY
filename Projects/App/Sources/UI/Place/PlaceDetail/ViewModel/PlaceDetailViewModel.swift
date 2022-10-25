@@ -13,7 +13,7 @@ import Network
 class PlaceDetailViewModel {
     
     enum Input {
-        case viewDidLoad
+        case viewDidLoad(placeId: Int)
         case addReviewBtnDidTap
     }
     
@@ -41,8 +41,8 @@ class PlaceDetailViewModel {
         
         input.sink { [weak self] event in
             switch event {
-            case .viewDidLoad:
-                self?.fetchPlaceInfo(id: 1)
+            case .viewDidLoad(let placeId):
+                self?.fetchPlaceInfo(id: placeId)
                 self?.fetchReviews()
             case .addReviewBtnDidTap:
                 self?.routeTo()
