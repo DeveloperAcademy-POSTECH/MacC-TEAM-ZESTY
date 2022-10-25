@@ -75,7 +75,6 @@ class AddPlaceViewModel {
     }
     
     private func addNewPlace(place: KakaoPlace, category: Int) {
-        print("카테고리 등록되엇나요?")
         useCase.addNewPlace(with: place, category: category)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {

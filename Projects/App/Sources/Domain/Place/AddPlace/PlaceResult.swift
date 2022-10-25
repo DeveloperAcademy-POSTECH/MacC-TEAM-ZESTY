@@ -29,7 +29,7 @@ extension PlaceResult {
         organizationId = dto.organization
         name = dto.name
         address = dto.address
-        category = Category.mockData[dto.category]
+        category = Category.mockData[dto.category+1]
         createdAt = {
             var string = dto.createdAt
             let array = string.split(separator: ".")

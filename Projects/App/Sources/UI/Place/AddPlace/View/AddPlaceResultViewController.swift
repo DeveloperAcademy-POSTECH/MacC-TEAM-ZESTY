@@ -15,8 +15,10 @@ import Kingfisher
 final class AddPlaceResultViewController: UIViewController {
     
     // MARK: - Properties
-    private let viewModel: AddPlaceViewModel
+    private let viewModel: AddPlaceResultViewModel
     private var cancelBag = Set<AnyCancellable>()
+    private let input: PassthroughSubject<AddPlaceResultViewModel.Input, Never> = .init()
+    
     private let isSE = UIScreen.main.isLessThan376pt && !UIDevice.current.hasNotch
     
     private lazy var titleView = MainTitleView(title: "맛집 등록 완료 🎉")
@@ -121,7 +123,7 @@ final class AddPlaceResultViewController: UIViewController {
     }(FullWidthBlackButton())
     
     // MARK: - LifeCycle
-    init(viewModel: AddPlaceViewModel) {
+    init(viewModel: AddPlaceResultViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -132,6 +134,8 @@ final class AddPlaceResultViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bind()
+        input.send(.viewDidLoad)
         configureUI()
         createLayout()
         setNavigationBar()
@@ -156,6 +160,27 @@ final class AddPlaceResultViewController: UIViewController {
 extension AddPlaceResultViewController {
     
     private func bind() {
+        let output = viewModel.transform(input: input.eraseToAnyPublisher())
+        
+        output
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                switch state {
+                case .loadPlaceResultSucceed(let place):
+                    self?.setup(with: place)
+                }
+            }
+            .store(in: &cancelBag)
+    }
+    
+    private func setup(with place: PlaceResult) {
+        categoryTagLabel.text = place.category.name
+        placeNameLabel.text = place.name
+        addressLabel.text = place.address
+        orgLabel.text = "\(place.organizationId)번 대학"
+        creatorLabel.text = "\(place.creator)번 유저"
+        dateLabel.text = place.createdAt.getDateToString(format: "YYYY.MM.DD")
+        iconView.kf.setImage(with: URL(string: place.category.imageURL ?? "https://user-images.githubusercontent.com/63157395/197410857-e13c1bbb-b19a-4c59-a493-77501a4a529b.png"))
         
     }
     
@@ -167,7 +192,6 @@ extension AddPlaceResultViewController {
     
     private func configureUI() {
         view.backgroundColor = .white // zestyColor(.backgroundColor)
-        iconView.kf.setImage(with: URL(string: "https://user-images.githubusercontent.com/63157395/197410857-e13c1bbb-b19a-4c59-a493-77501a4a529b.png"))
     }
     
     private func createLayout() {

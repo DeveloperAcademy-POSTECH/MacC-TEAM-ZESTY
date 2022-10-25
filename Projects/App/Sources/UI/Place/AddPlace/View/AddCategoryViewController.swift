@@ -86,9 +86,8 @@ extension AddCategoryViewController {
                 case .addPlaceFail(let error):
                     print(error.localizedDescription)
                 case .addPlaceDidSucceed(let place):
-                    print("장소를 추가합니다", place)
-//                    let viewModel = AddPlaceViewModel(kakaoPlace: <#T##KakaoPlace#>)
-//                    self?.navigationController?.pushViewController(AddPlaceResultViewController(viewModel: self?.viewModel), animated: true)
+                    let viewModel = AddPlaceResultViewModel(place: place)
+                    self?.navigationController?.pushViewController(AddPlaceResultViewController(viewModel: viewModel), animated: true)
                 }
             }.store(in: &cancelBag)
     }
