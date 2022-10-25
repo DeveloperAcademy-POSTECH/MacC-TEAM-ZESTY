@@ -31,8 +31,8 @@ final class PlaceDetailViewController: UIViewController {
     }
     
     // MARK: - Function
-    @objc func backButtonClicked() {
-        // pop
+    @objc func backButtonDidTap() {
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
@@ -65,7 +65,7 @@ extension PlaceDetailViewController {
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)
         ]
-        let leftBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonClicked))
+        let leftBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonDidTap))
         leftBarButton.tintColor = .label
         navigationItem.leftBarButtonItem = leftBarButton
     }
