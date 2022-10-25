@@ -39,9 +39,9 @@ final class WholePlaceCell: UITableViewCell {
     
     private lazy var emojiStackView = UIStackView()
     
-    private lazy var goodEmojiStackView = EmojiCountStackView(emojiCount: 17, emoji: UIImage(.img_good_circle)!)
-    private lazy var sosoEmojiStackView = EmojiCountStackView(emojiCount: 2, emoji: UIImage(.img_good_circle)!)
-    private lazy var badEmojiStackView = EmojiCountStackView(emojiCount: 4, emoji: UIImage(.img_bad_circle)!)
+    private lazy var goodEmojiStackView = EmojiCountStackView(emojiCount: 17, emoji: UIImage(.img_reviewfriends_good_30)!)
+    private lazy var sosoEmojiStackView = EmojiCountStackView(emojiCount: 2, emoji: UIImage(.img_reviewfriends_soso_30)!)
+    private lazy var badEmojiStackView = EmojiCountStackView(emojiCount: 4, emoji: UIImage(.img_reviewfriends_bad_30)!)
     
     // MARK: - LifeCycle
 
@@ -79,7 +79,7 @@ extension WholePlaceCell {
         
         bottomView.backgroundColor = .label
         
-        placeNameLabel.textColor = .white
+        placeNameLabel.textColor = .zestyColor(.whiteEBEBF5)
         placeNameLabel.text = placeName
         placeNameLabel.numberOfLines = 2
         placeNameLabel.font = .systemFont(ofSize: 20, weight: .bold)
