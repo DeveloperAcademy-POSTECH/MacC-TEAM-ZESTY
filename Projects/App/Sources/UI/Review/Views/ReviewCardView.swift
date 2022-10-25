@@ -137,11 +137,9 @@ extension ReviewCardView {
         }
         nicknameStaticLabel.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(13)
         }
         nicknameLabel.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(21)
         }
         
         if isMenuImageExist {
@@ -157,11 +155,9 @@ extension ReviewCardView {
             }
             dateStaticLabel.snp.makeConstraints {
                 $0.horizontalEdges.equalToSuperview()
-                $0.height.equalTo(13)
             }
             dateLabel.snp.makeConstraints {
                 $0.horizontalEdges.equalToSuperview()
-                $0.height.equalTo(21)
             }
             evaluationImageView.snp.makeConstraints {
                 $0.trailing.bottom.equalToSuperview().inset(30)
@@ -171,7 +167,6 @@ extension ReviewCardView {
             placeStackView.snp.makeConstraints {
                 $0.leading.bottom.equalToSuperview().inset(30)
                 $0.trailing.equalTo(evaluationImageView.snp.leading).offset(-10)
-                $0.height.greaterThanOrEqualTo(88)
             }
         } else {
             evaluationImageView.snp.makeConstraints {
@@ -182,7 +177,6 @@ extension ReviewCardView {
             }
             placeStackView.snp.makeConstraints {
                 $0.horizontalEdges.bottom.equalToSuperview().inset(30)
-                $0.height.greaterThanOrEqualTo(88)
             }
         }
         categoryLabel.snp.makeConstraints {
@@ -192,11 +186,9 @@ extension ReviewCardView {
         }
         placeNameLabel.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
-            $0.height.greaterThanOrEqualTo(28)
         }
         placeAddressLabel.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
-            $0.height.greaterThanOrEqualTo(16)
         }
     }
     
