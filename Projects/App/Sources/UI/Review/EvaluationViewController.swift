@@ -8,6 +8,7 @@
 
 import Combine
 import UIKit
+import DesignSystem
 import SnapKit
 
 final class EvaluationViewController: UIViewController {
@@ -15,10 +16,11 @@ final class EvaluationViewController: UIViewController {
     // MARK: - Properties
     private let cancelBag = Set<AnyCancellable>()
     
-    private lazy var evaluationStackView = UIStackView()
-    private lazy var goodButton = EvaluationButton(type: .good)
-    private lazy var sosoButton = EvaluationButton(type: .soso)
-    private lazy var badButton = EvaluationButton(type: .bad)
+    private let titleView = MainTitleView(title: "요기쿠시동, 어땠나요?")
+    private let evaluationStackView = UIStackView()
+    private let goodButton = EvaluationButton(type: .good)
+    private let sosoButton = EvaluationButton(type: .soso)
+    private let badButton = EvaluationButton(type: .bad)
 
     // viewModel한테서 옵셔널로 받아올 거임
     // 사용자가 뒤로 갈 수도 있으니까
@@ -41,7 +43,6 @@ final class EvaluationViewController: UIViewController {
         
         evaluation = .good
         navigationController?.pushViewController(ReviewRegisterViewController(), animated: true)
-
     }
     
     @objc func sosoButtonTouched() {
@@ -51,7 +52,6 @@ final class EvaluationViewController: UIViewController {
         
         evaluation = .soso
         navigationController?.pushViewController(ReviewRegisterViewController(), animated: true)
-
     }
     
     @objc func badButtonTouched() {
@@ -61,7 +61,6 @@ final class EvaluationViewController: UIViewController {
         
         evaluation = .bad
         navigationController?.pushViewController(ReviewRegisterViewController(), animated: true)
-
     }
     
 }
@@ -83,9 +82,14 @@ extension EvaluationViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([evaluationStackView])
+        view.addSubviews([titleView, evaluationStackView])
         evaluationStackView.addArrangedSubviews([goodButton, sosoButton, badButton])
-        
+
+        titleView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            $0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
+            $0.width.equalTo(260)
+        }
         evaluationStackView.snp.makeConstraints {
             $0.center.equalToSuperview()
         }

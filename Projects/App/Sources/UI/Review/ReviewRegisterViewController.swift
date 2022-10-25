@@ -18,7 +18,6 @@ final class ReviewRegisterViewController: UIViewController {
     private let keyboardShowPublisher = NotificationCenter.default.publisher(for: UIApplication.keyboardWillShowNotification)
     private let keyboardHidePublisher = NotificationCenter.default.publisher(for: UIApplication.keyboardWillHideNotification)
     
-    private let safeArea = UIView()
     private let keyboardSafeArea = UIView()
     private let titleView = MainTitleView(title: "요기쿠시동에서 \n무엇을 드셨나요?")
     private let containerView = UIView()
@@ -40,6 +39,10 @@ final class ReviewRegisterViewController: UIViewController {
     }
 
     // MARK: - Function
+    
+    @objc func registerButtonTouched() {
+        navigationController?.pushViewController(ReviewCardViewController(), animated: true)
+    }
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
@@ -79,28 +82,19 @@ extension ReviewRegisterViewController {
         underline.backgroundColor = .black
         
         registerButton.setTitle("사진 없이 리뷰 등록", for: .normal)
+        registerButton.addTarget(self, action: #selector(registerButtonTouched), for: .touchUpInside)
     }
     
     private func createLayout() {
-        safeArea.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(safeArea)
-        
-        let guide = view.safeAreaLayoutGuide
-        safeArea.topAnchor.constraint(equalTo: guide.topAnchor).isActive = true
-        safeArea.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
-        safeArea.leadingAnchor.constraint(equalTo: guide.leadingAnchor).isActive = true
-        safeArea.trailingAnchor.constraint(equalTo: guide.trailingAnchor).isActive = true
-        
         view.addSubviews([keyboardSafeArea, titleView,
                           containerView, registerButton])
         containerView.addSubviews([backgroundView, plusImageView,
                                        imageButton, menuTextField, underline])
         
         titleView.snp.makeConstraints {
-            $0.top.equalTo(safeArea)
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
-            $0.height.equalTo(135)
         }
         
         containerView.snp.makeConstraints {
@@ -123,7 +117,6 @@ extension ReviewRegisterViewController {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(backgroundView.snp.bottom).offset(30)
             $0.bottom.equalToSuperview()
-            $0.height.greaterThanOrEqualTo(30)
             $0.width.lessThanOrEqualTo(view.snp.width).inset(40)
         }
         underline.snp.makeConstraints {
@@ -134,7 +127,8 @@ extension ReviewRegisterViewController {
         }
         
         registerButton.snp.makeConstraints {
-            $0.horizontalEdges.bottom.equalTo(safeArea).inset(20)
+            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide.snp.horizontalEdges).inset(20)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(20)
         }
     }
     
@@ -164,7 +158,7 @@ extension ReviewRegisterViewController {
             guard let keyboardHeight = keyboardHeight else { return }
             
             keyboardSafeArea.snp.remakeConstraints {
-                $0.top.equalTo(safeArea.snp.top)
+                $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
                 $0.horizontalEdges.equalToSuperview()
                 $0.bottom.equalTo(registerButton.snp.top).inset(20)
             }
@@ -172,7 +166,6 @@ extension ReviewRegisterViewController {
                 $0.top.equalToSuperview().offset(-20)
                 $0.leading.equalToSuperview()
                 $0.trailing.equalToSuperview()
-                $0.height.equalTo(135)
             }
             titleView.willHide(with: 1)
             containerView.snp.remakeConstraints {
@@ -187,10 +180,9 @@ extension ReviewRegisterViewController {
             }
         } else {
             titleView.snp.remakeConstraints {
-                $0.top.equalTo(safeArea)
+                $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
                 $0.leading.equalToSuperview()
                 $0.trailing.equalToSuperview()
-                $0.height.equalTo(135)
             }
             titleView.willShow(with: 1)
             containerView.snp.remakeConstraints {
@@ -199,7 +191,8 @@ extension ReviewRegisterViewController {
                 $0.width.equalTo(containerView.snp.height).multipliedBy(0.75)
             }
             registerButton.snp.remakeConstraints {
-                $0.horizontalEdges.bottom.equalTo(safeArea).inset(20)
+                $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide.snp.horizontalEdges).inset(20)
+                $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(20)
                 $0.height.equalTo(55)
             }
         }

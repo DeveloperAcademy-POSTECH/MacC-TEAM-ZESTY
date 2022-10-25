@@ -124,7 +124,6 @@ extension EvaluationButton {
         }
         evaluationLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.width.greaterThanOrEqualTo(30)
         }
         button.snp.makeConstraints {
             $0.edges.equalToSuperview()
