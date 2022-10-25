@@ -52,6 +52,11 @@ final class AddPlaceSearchViewController: UIViewController {
         createLayout()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+ 
+    }
+    
     // MARK: - Function
     @objc func backButtonDidTap() {
         self.navigationController?.popViewController(animated: true)

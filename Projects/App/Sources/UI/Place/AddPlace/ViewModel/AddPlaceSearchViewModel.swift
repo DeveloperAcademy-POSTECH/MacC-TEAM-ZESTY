@@ -81,9 +81,5 @@ class AddPlaceSearchViewModel {
             }
             .store(in: &cancelBag)
     }
-      
-    private func routeTo() {
-        
-    }
     
 }

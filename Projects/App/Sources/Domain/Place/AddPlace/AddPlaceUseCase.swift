@@ -37,6 +37,22 @@ final class AddPlaceUseCase {
             .store(in: &cancelBag)
 
         return output.eraseToAnyPublisher()
+
+    }
+    
+    func checkRegisterdPlace(with kakaoPlaceId: Int) -> AnyPublisher<Bool, Error> {
+        PlaceAPI.checkRegisterdPlace(kakaoPlaceId: kakaoPlaceId)
+            .sink { error in
+                switch error {
+                case .failure(let error): print(error.localizedString)
+                case .finished: break
+                }
+            } receiveValue: { [weak self] isRegisterd in
+                self?.outputBool.send(isRegisterd)
+            }
+            .store(in: &cancelBag)
+
+        return outputBool.eraseToAnyPublisher()
     }
     
     func checkRegisterdPlace(with kakaoPlaceId: Int) -> AnyPublisher<Bool, AddPlaceError> {
