@@ -7,8 +7,8 @@
 //
 
 import Combine
-import SwiftUI
 import UIKit
+import DesignSystem
 import SnapKit
 
 final class OrgDetailViewController: UIViewController {
@@ -17,9 +17,7 @@ final class OrgDetailViewController: UIViewController {
 
     private let inviteButton = UIButton()
     private let orgName = UILabel()
-    private let orgLogo = UIImageView()
     private let orgUsers = UILabel()
-    private let orgUsersBackground = UIImageView()
     private let orgPlace = UILabel()
     private let orgPlacePhoto = UILabel()
 
@@ -40,26 +38,16 @@ final class OrgDetailViewController: UIViewController {
 extension OrgDetailViewController {
     
     private func configureUI() {
-        view.backgroundColor = .systemGray3
+        view.backgroundColor = .zestyColor(.background)
         
         orgName.text = "킹밥는대학교"
         orgName.textColor = .black
-        orgName.font = UIFont.systemFont(ofSize: CGFloat(36), weight: .bold)
-        
-        orgLogo.image = UIImage(systemName: "seal.fill")
-        orgLogo.tintColor = .black
-        orgLogo.contentMode = .scaleAspectFit
-        orgLogo.preferredSymbolConfiguration = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 36))
+        orgName.font = UIFont.systemFont(ofSize: CGFloat(26), weight: .bold)
         
         orgUsers.text = "218명의 Zesters"
-        orgUsers.textColor = .white
-        orgUsers.font = UIFont.systemFont(ofSize: CGFloat(20), weight: .regular)
+        orgUsers.textColor = .black
+        orgUsers.font = UIFont.systemFont(ofSize: CGFloat(20), weight: .medium)
         orgUsers.textAlignment = .center
-        
-        orgUsersBackground.image = UIImage(systemName: "seal.fill")
-        orgUsersBackground.tintColor = .systemIndigo
-        orgUsersBackground.contentMode = .scaleAspectFit
-        orgUsersBackground.preferredSymbolConfiguration = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 30))
         
         inviteButton.configuration = .filled()
         inviteButton.tintColor = .black
@@ -69,19 +57,12 @@ extension OrgDetailViewController {
 
     private func createLayout() {
         view.addSubview(orgName)
-        view.addSubview(orgLogo)
         view.addSubview(orgUsers)
-        view.addSubview(orgUsersBackground)
         view.addSubview(inviteButton)
 
         orgName.snp.makeConstraints { make in
-            make.centerX.equalTo(view.snp.centerX).offset(-20)
+            make.centerX.equalToSuperview()
             make.top.equalTo(view.snp.top).offset(50)
-        }
-        
-        orgLogo.snp.makeConstraints { make in
-            make.top.equalTo(orgName.snp.top).offset(-2)
-            make.left.equalTo(orgName.snp.right)
         }
         
         orgUsers.snp.makeConstraints { make in
@@ -89,25 +70,10 @@ extension OrgDetailViewController {
             make.centerY.equalTo(view.snp.centerY)
         }
         
-        orgUsersBackground.snp.makeConstraints { make in
-            make.centerX.equalTo(view.snp.centerX).offset(-90)
-            make.centerY.equalTo(view.snp.centerY)
-        }
-
         inviteButton.snp.makeConstraints { make in
             make.centerX.equalTo(view.snp.centerX)
             make.centerY.equalTo(view.snp.centerY).offset(300)
         }
     }
 
-}
-
-// MARK: - Previews
-
-struct OrgDetailPreview: PreviewProvider {
-    
-    static var previews: some View {
-        OrgDetailViewController().toPreview()
-    }
-    
 }
