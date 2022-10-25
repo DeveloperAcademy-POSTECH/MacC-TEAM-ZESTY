@@ -47,6 +47,7 @@ extension User {
 extension Place {
     static let mockData: [Place] = [
         Place(id: 0,
+              kakaoPlaceId: 0,
               creator: User.mockData[0],
               organizationId: 1,
               name: "순이",
@@ -56,6 +57,7 @@ extension Place {
               category: [Category.mockData[1], Category.mockData[2]],
               evaluationSum: EvaluationSum.mockData[0], reviews: []),
         Place(id: 1,
+              kakaoPlaceId: 0,
               creator: User.mockData[0],
               organizationId: 0,
               name: "이태리파스타",
@@ -65,6 +67,7 @@ extension Place {
               category: [Category.mockData[2], Category.mockData[4]],
               evaluationSum: EvaluationSum.mockData[0], reviews: [Review.mockData[0], Review.mockData[1], Review.mockData[2]]),
         Place(id: 2,
+              kakaoPlaceId: 0,
               creator: User.mockData[0],
               organizationId: 0,
               name: "담박집",
@@ -74,6 +77,7 @@ extension Place {
               category: [Category.mockData[5], Category.mockData[5]],
               evaluationSum: EvaluationSum.mockData[0], reviews: [Review.mockData[1], Review.mockData[2]]),
         Place(id: 3,
+              kakaoPlaceId: 0,
               creator: User.mockData[0],
               organizationId: 0,
               name: "롯데리아",
