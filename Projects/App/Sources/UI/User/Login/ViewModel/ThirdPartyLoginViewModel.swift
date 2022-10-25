@@ -13,10 +13,9 @@ import KakaoSDKUser
 final class ThirdPartyLoginViewModel {
     
     private let useCase = UserLoginUseCase()
-    private var accessToken: String?
     
     // Input
-    private let isLoggedInSubject = PassthroughSubject<Bool, Never>()
+    private let isLoggedInSubject = PassthroughSubject<String, Never>()
     
     // Output
     let isUserRegisteredSubject = PassthroughSubject<Bool, Never>()
@@ -25,11 +24,9 @@ final class ThirdPartyLoginViewModel {
     
     init() {
         isLoggedInSubject
-            .sink { [weak self] isLoggedIn in
+            .sink { [weak self] accessToken in
                 guard let self = self else { return }
-                if isLoggedIn {
-                    self.postTokenToServer()
-                }
+                self.useCase.postAccessTokenUser(accessToken: accessToken)
             }
             .store(in: &cancelBag)
         
@@ -39,11 +36,6 @@ final class ThirdPartyLoginViewModel {
                 self.isUserRegisteredSubject.send(isUserRegistered)
             }
             .store(in: &cancelBag)
-    }
-    
-    private func postTokenToServer() {
-        guard let accessToken = accessToken else { return }
-        useCase.postAccessTokenUser(accessToken: accessToken)
     }
     
     func kakaoLogin() {
@@ -63,8 +55,7 @@ final class ThirdPartyLoginViewModel {
                 print(error)
             } else {
                 if let accessToken = oauthToken?.accessToken {
-                    self.accessToken = accessToken
-                    self.isLoggedInSubject.send(true)
+                    self.isLoggedInSubject.send(accessToken)
                 }
             }
         }
@@ -77,8 +68,7 @@ final class ThirdPartyLoginViewModel {
                 print(error)
             } else {
                 if let accessToken = oauthToken?.accessToken {
-                    self.accessToken = accessToken
-                    self.isLoggedInSubject.send(true)
+                    self.isLoggedInSubject.send(accessToken)
                 }
             }
         }
