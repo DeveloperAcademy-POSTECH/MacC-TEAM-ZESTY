@@ -21,6 +21,7 @@ final class WholePlaceCell: UITableViewCell {
     // MARK: - Properties
     private let horizontalPadding: CGFloat = 45
     private lazy var screenWidth = UIScreen.main.bounds.size.width
+
     static let identifier = "WholePlaceCell"
     
     private lazy var mainStackView = UIStackView()
@@ -42,9 +43,8 @@ final class WholePlaceCell: UITableViewCell {
     private lazy var sosoEmojiStackView = EmojiCountStackView(emojiCount: 2, emoji: UIImage(.img_good_circle)!)
     private lazy var badEmojiStackView = EmojiCountStackView(emojiCount: 4, emoji: UIImage(.img_bad_circle)!)
     
-    
     // MARK: - LifeCycle
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         createLayout()
