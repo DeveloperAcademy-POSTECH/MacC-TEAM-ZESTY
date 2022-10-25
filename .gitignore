@@ -7,6 +7,9 @@
 # Environment File
 Environment.swift
 
+# Config File
+config.xcconfig
+
 # Icon must end with two
 Icon
 

@@ -8,7 +8,7 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.makeModule(
+let project = Project.makeAppModule(
     name: "App",
     platform: .iOS,
     product: .app,
