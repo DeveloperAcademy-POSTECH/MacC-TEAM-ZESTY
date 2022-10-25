@@ -13,7 +13,7 @@ import Network
 class PlaceDetailViewModel {
     
     enum Input {
-        case viewDidLoad(placeId: Int)
+        case viewDidLoad
         case addReviewBtnDidTap
     }
     
@@ -29,11 +29,13 @@ class PlaceDetailViewModel {
     private let output: PassthroughSubject<Output, Never> = .init()
     private let useCase: PlaceDetailUseCase
     
-    var place: Place?
-    var reviews: [Review] = []
+    let placeId: Int
+    private var place: Place?
+    private var reviews: [Review] = []
     
-    init(placeDetailUseCase: PlaceDetailUseCase = PlaceDetailUseCase()) {
+    init(placeDetailUseCase: PlaceDetailUseCase = PlaceDetailUseCase(), placeId: Int) {
         self.useCase = placeDetailUseCase
+        self.placeId = placeId
     }
     
     // MARK: - transform : Input -> Output
@@ -41,9 +43,9 @@ class PlaceDetailViewModel {
         
         input.sink { [weak self] event in
             switch event {
-            case .viewDidLoad(let placeId):
-                self?.fetchPlaceInfo(id: placeId)
-                self?.fetchReviews(id: placeId)
+            case .viewDidLoad:
+                self?.fetchPlaceInfo(id: self?.placeId ?? -1)
+                self?.fetchReviews(id: self?.placeId ?? -1)
             case .addReviewBtnDidTap:
                 self?.routeTo()
                 
@@ -87,4 +89,7 @@ class PlaceDetailViewModel {
         // TO-DO: place id, name
     }
     
+    func getPlace() -> Place {
+        return self.place ?? Place.empty
+    }
 }
