@@ -15,27 +15,40 @@ protocol NetworkServable {
 }
 
 final class NetworkService: NetworkServable {
-
+    
     private let session: URLSession
-
+    
     init(session: URLSession = .shared) {
         self.session = session
     }
-
+    
 }
 
 extension NetworkService {
-
+    
     func request<E: Requestable, T: Decodable>(with endpoint: E, responseType: T.Type)
     -> AnyPublisher<T, NetworkError> {
         do {
             let request = try endpoint.urlRequest()
+            
+            print("""
+                🚀🚀🚀REQUEST🚀🚀🚀
+                \(request)
+                """)
             
             return session.dataTaskPublisher(for: request)
                 .mapError { error in
                     NetworkError.invalidUrl(error)
                 }
                 .flatMap { (data, response) in
+                    print("""
+                          📨📨📨RESPONSE📨📨📨
+                          \(response)
+                          """)
+                    print("""
+                          📦📦📦BODY📦📦📦
+                          \(String(data: data, encoding: .utf8) ?? "")
+                          """)
                     if let error = self.checkError(data: data, response: response) {
                         return Fail<T, NetworkError>(error: error).eraseToAnyPublisher()
                     }
@@ -63,11 +76,11 @@ extension NetworkService {
             case 401: return .unauthorized(responseBody)
             case 403: return .forbidden(responseBody)
             case 404: return .notFound(responseBody)
-            case 500...: return .serverError(responseBody)
+            case 500: return .serverError(responseBody)
             default: return nil
             }
         }
         return .unknown("response body -> string 전환 실패")
     }
-
+    
 }

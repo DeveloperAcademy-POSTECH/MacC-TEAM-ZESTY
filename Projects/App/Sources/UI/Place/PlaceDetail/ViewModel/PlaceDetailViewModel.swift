@@ -43,7 +43,7 @@ class PlaceDetailViewModel {
             switch event {
             case .viewDidLoad(let placeId):
                 self?.fetchPlaceInfo(id: placeId)
-                self?.fetchReviews()
+                self?.fetchReviews(id: placeId)
             case .addReviewBtnDidTap:
                 self?.routeTo()
                 
@@ -69,8 +69,17 @@ class PlaceDetailViewModel {
     }
     
     // 리뷰가져오기
-    private func fetchReviews() {
-        
+    private func fetchReviews(id: Int) {
+        useCase.fetchReviewList(with: id)
+            .sink { [weak self] completion in
+                if case .failure(let error) = completion {
+                    self?.output.send(.fetchReviewListFail(error: error))
+                }
+            } receiveValue: { [weak self] reviews in
+                self?.reviews = reviews
+                self?.output.send(.fetchReviewListSucceed(list: reviews))
+            }
+            .store(in: &cancelBag)
     }
     
     // 리뷰추가화면전환
