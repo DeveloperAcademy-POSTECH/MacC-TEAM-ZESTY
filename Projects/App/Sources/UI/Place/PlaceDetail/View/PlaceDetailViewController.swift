@@ -18,14 +18,23 @@ final class PlaceDetailViewController: UIViewController {
     private let input: PassthroughSubject<PlaceDetailViewModel.Input, Never> = .init()
     private var cancelBag = Set<AnyCancellable>()
     
-    private var placeId: Int = 6
-    private var place: Place?
+    private var placeId: Int
     
+    private var place: Place?
     private var reviews: [Review] = [Review.mockData[0], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3], Review.mockData[0], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3]]
     
     private let tableView = UITableView(frame: CGRect.zero, style: .grouped)
     
     // MARK: - LifeCycle
+    
+    init(placeId: Int) {
+        self.placeId = placeId
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,13 +65,13 @@ extension PlaceDetailViewController {
                 switch state {
                 // TO-DO: API 전체 다 붙이고 주석삭제
                 case .fetchPlaceDidSucceed(let place):
-//                    print("✅ 장소 성공: \(place)")
+                    print("✅ 장소 성공: \(place)")
                     self?.place = place
                     self?.setNavigationBar()
                     self?.navigationItem.title = place.name
                     self?.tableView.reloadData()
                 case .fetchPlaceInfoFail(let error):
-//                    print("❌ 장소 실패")
+                    print("❌ 장소 실패")
                     print(error.localizedDescription)
                 case .fetchReviewListSucceed(let reviews):
                     print("✅ 리뷰리스트 성공: \(reviews)")
