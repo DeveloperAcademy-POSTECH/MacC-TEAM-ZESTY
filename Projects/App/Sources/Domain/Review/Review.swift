@@ -20,16 +20,16 @@ struct Review {
 //    let updatedAt: Date
 }
 
-enum Evaluation: Int, CaseIterable {
-    case good
-    case soso
-    case bad
+enum Evaluation: Int {
+    case good = 3
+    case soso = 2
+    case bad = 1
     
     init(_ num: Int) {
         switch num {
-        case 0: self = .good
-        case 1: self = .soso
-        case 2: self = .bad
+        case 3: self = .good
+        case 2: self = .soso
+        case 1: self = .bad
         default: self = .soso
         }
     }
