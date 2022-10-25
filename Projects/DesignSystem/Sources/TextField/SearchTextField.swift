@@ -31,7 +31,7 @@ extension SearchTextField {
     private func configureUI() {
         textField.placeholder = placeholder
         textField.clearButtonMode = .always
-        textField.returnKeyType = .go
+        textField.returnKeyType = .search
         textField.textColor = .black
         textField.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         backgroundView.layer.borderWidth = 2
@@ -43,7 +43,7 @@ extension SearchTextField {
         addSubviews([backgroundView, textField])
         
         textField.snp.makeConstraints {
-            $0.verticalEdges.equalToSuperview().inset(12)
+            $0.centerY.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(20)
         }
         

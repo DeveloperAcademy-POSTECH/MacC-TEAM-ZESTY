@@ -26,6 +26,14 @@ extension UITableView {
         let iconView: UIImageView = {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.image = UIImage((type == .search) ?  .img_emptyfriends_search : .img_emptyfriends_noresult)
+            $0.layer.applyFigmaShadow(
+                color: .black,
+                opacity: 0.1,
+                xCoord: 0,
+                yCoord: 0,
+                blur: 5,
+                spread: 0
+            )
             return $0
         }(UIImageView())
         
@@ -44,7 +52,7 @@ extension UITableView {
         
         emptyView.addSubviews([iconView, messageLabel])
         NSLayoutConstraint.activate([
-            iconView.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor, constant: -100),
+            iconView.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor, constant: -180),
             iconView.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor),
             iconView.widthAnchor.constraint(equalToConstant: 50),
             iconView.heightAnchor.constraint(equalToConstant: 50),
@@ -60,4 +68,3 @@ extension UITableView {
         self.backgroundView = nil
     }
 }
-

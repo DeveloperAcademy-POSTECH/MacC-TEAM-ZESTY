@@ -30,13 +30,15 @@ final class SearchResultCell: UITableViewCell {
     }(UILabel())
     
     private let nextIcon: UIImageView = {
-        $0.image = UIImage(systemName: "chevron.right")
+        let config = UIImage.SymbolConfiguration(pointSize: 16)
+        let image = UIImage(systemName: "chevron.right", withConfiguration: config)
+        $0.image = image
         $0.tintColor = .label
         return $0
     }(UIImageView())
     
     // MARK: - LifeCycle
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
@@ -46,11 +48,11 @@ final class SearchResultCell: UITableViewCell {
         configureUI()
         createLayout()
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func prepareForReuse() {
         super.prepareForReuse()
     }
@@ -58,7 +60,7 @@ final class SearchResultCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
     }
-
+    
     // MARK: - Function
     func setup(with place: Place) {
         DispatchQueue.main.async {
@@ -66,10 +68,10 @@ final class SearchResultCell: UITableViewCell {
             self.addressLabel.text = place.address
         }
     }
-        
+    
 }
 
-    // MARK: - UI Function
+// MARK: - UI Function
 
 extension SearchResultCell {
     
@@ -80,22 +82,22 @@ extension SearchResultCell {
     private func createLayout() {
         contentView.addSubviews([nameLabel, addressLabel, nextIcon])
         
+        nextIcon.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(20)
+            $0.width.equalTo(12) // config 사용해서 걷어내기?
+            $0.height.equalTo(21)
+        }
+        
         nameLabel.snp.makeConstraints {
             $0.top.leading.equalToSuperview().inset(20)
-            $0.trailing.equalToSuperview().inset(42)
+            $0.trailing.equalTo(nextIcon.snp.leading).offset(-10)
         }
         
         addressLabel.snp.makeConstraints {
             $0.top.equalTo(nameLabel.snp.bottom).offset(4)
             $0.leading.equalToSuperview().inset(20)
-            $0.trailing.equalToSuperview().inset(42)
-        }
-        
-        nextIcon.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(20)
-            $0.width.equalTo(12)
-            $0.height.equalTo(21)
+            $0.trailing.equalTo(nextIcon.snp.leading).offset(-10)
         }
     }
     

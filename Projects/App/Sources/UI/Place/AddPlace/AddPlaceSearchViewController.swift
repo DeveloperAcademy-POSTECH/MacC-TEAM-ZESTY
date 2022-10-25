@@ -17,7 +17,7 @@ final class AddPlaceSearchViewController: UIViewController {
     private let viewModel = AddPlaceViewModel()
     private var cancelBag = Set<AnyCancellable>()
     
-    private var searchResults: [Place] = Place.mockData
+    private var searchResults: [Place] = []
     
     private lazy var searchingTextFieldView = SearchTextField()
     private lazy var tableView = UITableView(frame: CGRect.zero, style: .grouped)
@@ -73,6 +73,7 @@ extension AddPlaceSearchViewController {
         tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.register(SearchResultCell.self, forCellReuseIdentifier: "SearchResultCell")
         tableView.separatorStyle = .none
+        tableView.keyboardDismissMode = .onDrag
     }
     
     private func createLayout() {
