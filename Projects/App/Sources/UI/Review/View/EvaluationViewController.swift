@@ -16,18 +16,25 @@ final class EvaluationViewController: UIViewController {
     // MARK: - Properties
     private let cancelBag = Set<AnyCancellable>()
     
-    private let titleView = MainTitleView(title: "요기쿠시동, 어땠나요?")
+    private let viewModel: ReviewRegisterViewModel
+    
+    private let titleView = MainTitleView()
     private let evaluationStackView = UIStackView()
     private let goodButton = EvaluationButton(type: .good)
     private let sosoButton = EvaluationButton(type: .soso)
     private let badButton = EvaluationButton(type: .bad)
-
-    // viewModel한테서 옵셔널로 받아올 거임
-    // 사용자가 뒤로 갈 수도 있으니까
-    private var evaluation: Evaluation!
     
     // MARK: - LifeCycle
     
+    init(viewModel: ReviewRegisterViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -37,30 +44,30 @@ final class EvaluationViewController: UIViewController {
     // MARK: - Function
     
     @objc func goodButtonTouched() {
-        goodButton.isSelected.toggle()
+        goodButton.isSelected = true
         sosoButton.isSelected = false
         badButton.isSelected = false
         
-        evaluation = .good
-        navigationController?.pushViewController(ReviewRegisterViewController(), animated: true)
+        viewModel.evaluation = .good
+        navigationController?.pushViewController(ReviewRegisterViewController(viewModel: viewModel), animated: true)
     }
     
     @objc func sosoButtonTouched() {
-        sosoButton.isSelected.toggle()
+        sosoButton.isSelected = true
         badButton.isSelected = false
         goodButton.isSelected = false
         
-        evaluation = .soso
-        navigationController?.pushViewController(ReviewRegisterViewController(), animated: true)
+        viewModel.evaluation = .soso
+        navigationController?.pushViewController(ReviewRegisterViewController(viewModel: viewModel), animated: true)
     }
     
     @objc func badButtonTouched() {
-        badButton.isSelected.toggle()
+        badButton.isSelected = true
         goodButton.isSelected = false
         sosoButton.isSelected = false
         
-        evaluation = .bad
-        navigationController?.pushViewController(ReviewRegisterViewController(), animated: true)
+        viewModel.evaluation = .bad
+        navigationController?.pushViewController(ReviewRegisterViewController(viewModel: viewModel), animated: true)
     }
     
 }
@@ -71,6 +78,8 @@ extension EvaluationViewController {
     
     private func configureUI() {
         view.backgroundColor = .systemBackground
+        
+        titleView.titleLabel.text = "\(viewModel.placeName),\n어땠나요?"
         
         evaluationStackView.axis = .horizontal
         evaluationStackView.spacing = 10
@@ -109,7 +118,7 @@ struct EvaluationPreview: PreviewProvider {
     // TODO: previewDevice ZESTY_TEMPLATE에 추가하기
     
     static var previews: some View {
-        UINavigationController(rootViewController: EvaluationViewController()).toPreview()
+        UINavigationController(rootViewController: EvaluationViewController(viewModel: ReviewRegisterViewModel(placeId: 1, placeName: "요기쿠시동"))).toPreview()
 //            .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
 //            .previewDevice(PreviewDevice(rawValue: "iPhone 13 Pro Max"))
 //            .previewDevice(PreviewDevice(rawValue: "iPhone 13"))

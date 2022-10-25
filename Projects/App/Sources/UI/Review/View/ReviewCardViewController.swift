@@ -16,12 +16,21 @@ final class ReviewCardViewController: UIViewController {
     // MARK: - Properties
     private let cancelBag = Set<AnyCancellable>()
     
-    private let titleView = MainTitleView(title: "리뷰 등록 완료 🎉")
+    private let titleView = MainTitleView()
     private var cardView: ReviewCardView!
     private let saveButton = UIButton()
     private let completeButton = FullWidthBlackButton()
     
     // MARK: - LifeCycle
+    
+    init(viewModel: ReviewRegisterViewModel) {
+        cardView = ReviewCardView(viewModel: viewModel)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,7 +77,7 @@ extension ReviewCardViewController {
         let backButton = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backButtonTouched))
         navigationItem.leftBarButtonItem = backButton
         
-        cardView = ReviewCardView(image: UIImage(.img_mockmenu))
+        titleView.titleLabel.text = "리뷰 등록 완료 🎉"
         
         let config = UIImage.SymbolConfiguration(paletteColors: [.red])
         let downloadImage = UIImage(systemName: "square.and.arrow.down", withConfiguration: config)
@@ -116,7 +125,7 @@ import SwiftUI
 struct ReviewCardVCPreview: PreviewProvider {
     
     static var previews: some View {
-        UINavigationController(rootViewController: ReviewCardViewController()).toPreview()
+        UINavigationController(rootViewController: ReviewCardViewController(viewModel: ReviewRegisterViewModel(placeId: 0, placeName: "요기쿠시동"))).toPreview()
             .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
 //            .previewDevice(PreviewDevice(rawValue: "iPhone 13 Pro Max"))
 //            .previewDevice(PreviewDevice(rawValue: "iPhone 13"))

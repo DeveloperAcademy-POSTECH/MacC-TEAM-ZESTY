@@ -7,16 +7,63 @@
 //
 
 import Combine
-import Foundation
+import UIKit.UIImage
+import Network
 
 final class ReviewRegisterViewModel {
     
-    private let useCase: ReviewRegisterUseCase
+    // MARK: - Properties
     
+    private let useCase: ReviewRegisterUseCase
     private var cancelBag = Set<AnyCancellable>()
     
-    init(useCase: ReviewRegisterUseCase = ReviewRegisterUseCase()) {
-        self.useCase = useCase
+    // Input
+    private let placeId: Int
+    let placeName: String
+    var evaluation: Evaluation = .soso
+    var image: UIImage?
+    var menu: String?
+    
+    // Output
+    struct Result {
+        var image: UIImage = UIImage()
+        var reviewer: String = ""
+        var registeredAt: String = ""
+        var category: String = ""
+        var placeName: String = ""
+        var placeAddress: String = ""
     }
+    
+    @Published var result = Result()
+    private let isRegisterFail = PassthroughSubject<Bool, Never>()
+    
+    // MARK: - LifeCycle
+    
+    init(useCase: ReviewRegisterUseCase = ReviewRegisterUseCase(),
+         placeId: Int, placeName: String) {
+        self.useCase = useCase
+        self.placeId = placeId
+        self.placeName = placeName
+    }
+    
+}
+
+extension ReviewRegisterViewModel {
+    
+//    func fetchReviewResult() {
+//        useCase.registerReview(placeId: <#T##Int#>, grade: <#T##Evaluation#>)
+//        useCase.reviewRegisterSubject
+//            .sink { [weak self] _ in
+//                guard let self = self else { return }
+//                self.isRegisterFail.send(false)
+//            } receiveValue: { [weak self] review in
+//                guard let self = self else { return }
+//                self.result = Result(reviewer: review.reviewer.nickname,
+//                                     registeredAt: review.createdAt.getDateToString(format: "yy.mm.dd"),
+//                                     category: "",
+//                                     placeLocation: "")
+//            }
+//            .store(in: &cancelBag)
+//    }
     
 }

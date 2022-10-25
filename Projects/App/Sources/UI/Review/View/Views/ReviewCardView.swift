@@ -16,6 +16,7 @@ final class ReviewCardView: UIView {
     // MARK: - Properties
     
     private let cancelBag = Set<AnyCancellable>()
+    private let viewModel: ReviewRegisterViewModel
     
     private let userStackView = UIStackView()
     private let nicknameStaticLabel = UILabel()
@@ -34,17 +35,33 @@ final class ReviewCardView: UIView {
     
     // MARK: - LifeCycle
     
-    init(menu: String? = nil, image: UIImage? = nil) {
+    init(viewModel: ReviewRegisterViewModel) {
+        self.viewModel = viewModel
         super.init(frame: .zero)
-        configureUI(with: image)
-        createLayout(isMenuImageExist: image != nil)
+        configureUI()
+        createLayout()
+        bind()
     }
-
+    
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Function
+    
+}
+
+extension ReviewCardView {
+    
+    private func bind() {
+        menuImageView.image = viewModel.result.image
+        nicknameLabel.text = viewModel.result.reviewer
+        dateLabel.text = viewModel.result.registeredAt
+        categoryLabel.text = viewModel.result.category
+        categoryLabel.backgroundColor = .red
+        placeNameLabel.text = viewModel.result.placeName
+        placeAddressLabel.text = viewModel.result.placeAddress
+    }
     
 }
 
@@ -52,15 +69,14 @@ final class ReviewCardView: UIView {
 
 extension ReviewCardView {
     
-    private func configureUI(with image: UIImage?) {
-        let isImage = image != nil
+    private func configureUI() {
+        let isMenuImageExist = viewModel.image != nil
         
         clipsToBounds = true
         layer.cornerRadius = 16
         backgroundColor = .white
         addShadow(opacity: 0.6, radius: 3)
         
-        menuImageView.image = image
         menuImageView.clipsToBounds = true
         menuImageView.layer.cornerRadius = 16
         backgroundView.backgroundColor = .black
@@ -74,15 +90,13 @@ extension ReviewCardView {
         
         nicknameStaticLabel.text = "Reviewed by"
         nicknameStaticLabel.font = .preferredFont(forTextStyle: .caption2)
-        nicknameStaticLabel.textColor = isImage ? .white : .secondaryLabel
-        nicknameLabel.text = "아보카도"
+        nicknameStaticLabel.textColor = isMenuImageExist ? .white : .secondaryLabel
         nicknameLabel.font = .preferredFont(forTextStyle: .callout).bold()
-        nicknameLabel.textColor = isImage ? .white : .label
+        nicknameLabel.textColor = isMenuImageExist ? .white : .label
 
         dateStaticLabel.text = "Date"
         dateStaticLabel.font = .preferredFont(forTextStyle: .caption2)
         dateStaticLabel.textColor = .white
-        dateLabel.text = "2020.10.21"
         dateLabel.font = .preferredFont(forTextStyle: .callout).bold()
         dateLabel.textColor = .white
         
@@ -94,24 +108,22 @@ extension ReviewCardView {
         placeStackView.distribution = .equalSpacing
         placeStackView.spacing = 4
         
-        categoryLabel.text = "일식"
         categoryLabel.font = .boldSystemFont(ofSize: 9)
         categoryLabel.clipsToBounds = true
         categoryLabel.layer.cornerRadius = 10
-        categoryLabel.backgroundColor = .red
         categoryLabel.textColor = .white
         
-        placeNameLabel.text = "요기쿠시동"
         placeNameLabel.font = .preferredFont(forTextStyle: .title2).bold()
-        placeNameLabel.textColor = isImage ? .white : .label
+        placeNameLabel.textColor = isMenuImageExist ? .white : .label
         placeNameLabel.numberOfLines = 2
-        placeAddressLabel.text = "경북 포항시 남구 효자동길6번길 34-1 1층 요기쿠시동"
         placeAddressLabel.font = .preferredFont(forTextStyle: .caption1)
-        placeAddressLabel.textColor = isImage ? .white : .secondaryLabel
+        placeAddressLabel.textColor = isMenuImageExist ? .white : .secondaryLabel
         placeAddressLabel.numberOfLines = 2
     }
     
-    private func createLayout(isMenuImageExist: Bool) {
+    private func createLayout() {
+        let isMenuImageExist = viewModel.image != nil
+        
         addSubviews([
             menuImageView, backgroundView, userStackView, placeStackView,
             evaluationImageView
@@ -197,9 +209,8 @@ import SwiftUI
 struct ReviewCardPreview: PreviewProvider {
     
     static var previews: some View {
-        ReviewCardView(image: UIImage(.img_mockmenu)).toPreview()
+        ReviewCardView(viewModel: ReviewRegisterViewModel(placeId: 0, placeName: "요기쿠시동")).toPreview()
             .frame(width: 300, height: 400)
-//            .frame(width: 250, height: 320)
     }
     
 }

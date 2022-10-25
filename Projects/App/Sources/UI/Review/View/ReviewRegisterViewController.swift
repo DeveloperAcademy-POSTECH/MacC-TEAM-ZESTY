@@ -14,12 +14,14 @@ import SnapKit
 final class ReviewRegisterViewController: UIViewController {
     
     // MARK: - Properties
+    private let viewModel: ReviewRegisterViewModel!
+    
     private var cancelBag = Set<AnyCancellable>()
     private let keyboardShowPublisher = NotificationCenter.default.publisher(for: UIApplication.keyboardWillShowNotification)
     private let keyboardHidePublisher = NotificationCenter.default.publisher(for: UIApplication.keyboardWillHideNotification)
     
     private let keyboardSafeArea = UIView()
-    private let titleView = MainTitleView(title: "요기쿠시동에서 무엇을 드셨나요?")
+    private let titleView = MainTitleView()
     private let containerView = UIView()
     private let backgroundView = UIView()
     private let plusImageView = UIImageView()
@@ -29,6 +31,15 @@ final class ReviewRegisterViewController: UIViewController {
     private let registerButton = FullWidthBlackButton()
     
     // MARK: - LifeCycle
+    
+    init(viewModel: ReviewRegisterViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,8 +51,12 @@ final class ReviewRegisterViewController: UIViewController {
 
     // MARK: - Function
     
+    // TODO: 갤러리에서 사진 가져오기, plusImageView.image 갈아끼기
+    
     @objc func registerButtonTouched() {
-        navigationController?.pushViewController(ReviewCardViewController(), animated: true)
+        viewModel.image = plusImageView.image
+        viewModel.menu = menuTextField.text
+        navigationController?.pushViewController(ReviewCardViewController(viewModel: viewModel), animated: true)
     }
     
     @objc func dismissKeyboard() {
@@ -58,6 +73,8 @@ extension ReviewRegisterViewController {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.topItem?.title = ""
         navigationController?.navigationBar.tintColor = .black
+        
+        titleView.titleLabel.text = "\(viewModel.placeName)에서\n무엇을 드셨나요?"
         
         var config = UIImage.SymbolConfiguration(paletteColors: [.darkGray])
         config = config.applying(UIImage.SymbolConfiguration(weight: .semibold) )
@@ -212,7 +229,7 @@ import SwiftUI
 struct ReviewRegisterPreview: PreviewProvider {
     
     static var previews: some View {
-        UINavigationController(rootViewController: ReviewRegisterViewController()).toPreview()
+        UINavigationController(rootViewController: ReviewRegisterViewController(viewModel: ReviewRegisterViewModel(placeId: 0, placeName: "요기쿠시동"))).toPreview()
     }
     
 }
