@@ -10,13 +10,8 @@ import UIKit
 import SnapKit
 
 final class WholePlaceCell: UITableViewCell {
-    // TODO: ViewModel에 옮기기
-    private let placeName = "쌀국수 집을 하려다가 망한\n소바집인데 쌀국수가 잘팔리는 곳"
-    private let category: Category = Category(id: 2, name: "일식")
-    private let menuName = "쌀국수"
-    private let goodCount = "17"
-    private let sosoCount = "2"
-    private let badCount = "4"
+    // TODO: 리뷰가 없는 상황을 가정한 cell입니다. 변경 예정
+    private let viewModel = PlaceCellVeiwModel(placeName: "쌀국수 집을 하려다가 망한\n소바집인데 쌀국수가 잘팔리는 곳", category: Category(id: 2, name: "일식"), goodCount: 17, sosoCount: 2, badCount: 4, menuName: nil, reviewImage: nil)
     
     // MARK: - Properties
     private let horizontalPadding: CGFloat = 45
@@ -39,9 +34,9 @@ final class WholePlaceCell: UITableViewCell {
     
     private lazy var emojiStackView = UIStackView()
     
-    private lazy var goodEmojiStackView = EmojiCountStackView(emojiCount: 17, emoji: UIImage(.img_reviewfriends_good_30)!)
-    private lazy var sosoEmojiStackView = EmojiCountStackView(emojiCount: 2, emoji: UIImage(.img_reviewfriends_soso_30)!)
-    private lazy var badEmojiStackView = EmojiCountStackView(emojiCount: 4, emoji: UIImage(.img_reviewfriends_bad_30)!)
+    private lazy var goodEmojiStackView = EmojiCountStackView(emojiCount: viewModel.goodCount, emoji: UIImage(.img_reviewfriends_good_30)!)
+    private lazy var sosoEmojiStackView = EmojiCountStackView(emojiCount: viewModel.sosoCount, emoji: UIImage(.img_reviewfriends_soso_30)!)
+    private lazy var badEmojiStackView = EmojiCountStackView(emojiCount: viewModel.badCount, emoji: UIImage(.img_reviewfriends_bad_30)!)
     
     // MARK: - LifeCycle
 
@@ -69,18 +64,21 @@ extension WholePlaceCell {
         mainStackView.distribution = .fill
         mainStackView.layer.cornerRadius = 16
         mainStackView.layer.masksToBounds = true
-        mainStackView.layer.borderWidth = 1
         
-        reviewImageView.image = UIImage(.img_bad_circle)
+        if !viewModel.isReviewExists {
+            mainStackView.layer.borderWidth = 1
+        }
+        
+        reviewImageView.image = viewModel.reviewImage
         reviewImageView.contentMode = .scaleAspectFit
         
-        menuLabel.text = menuName
+        menuLabel.text = viewModel.menuName
         menuLabel.textColor = .white
         
         bottomView.backgroundColor = .label
         
         placeNameLabel.textColor = .zestyColor(.whiteEBEBF5)
-        placeNameLabel.text = placeName
+        placeNameLabel.text = viewModel.placeName
         placeNameLabel.numberOfLines = 2
         placeNameLabel.font = .systemFont(ofSize: 20, weight: .bold)
         
