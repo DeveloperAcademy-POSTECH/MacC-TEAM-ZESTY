@@ -14,10 +14,11 @@ import SnapKit
 final class AddPlaceSearchViewController: UIViewController {
     
     // MARK: - Properties
-    private let viewModel = AddPlaceViewModel()
+    private let viewModel: AddPlaceSearchViewModel
+    private let input: PassthroughSubject<AddPlaceSearchViewModel.Input, Never> = .init()
     private var cancelBag = Set<AnyCancellable>()
     
-    private var searchResults: [Place] = []
+    private var searchResults: [KakaoPlace] = []
     
     private lazy var searchingTextFieldView = SearchTextField()
     private lazy var tableView = UITableView(frame: CGRect.zero, style: .grouped)
@@ -35,6 +36,14 @@ final class AddPlaceSearchViewController: UIViewController {
     }(UIButton())
     
     // MARK: - LifeCycle
+    init(viewModel: AddPlaceSearchViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +67,33 @@ final class AddPlaceSearchViewController: UIViewController {
         searchingTextFieldView.textField.resignFirstResponder()
     }
     
+}
+
+// MARK: - Binding
+
+extension AddPlaceSearchViewController {
+    
+    private func bind() {
+        let output = viewModel.transform(input: input.eraseToAnyPublisher())
+        
+        output
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                switch state {
+                case .serachPlaceFail(let error):
+                    print("✅✅✅✅ 결과 가져오는데 실패햇습니다")
+                    print(error.localizedDescription)
+                case .serachPlaceDidSucceed(let results):
+                    self?.searchResults = results
+                    print("✅✅✅✅결과 가져오는데 성공햇습니다")
+                case .existingPlace:
+                    print("✅✅✅✅이미 존재하는 장소입니다.")
+                case .addSelectedPlace:
+                    print("✅✅✅✅다음페이지로 전환")
+                }
+            }.store(in: &cancelBag)
+        
+    }
 }
 
 // MARK: - UI Function

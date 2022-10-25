@@ -62,10 +62,10 @@ final class SearchResultCell: UITableViewCell {
     }
     
     // MARK: - Function
-    func setup(with place: Place) {
+    func setup(with place: KakaoPlace) {
         DispatchQueue.main.async {
-            self.nameLabel.text = place.name
-            self.addressLabel.text = place.address
+            self.nameLabel.text = place.placeName
+            self.addressLabel.text = place.roadAddress
         }
     }
     
