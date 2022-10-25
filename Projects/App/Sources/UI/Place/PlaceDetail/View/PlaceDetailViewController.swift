@@ -81,7 +81,7 @@ extension PlaceDetailViewController: UITableViewDataSource {
         switch reviews.count == 0 {
         case true:
             return 1
-        case false :
+        case false:
             return reviews.count
         }
     }
@@ -89,7 +89,7 @@ extension PlaceDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         switch reviews.count == 0 {
-        case true :
+        case true:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "EmptyReviewCell", for: indexPath)
                     as? EmptyReviewCell else { return UITableViewCell() }
             cell.selectionStyle = .none
@@ -101,7 +101,7 @@ extension PlaceDetailViewController: UITableViewDataSource {
             cell.selectionStyle = .none
             return cell
         }
-
+        
     }
     
 }
