@@ -69,6 +69,7 @@ extension PlaceDetailViewController {
                     print(error.localizedDescription)
                 case .fetchReviewListSucceed(let reviews):
                     self?.reviews = reviews
+                    self?.tableView.reloadData()
                 case .fetchReviewListFail(let error):
                     self?.reviews = []
                     print(error.localizedDescription)
