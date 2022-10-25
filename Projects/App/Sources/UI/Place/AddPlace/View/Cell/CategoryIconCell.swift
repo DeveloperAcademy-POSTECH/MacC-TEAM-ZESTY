@@ -53,7 +53,7 @@ final class CategoryIconCell: UICollectionViewCell {
         imageView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(UIScreen.main.isWiderThan425pt ? 25 : 15 )
             $0.centerX.equalToSuperview()
-            $0.width.height.equalTo(isSE ? 50 : 65)
+            $0.height.equalTo(isSE ? 50 : 65)
             $0.horizontalEdges.equalToSuperview().inset(20)
         }
         

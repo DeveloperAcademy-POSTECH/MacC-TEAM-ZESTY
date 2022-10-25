@@ -27,12 +27,11 @@ final class AddCategoryViewController: UIViewController {
     
     private lazy var categoryCollectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: createCollecionViewLayout())
     
-    private lazy var addPlaceButton: UIButton = {
-        $0.configuration = .borderedTinted()
+    private lazy var addPlaceButton: FullWidthBlackButton = {
         $0.setTitle("맛집 등록하기", for: .normal)
         $0.addTarget(self, action: #selector(addPlaceButtonDidTap), for: .touchUpInside)
         return $0
-    }(UIButton())
+    }(FullWidthBlackButton())
     
     // MARK: - LifeCycle
     
@@ -79,19 +78,19 @@ extension AddCategoryViewController {
         
         titleView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview()
         }
         
         categoryCollectionView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(20)
-            $0.top.equalTo(titleView.snp.bottom).offset(25)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(90)
+            $0.top.equalTo(titleView.snp.bottom).offset(20)
+            $0.bottom.equalTo(addPlaceButton.snp.top).offset(-20)
         }
         
         addPlaceButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(45)
+            $0.height.equalTo(55)
         }
         
     }

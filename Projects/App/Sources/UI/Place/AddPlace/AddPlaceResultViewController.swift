@@ -114,12 +114,11 @@ final class AddPlaceResultViewController: UIViewController {
         return $0
     }(UIButton())
     
-    private lazy var doneButton: UIButton = {
-        $0.configuration = .borderedTinted()
+    private lazy var doneButton: FullWidthBlackButton = {
         $0.setTitle("완료", for: .normal)
         $0.addTarget(self, action: #selector(doneButtonDidTap), for: .touchUpInside)
         return $0
-    }(UIButton())
+    }(FullWidthBlackButton())
     
     // MARK: - LifeCycle
     
@@ -160,8 +159,7 @@ extension AddPlaceResultViewController {
     
     private func configureUI() {
         view.backgroundColor = .white // zestyColor(.backgroundColor)
-        
-        iconView.kf.setImage(with: URL(string:  "https://user-images.githubusercontent.com/63157395/197410857-e13c1bbb-b19a-4c59-a493-77501a4a529b.png"))
+        iconView.kf.setImage(with: URL(string: "https://user-images.githubusercontent.com/63157395/197410857-e13c1bbb-b19a-4c59-a493-77501a4a529b.png"))
     }
     
     private func createLayout() {
@@ -173,11 +171,11 @@ extension AddPlaceResultViewController {
         
         titleView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview()
         }
         
         ticketImageView.snp.makeConstraints {
-            $0.top.equalTo(titleView.snp.bottom).multipliedBy(1.035)
+            $0.top.equalTo(titleView.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
             $0.width.equalToSuperview().multipliedBy(0.77)
             $0.height.equalToSuperview().multipliedBy(0.59)
@@ -244,7 +242,7 @@ extension AddPlaceResultViewController {
         doneButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(45)
+            $0.height.equalTo(55)
         }
              
     }
