@@ -6,45 +6,49 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
-import SwiftUI
 import UIKit
 import SnapKit
 
-final class WholePlaceCell: UICollectionViewCell {
+final class WholePlaceCell: UITableViewCell {
     
     // MARK: - Properties
-    private lazy var nameLabel = UILabel()
-    private lazy var categoryLabel = UILabel()
-    private lazy var reviewStackView = UIStackView()
-    private lazy var goodImageView = UIImageView()
-    private lazy var sosoImageView = UIImageView()
-    private lazy var badImageView = UIImageView()
-    private lazy var goodLabel = UILabel()
-    private lazy var sosoLabel = UILabel()
-    private lazy var badLabel = UILabel()
-    private lazy var review1View = ShadowView()
-    private lazy var review2View = ShadowView()
-    private lazy var review1Label = UILabel()
-    private lazy var review2Label = UILabel()
-    private lazy var shadowView = ShadowView()
+    static let identifier = "WholePlaceCell"
+    
+    private lazy var mainStackView = UIStackView()
+    
+    private lazy var reviewImageView = UIImageView()
+    
+    private lazy var middelView = UIView()
+    private lazy var gradientStackView = UIStackView()
+    private lazy var gradientView = GradientView(gradientStartColor: .clear, gradientEndColor: .black)
+    private lazy var menuLabel = UILabel()
+    
+    private lazy var bottomView = UIView()
+    
+    private lazy var placeNameLabel = UILabel()
+    
+    private lazy var emojiStackView = UIStackView()
+    
+    private lazy var goodEmojiStackView = EmojiCountStackView(emojiCount: 17, emoji: UIImage(.img_good_circle)!)
+    private lazy var sosoEmojiStackView = EmojiCountStackView(emojiCount: 2, emoji: UIImage(.img_good_circle)!)
+    private lazy var badEmojiStackView = EmojiCountStackView(emojiCount: 4, emoji: UIImage(.img_bad_circle)!)
     
     // TODO: ViewModel에 옮기기
-    private let name = "요기쿠시동"
-    private let category = "일식, 돈까스"
-    private let good = "17"
-    private let soso = "2"
-    private let bad = "4"
+    private let placeName = "쌀국수 집을 하려다가 망한\n소바집인데 쌀국수가 잘팔리는 곳"
+    private let goodCount = "17"
+    private let sosoCount = "2"
+    private let badCount = "4"
     private let review1Menu = "야끼쿠시동 - 새우"
     private let review2Menu = "에그카츠헬"
     
     // MARK: - LifeCycle
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         createLayout()
         configureUI()
     }
-
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
@@ -56,104 +60,102 @@ final class WholePlaceCell: UICollectionViewCell {
 extension WholePlaceCell {
     
     func configureUI() {
-        nameLabel.text = name
-        categoryLabel.text = category
+        configureGradientView()
         
-        reviewStackView.axis = .horizontal
-        reviewStackView.spacing = 2
-        reviewStackView.distribution = .fillEqually
-        let zesterImage =  UIImage(.img_zesterone)
-        goodImageView.image = zesterImage
-        goodImageView.contentMode = .scaleAspectFit
-        sosoImageView.image = zesterImage
-        sosoImageView.contentMode = .scaleAspectFit
-        badImageView.image = zesterImage
-        badImageView.contentMode = .scaleAspectFit
-        goodLabel.text = good
-        sosoLabel.text = soso
-        badLabel.text = bad
+        mainStackView.spacing = 0
+        mainStackView.axis = .vertical
+        mainStackView.distribution = .fill
+        mainStackView.layer.cornerRadius = 16
+        mainStackView.layer.masksToBounds = true
+        mainStackView.layer.borderWidth = 1
         
-        let image = UIImage(.img_zesterthree)
-        let imageView1 = UIImageView(image: image)
-        imageView1.backgroundColor = .orange
-        imageView1.contentMode = .scaleAspectFit
-        let imageView2 = UIImageView(image: image)
-        imageView2.backgroundColor = .orange
-        imageView2.contentMode = .scaleAspectFit
-        review1View.addView(imageView1)
-        review2View.addView(imageView2)
-        review1Label.text = review1Menu
-        review2Label.text = review2Menu
+        reviewImageView.image = UIImage(.img_bad_circle)
+        reviewImageView.contentMode = .scaleAspectFit
+        
+        menuLabel.text = "쌀국수"
+        menuLabel.textColor = .white
+        
+        bottomView.backgroundColor = .label
+        
+        placeNameLabel.textColor = .white
+        placeNameLabel.text = placeName
+        placeNameLabel.numberOfLines = 2
+        placeNameLabel.font = .systemFont(ofSize: 20, weight: .bold)
+        
+        emojiStackView.spacing = 15
+        emojiStackView.axis = .horizontal
+        emojiStackView.distribution = .fill
     }
     
     private func createLayout() {
-        let defaultInset = 15
-        reviewStackView.addArrangedSubviews([goodImageView, goodLabel,
-                                             sosoImageView, sosoLabel,
-                                             badImageView, badLabel])
-        contentView.addSubviews([shadowView, nameLabel, categoryLabel,
-                                 reviewStackView,
-                                 review1View, review2View,
-                                 review1Label, review2Label])
+        contentView.addSubview(mainStackView)
+        mainStackView.addArrangedSubviews([reviewImageView, middelView, bottomView])
+        middelView.addSubviews([gradientView, menuLabel])
+        bottomView.addSubviews([placeNameLabel, emojiStackView])
         
-        nameLabel.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview().inset(defaultInset)
-            $0.height.greaterThanOrEqualTo(20)
+        emojiStackView.addArrangedSubviews([goodEmojiStackView, sosoEmojiStackView, badEmojiStackView])
+        
+        mainStackView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(10)
+            make.horizontalEdges.equalToSuperview().inset(45)
+            make.bottom.equalToSuperview().inset(20)
         }
-        categoryLabel.snp.makeConstraints {
-            $0.top.equalTo(nameLabel.snp.bottom).offset(5)
-            $0.leading.trailing.equalToSuperview().inset(defaultInset)
-            $0.height.greaterThanOrEqualTo(20)
+        
+        reviewImageView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
+            make.height.equalTo(300)
         }
-        reviewStackView.snp.makeConstraints {
-            $0.top.equalTo(categoryLabel.snp.bottom).offset(5)
-            $0.leading.equalToSuperview().inset(defaultInset)
-            $0.width.greaterThanOrEqualTo(10)
-            $0.height.equalTo(30)
+        
+        middelView.snp.makeConstraints { make in
+            make.top.equalTo(reviewImageView.snp.bottom)
+            make.horizontalEdges.equalToSuperview()
+            make.height.greaterThanOrEqualTo(58)
         }
-        goodImageView.snp.makeConstraints {
-            $0.width.height.equalTo(30)
+        
+        gradientView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
-        sosoImageView.snp.makeConstraints {
-            $0.width.height.equalTo(30)
+        
+        menuLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(40)
+            make.left.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview()
         }
-        badImageView.snp.makeConstraints {
-            $0.width.height.equalTo(30)
+        
+        bottomView.snp.makeConstraints { make in
+            make.top.equalTo(middelView.snp.bottom)
+            make.horizontalEdges.equalToSuperview()
+            make.bottom.equalToSuperview()
+            
         }
-        review1View.snp.makeConstraints {
-            $0.top.equalTo(reviewStackView.snp.bottom).offset(5)
-            $0.leading.equalToSuperview().inset(defaultInset)
-            $0.trailing.equalTo(contentView.snp.centerX).offset(-10)
-            $0.height.equalTo(review1View.snp.width)
+        
+        placeNameLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(15)
+            make.horizontalEdges.equalToSuperview().inset(20)
         }
-        review2View.snp.makeConstraints {
-            $0.top.equalTo(reviewStackView.snp.bottom).offset(5)
-            $0.leading.equalTo(contentView.snp.centerX).offset(10)
-            $0.trailing.equalToSuperview().inset(defaultInset)
-            $0.height.equalTo(review2View.snp.width)
+        
+        emojiStackView.snp.makeConstraints { make in
+            make.top.equalTo(placeNameLabel.snp.bottom).offset(10)
+            make.left.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().inset(20)
+            make.width.greaterThanOrEqualTo(165)
         }
-        review1Label.snp.makeConstraints {
-            $0.top.equalTo(review1View.snp.bottom).offset(5)
-            $0.leading.equalToSuperview().inset(defaultInset)
-            $0.trailing.equalTo(review1View.snp.trailing)
-            $0.height.greaterThanOrEqualTo(20)
-            $0.bottom.equalToSuperview().inset(defaultInset)
-        }
-        review2Label.snp.makeConstraints {
-            $0.top.equalTo(review2View.snp.bottom).offset(5)
-            $0.leading.equalTo(review2View.snp.leading)
-            $0.trailing.equalToSuperview().inset(defaultInset)
-            $0.height.greaterThanOrEqualTo(20)
-            $0.bottom.equalToSuperview().inset(defaultInset)
-        }
-        shadowView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+    }
+    
+    private func configureGradientView() {
+        let gradientLayer: CAGradientLayer = CAGradientLayer()
+        gradientLayer.frame = gradientView.bounds
+        gradientLayer.colors = [UIColor.white.cgColor, UIColor.black.cgColor]
+        gradientView.layer.addSublayer(gradientLayer)
     }
     
 }
 
 // MARK: - Preview
+
+#if DEBUG
+import SwiftUI
 
 struct WholePlaceCellPreview: PreviewProvider {
     
@@ -162,3 +164,4 @@ struct WholePlaceCellPreview: PreviewProvider {
     }
 
 }
+#endif
