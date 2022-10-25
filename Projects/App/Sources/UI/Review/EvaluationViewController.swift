@@ -73,8 +73,8 @@ extension EvaluationViewController {
         view.backgroundColor = .systemBackground
         
         evaluationStackView.axis = .horizontal
-        evaluationStackView.spacing = 10
-        evaluationStackView.distribution = .fillEqually
+        evaluationStackView.spacing = 15
+        evaluationStackView.distribution = .equalSpacing
         
         goodButton.button.addTarget(self, action: #selector(goodButtonTouched), for: .touchUpInside)
         sosoButton.button.addTarget(self, action: #selector(sosoButtonTouched), for: .touchUpInside)
@@ -91,9 +91,7 @@ extension EvaluationViewController {
             $0.width.equalTo(260)
         }
         evaluationStackView.snp.makeConstraints {
-            $0.centerX.centerY.equalToSuperview()
-            $0.horizontalEdges.equalToSuperview().inset(35)
-            $0.height.equalTo(evaluationStackView.snp.width).multipliedBy(0.45)
+            $0.center.equalToSuperview()
         }
     }
     

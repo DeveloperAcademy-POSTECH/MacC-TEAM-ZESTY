@@ -19,7 +19,7 @@ final class ReviewRegisterViewController: UIViewController {
     private let keyboardHidePublisher = NotificationCenter.default.publisher(for: UIApplication.keyboardWillHideNotification)
     
     private let keyboardSafeArea = UIView()
-    private let titleView = MainTitleView(title: "요기쿠시동에서 무엇을 드셨나요?")
+    private let titleView = MainTitleView(title: "요기쿠시동에서 \n무엇을 드셨나요?")
     private let containerView = UIView()
     private let backgroundView = UIView()
     private let plusImageView = UIImageView()
@@ -94,7 +94,7 @@ extension ReviewRegisterViewController {
         titleView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(40)
+            $0.trailing.equalToSuperview()
             $0.height.equalTo(135)
         }
         
@@ -167,7 +167,7 @@ extension ReviewRegisterViewController {
             titleView.snp.remakeConstraints {
                 $0.top.equalToSuperview().offset(-20)
                 $0.leading.equalToSuperview()
-                $0.trailing.equalToSuperview().inset(40)
+                $0.trailing.equalToSuperview()
                 $0.height.equalTo(135)
             }
             titleView.willHide(with: 1)
@@ -185,7 +185,7 @@ extension ReviewRegisterViewController {
             titleView.snp.remakeConstraints {
                 $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
                 $0.leading.equalToSuperview()
-                $0.trailing.equalToSuperview().inset(40)
+                $0.trailing.equalToSuperview()
                 $0.height.equalTo(135)
             }
             titleView.willShow(with: 1)
