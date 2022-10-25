@@ -47,7 +47,7 @@ extension Review {
         createdAt = Date()
     }
     
-    init(_ dto: ReviewDetailDTO) {
+    init(dto: ReviewDetailDTO) {
         id = dto.id
         placeId = dto.place.id
         reviewer = User(dto.reviewer)
