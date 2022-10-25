@@ -96,7 +96,7 @@ extension ReviewCardViewController {
         }
         saveButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(cardView.snp.bottom).offset(30)
+            $0.top.equalTo(cardView.snp.bottom).offset(20)
             $0.width.equalTo(120)
             $0.height.equalTo(20)
         }

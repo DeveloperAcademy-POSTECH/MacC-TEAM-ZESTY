@@ -17,9 +17,11 @@ final class ReviewCardView: UIView {
     
     private let cancelBag = Set<AnyCancellable>()
     
-    private let userStackView = UIStackView()
+    private let nameStackView = UIStackView()
     private let nicknameStaticLabel = UILabel()
     private let nicknameLabel = UILabel()
+    
+    private let dateStackView = UIStackView()
     private let dateStaticLabel = UILabel()
     private let dateLabel = UILabel()
     
@@ -65,12 +67,16 @@ extension ReviewCardView {
         menuImageView.layer.cornerRadius = 16
         backgroundView.backgroundColor = .black
         backgroundView.clipsToBounds = true
-        backgroundView.layer.opacity = 0.6
+        backgroundView.layer.opacity = 0.4
         backgroundView.layer.cornerRadius = 16
         
-        userStackView.axis = .vertical
-        userStackView.distribution = .equalSpacing
-        userStackView.spacing = 4
+        nameStackView.axis = .vertical
+        nameStackView.distribution = .equalSpacing
+        nameStackView.spacing = 4
+        
+        dateStackView.axis = .vertical
+        dateStackView.distribution = .equalSpacing
+        dateStackView.spacing = 4
         
         nicknameStaticLabel.text = "Reviewed by"
         nicknameStaticLabel.font = .preferredFont(forTextStyle: .caption2)
@@ -104,26 +110,29 @@ extension ReviewCardView {
         placeNameLabel.text = "요기쿠시동"
         placeNameLabel.font = .preferredFont(forTextStyle: .title2).bold()
         placeNameLabel.textColor = isImage ? .white : .label
-        placeNameLabel.numberOfLines = 2
+        placeNameLabel.numberOfLines = 0
         placeAddressLabel.text = "경북 포항시 남구 효자동길6번길 34-1 1층 요기쿠시동"
         placeAddressLabel.font = .preferredFont(forTextStyle: .caption1)
         placeAddressLabel.textColor = isImage ? .white : .secondaryLabel
-        placeAddressLabel.numberOfLines = 2
+        placeAddressLabel.numberOfLines = 0
     }
     
     private func createLayout(isMenuImageExist: Bool) {
         addSubviews([
-            menuImageView, backgroundView, userStackView, placeStackView,
-            evaluationImageView
+            menuImageView, backgroundView, nameStackView, dateStackView,
+            placeStackView, evaluationImageView
         ])
-        userStackView.addArrangedSubviews([
-            nicknameStaticLabel, nicknameLabel, dateStaticLabel, dateLabel
+        nameStackView.addArrangedSubviews([
+            nicknameStaticLabel, nicknameLabel
+        ])
+        dateStackView.addArrangedSubviews([
+            dateStaticLabel, dateLabel
         ])
         placeStackView.addArrangedSubviews([
             categoryLabel, placeNameLabel, placeAddressLabel
         ])
         
-        userStackView.snp.makeConstraints {
+        nameStackView.snp.makeConstraints {
             $0.top.horizontalEdges.equalToSuperview().inset(30)
         }
         nicknameStaticLabel.snp.makeConstraints {
@@ -136,6 +145,10 @@ extension ReviewCardView {
         }
         
         if isMenuImageExist {
+            dateStackView.snp.makeConstraints {
+                $0.top.equalTo(nameStackView.snp.bottom).offset(10)
+                $0.horizontalEdges.equalToSuperview().inset(30)
+            }
             backgroundView.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
