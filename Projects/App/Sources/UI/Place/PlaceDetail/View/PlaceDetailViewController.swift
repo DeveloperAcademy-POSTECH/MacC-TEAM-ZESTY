@@ -57,7 +57,6 @@ extension PlaceDetailViewController {
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        tableView.layoutIfNeeded()
     }
     
     private func setNavigationBar() {
@@ -110,15 +109,11 @@ extension PlaceDetailViewController: UITableViewDataSource {
 extension PlaceDetailViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if UIScreen.main.isWiderThan425pt {
-            return 365
-        } else {
-            return 330
-        }
+        return UIScreen.main.isWiderThan425pt ? 365 : 330
     }
-    
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return 350
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return UIScreen.main.isWiderThan425pt ? 365 : 330
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

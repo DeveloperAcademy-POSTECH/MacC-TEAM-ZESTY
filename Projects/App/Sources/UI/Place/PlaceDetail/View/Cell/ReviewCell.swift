@@ -104,12 +104,6 @@ extension ReviewCell {
     private func createLayout() {
         contentView.addSubviews([reviewImageView, emojiView, menuLabel, dateLabel])
         
-        contentView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.width.equalToSuperview()
-            $0.height.equalTo(UIScreen.main.isWiderThan425pt ? 365 : 330)
-        }
-        
         reviewImageView.snp.makeConstraints {
             $0.center.equalToSuperview()
             $0.width.height.equalTo(UIScreen.main.isWiderThan425pt ? 330 : 300)

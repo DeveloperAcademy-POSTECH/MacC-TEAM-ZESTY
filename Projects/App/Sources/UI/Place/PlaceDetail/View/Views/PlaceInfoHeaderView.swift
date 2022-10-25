@@ -146,17 +146,12 @@ extension PlaceInfoHeaderView {
 extension PlaceInfoHeaderView {
     
     private func configureUI() {
-        self.backgroundColor = .zestyColor(.background)
+        contentView.backgroundColor = .zestyColor(.background)
     }
     
     private func createLayout() {
 
-        self.addSubviews([placeView, addReviewButton])
-        
-        contentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-            $0.height.equalTo(330)
-        }
+        contentView.addSubviews([placeView, addReviewButton])
         
         addReviewButton.snp.makeConstraints {
             $0.top.equalToSuperview().offset(20)
@@ -213,18 +208,17 @@ extension PlaceInfoHeaderView {
             $0.leading.equalToSuperview().inset(20)
             $0.trailing.equalTo(kakaoButton.snp.leading).offset(-20)
             $0.centerY.equalToSuperview()
-            $0.width.lessThanOrEqualTo(200)
         }
         
         naverButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(20)
-            $0.width.height.equalTo(36)
+            $0.width.equalTo(36)
             $0.top.bottom.equalToSuperview().inset(16)
         }
         
         kakaoButton.snp.makeConstraints {
             $0.trailing.equalTo(naverButton.snp.leading).offset(-8)
-            $0.width.height.equalTo(36)
+            $0.width.equalTo(36)
             $0.top.bottom.equalToSuperview().inset(16)
         }
 
