@@ -15,7 +15,7 @@ final class ReviewCardView: UIView {
     
     // MARK: - Properties
     
-    private let cancelBag = Set<AnyCancellable>()
+    private var cancelBag = Set<AnyCancellable>()
     private let viewModel: ReviewRegisterViewModel
     
     private let userStackView = UIStackView()
@@ -53,14 +53,22 @@ final class ReviewCardView: UIView {
 
 extension ReviewCardView {
     
+    // TODO: binding 구현
     private func bind() {
-        menuImageView.image = viewModel.result.image
-        nicknameLabel.text = viewModel.result.reviewer
-        dateLabel.text = viewModel.result.registeredAt
-        categoryLabel.text = viewModel.result.category
-        categoryLabel.backgroundColor = .red
-        placeNameLabel.text = viewModel.result.placeName
-        placeAddressLabel.text = viewModel.result.placeAddress
+        viewModel.$result
+            .sink { [weak self] result in
+                guard let self = self else { return }
+                
+                self.menuImageView.image = result.image
+                self.evaluationImageView.image = result.evaluation.image
+                self.nicknameLabel.text = result.reviewer
+                self.dateLabel.text = result.registeredAt
+                self.categoryLabel.text = result.category
+                self.categoryLabel.backgroundColor = .red
+                self.placeNameLabel.text = result.placeName
+                self.placeAddressLabel.text = result.placeAddress
+            }
+            .store(in: &cancelBag)
     }
     
 }
@@ -196,6 +204,21 @@ extension ReviewCardView {
         placeAddressLabel.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
             $0.height.greaterThanOrEqualTo(16)
+        }
+    }
+    
+}
+
+fileprivate extension Evaluation {
+    
+    var image: UIImage? {
+        switch self {
+        case .good:
+            return UIImage(.img_reviewfriends_good)
+        case .soso:
+            return UIImage(.img_reviewfriends_soso)
+        case .bad:
+            return UIImage(.img_reviewfriends_bad)
         }
     }
     

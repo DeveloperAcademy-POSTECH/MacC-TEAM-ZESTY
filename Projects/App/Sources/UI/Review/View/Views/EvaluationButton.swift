@@ -12,35 +12,7 @@ import DesignSystem
 import SnapKit
 
 final class EvaluationButton: UIView {
-    
-    enum EvaluationType {
-        case good
-        case soso
-        case bad
-        
-        var image: UIImage? {
-            switch self {
-            case .good:
-                return UIImage(.img_reviewfriends_good)
-            case .soso:
-                return UIImage(.img_reviewfriends_soso)
-            case .bad:
-                return UIImage(.img_reviewfriends_bad)
-            }
-        }
-        
-        var desc: String {
-            switch self {
-            case .good:
-                return "맛집이요"
-            case .soso:
-                return "무난했어요"
-            case .bad:
-                return "별로였어요"
-            }
-        }
-    }
-    
+
     // MARK: - Properties
     private var cancelBag = Set<AnyCancellable>()
     @Published var isSelected = false
@@ -53,7 +25,7 @@ final class EvaluationButton: UIView {
     
     // MARK: - LifeCycle
     
-    public init(type: EvaluationType) {
+    public init(type: Evaluation) {
         super.init(frame: .zero)
         configureUI(type: type)
         createLayout()
@@ -86,7 +58,7 @@ extension EvaluationButton {
 
 extension EvaluationButton {
     
-    private func configureUI(type: EvaluationType) {
+    private func configureUI(type: Evaluation) {
         evaluationIcon.image = type.image
         evaluationLabel.text = type.desc
         evaluationLabel.textAlignment = .center
@@ -125,6 +97,32 @@ extension EvaluationButton {
         }
         button.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+    }
+    
+}
+
+fileprivate extension Evaluation {
+    
+    var image: UIImage? {
+        switch self {
+        case .good:
+            return UIImage(.img_reviewfriends_good)
+        case .soso:
+            return UIImage(.img_reviewfriends_soso)
+        case .bad:
+            return UIImage(.img_reviewfriends_bad)
+        }
+    }
+    
+    var desc: String {
+        switch self {
+        case .good:
+            return "맛집이요"
+        case .soso:
+            return "무난했어요"
+        case .bad:
+            return "별로였어요"
         }
     }
     
