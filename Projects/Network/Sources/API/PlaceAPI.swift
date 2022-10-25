@@ -21,6 +21,15 @@ public struct PlaceAPI {
         return networkService.request(with: endpoint, responseType: PlaceListDTO.self)
     }
     
+    public static func getKakaoPlaceList(placeName: String) -> AnyPublisher<KakaoPlaceListDTO, NetworkError> {
+        let header = ["Content-Type": "application/json"]
+        let query = ["placeName": "\(placeName)"]
+        let endpoint = Endpoint(path: "/api/place/search", queryParams: query, headers: header)
+        
+        return networkService.request(with: endpoint, responseType: KakaoPlaceListDTO.self)
+    }
+
+    
     public static func fetchPlaceDetail(placeId: Int) ->
         AnyPublisher<PlaceDetailDTOResult, NetworkError> {
         let header = ["Content-Type": "application/json"]
