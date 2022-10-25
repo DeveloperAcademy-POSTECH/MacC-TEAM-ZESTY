@@ -2,132 +2,155 @@
 //  ReviewCell.swift
 //  App
 //
-//  Created by Chanhee Jeong on 2022/10/17.
+//  Created by Chanhee Jeong on 2022/10/22.
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
 import UIKit
 import SnapKit
+import Kingfisher
 
-class ReviewCell: UICollectionViewCell {
-    
-    // MARK: Properties
-    
-    static let cellID = "ReviewCell"
-    
-    private let imageView: UIImageView = {
+final class ReviewCell: UITableViewCell {
+
+    // MARK: - Properties
+
+    private let reviewImageView: UIImageView = {
+        $0.image = UIImage(named: "test-pasta")
         $0.contentMode = .scaleToFill
-        $0.layer.borderWidth = 2
+        $0.layer.cornerRadius = 16
         $0.layer.masksToBounds = true
-        $0.layer.cornerRadius = 4
         return $0
-    }(UIImageView(frame: .zero))
-    
-    private lazy var shadowView: UIView = {
-        $0.backgroundColor = .black
-        $0.clipsToBounds = true
-        $0.layer.cornerRadius = 4
-        return $0
-    }(UIView())
+    }(UIImageView())
     
     private let emojiView: UIImageView = {
-        $0.contentMode = .scaleToFill
-        $0.image = UIImage(.img_good_circle)
+        $0.contentMode = .scaleAspectFit
+        $0.image = UIImage(.img_reviewfriends_good_60)
         return $0
     }(UIImageView(frame: .zero))
     
-    private let evalutationLabel: UILabel = {
-        $0.font = .systemFont(ofSize: 11)
-        $0.textAlignment = .left
-        return $0
-    }(UILabel())
-    
     private let menuLabel: UILabel = {
-        $0.font = .systemFont(ofSize: 12, weight: .regular)
+        $0.font = .systemFont(ofSize: 20, weight: .black)
+        $0.textColor = .white
         $0.textAlignment = .left
+        $0.numberOfLines = 2
         return $0
     }(UILabel())
     
     private let dateLabel: UILabel = {
-        $0.font = .systemFont(ofSize: 11, weight: .regular)
-        $0.textColor = .zestyColor(.gray3C3C43)?.withAlphaComponent(0.6)
+        $0.font = .systemFont(ofSize: 13, weight: .regular)
+        $0.textColor = .zestyColor(.whiteEBEBF5)?.withAlphaComponent(0.6)
         $0.textAlignment = .left
         return $0
     }(UILabel())
-
-    // MARK: LifeCycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    // MARK: - LifeCycle
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        emojiView.showAnimation {
+            // 추후 클릭이벤트 생성시 작성
+        }
+    }
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureUI()
         createLayout()
     }
-    
-    required init?(coder: NSCoder) {
-      fatalError("init(coder:) has not been implemented")
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+    }
+
+    // MARK: - Function
+    func setup(with review: Review) {
+        DispatchQueue.main.async {
+            
+            self.reviewImageView.kf.setImage(with: URL(string: review.imageURL ?? ""))
+            self.menuLabel.text = review.menuName
+            self.dateLabel.text = review.createdAt.formatted("yyyy/MM/dd")
+
+            switch review.evaluation {
+            case .good:
+                self.emojiView.image = UIImage(.img_reviewfriends_good_45)
+            case .soso:
+                self.emojiView.image = UIImage(.img_reviewfriends_soso_45)
+            case .bad:
+                self.emojiView.image = UIImage(.img_reviewfriends_bad_45)
+            }
+        }
+    }
+        
 }
+
+    // MARK: - UI Function
 
 extension ReviewCell {
     
-    // MARK: UI Function
-    
-    func configureUI() {
+    private func configureUI() {
+        self.backgroundColor = .zestyColor(.background)
         
     }
     
-    func createLayout() {
-        contentView.addSubviews([imageView, shadowView, emojiView, evalutationLabel, menuLabel, dateLabel])
+    private func createLayout() {
+        contentView.addSubviews([reviewImageView, emojiView, menuLabel, dateLabel])
         
-        contentView.sendSubviewToBack(emojiView)
-        contentView.sendSubviewToBack(shadowView)
+        contentView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.width.equalToSuperview()
+            $0.height.equalTo(UIScreen.main.isWiderThan425pt ? 365 : 330)
+        }
+        
+        reviewImageView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.width.height.equalTo(UIScreen.main.isWiderThan425pt ? 330 : 300)
+        }
+        
+        self.setImageViewBackgroundGradient()
         
         emojiView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.equalToSuperview().offset(9)
-            $0.width.height.equalTo(30)
-        }
-        evalutationLabel.snp.makeConstraints {
-            $0.top.equalTo(emojiView.snp.top).offset(2)
-            $0.leading.equalTo(emojiView.snp.trailing).offset(5)
-        }
-        imageView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(15)
-            $0.leading.trailing.equalToSuperview()
-            $0.width.height.equalTo(167)
-        }
-        shadowView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(17)
-            $0.leading.trailing.equalToSuperview()
-            $0.width.height.equalTo(167)
-        }
-        menuLabel.snp.makeConstraints {
-            $0.top.equalTo(imageView.snp.bottom).offset(5)
-        }
-        dateLabel.snp.makeConstraints {
-            $0.top.equalTo(menuLabel.snp.bottom).offset(5)
-        }
-
-    }
-}
-
-extension ReviewCell {
-    func setup(with review: Review) {
-        imageView.image = UIImage(named: "test-pasta")
-        menuLabel.text = review.menuName
-        dateLabel.text = review.createdAt.formatted("yyyy/MM/dd")
-          
-        switch review.evaluation {
-        case .good:
-            evalutationLabel.text = "맛집"
-            emojiView.image = UIImage(.img_good_circle)
-        case .soso:
-            evalutationLabel.text = "무난"
-            emojiView.image = UIImage(.img_soso_circle)
-        case .bad:
-            evalutationLabel.text = "별로"
-            emojiView.image = UIImage(.img_bad_circle)
+            $0.top.equalTo(reviewImageView.snp.top).inset(20)
+            $0.trailing.equalTo(reviewImageView.snp.trailing).inset(20)
+            $0.width.height.equalTo(60)
         }
         
+        menuLabel.snp.makeConstraints {
+            $0.leading.equalTo(reviewImageView.snp.leading).inset(20)
+            $0.trailing.equalTo(reviewImageView.snp.trailing).inset(20)
+            $0.bottom.equalTo(dateLabel.snp.top).offset(-5)
+        }
+        dateLabel.snp.makeConstraints {
+            $0.leading.equalTo(reviewImageView.snp.leading).inset(20)
+            $0.trailing.equalTo(reviewImageView.snp.trailing).inset(20)
+            $0.bottom.equalTo(reviewImageView.snp.bottom).inset(20)
+        }
+          
     }
+      
+    private func setImageViewBackgroundGradient() {
+        self.layoutIfNeeded()
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.locations = [0.0, 1.0]
+        let colors: [CGColor] = [
+           .init(red: 0, green: 0, blue: 0, alpha: 0),
+           .init(red: 0, green: 0, blue: 0, alpha: 1)
+        ]
+        gradient.colors = colors
+        gradient.startPoint = CGPoint(x: 0.0, y: 0.71)
+        gradient.endPoint = CGPoint(x: 0.0, y: 1.0)
+        gradient.frame = .init(x: 0, y: 0,
+                               width: self.reviewImageView.frame.width,
+                               height: self.reviewImageView.frame.height)
+        self.reviewImageView.layer.insertSublayer(gradient, at: 0)
+    }
+
 }
