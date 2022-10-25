@@ -66,6 +66,7 @@ extension ReviewRegisterViewController: UIImagePickerControllerDelegate, UINavig
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             menuImageView.image = image
+            registerButton.setTitle("리뷰 등록", for: .normal)
         }
         picker.dismiss(animated: true, completion: nil)
     }
@@ -105,6 +106,8 @@ extension ReviewRegisterViewController {
         backgroundView.backgroundColor = .zestyColor(.grayF6)
         backgroundView.clipsToBounds = true
         backgroundView.layer.cornerRadius = 10
+        
+        menuImageView.contentMode = .scaleAspectFill
         menuImageView.clipsToBounds = true
         menuImageView.layer.cornerRadius = 10
         
