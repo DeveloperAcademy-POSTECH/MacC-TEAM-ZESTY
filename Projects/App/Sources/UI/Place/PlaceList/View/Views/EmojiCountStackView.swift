@@ -27,7 +27,7 @@ class EmojiCountStackView: UIStackView {
     }
     
     private func configureUI(emojiCount: Int = 0, emoji: UIImage? = nil) {
-        spacing = 2
+        spacing = 5
         axis = .horizontal
         countLabel.text = String(emojiCount)
         countLabel.textColor = .white

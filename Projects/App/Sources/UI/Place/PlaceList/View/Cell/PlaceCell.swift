@@ -73,7 +73,7 @@ extension PlaceCell {
         placeNameLabel.numberOfLines = 2
         placeNameLabel.font = .systemFont(ofSize: 20, weight: .bold)
         
-        emojiStackView.spacing = 12
+        emojiStackView.spacing = 15
         emojiStackView.axis = .horizontal
         emojiStackView.distribution = .fill
     }
