@@ -20,12 +20,12 @@ public struct EvaluationDTO: Decodable {
     public let one: Int
     public let two: Int
     public let three: Int
-    public let byNumber: Int
+    public let byNumber: Int?
 }
 
 public struct ReviewDTO: Decodable {
-    public let menuName: String
-    public let image: String
+    public let menuName: String?
+    public let image: String?
     public let reviewer: Int
     public let registeredAt: String
 }

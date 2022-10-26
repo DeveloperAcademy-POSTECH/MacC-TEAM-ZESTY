@@ -21,26 +21,20 @@ class PlaceListViewModel {
     
     // Output
     struct Result {
-        struct Review {
-            var image: String?
-            var menu: String?
-        }
-        
         var placeName: String
         var evaluationSum: EvaluationSum
-        var review: Review
+        var reviews: [ReviewDTO]
         
         init(placeName: String = "",
              evaluationSum: EvaluationSum = EvaluationSum(good: 0, soso: 0, bad: 0),
-             review: Review = Review()
-             ) {
+             reviews: [ReviewDTO] = []) {
             self.placeName = placeName
             self.evaluationSum = evaluationSum
-            self.review = review
+            self.reviews = reviews
         }
     }
     
-    @Published var result = Result()
+    @Published var result: [Result] = []
     let isRegisterFail = PassthroughSubject<String, Never>() // alert 용
     
     // MARK: - LifeCycle
