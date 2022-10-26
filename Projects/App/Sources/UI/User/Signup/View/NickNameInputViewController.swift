@@ -87,6 +87,7 @@ extension NickNameInputViewController {
             .store(in: &cancelBag)
         
         viewModel.$shouldDisplayWarning
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] shouldDisplayWarning in
                 guard let self = self else { return }
                 self.warningLabel.isHidden = !shouldDisplayWarning
@@ -94,12 +95,21 @@ extension NickNameInputViewController {
             .store(in: &cancelBag)
         
         viewModel.isNickNameOverlapedSubject
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] isNickNameOverlaped in
                 guard let self = self else { return }
                 self.nextButton.stopIndicator()
                 if isNickNameOverlaped {
                     self.nextButton.setDisabled(true)
-                } else {
+                }
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.isNickNameChangedSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isNickNameChanged in
+                guard let self = self else { return }
+                if isNickNameChanged {
                     self.navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
                 }
             }

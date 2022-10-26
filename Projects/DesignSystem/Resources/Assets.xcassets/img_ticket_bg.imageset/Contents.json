@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "img_ticket_bg.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
