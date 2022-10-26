@@ -14,17 +14,29 @@ import SwiftUI
 final class PlaceDetailViewController: UIViewController {
     
     // MARK: - Properties
-    private let cancelBag = Set<AnyCancellable>()
-    private let viewModel = PlaceDetailViewModel()
-    private let place: Place = Place.mockData[0]
-    private let reviews: [Review] = [Review.mockData[0], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3], Review.mockData[0], Review.mockData[2], Review.mockData[3], Review.mockData[1], Review.mockData[2], Review.mockData[3]]
+    private let viewModel: PlaceDetailViewModel
+    private let input: PassthroughSubject<PlaceDetailViewModel.Input, Never> = .init()
+    private var cancelBag = Set<AnyCancellable>()
+    
+    private var reviews: [Review] = []
     
     private let tableView = UITableView(frame: CGRect.zero, style: .grouped)
     
     // MARK: - LifeCycle
     
+    init(viewModel: PlaceDetailViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        bind()
+        input.send(.viewDidLoad)
         setNavigationBar()
         configureUI()
         createLayout()
@@ -34,6 +46,36 @@ final class PlaceDetailViewController: UIViewController {
     @objc func backButtonDidTap() {
         self.navigationController?.popViewController(animated: true)
     }
+}
+
+// MARK: - Binding
+
+extension PlaceDetailViewController {
+    
+    private func bind() {
+        let output = viewModel.transform(input: input.eraseToAnyPublisher())
+        
+        output
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                switch state {
+                // TO-DO: API 전체 다 붙이고 주석삭제
+                case .fetchPlaceDidSucceed(let place):
+                    self?.setNavigationBar()
+                    self?.navigationItem.title = place.name
+                    self?.tableView.reloadData()
+                case .fetchPlaceInfoFail(let error):
+                    print(error.localizedDescription)
+                case .fetchReviewListSucceed(let reviews):
+                    self?.reviews = reviews
+                    self?.tableView.reloadData()
+                case .fetchReviewListFail(let error):
+                    self?.reviews = []
+                    print(error.localizedDescription)
+                }
+            }.store(in: &cancelBag)
+    }
+
 }
 
 // MARK: - UI Function
@@ -57,11 +99,9 @@ extension PlaceDetailViewController {
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        tableView.layoutIfNeeded()
     }
     
     private func setNavigationBar() {
-        navigationItem.title = place.name
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)
         ]
@@ -81,7 +121,7 @@ extension PlaceDetailViewController: UITableViewDataSource {
         switch reviews.count == 0 {
         case true:
             return 1
-        case false :
+        case false:
             return reviews.count
         }
     }
@@ -89,7 +129,7 @@ extension PlaceDetailViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         switch reviews.count == 0 {
-        case true :
+        case true:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "EmptyReviewCell", for: indexPath)
                     as? EmptyReviewCell else { return UITableViewCell() }
             cell.selectionStyle = .none
@@ -101,7 +141,7 @@ extension PlaceDetailViewController: UITableViewDataSource {
             cell.selectionStyle = .none
             return cell
         }
-
+        
     }
     
 }
@@ -110,24 +150,18 @@ extension PlaceDetailViewController: UITableViewDataSource {
 extension PlaceDetailViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if UIScreen.main.isWiderThan425pt {
-            return 365
-        } else {
-            return 330
-        }
+        return UIScreen.main.isWiderThan425pt ? 365 : 330
     }
-    
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return 350
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return UIScreen.main.isWiderThan425pt ? 365 : 330
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "PlaceInfoHeaderView") as? PlaceInfoHeaderView else {
             return UIView()
         }
-        header.setUp(with: Place.mockData[0])
-        
+        header.bind(to: viewModel)
         return header
     }
 }

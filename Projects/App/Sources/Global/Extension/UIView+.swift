@@ -16,6 +16,11 @@ extension UIView {
         }
     }
     
+    func makeViewCircular(view: UIView) {
+        view.layer.cornerRadius = view.bounds.size.width / 2.0
+        view.clipsToBounds = true
+    }
+    
 }
 
 extension UIView {

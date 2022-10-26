@@ -12,7 +12,7 @@ import Network
 struct Review {
     let id: Int
     let placeId: Int
-    let reviewer: User
+    let reviewer: User?
     let evaluation: Evaluation
     let menuName: String?
     let imageURL: String?
@@ -55,6 +55,24 @@ extension Review {
         menuName = dto.menuName
         imageURL = dto.image
         createdAt = Date.getStringToDate(dto.createdAt)
+    }
+
+    init(placeReviewDto dto: PlaceReviewDTO) {
+        id = 0
+        placeId = 0
+        reviewer = nil
+        evaluation = {
+            if dto.evaluationSummary.goodCount == 1 {
+                return .good
+            } else if dto.evaluationSummary.sosoCount == 1 {
+                return .soso
+            } else {
+                return .bad
+            }
+        }()
+        menuName = dto.menuName
+        imageURL = dto.image
+        createdAt = dto.createdAt.toDate()!
     }
     
 }
