@@ -11,6 +11,7 @@ import UIKit
 // 출처 : https://stackoverflow.com/questions/39572990/applying-gradient-background-for-uiview-using-auto-layout=
 
 final class GradientView: UIView {
+    
     private let gradient: CAGradientLayer = CAGradientLayer()
     private let gradientStartColor: UIColor
     private let gradientEndColor: UIColor
@@ -37,4 +38,5 @@ final class GradientView: UIView {
             layer.insertSublayer(gradient, at: 0)
         }
     }
+    
 }

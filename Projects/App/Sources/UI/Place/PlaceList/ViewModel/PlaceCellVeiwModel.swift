@@ -10,6 +10,7 @@ import Combine
 import UIKit
 
 final class PlaceCellVeiwModel {
+    
     var placeName: String
     var category: Category
     var goodCount: Int
