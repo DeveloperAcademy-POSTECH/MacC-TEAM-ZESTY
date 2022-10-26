@@ -21,21 +21,7 @@ class PlaceListViewModel {
     @Published var page: Int = 1
     
     // Output
-    struct Result {
-        var placeName: String
-        var evaluationSum: EvaluationSum
-        var reviews: [ReviewDTO]
-        
-        init(placeName: String = "",
-             evaluationSum: EvaluationSum = EvaluationSum(good: 0, soso: 0, bad: 0),
-             reviews: [ReviewDTO] = []) {
-            self.placeName = placeName
-            self.evaluationSum = evaluationSum
-            self.reviews = reviews
-        }
-    }
-    
-    @Published var result: [Result] = []
+    @Published var result: [Place]
     let isRegisterFail = PassthroughSubject<String, Never>() // alert 용
     
     // MARK: - LifeCycle
@@ -59,13 +45,8 @@ extension PlaceListViewModel: ErrorMapper {
                     self.isRegisterFail.send(errorMessage)
                 case .finished: break
                 }
-            } receiveValue: { [weak self] placeListDTO in
+            } receiveValue: { [weak self] placeList in
                 guard let self = self else { return }
-                let placeList = placeListDTO.map { placeDTO in
-                    Result(placeName: placeDTO.shopName,
-                           evaluationSum: EvaluationSum(dto: placeDTO.evaluations),
-                           reviews: placeDTO.reviewContent)
-                }
                 self.result = placeList
             }
             .store(in: &cancelBag)
