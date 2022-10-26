@@ -21,7 +21,7 @@ class PlaceListViewModel {
     @Published var page: Int = 1
     
     // Output
-    @Published var result: [Place]
+    @Published var result: [Place] = []
     let isRegisterFail = PassthroughSubject<String, Never>() // alert 용
     
     // MARK: - LifeCycle
