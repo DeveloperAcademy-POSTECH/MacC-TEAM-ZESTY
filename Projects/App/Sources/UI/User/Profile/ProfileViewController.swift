@@ -13,9 +13,8 @@ import SnapKit
 final class ProfileViewController: UIViewController {
     
     // MARK: - Properties
-    
+
     private let profileImage = UIImageView()
-    private let profileMenuTableView = UITableView()
     private let instaButton = UIButton()
     private let mailButton = UIButton()
     private let instaLink = UILabel()
@@ -105,17 +104,3 @@ extension ProfileViewController {
     }
     
 }
-
-// MARK: - Previews
-
-#if DEBUG
-import SwiftUI
-
-struct ProfilePreview: PreviewProvider {
-    
-    static var previews: some View {
-        ProfileViewController().toPreview()
-    }
-    
-}
-#endif
