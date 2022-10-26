@@ -27,7 +27,15 @@ public struct PlaceAPI {
         let endpoint = Endpoint(path: "/api/places/\(placeId)", headers: header)
         
         return networkService.request(with: endpoint, responseType: PlaceDetailDTOResult.self)
-
     }
-
+    
+    public static func fetchReviewList(placeId: Int) ->
+        AnyPublisher<PlaceReviewListDTO, NetworkError> {
+        let header = ["Content-Type": "application/json"]
+        let query = ["placeId": "\(placeId)"]
+        let endpoint = Endpoint(path: "/api/review", queryParams: query, headers: header)
+            
+            return networkService.request(with: endpoint, responseType: PlaceReviewListDTO.self)
+    }
+    
 }

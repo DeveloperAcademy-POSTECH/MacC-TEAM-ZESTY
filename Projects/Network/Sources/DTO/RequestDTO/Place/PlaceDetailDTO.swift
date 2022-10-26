@@ -26,7 +26,3 @@ public struct Category: Decodable {
     public let id: Int
     public let name, createdAt, updatedAt: String
 }
-
-public struct EvaluationSummary: Decodable {
-    public let goodCount, sosoCount, badCount: Int
-}

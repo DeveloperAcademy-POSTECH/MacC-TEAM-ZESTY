@@ -29,11 +29,13 @@ class PlaceDetailViewModel {
     private let output: PassthroughSubject<Output, Never> = .init()
     private let useCase: PlaceDetailUseCase
     
-    var place: Place?
-    var reviews: [Review] = []
+    let placeId: Int
+    private var place: Place?
+    private var reviews: [Review] = []
     
-    init(placeDetailUseCase: PlaceDetailUseCase = PlaceDetailUseCase()) {
+    init(placeDetailUseCase: PlaceDetailUseCase = PlaceDetailUseCase(), placeId: Int) {
         self.useCase = placeDetailUseCase
+        self.placeId = placeId
     }
     
     // MARK: - transform : Input -> Output
@@ -42,8 +44,8 @@ class PlaceDetailViewModel {
         input.sink { [weak self] event in
             switch event {
             case .viewDidLoad:
-                self?.fetchPlaceInfo(id: 1)
-                self?.fetchReviews()
+                self?.fetchPlaceInfo(id: self?.placeId ?? -1)
+                self?.fetchReviews(id: self?.placeId ?? -1)
             case .addReviewBtnDidTap:
                 self?.routeTo()
                 
@@ -68,14 +70,26 @@ class PlaceDetailViewModel {
             .store(in: &cancelBag)
     }
     
-    // 리뷰가져오기
-    private func fetchReviews() {
-        
+    private func fetchReviews(id: Int) {
+        useCase.fetchReviewList(with: id)
+            .sink { [weak self] completion in
+                if case .failure(let error) = completion {
+                    self?.output.send(.fetchReviewListFail(error: error))
+                }
+            } receiveValue: { [weak self] reviews in
+                self?.reviews = reviews
+                self?.output.send(.fetchReviewListSucceed(list: reviews))
+            }
+            .store(in: &cancelBag)
     }
     
-    // 리뷰추가화면전환
     private func routeTo() {
-        // TO-DO: place id, name
+        // TODO: 화면연결
+        // let viewModel = ReviewRegisterViewModel(placeId: place?.id, placeName: place?.name)
+        // EvaluationViewController(viewModel: viewModel)
     }
     
+    func getPlace() -> Place {
+        return self.place ?? Place.empty
+    }
 }

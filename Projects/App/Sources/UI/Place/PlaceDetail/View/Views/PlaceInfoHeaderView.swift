@@ -14,7 +14,6 @@ import DesignSystem
 final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     
     // MARK: - Properties
-    private let viewModel = PlaceDetailViewModel()
     private let input: PassthroughSubject<PlaceDetailViewModel.Input, Never> = .init()
     private var cancelBag = Set<AnyCancellable>()
     
@@ -93,7 +92,6 @@ final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     
     override init(reuseIdentifier: String?) {
        super.init(reuseIdentifier: reuseIdentifier)
-        bind()
         configureUI()
         createLayout()
     }
@@ -124,7 +122,7 @@ final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
         input.send(.addReviewBtnDidTap)
     }
     
-    public func setUp(with place: Place) {
+    private func setUp(with place: Place) {
         categoryTagLabel.text = place.category[0].name
         placeNameLabel.text = place.name
         addressLabel.text = place.address
@@ -139,8 +137,9 @@ final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
 
 // MARK: - Binding
 extension PlaceInfoHeaderView {
-    private func bind() {
-        let output = viewModel.transform(input: input.eraseToAnyPublisher())
+    func bind(to viewModel: PlaceDetailViewModel) {
+        _ = viewModel.transform(input: input.eraseToAnyPublisher())
+        setUp(with: viewModel.getPlace())
     }
 }
 
