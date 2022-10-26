@@ -92,7 +92,7 @@ extension Place {
               address: "",
               lat: "",
               lan: "",
-              category: [Category.init(id: -1, name: "카테고리")],
+              category: [Category.init(id: -1, name: "카테고리", imageURL: nil)],
               evaluationSum: EvaluationSum(good: 0, soso: 0, bad: 0),
               reviews: [])
 }

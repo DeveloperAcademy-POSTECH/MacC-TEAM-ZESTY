@@ -11,7 +11,7 @@ import SnapKit
 
 final class PlaceCell: UITableViewCell {
     // TODO: 리뷰가 없는 상황을 가정한 cell입니다. 변경 예정
-    private let viewModel = PlaceCellVeiwModel(placeName: "쌀국수 집을 하려다가 망한\n소바집인데 쌀국수가 잘팔리는 곳", category: Category(id: 2, name: "일식"), goodCount: 17, sosoCount: 2, badCount: 4, menuName: "쌀국수", reviewImage: UIImage(.img_reviewfriends_together))
+    private let viewModel = PlaceCellVeiwModel(placeName: "쌀국수 집을 하려다가 망한\n소바집인데 쌀국수가 잘팔리는 곳", category: Category(id: 2, name: "일식", imageURL: nil), goodCount: 17, sosoCount: 2, badCount: 4, menuName: "쌀국수", reviewImage: UIImage(.img_reviewfriends_together))
     
     // MARK: - Properties
     
