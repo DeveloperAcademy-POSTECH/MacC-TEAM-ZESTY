@@ -6,7 +6,6 @@
 
 # Environment File
 Environment.swift
-config.xcconfig
 
 # Config File
 config.xcconfig
