@@ -50,12 +50,6 @@ final class AddPlaceSearchViewController: UIViewController {
         bind()
         configureUI()
         createLayout()
-
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        
- 
     }
     
     // MARK: - Function

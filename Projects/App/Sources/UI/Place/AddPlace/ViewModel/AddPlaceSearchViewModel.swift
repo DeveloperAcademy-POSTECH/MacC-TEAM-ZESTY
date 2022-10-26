@@ -34,6 +34,7 @@ class AddPlaceSearchViewModel {
     
     init(useCase: AddPlaceUseCase = AddPlaceUseCase()) {
         self.useCase = useCase
+        
     }
     
     // MARK: - transform : Input -> Output
@@ -67,7 +68,6 @@ class AddPlaceSearchViewModel {
     
     private func selectPlaceToAdd(place: KakaoPlace) {
         useCase.checkRegisterdPlace(with: place.kakaoPlaceId)
-            .first()
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     self?.output.send(.addSelectedPlaceFail(error: error))
@@ -81,5 +81,4 @@ class AddPlaceSearchViewModel {
             }
             .store(in: &cancelBag)
     }
-    
 }
