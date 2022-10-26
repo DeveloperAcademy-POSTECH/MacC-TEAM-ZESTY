@@ -23,8 +23,7 @@ let project = Project.makeAppModule(
         .Projcet.DesignSystem,
         .package(product: "KakaoSDK"),
         .package(product: "SnapKit"),
-        .package(product: "Kingfisher"),
-        .package(product: "AWSS3")
+        .package(product: "Kingfisher")
     ],
     resources: ["Resources/**"],
     infoPlist: .file(path: "Sources/Application/Info.plist")
