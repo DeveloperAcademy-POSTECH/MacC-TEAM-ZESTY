@@ -11,13 +11,13 @@ import SnapKit
 
 final class PlaceCell: UITableViewCell {
     // TODO: 리뷰가 없는 상황을 가정한 cell입니다. 변경 예정
-    private let viewModel = PlaceCellVeiwModel(placeName: "쌀국수 집을 하려다가 망한\n소바집인데 쌀국수가 잘팔리는 곳", category: Category(id: 2, name: "일식"), goodCount: 17, sosoCount: 2, badCount: 4, menuName: nil, reviewImage: nil)
+    private let viewModel = PlaceCellVeiwModel(placeName: "쌀국수 집을 하려다가 망한\n소바집인데 쌀국수가 잘팔리는 곳", category: Category(id: 2, name: "일식"), goodCount: 17, sosoCount: 2, badCount: 4, menuName: "쌀국수", reviewImage: UIImage(.img_reviewfriends_together))
     
     // MARK: - Properties
     
     static let identifier = "WholePlaceCell"
     
-    private lazy var mainStackView = UIStackView()
+    private lazy var mainView = UIView()
     
     private lazy var reviewImageView = UIImageView()
     
@@ -57,11 +57,8 @@ extension PlaceCell {
     func configureUI() {
         configureGradientView()
         
-        mainStackView.spacing = 0
-        mainStackView.axis = .vertical
-        mainStackView.distribution = .fill
-        mainStackView.layer.cornerRadius = 16
-        mainStackView.layer.masksToBounds = true
+        mainView.layer.cornerRadius = 16
+        mainView.layer.masksToBounds = true
         
         reviewImageView.image = viewModel.reviewImage
         reviewImageView.contentMode = .scaleAspectFill
@@ -82,14 +79,13 @@ extension PlaceCell {
     }
     
     private func createLayout() {
-        contentView.addSubview(mainStackView)
-        mainStackView.addArrangedSubviews([reviewImageView, middelView, bottomView])
-        middelView.addSubviews([gradientView, menuLabel])
+        contentView.addSubview(mainView)
+        mainView.addSubviews([reviewImageView, gradientView, menuLabel, bottomView])
         bottomView.addSubviews([placeNameLabel, emojiStackView])
         
         emojiStackView.addArrangedSubviews([goodEmojiStackView, sosoEmojiStackView, badEmojiStackView])
         
-        mainStackView.snp.makeConstraints { make in
+        mainView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(10)
             make.horizontalEdges.equalToSuperview().inset(45)
             make.bottom.equalToSuperview().inset(20)
@@ -101,23 +97,19 @@ extension PlaceCell {
             make.height.equalTo(reviewImageView.snp.width)
         }
         
-        middelView.snp.makeConstraints { make in
-            make.top.equalTo(reviewImageView.snp.bottom)
-            make.horizontalEdges.equalToSuperview()
-            make.height.greaterThanOrEqualTo(58)
-        }
-        
         gradientView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
+            make.bottom.equalTo(reviewImageView.snp.bottom)
+            make.height.greaterThanOrEqualTo(58)
         }
         
         menuLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview()
+            make.bottom.equalTo(gradientView.snp.bottom)
         }
         
         bottomView.snp.makeConstraints { make in
-            make.top.equalTo(middelView.snp.bottom)
+            make.top.equalTo(reviewImageView.snp.bottom)
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalToSuperview()
             
