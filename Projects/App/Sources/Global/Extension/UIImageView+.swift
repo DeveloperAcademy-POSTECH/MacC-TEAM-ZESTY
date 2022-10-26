@@ -25,6 +25,7 @@ extension UIImageView {
         }
     }
     
+    // TODO: String -> URL 로 파라미터 타입 변경하기
     static func load(url: String?) -> UIImage? {
         let imageView = UIImageView()
         imageView.load(url: url)
