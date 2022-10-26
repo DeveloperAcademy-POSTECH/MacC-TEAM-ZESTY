@@ -15,7 +15,9 @@ final class ProfileViewController: UIViewController {
     // MARK: - Properties
 
     private let profileImage = UIImageView()
-    let stackView = UIStackView()
+    let stackView1 = UIStackView()
+    let stackView2 = UIStackView()
+    private let dividerView = UIView()
     private var profileMenu1 = ProfileMenuView()
     private var profileMenu2 = ProfileMenuView()
     private var profileMenu3 = ProfileMenuView()
@@ -49,15 +51,21 @@ extension ProfileViewController {
         profileImage.image = UIImage(.img_signup)
         profileImage.contentMode = .scaleAspectFit
         
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fillEqually
+        stackView1.axis = .vertical
+        stackView1.alignment = .fill
+        stackView1.distribution = .fillEqually
+
+        stackView2.axis = .vertical
+        stackView2.alignment = .fill
+        stackView2.distribution = .fillEqually
         
         profileMenu1.menuLabel.text = "공지사항"
         profileMenu2.menuLabel.text = "이용약관"
         profileMenu3.menuLabel.text = "제스티를 만든 사람들"
         profileMenu4.menuLabel.text = "로그아웃"
         profileMenu5.menuLabel.text = "회원탈퇴"
+        
+        dividerView.backgroundColor = .zestyColor(.grayF6)
 
         instaButton.setImage(UIImage(.btn_link_instargram), for: .normal)
         
@@ -80,8 +88,9 @@ extension ProfileViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([profileImage, stackView, profileNickNameView, instaButton, instaLink, mailButton, mailLink])
-        stackView.addArrangedSubviews([profileMenu1, profileMenu2, profileMenu3, profileMenu4, profileMenu5])
+        view.addSubviews([profileImage, stackView1, dividerView, stackView2, profileNickNameView, instaButton, instaLink, mailButton, mailLink])
+        stackView1.addArrangedSubviews([profileMenu1, profileMenu2, profileMenu3])
+        stackView2.addArrangedSubviews([profileMenu4, profileMenu5])
         
         profileImage.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -89,10 +98,21 @@ extension ProfileViewController {
             make.height.equalTo(100)
         }
         
-        stackView.snp.makeConstraints { make in
+        stackView1.snp.makeConstraints { make in
             make.top.equalTo(profileNickNameView.snp.bottom).offset(30)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(instaButton.snp.top).offset(-88)
+            make.bottom.equalTo(dividerView.snp.top).offset(-10)
+        }
+        
+        dividerView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(1)
+        }
+        
+        stackView2.snp.makeConstraints { make in
+            make.top.equalTo(dividerView.snp.bottom).offset(10)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(instaButton.snp.top).offset(-68)
         }
 
         instaLink.snp.makeConstraints { make in
