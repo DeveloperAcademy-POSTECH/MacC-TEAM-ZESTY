@@ -65,12 +65,8 @@ extension PlaceCell {
         mainStackView.layer.cornerRadius = 16
         mainStackView.layer.masksToBounds = true
         
-        if !viewModel.isReviewExists {
-            mainStackView.layer.borderWidth = 1
-        }
-        
         reviewImageView.image = viewModel.reviewImage
-        reviewImageView.contentMode = .scaleAspectFit
+        reviewImageView.contentMode = .scaleAspectFill
         
         menuLabel.text = viewModel.menuName
         menuLabel.textColor = .white
