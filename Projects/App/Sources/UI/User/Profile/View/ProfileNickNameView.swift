@@ -13,6 +13,7 @@ import SnapKit
 final class ProfileNickNameView: UIView {
 
     // MARK: - Properties
+    
     private let changeNickNameButton = UIButton()
     private let nickName = UILabel()
 
