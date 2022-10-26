@@ -34,10 +34,10 @@ final class PlaceCell: UITableViewCell {
     
     lazy var goodEmojiStackView = EmojiCountStackView(emojiCount: viewModel.goodCount, emoji: UIImage(.img_reviewfriends_good_30)!)
     lazy var sosoEmojiStackView = EmojiCountStackView(emojiCount: viewModel.sosoCount, emoji: UIImage(.img_reviewfriends_soso_30)!)
-lazy var badEmojiStackView = EmojiCountStackView(emojiCount: viewModel.badCount, emoji: UIImage(.img_reviewfriends_bad_30)!)
+    lazy var badEmojiStackView = EmojiCountStackView(emojiCount: viewModel.badCount, emoji: UIImage(.img_reviewfriends_bad_30)!)
     
     // MARK: - LifeCycle
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         createLayout()
@@ -62,6 +62,8 @@ extension PlaceCell {
         
         reviewImageView.image = viewModel.reviewImage
         reviewImageView.contentMode = .scaleAspectFill
+        
+        gradientView.isHidden = viewModel.menuName!.isEmpty ? true : false
         
         menuLabel.text = viewModel.menuName
         menuLabel.textColor = .white
