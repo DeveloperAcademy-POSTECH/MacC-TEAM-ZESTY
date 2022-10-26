@@ -43,26 +43,22 @@ extension ProfileMenuView {
         menuLabel.numberOfLines = 1
         
         chevronIndicator.image = UIImage(systemName: "chevron.right")
+        chevronIndicator.contentMode = .scaleAspectFit
         chevronIndicator.tintColor = .black
     }
     
     private func createLayout() {
         addSubviews([menuLabel, chevronIndicator])
         
-        snp.makeConstraints { make in
-            make.height.equalTo(61)
-        }
-        
         menuLabel.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(20)
             make.leading.equalToSuperview().inset(30)
-            make.width.equalTo(308)
+            make.centerY.equalToSuperview()
         }
         
         chevronIndicator.snp.makeConstraints { make in
             make.centerY.equalTo(menuLabel.snp.centerY)
-            make.trailing.equalToSuperview().inset(30)
             make.leading.equalTo(menuLabel.snp.trailing).offset(10)
+            make.trailing.equalToSuperview().inset(30)
         }
     }
      

@@ -15,7 +15,7 @@ final class ProfileNickNameView: UIView {
     // MARK: - Properties
     
     private let changeNickNameButton = UIButton()
-    private let nickName = UILabel()
+    private let nickNameLabel = UILabel()
 
     // MARK: - LifeCycle
     
@@ -41,27 +41,30 @@ extension ProfileNickNameView {
         
         changeNickNameButton.setImage(UIImage(systemName: "pencil"), for: .normal)
         changeNickNameButton.tintColor = .black
+        changeNickNameButton.backgroundColor = .zestyColor(.background)
 
-        nickName.text = "6글자제한O"
-        nickName.textColor = .black
-        nickName.font = UIFont.systemFont(ofSize: CGFloat(22), weight: .bold)
-        nickName.textAlignment = .center
-        nickName.numberOfLines = 1
+        nickNameLabel.text = "6글자제한O"
+        nickNameLabel.backgroundColor = .zestyColor(.background)
+        nickNameLabel.textColor = .black
+        nickNameLabel.font = UIFont.systemFont(ofSize: CGFloat(22), weight: .bold)
+        nickNameLabel.textAlignment = .center
     }
 
     private func createLayout() {
-        addSubviews([changeNickNameButton, nickName])
+        addSubviews([changeNickNameButton, nickNameLabel])
 
         snp.makeConstraints { make in
             make.height.equalTo(28)
         }
 
         changeNickNameButton.snp.makeConstraints { make in
-            make.leading.equalTo(nickName.snp.trailing).offset(10)
+            make.leading.equalTo(nickNameLabel.snp.trailing).offset(10)
+            make.trailing.equalToSuperview()
             make.centerY.equalToSuperview()
+            make.width.equalTo(25)
         }
 
-        nickName.snp.makeConstraints { make in
+        nickNameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.centerY.equalToSuperview()
         }
