@@ -11,7 +11,7 @@ import UIKit
 import SnapKit
 
 // TODO: cell을 실험하기 위한 뷰입니다. 수정 예정입니다.
-final class SubPlaceListViewControllerViewController: UIViewController {
+final class PlaceListViewController: UIViewController {
     
     // MARK: - Properties
     private let cancelBag = Set<AnyCancellable>()
@@ -31,7 +31,7 @@ final class SubPlaceListViewControllerViewController: UIViewController {
 
 // MARK: - UI Function
 
-extension SubPlaceListViewControllerViewController {
+extension PlaceListViewController {
     
     private func configureUI() {
         tableView.backgroundColor = .clear
@@ -51,7 +51,7 @@ extension SubPlaceListViewControllerViewController {
     
 }
 
-extension SubPlaceListViewControllerViewController: UITableViewDataSource {
+extension PlaceListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 5
@@ -67,7 +67,7 @@ extension SubPlaceListViewControllerViewController: UITableViewDataSource {
     
 }
 
-extension SubPlaceListViewControllerViewController: UITableViewDelegate {
+extension PlaceListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
@@ -78,10 +78,10 @@ extension SubPlaceListViewControllerViewController: UITableViewDelegate {
 #if DEBUG
 import SwiftUI
 
-struct SubPlaceListViewControllerPreview: PreviewProvider {
+struct PlaceListViewControllerPreview: PreviewProvider {
     
     static var previews: some View {
-        SubPlaceListViewControllerViewController().toPreview()
+        PlaceListViewController().toPreview()
     }
     
 }
