@@ -11,8 +11,6 @@ import SnapKit
 
 final class PlaceCell: UITableViewCell {
     // TODO: 리뷰가 없는 상황을 가정한 cell입니다. 변경 예정
-
-//    private let viewModel = PlaceCellVeiwModel(placeName: "쌀국수 집을 하려다가 망한\n소바집인데 쌀국수가 잘팔리는 곳", category: Category(id: 2, name: "일식"), goodCount: 17, sosoCount: 2, badCount: 4, menuName: nil, reviewImage: nil)
     
     // MARK: - Properties
     
@@ -33,9 +31,9 @@ final class PlaceCell: UITableViewCell {
     
     private lazy var emojiStackView = UIStackView()
     
-    lazy var goodEmojiStackView = EmojiCountStackView(emojiCount: viewModel.goodCount, emoji: UIImage(.img_reviewfriends_good_30)!)
-    lazy var sosoEmojiStackView = EmojiCountStackView(emojiCount: viewModel.sosoCount, emoji: UIImage(.img_reviewfriends_soso_30)!)
-    lazy var badEmojiStackView = EmojiCountStackView(emojiCount: viewModel.badCount, emoji: UIImage(.img_reviewfriends_bad_30)!)
+    private lazy var goodEmojiStackView = EmojiCountStackView(type: .good)
+    private lazy var sosoEmojiStackView = EmojiCountStackView(type: .soso)
+    private lazy var badEmojiStackView = EmojiCountStackView(type: .bad)
     
     // MARK: - LifeCycle
     
@@ -56,42 +54,30 @@ final class PlaceCell: UITableViewCell {
 extension PlaceCell {
     
     func setUp(with place: Place) {
-        if place.reviews[0].imageURL == nil {
-            mainStackView.layer.borderWidth = 1
-        }
-        reviewImageView.image = UIImage(.img_zesterone) // place.reviews[0].imageURL
+        mainView.layer.borderWidth = place.reviews[0].menuName!.isEmpty ? 1 : 0
+        reviewImageView.load(url: place.reviews[0].imageURL)
+        gradientView.isHidden = place.reviews[0].menuName!.isEmpty ? true : false
         menuLabel.text = place.reviews[0].menuName
         placeNameLabel.text = place.name
+        goodEmojiStackView.setUp(count: place.evaluationSum.good)
+        sosoEmojiStackView.setUp(count: place.evaluationSum.soso)
+        badEmojiStackView.setUp(count: place.evaluationSum.bad)
     }
     
     private func configureUI() {
         configureGradientView()
         
         mainView.layer.applyFigmaShadow()
-        mainView.layer.borderWidth = viewModel.menuName!.isEmpty ? 1 : 0
-        
-<<<<<<< HEAD
-        reviewImageView.contentMode = .scaleAspectFit
-=======
         mainView.layer.cornerRadius = 16
         mainView.layer.masksToBounds = true
         
-        reviewImageView.image = viewModel.reviewImage
         reviewImageView.contentMode = .scaleAspectFill
-        
-        gradientView.isHidden = viewModel.menuName!.isEmpty ? true : false
->>>>>>> ZES-139-placeListCell
-        
+
         menuLabel.textColor = .white
         
         bottomView.backgroundColor = .label
-        
-<<<<<<< HEAD
-        placeNameLabel.textColor = .zestyColor(.whiteEBEBF5)
-=======
+
         placeNameLabel.textColor = .white
-        placeNameLabel.text = viewModel.placeName
->>>>>>> ZES-139-placeListCell
         placeNameLabel.numberOfLines = 2
         placeNameLabel.font = .systemFont(ofSize: 20, weight: .bold)
         

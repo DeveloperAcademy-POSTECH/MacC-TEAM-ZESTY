@@ -83,8 +83,9 @@ extension PlaceListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PlaceCell.identifier, for: indexPath) as? PlaceCell
         guard let cell = cell else { return UITableViewCell() }
+        let place = viewModel.result[indexPath.row]
+        cell.setUp(with: place)
         cell.selectionStyle = .none
-        
         return cell
     }
     
