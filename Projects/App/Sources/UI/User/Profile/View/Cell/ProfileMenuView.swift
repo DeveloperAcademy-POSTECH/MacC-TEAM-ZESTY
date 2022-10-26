@@ -9,11 +9,11 @@
 import UIKit
 import SnapKit
 
-final class ProfileMenuCell: UIView {
+final class ProfileMenuView: UIView {
     
     // MARK: Properties
         
-    private let menuLabel = UILabel()
+    let menuLabel = UILabel()
     private let chevronIndicator = UIImageView()
     
     // MARK: LifeCycle
@@ -30,14 +30,13 @@ final class ProfileMenuCell: UIView {
     
 }
 
-extension ProfileMenuCell {
+extension ProfileMenuView {
     
     // MARK: UI Function
     
     private func configureUI() {
-        backgroundColor = .zestyColor(.dim)
+        backgroundColor = .zestyColor(.background)
 
-        menuLabel.text = "공지사항"
         menuLabel.font = .systemFont(ofSize: 16, weight: .medium)
         menuLabel.textColor = .black
         menuLabel.textAlignment = .left
@@ -49,6 +48,10 @@ extension ProfileMenuCell {
     
     private func createLayout() {
         addSubviews([menuLabel, chevronIndicator])
+        
+        snp.makeConstraints { make in
+            make.height.equalTo(61)
+        }
         
         menuLabel.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview().inset(20)
@@ -64,3 +67,17 @@ extension ProfileMenuCell {
     }
      
 }
+
+// MARK: - Previews
+
+#if DEBUG
+import SwiftUI
+
+struct ProfileMenuViewPreview: PreviewProvider {
+
+    static var previews: some View {
+        ProfileMenuView().toPreview()
+    }
+
+}
+#endif

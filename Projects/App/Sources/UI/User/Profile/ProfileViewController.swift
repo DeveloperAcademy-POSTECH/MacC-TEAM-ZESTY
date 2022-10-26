@@ -15,6 +15,12 @@ final class ProfileViewController: UIViewController {
     // MARK: - Properties
 
     private let profileImage = UIImageView()
+    let stackView = UIStackView()
+    private var profileMenu1 = ProfileMenuView()
+    private var profileMenu2 = ProfileMenuView()
+    private var profileMenu3 = ProfileMenuView()
+    private var profileMenu4 = ProfileMenuView()
+    private var profileMenu5 = ProfileMenuView()
     private let instaButton = UIButton()
     private let mailButton = UIButton()
     private let instaLink = UILabel()
@@ -43,6 +49,16 @@ extension ProfileViewController {
         profileImage.image = UIImage(.img_signup)
         profileImage.contentMode = .scaleAspectFit
         
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        
+        profileMenu1.menuLabel.text = "공지사항"
+        profileMenu2.menuLabel.text = "이용약관"
+        profileMenu3.menuLabel.text = "제스티를 만든 사람들"
+        profileMenu4.menuLabel.text = "로그아웃"
+        profileMenu5.menuLabel.text = "회원탈퇴"
+
         instaButton.setImage(UIImage(.btn_link_instargram), for: .normal)
         
         instaLink.text = "인스타"
@@ -64,12 +80,19 @@ extension ProfileViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([profileImage, profileNickNameView, instaButton, instaLink, mailButton, mailLink])
+        view.addSubviews([profileImage, stackView, profileNickNameView, instaButton, instaLink, mailButton, mailLink])
+        stackView.addArrangedSubviews([profileMenu1, profileMenu2, profileMenu3, profileMenu4, profileMenu5])
         
         profileImage.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide).inset(30)
             make.height.equalTo(100)
+        }
+        
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(profileNickNameView.snp.bottom).offset(30)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(instaButton.snp.top).offset(-88)
         }
 
         instaLink.snp.makeConstraints { make in
