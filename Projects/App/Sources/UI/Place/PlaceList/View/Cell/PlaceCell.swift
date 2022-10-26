@@ -11,15 +11,14 @@ import SnapKit
 
 final class PlaceCell: UITableViewCell {
     // TODO: 리뷰가 없는 상황을 가정한 cell입니다. 변경 예정
+
 //    private let viewModel = PlaceCellVeiwModel(placeName: "쌀국수 집을 하려다가 망한\n소바집인데 쌀국수가 잘팔리는 곳", category: Category(id: 2, name: "일식"), goodCount: 17, sosoCount: 2, badCount: 4, menuName: nil, reviewImage: nil)
     
     // MARK: - Properties
-    private let horizontalPadding: CGFloat = 45
-    private lazy var screenWidth = UIScreen.main.bounds.size.width
-
+    
     static let identifier = "WholePlaceCell"
     
-    private lazy var mainStackView = UIStackView()
+    private lazy var mainView = UIView()
     
     private lazy var reviewImageView = UIImageView()
     
@@ -34,12 +33,12 @@ final class PlaceCell: UITableViewCell {
     
     private lazy var emojiStackView = UIStackView()
     
-    private lazy var goodEmojiStackView = EmojiCountStackView(emojiCount: viewModel.goodCount, emoji: UIImage(.img_reviewfriends_good_30)!)
-    private lazy var sosoEmojiStackView = EmojiCountStackView(emojiCount: viewModel.sosoCount, emoji: UIImage(.img_reviewfriends_soso_30)!)
-    private lazy var badEmojiStackView = EmojiCountStackView(emojiCount: viewModel.badCount, emoji: UIImage(.img_reviewfriends_bad_30)!)
+    lazy var goodEmojiStackView = EmojiCountStackView(emojiCount: viewModel.goodCount, emoji: UIImage(.img_reviewfriends_good_30)!)
+    lazy var sosoEmojiStackView = EmojiCountStackView(emojiCount: viewModel.sosoCount, emoji: UIImage(.img_reviewfriends_soso_30)!)
+    lazy var badEmojiStackView = EmojiCountStackView(emojiCount: viewModel.badCount, emoji: UIImage(.img_reviewfriends_bad_30)!)
     
     // MARK: - LifeCycle
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         createLayout()
@@ -47,7 +46,7 @@ final class PlaceCell: UITableViewCell {
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
+        fatalError("init(coder:) has not been implemented")
     }
     
 }
@@ -68,65 +67,71 @@ extension PlaceCell {
     private func configureUI() {
         configureGradientView()
         
-        mainStackView.spacing = 0
-        mainStackView.axis = .vertical
-        mainStackView.distribution = .fill
-        mainStackView.layer.cornerRadius = 16
-        mainStackView.layer.masksToBounds = true
+        mainView.layer.applyFigmaShadow()
+        mainView.layer.borderWidth = viewModel.menuName!.isEmpty ? 1 : 0
         
+<<<<<<< HEAD
         reviewImageView.contentMode = .scaleAspectFit
+=======
+        mainView.layer.cornerRadius = 16
+        mainView.layer.masksToBounds = true
+        
+        reviewImageView.image = viewModel.reviewImage
+        reviewImageView.contentMode = .scaleAspectFill
+        
+        gradientView.isHidden = viewModel.menuName!.isEmpty ? true : false
+>>>>>>> ZES-139-placeListCell
         
         menuLabel.textColor = .white
         
         bottomView.backgroundColor = .label
         
+<<<<<<< HEAD
         placeNameLabel.textColor = .zestyColor(.whiteEBEBF5)
+=======
+        placeNameLabel.textColor = .white
+        placeNameLabel.text = viewModel.placeName
+>>>>>>> ZES-139-placeListCell
         placeNameLabel.numberOfLines = 2
         placeNameLabel.font = .systemFont(ofSize: 20, weight: .bold)
         
-        emojiStackView.spacing = 12
+        emojiStackView.spacing = 15
         emojiStackView.axis = .horizontal
         emojiStackView.distribution = .fill
     }
     
     private func createLayout() {
-        contentView.addSubview(mainStackView)
-        mainStackView.addArrangedSubviews([reviewImageView, middelView, bottomView])
-        middelView.addSubviews([gradientView, menuLabel])
+        contentView.addSubview(mainView)
+        mainView.addSubviews([reviewImageView, gradientView, menuLabel, bottomView])
         bottomView.addSubviews([placeNameLabel, emojiStackView])
         
         emojiStackView.addArrangedSubviews([goodEmojiStackView, sosoEmojiStackView, badEmojiStackView])
         
-        mainStackView.snp.makeConstraints { make in
+        mainView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(10)
-            make.horizontalEdges.equalToSuperview().inset(horizontalPadding)
+            make.horizontalEdges.equalToSuperview().inset(45)
             make.bottom.equalToSuperview().inset(20)
         }
         
         reviewImageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.horizontalEdges.equalToSuperview()
-            make.height.equalTo(screenWidth - horizontalPadding * 2)
-        }
-        
-        middelView.snp.makeConstraints { make in
-            make.top.equalTo(reviewImageView.snp.bottom)
-            make.horizontalEdges.equalToSuperview()
-            make.height.greaterThanOrEqualTo(58)
+            make.height.equalTo(reviewImageView.snp.width)
         }
         
         gradientView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
+            make.bottom.equalTo(reviewImageView.snp.bottom)
+            make.height.greaterThanOrEqualTo(58)
         }
         
         menuLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(40)
             make.left.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview()
+            make.bottom.equalTo(gradientView.snp.bottom)
         }
         
         bottomView.snp.makeConstraints { make in
-            make.top.equalTo(middelView.snp.bottom)
+            make.top.equalTo(reviewImageView.snp.bottom)
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalToSuperview()
             

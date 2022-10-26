@@ -11,7 +11,7 @@ import UIKit
 import SnapKit
 
 // TODO: cell을 실험하기 위한 뷰입니다. 수정 예정입니다.
-final class SubPlaceListViewControllerViewController: UIViewController {
+final class PlaceListViewController: UIViewController {
     
     // MARK: - Properties
     private var cancelBag = Set<AnyCancellable>()
@@ -54,7 +54,7 @@ final class SubPlaceListViewControllerViewController: UIViewController {
 
 // MARK: - UI Function
 
-extension SubPlaceListViewControllerViewController {
+extension PlaceListViewController {
     
     private func configureUI() {
         tableView.backgroundColor = .systemBackground
@@ -74,7 +74,8 @@ extension SubPlaceListViewControllerViewController {
     
 }
 
-extension SubPlaceListViewControllerViewController: UITableViewDataSource {
+extension PlaceListViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.result.count
     }
@@ -82,24 +83,29 @@ extension SubPlaceListViewControllerViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PlaceCell.identifier, for: indexPath) as? PlaceCell
         guard let cell = cell else { return UITableViewCell() }
+        cell.selectionStyle = .none
         
         return cell
     }
+    
 }
 
-extension SubPlaceListViewControllerViewController: UITableViewDelegate {
+extension PlaceListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
 }
 
 // MARK: - Previews
+
+#if DEBUG
 import SwiftUI
 
-struct SubPlaceListViewControllerPreview: PreviewProvider {
+struct PlaceListViewControllerPreview: PreviewProvider {
     
     static var previews: some View {
-        SubPlaceListViewControllerViewController().toPreview()
+        PlaceListViewController().toPreview()
     }
     
 }
+#endif

@@ -34,4 +34,16 @@ extension UserDefaults {
         }
     }
     
+    var userID: Int? {
+        get {
+            guard let userID = UserDefaults.standard.value(forKey: "userID") as? Int else {
+                return nil
+            }
+            return userID
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "userID")
+        }
+    }
+    
 }
