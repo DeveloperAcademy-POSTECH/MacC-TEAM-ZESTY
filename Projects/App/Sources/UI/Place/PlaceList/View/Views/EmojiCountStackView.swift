@@ -12,7 +12,7 @@ class EmojiCountStackView: UIStackView {
     private let countLabel = UILabel()
     private let imageView = UIImageView()
     
-    init(emojiCount: Int, emoji: UIImage) {
+    init(emojiCount: Int = 0, emoji: UIImage? = nil) {
         super.init(frame: .zero)
         configureUI(emojiCount: emojiCount, emoji: emoji)
         createLayout()
@@ -26,7 +26,7 @@ class EmojiCountStackView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureUI(emojiCount: Int, emoji: UIImage) {
+    private func configureUI(emojiCount: Int = 0, emoji: UIImage? = nil) {
         spacing = 2
         axis = .horizontal
         countLabel.text = String(emojiCount)
