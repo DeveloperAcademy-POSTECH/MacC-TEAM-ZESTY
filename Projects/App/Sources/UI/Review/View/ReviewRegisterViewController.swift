@@ -51,17 +51,28 @@ final class ReviewRegisterViewController: UIViewController {
         bindKeyboardAction()
     }
     
+    @objc private func openGallery() {
+        self.imagePickerController.delegate = self
+        self.imagePickerController.sourceType = .photoLibrary
+        present(self.imagePickerController, animated: true, completion: nil)
+    }
+    
+    @objc private func registerButtonTouched() {
+        viewModel.image = plusImageView.image
+        viewModel.menu = menuTextField.text
+        viewModel.registerReview()
+        navigationController?.pushViewController(ReviewCardViewController(viewModel: viewModel), animated: true)
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
 }
 
 // MARK: - Function
 
 extension ReviewRegisterViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    @objc func openGallery() {
-        self.imagePickerController.delegate = self
-        self.imagePickerController.sourceType = .photoLibrary
-        present(self.imagePickerController, animated: true, completion: nil)
-    }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
@@ -73,17 +84,6 @@ extension ReviewRegisterViewController: UIImagePickerControllerDelegate, UINavig
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
-    }
-    
-    @objc func registerButtonTouched() {
-        viewModel.image = plusImageView.image
-        viewModel.menu = menuTextField.text
-        viewModel.registerReview()
-        navigationController?.pushViewController(ReviewCardViewController(viewModel: viewModel), animated: true)
-    }
-    
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
     }
     
 }
