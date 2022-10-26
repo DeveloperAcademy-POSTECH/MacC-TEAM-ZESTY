@@ -12,8 +12,8 @@ import Network
 struct PlaceResult {
     let id: Int
     let kakaoPlaceId: Int
-    let creator: Int
-    let organizationId: Int
+    let creator: String
+    let organizationId: String
     let name: String
     let address: String
     let category: Category
@@ -25,11 +25,13 @@ extension PlaceResult {
     init(dto: PlacePostResDTO) {
         id = dto.id
         kakaoPlaceId = dto.kakaoPlaceID
-        creator = dto.creator
-        organizationId = dto.organization
+        creator = dto.creator.nickname
+        organizationId = dto.organization.name
         name = dto.name
         address = dto.address
-        category = Category.mockData[dto.category+1]
+        category = Category(id: dto.category.id,
+                            name: dto.category.name,
+                            imageURL: dto.category.img)
         createdAt = {
             let string = dto.createdAt
             let array = string.split(separator: ".")

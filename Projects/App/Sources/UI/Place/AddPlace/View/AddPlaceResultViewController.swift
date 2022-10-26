@@ -177,9 +177,9 @@ extension AddPlaceResultViewController {
         categoryTagLabel.text = place.category.name
         placeNameLabel.text = place.name
         addressLabel.text = place.address
-        orgLabel.text = "\(place.organizationId)번 대학"
-        creatorLabel.text = "\(place.creator)번 유저"
-        dateLabel.text = place.createdAt.getDateToString(format: "YYYY.MM.DD")
+        orgLabel.text = place.organizationId
+        creatorLabel.text = place.creator
+        dateLabel.text = place.createdAt.getDateToString(format: "YYYY.MM.dd")
         iconView.kf.setImage(with: URL(string: place.category.imageURL ?? "https://user-images.githubusercontent.com/63157395/197410857-e13c1bbb-b19a-4c59-a493-77501a4a529b.png"))
         
     }
