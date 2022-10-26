@@ -52,6 +52,7 @@ extension SubPlaceListViewControllerViewController {
 }
 
 extension SubPlaceListViewControllerViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 5
     }
@@ -62,6 +63,7 @@ extension SubPlaceListViewControllerViewController: UITableViewDataSource {
         
         return cell
     }
+    
 }
 
 extension SubPlaceListViewControllerViewController: UITableViewDelegate {
@@ -71,6 +73,8 @@ extension SubPlaceListViewControllerViewController: UITableViewDelegate {
 }
 
 // MARK: - Previews
+
+#if DEBUG
 import SwiftUI
 
 struct SubPlaceListViewControllerPreview: PreviewProvider {
@@ -80,3 +84,4 @@ struct SubPlaceListViewControllerPreview: PreviewProvider {
     }
     
 }
+#endif
