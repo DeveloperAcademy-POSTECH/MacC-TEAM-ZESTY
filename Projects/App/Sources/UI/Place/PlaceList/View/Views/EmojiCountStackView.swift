@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 final class EmojiCountStackView: UIStackView {
     private let countLabel = UILabel()
@@ -41,6 +42,10 @@ final class EmojiCountStackView: UIStackView {
     
     private func createLayout() {
         addArrangedSubviews([imageView, countLabel])
+        
+        imageView.snp.makeConstraints {
+            $0.size.equalTo(30)
+        }
     }
 }
 

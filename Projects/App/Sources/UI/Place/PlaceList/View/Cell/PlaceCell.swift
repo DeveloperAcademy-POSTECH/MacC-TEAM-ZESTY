@@ -83,7 +83,7 @@ extension PlaceCell {
         
         emojiStackView.spacing = 15
         emojiStackView.axis = .horizontal
-        emojiStackView.distribution = .fill
+        emojiStackView.distribution = .fillEqually
     }
     
     private func createLayout() {
