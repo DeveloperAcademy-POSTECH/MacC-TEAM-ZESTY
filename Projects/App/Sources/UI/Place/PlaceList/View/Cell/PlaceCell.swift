@@ -36,7 +36,7 @@ final class PlaceCell: UITableViewCell {
     
     lazy var goodEmojiStackView = EmojiCountStackView(emojiCount: viewModel.goodCount, emoji: UIImage(.img_reviewfriends_good_30)!)
     lazy var sosoEmojiStackView = EmojiCountStackView(emojiCount: viewModel.sosoCount, emoji: UIImage(.img_reviewfriends_soso_30)!)
-    lazy var badEmojiStackView = EmojiCountStackView(emojiCount: viewModel.badCount, emoji: UIImage(.img_reviewfriends_bad_30)!)
+lazy var badEmojiStackView = EmojiCountStackView(emojiCount: viewModel.badCount, emoji: UIImage(.img_reviewfriends_bad_30)!)
     
     // MARK: - LifeCycle
 
@@ -47,7 +47,7 @@ final class PlaceCell: UITableViewCell {
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
+        fatalError("init(coder:) has not been implemented")
     }
     
 }
