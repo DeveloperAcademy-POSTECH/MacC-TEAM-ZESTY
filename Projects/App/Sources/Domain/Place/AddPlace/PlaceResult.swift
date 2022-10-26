@@ -31,7 +31,7 @@ extension PlaceResult {
         address = dto.address
         category = Category.mockData[dto.category+1]
         createdAt = {
-            var string = dto.createdAt
+            let string = dto.createdAt
             let array = string.split(separator: ".")
             let dateStr = "" + array[0]
             return dateStr.toDate() ?? Date()
