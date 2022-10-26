@@ -12,7 +12,7 @@ import SnapKit
 import Kingfisher
 
 final class EmptyReviewCell: UITableViewCell {
-    // repairStart
+
     // MARK: - Properties
 
     private let bgView: UIView = {
