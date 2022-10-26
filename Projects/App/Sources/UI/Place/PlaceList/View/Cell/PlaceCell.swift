@@ -11,7 +11,7 @@ import SnapKit
 
 final class PlaceCell: UITableViewCell {
     // TODO: 리뷰가 없는 상황을 가정한 cell입니다. 변경 예정
-    private let viewModel = PlaceCellVeiwModel(placeName: "쌀국수 집을 하려다가 망한\n소바집인데 쌀국수가 잘팔리는 곳", category: Category(id: 2, name: "일식"), goodCount: 17, sosoCount: 2, badCount: 4, menuName: nil, reviewImage: nil)
+//    private let viewModel = PlaceCellVeiwModel(placeName: "쌀국수 집을 하려다가 망한\n소바집인데 쌀국수가 잘팔리는 곳", category: Category(id: 2, name: "일식"), goodCount: 17, sosoCount: 2, badCount: 4, menuName: nil, reviewImage: nil)
     
     // MARK: - Properties
     private let horizontalPadding: CGFloat = 45
@@ -56,7 +56,16 @@ final class PlaceCell: UITableViewCell {
 
 extension PlaceCell {
     
-    func configureUI() {
+    func setUp(with place: Place) {
+        if place.reviews[0].imageURL == nil {
+            mainStackView.layer.borderWidth = 1
+        }
+        reviewImageView.image = UIImage(.img_zesterone) // place.reviews[0].imageURL
+        menuLabel.text = place.reviews[0].menuName
+        placeNameLabel.text = place.name
+    }
+    
+    private func configureUI() {
         configureGradientView()
         
         mainStackView.spacing = 0
@@ -65,20 +74,13 @@ extension PlaceCell {
         mainStackView.layer.cornerRadius = 16
         mainStackView.layer.masksToBounds = true
         
-        if !viewModel.isReviewExists {
-            mainStackView.layer.borderWidth = 1
-        }
-        
-        reviewImageView.image = viewModel.reviewImage
         reviewImageView.contentMode = .scaleAspectFit
         
-        menuLabel.text = viewModel.menuName
         menuLabel.textColor = .white
         
         bottomView.backgroundColor = .label
         
         placeNameLabel.textColor = .zestyColor(.whiteEBEBF5)
-        placeNameLabel.text = viewModel.placeName
         placeNameLabel.numberOfLines = 2
         placeNameLabel.font = .systemFont(ofSize: 20, weight: .bold)
         
