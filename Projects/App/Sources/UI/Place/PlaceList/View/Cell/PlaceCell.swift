@@ -14,9 +14,7 @@ final class PlaceCell: UITableViewCell {
     private let viewModel = PlaceCellVeiwModel(placeName: "쌀국수 집을 하려다가 망한\n소바집인데 쌀국수가 잘팔리는 곳", category: Category(id: 2, name: "일식"), goodCount: 17, sosoCount: 2, badCount: 4, menuName: nil, reviewImage: nil)
     
     // MARK: - Properties
-    private let horizontalPadding: CGFloat = 45
-    private lazy var screenWidth = UIScreen.main.bounds.size.width
-
+    
     static let identifier = "WholePlaceCell"
     
     private lazy var mainStackView = UIStackView()
@@ -93,14 +91,14 @@ extension PlaceCell {
         
         mainStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(10)
-            make.horizontalEdges.equalToSuperview().inset(horizontalPadding)
+            make.horizontalEdges.equalToSuperview().inset(45)
             make.bottom.equalToSuperview().inset(20)
         }
         
         reviewImageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.horizontalEdges.equalToSuperview()
-            make.height.equalTo(screenWidth - horizontalPadding * 2)
+            make.height.equalTo(reviewImageView.snp.width)
         }
         
         middelView.snp.makeConstraints { make in
