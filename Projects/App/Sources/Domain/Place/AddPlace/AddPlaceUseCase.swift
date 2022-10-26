@@ -55,20 +55,4 @@ final class AddPlaceUseCase {
         return outputBool.eraseToAnyPublisher()
     }
     
-//
-//        PlaceAPI.fetchReviewList(placeId: placeId)
-//            .sink { error in
-//                switch error {
-//                case .failure(let error): print(error.localizedString)
-//                case .finished: break
-//                }
-//            } receiveValue: { [weak self] placeReviewListDTO in
-//                let reviewList = placeReviewListDTO.map {
-//                    Review(placeReviewDto: $0) }
-//                self?.outputReview.send(reviewList)
-//            }
-//            .store(in: &cancelBag)
-//
-//        return outputReview.eraseToAnyPublisher()
-    
 }

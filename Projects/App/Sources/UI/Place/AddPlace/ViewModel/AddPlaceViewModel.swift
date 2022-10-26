@@ -44,9 +44,7 @@ class AddPlaceViewModel {
         input.sink { [weak self] event in
             switch event {
             case .viewDidLoad:
-//                self?.fetchPlaceInfo(id: self?.placeId ?? -1)
-//                self?.fetchReviews(id: self?.placeId ?? -1)
-                print("viewdidload") // ✅
+                print("")
             case .addReviewBtnDidTap:
                 self?.routeTo()
                 
@@ -58,36 +56,8 @@ class AddPlaceViewModel {
     
     // MARK: - functions
     
-//    private func fetchPlaceInfo(id: Int) {
-//        useCase.fetchPlaceDetail(with: id)
-//            .sink { [weak self] completion in
-//                if case .failure(let error) = completion {
-//                    self?.output.send(.fetchPlaceInfoFail(error: error))
-//                }
-//            } receiveValue: { [weak self] place in
-//                self?.place = place
-//                self?.output.send(.fetchPlaceDidSucceed(place: place))
-//            }
-//            .store(in: &cancelBag)
-//    }
-//
-//    private func fetchReviews(id: Int) {
-//        useCase.fetchReviewList(with: id)
-//            .sink { [weak self] completion in
-//                if case .failure(let error) = completion {
-//                    self?.output.send(.fetchReviewListFail(error: error))
-//                }
-//            } receiveValue: { [weak self] reviews in
-//                self?.reviews = reviews
-//                self?.output.send(.fetchReviewListSucceed(list: reviews))
-//            }
-//            .store(in: &cancelBag)
-//    }
-    
     private func routeTo() {
-        // let viewModel = ReviewRegisterViewModel(placeId: place?.id, placeName: place?.name)
-        // EvaluationViewController(viewModel: viewModel)
+
     }
     
-
 }
