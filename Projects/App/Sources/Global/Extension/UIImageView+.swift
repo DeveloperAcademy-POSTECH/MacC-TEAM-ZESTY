@@ -24,14 +24,10 @@ extension UIImageView {
             }
         }
     }
-
-}
-
-extension String {
     
-    func loadImage() -> UIImage? {
+    static func load(url: String?) -> UIImage? {
         let imageView = UIImageView()
-        imageView.load(url: self)
+        imageView.load(url: url)
         
         return imageView.image
     }
