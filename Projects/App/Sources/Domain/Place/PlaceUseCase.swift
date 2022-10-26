@@ -14,17 +14,8 @@ final class PlaceListUseCase {
     
     private var cancelBag = Set<AnyCancellable>()
     
-    func fetchPlaceList(with page: Int) {
-        PlaceAPI.fetchPlaceList(with: page)
-            .sink { error in
-                switch error {
-                case .failure(let error): print(error.localizedString)
-                case .finished: break
-                }
-            } receiveValue: { placeListDTO in
-                let placeList = placeListDTO.map { Place(dto: $0) }
-            }
-            .store(in: &cancelBag)
+    func fetchPlaceList(with page: Int) -> AnyPublisher<PlaceListDTO, NetworkError> {
+        return PlaceAPI.fetchPlaceList(with: page)
     }
     
 }
