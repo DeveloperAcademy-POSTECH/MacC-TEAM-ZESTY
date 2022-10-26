@@ -13,7 +13,7 @@ public struct PlaceAPI {
     
     static let networkService = NetworkService()
 
-    public static func fetchPlaceList(page: Int) -> AnyPublisher<PlaceListDTO, NetworkError> {
+    public static func fetchPlaceList(with page: Int) -> AnyPublisher<PlaceListDTO, NetworkError> {
         let header = ["Content-Type": "application/json"]
         let query = ["cursor": "\(page)"]
         let endpoint = Endpoint(path: "/api/places", queryParams: query, headers: header)
@@ -21,7 +21,7 @@ public struct PlaceAPI {
         return networkService.request(with: endpoint, responseType: PlaceListDTO.self)
     }
     
-    public static func fetchHotPlaceList(page: Int) -> AnyPublisher<PlaceListDTO, NetworkError> {
+    public static func fetchHotPlaceList(with page: Int) -> AnyPublisher<PlaceListDTO, NetworkError> {
         let header = ["Content-Type": "application/json"]
         let query = ["cursor": "\(page)"]
         let endpoint = Endpoint(path: "/api/places/goods", queryParams: query, headers: header)

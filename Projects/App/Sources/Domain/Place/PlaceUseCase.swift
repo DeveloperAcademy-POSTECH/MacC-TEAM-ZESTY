@@ -14,8 +14,8 @@ final class PlaceListUseCase {
     
     private var cancelBag = Set<AnyCancellable>()
     
-    func fetchPlaceList() {
-        PlaceAPI.fetchPlaceList()
+    func fetchPlaceList(with page: Int) {
+        PlaceAPI.fetchPlaceList(with: page)
             .sink { error in
                 switch error {
                 case .failure(let error): print(error.localizedString)

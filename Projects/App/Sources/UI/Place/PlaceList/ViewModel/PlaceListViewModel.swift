@@ -17,7 +17,7 @@ class PlaceListViewModel {
     private var cancelBag = Set<AnyCancellable>()
     
     // Input
-    @Published var cursor: Int = 1
+    @Published var page: Int = 1
     
     // Output
     struct Result {
