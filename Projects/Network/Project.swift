@@ -12,7 +12,7 @@ let project = Project.makeModule(
     name: "Network",
     product: .staticFramework,
     packages: [
-        .remote(url: "https://github.com/awslabs/aws-sdk-swift", requirement: .upToNextMajor(from: "0.3.1"))
+        .remote(url: "https://github.com/aws-amplify/aws-sdk-ios-spm", requirement: .upToNextMajor(from: "2.28.0"))
     ],
     dependencies: [
         .package(product: "AWSS3")
