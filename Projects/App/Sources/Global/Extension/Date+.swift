@@ -30,4 +30,17 @@ extension Date {
         return formatter.string(from: self)
     }
     
+    /**
+     # getStringToDate
+     - Note: 서버에서 받은 String을 Date로 변환
+     - Parameters:
+        - string: 서버에서 받은 String Date (ex : "2022-05-26T18:06:55Z")
+     - Returns: 변형한 Date
+    */
+    public static func getStringToDate(_ string: String) -> Self {
+        let expectedFormat = Date.ISO8601FormatStyle()
+        let date = try? Date(string, strategy: expectedFormat)
+        return date ?? Date()
+    }
+    
 }

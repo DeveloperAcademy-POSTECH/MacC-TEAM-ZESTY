@@ -5,7 +5,7 @@ public extension Project {
         name: String,
         platform: Platform = .iOS,
         product: Product,
-        organizationName: String = "zesty",
+        organizationName: String = "com.zesty",
         packages: [Package] = [],
         deploymentTarget: DeploymentTarget? = .iOS(targetVersion: "15.0", devices: [.iphone]),
         dependencies: [TargetDependency] = [],
