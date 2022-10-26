@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "btn_insta.png",
+      "filename" : "btn_link_mail.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -17,8 +17,5 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
-  },
-  "properties" : {
-    "localizable" : true
   }
 }

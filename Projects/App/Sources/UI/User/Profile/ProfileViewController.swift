@@ -42,7 +42,7 @@ extension ProfileViewController {
         profileImage.image = UIImage(.img_signup)
         profileImage.contentMode = .scaleAspectFit
         
-        instaButton.setImage(UIImage(.btn_insta), for: .normal)
+        instaButton.setImage(UIImage(.btn_link_instargram), for: .normal)
         
         instaLink.text = "인스타"
         instaLink.textColor = .black
@@ -50,7 +50,7 @@ extension ProfileViewController {
         instaLink.textAlignment = .center
         instaLink.numberOfLines = 1
 
-        mailButton.setImage(UIImage(.btn_mail), for: .normal)
+        mailButton.setImage(UIImage(.btn_link_mail), for: .normal)
 
         mailLink.text = "문의"
         mailLink.textColor = .black
