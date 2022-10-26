@@ -73,7 +73,7 @@ extension PlaceCell {
         
         bottomView.backgroundColor = .label
         
-        placeNameLabel.textColor = .zestyColor(.whiteEBEBF5)
+        placeNameLabel.textColor = .white
         placeNameLabel.text = viewModel.placeName
         placeNameLabel.numberOfLines = 2
         placeNameLabel.font = .systemFont(ofSize: 20, weight: .bold)
