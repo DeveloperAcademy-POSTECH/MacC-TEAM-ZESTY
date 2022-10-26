@@ -83,6 +83,18 @@ extension Place {
               category: [Category.mockData[0], Category.mockData[3]],
               evaluationSum: EvaluationSum.mockData[0], reviews: [])
     ]
+    
+    static let empty: Place =
+        Place(id: 0,
+              creator: nil,
+              organizationId: -1,
+              name: "(가게정보없음)",
+              address: "",
+              lat: "",
+              lan: "",
+              category: [Category.init(id: -1, name: "카테고리")],
+              evaluationSum: EvaluationSum(good: 0, soso: 0, bad: 0),
+              reviews: [])
 }
 
 extension Review {
