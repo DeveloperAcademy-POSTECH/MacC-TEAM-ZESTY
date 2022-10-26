@@ -13,7 +13,6 @@ public enum Color: String {
     case disabled
     case dim
     case point
-    
     case grayC5
     case grayF6
     case gray3C
@@ -40,7 +39,6 @@ public enum Color: String {
             return "#3C3C43FF"
         case .whiteEBEBF5:
             return "#EBEBF5FF"
-            
         }
     }
 }

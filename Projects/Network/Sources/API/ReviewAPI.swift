@@ -12,13 +12,35 @@ import Foundation
 public struct ReviewAPI {
     
     static let networkService = NetworkService()
-
+    
     public static func dispatchPlace(place: Any) -> Any {
         let boundary = UUID().uuidString
         let header = ["Content-Type": "multipart/form-data; boundary=\(boundary)"]
         let endpoint = Endpoint(path: "/place", method: .post, headers: header)
         
         return networkService.request(with: endpoint, responseType: String.self) // responsable type
+    }
+    
+    public static func postReview(with DTO: RegisterReviewDTO) -> AnyPublisher<ReviewDetailDTO, NetworkError> {
+        let header = ["Content-Type": "application/json"]
+        let review = DTO
+        let endpoint = Endpoint(path: "/api/review", method: .post, bodyParams: review, headers: header)
+        
+        return networkService.request(with: endpoint, responseType: ReviewDetailDTO.self)
+    }
+    
+}
+
+// MARK: - Mock API
+
+extension ReviewAPI {
+    
+    public static func postReviewMock(with DTO: RegisterReviewDTO) -> AnyPublisher<ReviewDetailDTO, NetworkError> {
+        return Just(ReviewDetailDTO.mock)
+            .mapError { _ in
+                NetworkError.unknown("will never be executed")
+            }
+            .eraseToAnyPublisher()
     }
 
 }
