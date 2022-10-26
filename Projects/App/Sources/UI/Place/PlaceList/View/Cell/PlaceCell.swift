@@ -118,7 +118,6 @@ extension PlaceCell {
         }
         
         menuLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(40)
             make.left.equalToSuperview().inset(20)
             make.bottom.equalToSuperview()
         }
