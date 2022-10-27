@@ -26,7 +26,7 @@ final class ReviewCell: UITableViewCell {
     
     private let emojiView: UIImageView = {
         $0.contentMode = .scaleAspectFit
-        $0.image = UIImage(.img_reviewfriends_good_60)
+        $0.image = UIImage(.img_reviewfriends_good)
         return $0
     }(UIImageView(frame: .zero))
     
@@ -83,11 +83,11 @@ final class ReviewCell: UITableViewCell {
 
             switch review.evaluation {
             case .good:
-                self.emojiView.image = UIImage(.img_reviewfriends_good_45)
+                self.emojiView.image = UIImage(.img_reviewfriends_good)
             case .soso:
-                self.emojiView.image = UIImage(.img_reviewfriends_soso_45)
+                self.emojiView.image = UIImage(.img_reviewfriends_soso)
             case .bad:
-                self.emojiView.image = UIImage(.img_reviewfriends_bad_45)
+                self.emojiView.image = UIImage(.img_reviewfriends_bad)
             }
         }
     }
