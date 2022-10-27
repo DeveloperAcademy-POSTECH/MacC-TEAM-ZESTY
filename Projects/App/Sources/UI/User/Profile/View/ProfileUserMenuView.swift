@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DesignSystem
 import SnapKit
 
 final class ProfileUserMenuView: UIView {
@@ -14,6 +15,7 @@ final class ProfileUserMenuView: UIView {
     // MARK: Properties
         
     private let userMenuLabel = UILabel()
+    private let isSE = UIScreen.main.isHeightLessThan670pt
     
     // MARK: LifeCycle
     
@@ -42,13 +44,23 @@ extension ProfileUserMenuView {
         backgroundColor = .zestyColor(.background)
 
         userMenuLabel.font = .systemFont(ofSize: 16, weight: .medium)
-        userMenuLabel.textColor = .black
+        userMenuLabel.textColor = .zestyColor(.dim)
         userMenuLabel.textAlignment = .left
         userMenuLabel.numberOfLines = 1
     }
     
     private func createLayout() {
         addSubview(userMenuLabel)
+        
+        if isSE {
+            snp.makeConstraints {
+                $0.height.equalTo(50)
+            }
+        } else {
+            snp.makeConstraints {
+                $0.height.equalTo(60)
+            }
+        }
         
         userMenuLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(30)
