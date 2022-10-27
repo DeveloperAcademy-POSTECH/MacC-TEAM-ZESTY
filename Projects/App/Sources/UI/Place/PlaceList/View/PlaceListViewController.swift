@@ -90,7 +90,6 @@ extension PlaceListViewController: UITableViewDelegate {
         let placeId = viewModel.result[indexPath.row].id
         let placeDetailViewModel = PlaceDetailViewModel(placeId: placeId)
         show(PlaceDetailViewController(viewModel: placeDetailViewModel), sender: nil)
-        print("selected! \(indexPath)")
     }
     
 }

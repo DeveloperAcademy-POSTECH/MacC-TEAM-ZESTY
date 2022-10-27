@@ -56,6 +56,8 @@ public enum Asset: String {
     case img_ticket_bottom
     case img_categoryfriends_western
     case img_reviewfriends_photo
+    case img_categoryfriends
+    case img_errorfriends
     
     // img_emptyfriends
     case img_emptyfriends_search
