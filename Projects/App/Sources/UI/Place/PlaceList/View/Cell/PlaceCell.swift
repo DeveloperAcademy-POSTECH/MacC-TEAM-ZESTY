@@ -17,7 +17,12 @@ final class PlaceCell: UITableViewCell {
     static let identifier = "PlaceCell"
      
     private lazy var containerView = UIView()
-    private lazy var reviewView = ReviewPageView()
+    
+    private lazy var scrollView = UIScrollView()
+    private lazy var pageStackView = UIStackView()
+    private lazy var pageControl = UIPageControl()
+    private lazy var reviewViews = [ReviewPageView(), ReviewPageView(), ReviewPageView()]
+    
     private lazy var middelView = UIView()
     private lazy var gradientStackView = UIStackView()
     private lazy var bottomView = UIView()
@@ -35,16 +40,35 @@ final class PlaceCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         createLayout()
         configureUI()
-        setUp(with: Place.mockData[0])
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+        pageControl.currentPage = 0
+        pageControl.numberOfPages = 0
+    }
+    
 }
 
 // MARK: - UI Function
+
+extension PlaceCell: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let pageWidth = scrollView.bounds.width
+        let pageFraction = scrollView.contentOffset.x / pageWidth
+        
+        pageControl.currentPage = Int((round(pageFraction)))
+        
+        scrollView.bounces = scrollView.contentOffset.x > 0 && scrollView.contentOffset.x < pageWidth
+    }
+    
+}
 
 extension PlaceCell {
 
@@ -54,12 +78,26 @@ extension PlaceCell {
         sosoEmojiStackView.setUp(count: place.evaluationSum.soso)
         badEmojiStackView.setUp(count: place.evaluationSum.bad)
         
-        place.reviews.forEach { review in
-            reviewView.setUp(with: review)
+        for index in 0..<place.reviews.count {
+            let review = place.reviews[index]
+            reviewViews[index].setUp(with: review)
+            pageStackView.addArrangedSubview(reviewViews[index])
+            reviewViews[index].snp.makeConstraints {
+                $0.verticalEdges.equalToSuperview()
+                $0.width.equalTo(containerView.snp.width)
+            }
         }
+        pageControl.numberOfPages = place.reviews.count
     }
 
     private func configureUI() {
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.isPagingEnabled = true
+        scrollView.delegate = self
+        
+        pageStackView.axis = .horizontal
+        pageStackView.distribution = .fillEqually
+        
         containerView.layer.applyFigmaShadow()
         containerView.layer.cornerRadius = 16
         containerView.layer.masksToBounds = true
@@ -77,7 +115,8 @@ extension PlaceCell {
     
     private func createLayout() {
         contentView.addSubview(containerView)
-        containerView.addSubviews([reviewView, bottomView])
+        containerView.addSubviews([scrollView, bottomView, pageControl])
+        scrollView.addSubview(pageStackView)
         bottomView.addSubviews([placeNameLabel, emojiStackView])
         emojiStackView.addArrangedSubviews([goodEmojiStackView, sosoEmojiStackView, badEmojiStackView])
 
@@ -86,22 +125,28 @@ extension PlaceCell {
             $0.top.height.equalToSuperview().inset(15)
         }
         
-        reviewView.snp.makeConstraints {
+        scrollView.snp.makeConstraints {
             $0.top.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(reviewView.snp.width)
+            $0.height.equalTo(scrollView.snp.width)
+        }
+        pageStackView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(containerView.snp.width)
+        }
+        pageControl.snp.makeConstraints {
+            $0.bottom.equalTo(scrollView.snp.bottom)
+            $0.trailing.equalToSuperview()
         }
         
         bottomView.snp.makeConstraints { make in
-            make.top.equalTo(reviewView.snp.bottom)
+            make.top.equalTo(scrollView.snp.bottom)
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalToSuperview()
         }
-        
         placeNameLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(15)
             make.horizontalEdges.equalToSuperview().inset(20)
         }
-        
         emojiStackView.snp.makeConstraints { make in
             make.top.equalTo(placeNameLabel.snp.bottom).offset(10)
             make.leading.bottom.equalToSuperview().inset(20)
