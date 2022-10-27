@@ -154,9 +154,10 @@ extension PlaceListViewController {
         }
         
         segmentedControl.snp.makeConstraints { make in
-            make.verticalEdges.equalToSuperview().inset(27)
+            make.centerY.equalToSuperview()
             make.left.equalToSuperview().inset(20)
             make.width.equalTo(172)
+            make.height.equalTo(32)
         }
         
         segmentIndicator.snp.makeConstraints { make in
@@ -174,12 +175,13 @@ extension PlaceListViewController {
         }
         
         addPlaceButton.snp.makeConstraints { make in
-            make.verticalEdges.equalToSuperview().inset(10)
-            make.right.equalToSuperview()
+            make.centerY.right.equalToSuperview()
+            make.width.equalTo(70)
+            make.height.equalTo(65)
         }
         
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(headerView.snp.bottom).offset(20)
+            make.top.equalTo(headerView.snp.bottom)
             make.horizontalEdges.bottom.equalToSuperview()
         }
     }
