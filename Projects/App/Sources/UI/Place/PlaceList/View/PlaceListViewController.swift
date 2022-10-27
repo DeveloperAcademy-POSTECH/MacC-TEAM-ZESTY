@@ -6,6 +6,7 @@
 //  Copyright (c) 2022 zesty. All rights reserved.
 //
 
+
 import Combine
 import UIKit
 import SnapKit
@@ -82,7 +83,6 @@ extension PlaceListViewController: UITableViewDelegate {
         let placeId = viewModel.result[indexPath.row].id
         let placeDetailViewModel = PlaceDetailViewModel(placeId: placeId)
         show(PlaceDetailViewController(viewModel: placeDetailViewModel), sender: nil)
-        print("selected! \(indexPath)")
     }
     
 }
