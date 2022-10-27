@@ -45,7 +45,6 @@ class AddPlaceSearchViewModel {
             case .searchBtnDidTap(let placeName):
                 self?.searchPlace(name: placeName)
             case .placeResultCellDidTap(let kakaoPlace):
-                print("💬장소선택 sink")
                 self?.selectPlaceToAdd(place: kakaoPlace)
             }
         }.store(in: &cancelBag)
@@ -69,20 +68,15 @@ class AddPlaceSearchViewModel {
     
     private func selectPlaceToAdd(place: KakaoPlace) {
         
-        print("🚑선택된 장소 : \(place)")
-        
         useCase.checkRegisterdPlace(with: place.kakaoPlaceId)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     self?.output.send(.addSelectedPlaceFail(error: error))
                 }
             } receiveValue: { [weak self] result in
-                print("💕receiveValue 장소 : \(place)")
                 if result {
-                    print("🎨 등록된 장소 : \(place)")
                     self?.output.send(.existingPlace)
                 } else {
-                    print("📱 등록하는 장소 : \(place)")
                     self?.output.send(.addSelectedPlaceDidSucceed(kakaoPlace: place))
                 }
             }

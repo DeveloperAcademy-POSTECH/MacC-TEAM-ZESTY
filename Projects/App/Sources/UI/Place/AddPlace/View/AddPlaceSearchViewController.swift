@@ -201,7 +201,6 @@ extension AddPlaceSearchViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("🚀didSelectRowAt")
         let place = searchResults[indexPath.row]
         self.input.send(.placeResultCellDidTap(kakaoPlace: place))
         
