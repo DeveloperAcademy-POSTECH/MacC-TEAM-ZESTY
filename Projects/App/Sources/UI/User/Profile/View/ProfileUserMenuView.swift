@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DesignSystem
 import SnapKit
 
 final class ProfileUserMenuView: UIView {
@@ -42,7 +43,7 @@ extension ProfileUserMenuView {
         backgroundColor = .zestyColor(.background)
 
         userMenuLabel.font = .systemFont(ofSize: 16, weight: .medium)
-        userMenuLabel.textColor = .black
+        userMenuLabel.textColor = .zestyColor(.dim)
         userMenuLabel.textAlignment = .left
         userMenuLabel.numberOfLines = 1
     }
