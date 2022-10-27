@@ -79,6 +79,7 @@ extension OrgDetailViewController {
 
         orgInformationImage1.image = UIImage(.img_reviewfriends_together)
         orgInformationImage1.contentMode = .scaleAspectFit
+        orgInformationImage1.layer.applyFigmaShadow(color: .black, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
         orgDetailInformationView1.informationLabel.text = "함께하는 친구들"
         orgDetailInformationView1.numberLabel.text = "13,966명"
         
@@ -89,7 +90,7 @@ extension OrgDetailViewController {
         
         orgInformationImage3.image = UIImage(.img_reviewfriends_photo)
         orgInformationImage3.contentMode = .scaleAspectFit
-        orgInformationImage3.layer.applyFigmaShadow(color: .black, opacity: 0.05, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
+        orgInformationImage3.layer.applyFigmaShadow(color: .black, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
         orgDetailInformationView3.informationLabel.text = "업로드된 사진"
         orgDetailInformationView3.numberLabel.text = "124,513개"
         
