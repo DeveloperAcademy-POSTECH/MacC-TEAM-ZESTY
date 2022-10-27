@@ -150,10 +150,18 @@ final class AddPlaceResultViewController: UIViewController {
     
     @objc func saveButtonDidTap() {
         // ShareSheet
+        let reviewCard = placeCard.transfromToImage() ?? UIImage()
+        saveImage(with: reviewCard)
     }
     
     @objc func doneButtonDidTap() {
         self.navigationController?.popToRootViewController(animated: true)
+    }
+    
+    func saveImage(with image: UIImage) {
+        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        self.present(activityViewController, animated: true, completion: nil)
     }
     
 }
