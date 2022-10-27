@@ -15,11 +15,15 @@ import Kingfisher
 final class AddPlaceResultViewController: UIViewController {
     
     // MARK: - Properties
-    private let viewModel: AddPlaceViewModel
+    private let viewModel: AddPlaceResultViewModel
     private var cancelBag = Set<AnyCancellable>()
-    private let isSE = UIScreen.main.isLessThan376pt && !UIDevice.current.hasNotch
+    private let input: PassthroughSubject<AddPlaceResultViewModel.Input, Never> = .init()
+    
+    private let isSE = UIScreen.main.isHeightLessThan670pt
     
     private lazy var titleView = MainTitleView(title: "맛집 등록 완료 🎉")
+    
+    private let placeCard = PlaceCardView()
     
     private lazy var ticketImageView: UIImageView = {
         $0.contentMode = .scaleAspectFit
@@ -121,7 +125,7 @@ final class AddPlaceResultViewController: UIViewController {
     }(FullWidthBlackButton())
     
     // MARK: - LifeCycle
-    init(viewModel: AddPlaceViewModel) {
+    init(viewModel: AddPlaceResultViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -132,6 +136,8 @@ final class AddPlaceResultViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bind()
+        input.send(.viewDidLoad)
         configureUI()
         createLayout()
         setNavigationBar()
@@ -139,15 +145,23 @@ final class AddPlaceResultViewController: UIViewController {
     
     // MARK: - Function
     @objc func backButtonDidTap() {
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     @objc func saveButtonDidTap() {
         // ShareSheet
+        let reviewCard = placeCard.transfromToImage() ?? UIImage()
+        saveImage(with: reviewCard)
     }
     
     @objc func doneButtonDidTap() {
         self.navigationController?.popToRootViewController(animated: true)
+    }
+    
+    func saveImage(with image: UIImage) {
+        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        self.present(activityViewController, animated: true, completion: nil)
     }
     
 }
@@ -156,9 +170,20 @@ final class AddPlaceResultViewController: UIViewController {
 extension AddPlaceResultViewController {
     
     private func bind() {
+        let output = viewModel.transform(input: input.eraseToAnyPublisher())
         
+        output
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                switch state {
+                case .loadPlaceResultSucceed(let place):
+                    self?.placeCard.setup(with: place)
+                }
+            }
+            .store(in: &cancelBag)
     }
     
+
 }
 
 // MARK: - UI Function
@@ -167,14 +192,10 @@ extension AddPlaceResultViewController {
     
     private func configureUI() {
         view.backgroundColor = .white // zestyColor(.backgroundColor)
-        iconView.kf.setImage(with: URL(string: "https://user-images.githubusercontent.com/63157395/197410857-e13c1bbb-b19a-4c59-a493-77501a4a529b.png"))
     }
     
     private func createLayout() {
-        view.addSubviews([titleView, ticketImageView, iconView,
-                          categoryTagLabel, placeNameLabel, addressLabel,
-                          orgTitle, creatorTitle, dateTitle,
-                          orgLabel, creatorLabel, dateLabel,
+        view.addSubviews([titleView, placeCard,
                           saveButton, doneButton])
         
         titleView.snp.makeConstraints {
@@ -182,68 +203,15 @@ extension AddPlaceResultViewController {
             $0.horizontalEdges.equalToSuperview()
         }
         
-        ticketImageView.snp.makeConstraints {
+        placeCard.snp.makeConstraints {
             $0.top.equalTo(titleView.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
-            $0.width.equalToSuperview().multipliedBy(0.77)
-            $0.height.equalToSuperview().multipliedBy(0.59)
-        }
-        
-        orgTitle.snp.makeConstraints {
-            $0.top.equalTo(ticketImageView).offset(30)
-            $0.leading.trailing.equalTo(ticketImageView).inset(isSE ? 40 : 25)
-        }
-        
-        orgLabel.snp.makeConstraints {
-            $0.top.equalTo(orgTitle.snp.bottom).offset(4)
-            $0.leading.trailing.equalTo(ticketImageView).inset(isSE ? 40 : 25)
-        }
-        
-        creatorTitle.snp.makeConstraints {
-            $0.top.equalTo(orgLabel.snp.bottom).offset(20)
-            $0.leading.trailing.equalTo(ticketImageView).inset(isSE ? 40 : 25)
-        }
-        
-        creatorLabel.snp.makeConstraints {
-            $0.top.equalTo(creatorTitle.snp.bottom).offset(4)
-            $0.leading.trailing.equalTo(ticketImageView).inset(isSE ? 40 : 25)
-        }
-        
-        dateTitle.snp.makeConstraints {
-            $0.top.equalTo(creatorLabel.snp.bottom).offset(20)
-            $0.leading.trailing.equalTo(ticketImageView).inset(isSE ? 40 : 25)
-        }
-        
-        dateLabel.snp.makeConstraints {
-            $0.top.equalTo(dateTitle.snp.bottom).offset(4)
-            $0.leading.trailing.equalTo(ticketImageView).inset(isSE ? 40 : 25)
-        }
-        
-        categoryTagLabel.snp.makeConstraints {
-            $0.bottom.equalTo(placeNameLabel.snp.top).offset(-4)
-            $0.leading.equalTo(ticketImageView).inset(isSE ? 40 : 25)
+            $0.width.equalTo(300)
+            $0.height.equalTo(400)
         }
 
-        placeNameLabel.snp.makeConstraints {
-            $0.bottom.equalTo(addressLabel.snp.top).offset(-4)
-            $0.leading.equalTo(ticketImageView).inset(isSE ? 40 : 25)
-            $0.trailing.equalTo(iconView.snp.leading).offset(-10)
-        }
-
-        addressLabel.snp.makeConstraints {
-            $0.bottom.equalTo(ticketImageView.snp.bottom).offset(isSE ? -100 : -130)
-            $0.leading.equalTo(ticketImageView).inset(isSE ? 40 : 25)
-            $0.trailing.equalTo(iconView.snp.leading).offset(isSE ? -8 : -10)
-        }
-
-        iconView.snp.makeConstraints {
-            $0.bottom.equalTo(ticketImageView.snp.bottom).offset(isSE ? -100 : -130)
-            $0.trailing.equalTo(ticketImageView).offset(-40)
-            $0.width.height.equalTo(isSE ? 55 : 65)
-        }
-        
         saveButton.snp.makeConstraints {
-            $0.top.equalTo(ticketImageView.snp.bottom).offset(15)
+            $0.top.equalTo(placeCard.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
         }
         
@@ -256,9 +224,9 @@ extension AddPlaceResultViewController {
     }
     
     private func setNavigationBar() {
-        let leftBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonDidTap))
-        leftBarButton.tintColor = .label
-        navigationItem.leftBarButtonItem = leftBarButton
+        let rightBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(backButtonDidTap))
+        rightBarButton.tintColor = .label
+        navigationItem.leftBarButtonItem = rightBarButton
     }
     
 }

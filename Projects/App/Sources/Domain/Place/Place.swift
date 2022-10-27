@@ -17,7 +17,7 @@ struct Place {
     let name: String
     let address: String
     let lat: String
-    let lan: String
+    let lon: String
     let category: [Category]
     let evaluationSum: EvaluationSum
     let reviews: [Review] // Preview Image
@@ -39,7 +39,7 @@ extension Place {
         name = dto.shopName
         address = ""
         lat = ""
-        lan = ""
+        lon = ""
         category = Category.mockData
         evaluationSum = EvaluationSum(dto: dto.evaluations)
         reviews = dto.reviewContent.map { Review($0) }
@@ -47,19 +47,20 @@ extension Place {
     
     init(detailDTO dto: PlaceDetailDTO) {
         id = dto.placeID
-        kakaoPlaceId = 0
-        creator = nil
+        kakaoPlaceId = dto.placeID
+        creator = User.mockData[0]
         organizationId = -1
         name = dto.placeName
         address = dto.address
         lat = dto.lat
-        lan = dto.long
+        lon = dto.long
         category = [Category(id: dto.category.id, name: dto.category.name, imageURL: nil)]
         evaluationSum = EvaluationSum(good: dto.evaluationSummary.goodCount,
                                       soso: dto.evaluationSummary.sosoCount,
                                       bad: dto.evaluationSummary.badCount)
         reviews = []
     }
+    
 
 }
 

@@ -57,10 +57,6 @@ extension MainTitleView {
         addSubview(titleStackView)
         titleStackView.addArrangedSubview(titleLabel)
         
-        self.snp.makeConstraints { make in
-            make.height.greaterThanOrEqualTo(94)
-        }
-        
         titleStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(30)
             make.horizontalEdges.equalToSuperview().inset(20)
@@ -70,7 +66,6 @@ extension MainTitleView {
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.horizontalEdges.equalToSuperview()
-            make.height.greaterThanOrEqualTo(31)
         }
         
         if !subtitle.isEmpty {
@@ -78,7 +73,6 @@ extension MainTitleView {
             
             subtitleLabel.snp.makeConstraints { make in
                 make.horizontalEdges.equalToSuperview()
-                make.height.greaterThanOrEqualTo(21)
             }
         }
     }

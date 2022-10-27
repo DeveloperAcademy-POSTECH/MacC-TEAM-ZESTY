@@ -39,7 +39,6 @@ class AddPlaceSearchViewModel {
     
     // MARK: - transform : Input -> Output
     func transform(input: AnyPublisher<Input, Never>) -> AnyPublisher<Output, Never> {
-        
         input.sink { [weak self] event in
             switch event {
             case .searchBtnDidTap(let placeName):
@@ -67,6 +66,7 @@ class AddPlaceSearchViewModel {
     }
     
     private func selectPlaceToAdd(place: KakaoPlace) {
+        
         useCase.checkRegisterdPlace(with: place.kakaoPlaceId)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
