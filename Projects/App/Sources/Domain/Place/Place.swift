@@ -47,7 +47,8 @@ extension Place {
     
     init(detailDTO dto: PlaceDetailDTO) {
         id = dto.placeID
-        creator = nil
+        creator = User.mockData[0]
+        kakaoPlaceId = 1
         organizationId = -1
         name = dto.placeName
         address = dto.address
