@@ -13,6 +13,7 @@ import SnapKit
 final class OrgDetailInformationView: UIView {
 
     // MARK: - Properties
+    
     let informationLabel = UILabel()
     let numberLabel = UILabel()
 
@@ -33,6 +34,7 @@ final class OrgDetailInformationView: UIView {
 }
 
 // MARK: - UI Function
+
 extension OrgDetailInformationView {
 
     private func configureUI() {
