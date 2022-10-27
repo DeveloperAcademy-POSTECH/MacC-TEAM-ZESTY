@@ -11,7 +11,8 @@ import Network
 
 struct Place {
     let id: Int
-    let creator: User?
+    let kakaoPlaceId: Int
+    let creator: User
     let organizationId: Int
     let name: String
     let address: String
@@ -32,6 +33,7 @@ extension Place {
     
     init(dto: PlaceDTO) {
         id = 1
+        kakaoPlaceId = 0
         creator = User.mockData[0]
         organizationId = 0
         name = dto.shopName

@@ -15,7 +15,7 @@ import Kingfisher
 final class AddPlaceResultViewController: UIViewController {
     
     // MARK: - Properties
-    private let viewModel = AddPlaceViewModel()
+    private let viewModel: AddPlaceViewModel
     private var cancelBag = Set<AnyCancellable>()
     private let isSE = UIScreen.main.isLessThan376pt && !UIDevice.current.hasNotch
     
@@ -121,6 +121,14 @@ final class AddPlaceResultViewController: UIViewController {
     }(FullWidthBlackButton())
     
     // MARK: - LifeCycle
+    init(viewModel: AddPlaceViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
