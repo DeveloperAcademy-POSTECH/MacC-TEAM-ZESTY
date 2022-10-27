@@ -13,25 +13,24 @@ import SnapKit
 final class ProfileViewController: UIViewController {
     
     // MARK: - Properties
-
-    let stackView1 = UIStackView()
-    let stackView2 = UIStackView()
-    let superStackView = UIStackView()
-    let nickNameStackView = UIStackView()
     
-    private let profileImage = UIImageView()
+    private let profileImageView = UIImageView()
+    private let nickNameStackView = UIStackView()
+    private let profileMenuSuperStackView = UIStackView()
+    private let profileMenuStackView = UIStackView()
     private let dividerView = UIView()
+    private let profileUserMenuStackView = UIStackView()
     private let emptyView = UIView()
     private let instaButton = UIButton()
     private let mailButton = UIButton()
     private let instaLabel = UILabel()
     private let mailLabel = UILabel()
     
-    private var menuView1 = ProfileMenuView(menuText: "공지사항")
-    private var menuView2 = ProfileMenuView(menuText: "이용약관")
-    private var menuView3 = ProfileMenuView(menuText: "제스티를 만든 사람들")
-    private var userMenuView1 = ProfileUserMenuView(userMenuText: "로그아웃")
-    private var userMenuView2 = ProfileUserMenuView(userMenuText: "회원탈퇴")
+    private var profileMenuView1 = ProfileMenuView(menuText: "공지사항")
+    private var profileMenuView2 = ProfileMenuView(menuText: "이용약관")
+    private var profileMenuView3 = ProfileMenuView(menuText: "제스티를 만든 사람들")
+    private var profileUserMenuView1 = ProfileUserMenuView(userMenuText: "로그아웃")
+    private var profileUserMenuView2 = ProfileUserMenuView(userMenuText: "회원탈퇴")
     private var profileNickNameView = ProfileNickNameView()
 
     // MARK: - LifeCycle
@@ -53,24 +52,24 @@ extension ProfileViewController {
     private func configureUI() {
         view.backgroundColor = .zestyColor(.background)
         
-        profileImage.image = UIImage(.img_signup)
-        profileImage.contentMode = .scaleAspectFit
+        profileImageView.image = UIImage(.img_signup)
+        profileImageView.contentMode = .scaleAspectFit
         
         nickNameStackView.axis = .horizontal
         nickNameStackView.alignment = .center
         nickNameStackView.distribution = .fillProportionally
         nickNameStackView.spacing = 10
         
-        superStackView.axis = .vertical
-        superStackView.alignment = .top
-        superStackView.distribution = .fillProportionally
-        superStackView.spacing = 20
+        profileMenuSuperStackView.axis = .vertical
+        profileMenuSuperStackView.alignment = .top
+        profileMenuSuperStackView.distribution = .fillProportionally
+        profileMenuSuperStackView.spacing = 20
         
-        stackView1.axis = .vertical
-        stackView1.distribution = .fillEqually
+        profileMenuStackView.axis = .vertical
+        profileMenuStackView.distribution = .fillEqually
 
-        stackView2.axis = .vertical
-        stackView2.distribution = .fillEqually
+        profileUserMenuStackView.axis = .vertical
+        profileUserMenuStackView.distribution = .fillEqually
         
         dividerView.backgroundColor = .zestyColor(.grayF6)
 
@@ -93,40 +92,40 @@ extension ProfileViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([profileImage, nickNameStackView, superStackView, stackView1, stackView2, dividerView, instaButton, instaLabel, mailButton, mailLabel])
+        view.addSubviews([profileImageView, nickNameStackView, profileMenuSuperStackView, profileMenuStackView, profileUserMenuStackView, dividerView, instaButton, instaLabel, mailButton, mailLabel])
         nickNameStackView.addArrangedSubview(profileNickNameView)
-        superStackView.addArrangedSubviews([stackView1, stackView2])
-        stackView1.addArrangedSubviews([menuView1, menuView2, menuView3])
-        stackView2.addArrangedSubviews([userMenuView1, userMenuView2, emptyView])
+        profileMenuSuperStackView.addArrangedSubviews([profileMenuStackView, profileUserMenuStackView])
+        profileMenuStackView.addArrangedSubviews([profileMenuView1, profileMenuView2, profileMenuView3])
+        profileUserMenuStackView.addArrangedSubviews([profileUserMenuView1, profileUserMenuView2, emptyView])
         
-        profileImage.snp.makeConstraints { make in
+        profileImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide).inset(30)
             make.height.equalTo(100)
         }
         
         nickNameStackView.snp.makeConstraints { make in
-            make.top.equalTo(profileImage.snp.bottom).offset(20)
+            make.top.equalTo(profileImageView.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
         }
         
-        superStackView.snp.makeConstraints { make in
+        profileMenuSuperStackView.snp.makeConstraints { make in
             make.top.equalTo(nickNameStackView.snp.bottom).offset(30)
             make.bottom.equalTo(instaButton.snp.top).offset(-68)
             make.leading.trailing.equalToSuperview()
         }
         
-        stackView1.snp.makeConstraints { make in
+        profileMenuStackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
         }
         
         dividerView.snp.makeConstraints { make in
-            make.centerY.equalTo(superStackView.snp.centerY)
+            make.centerY.equalTo(profileMenuSuperStackView.snp.centerY)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(1)
         }
         
-        stackView2.snp.makeConstraints { make in
+        profileUserMenuStackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
         }
 
