@@ -13,7 +13,7 @@ import SnapKit
 final class PlaceListViewController: UIViewController {
     
     // MARK: - Properties
-    
+
     private var cancelBag = Set<AnyCancellable>()
     private let viewModel: PlaceListViewModel
 
@@ -156,7 +156,7 @@ extension PlaceListViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 300
         tableView.separatorStyle = .none
-        
+
         removeBackgroundAndDivider()
         configureNaviBar()
         
