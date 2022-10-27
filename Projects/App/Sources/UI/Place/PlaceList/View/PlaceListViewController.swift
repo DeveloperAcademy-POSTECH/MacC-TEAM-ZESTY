@@ -22,7 +22,7 @@ final class PlaceListViewController: UIViewController {
     private let segmentIndicator = UIView()
     private let segmentedControl = UISegmentedControl(items: ["전체", "선정맛집"])
     private let questionMarkImage = UIImageView()
-    private let sideButtonImage = UIImageView()
+    private let addPlaceButton = UIButton()
     
     private let tableView = UITableView()
     
@@ -66,8 +66,18 @@ final class PlaceListViewController: UIViewController {
         }
     }
     
-    @objc func barButtonTapped() {
+    @objc func searchButtonTapped() {
+        // TODO: 검색뷰 완성 시 연결
+    }
+    
+    @objc func userInfoButtonTapped() {
+        // TODO: 민이 만든 프로필 뷰로 이동
+        // navigationController?.pushViewController(profile, animated: true)
+    }
+    
+    @objc func addPlaceButtonTapped() {
         
+        navigationController?.pushViewController(AddPlaceSearchViewController(viewModel: AddPlaceSearchViewModel()), animated: true)
     }
     
 }
@@ -78,18 +88,6 @@ extension PlaceListViewController {
     
     private func configureUI() {
         view.backgroundColor = .white
-        
-        let searchItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(barButtonTapped))
-        let personCropCircle = UIImage(systemName: "person.crop.circle")
-        let userInfoItem = UIBarButtonItem(image: personCropCircle, style: .plain, target: self, action: #selector(barButtonTapped))
-        let placeTitle = UILabel()
-        placeTitle.text = "애플디벨로퍼아카데미"
-        placeTitle.font = .systemFont(ofSize: 17, weight: .bold)
-        navigationItem.rightBarButtonItems = [userInfoItem, searchItem]
-        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: placeTitle)
-        navigationItem.hidesBackButton = true
-        
-        navigationController?.navigationBar.tintColor = .black
         
         headerView.backgroundColor = .white
         
@@ -110,7 +108,9 @@ extension PlaceListViewController {
         questionMarkImage.image = UIImage(systemName: "questionmark.circle", withConfiguration: imageConfiguration)
         questionMarkImage.tintColor = .zestyColor(.gray54)
         
-        sideButtonImage.image = UIImage(.btn_side_plus)
+        let sidePlusImage = UIImage(.btn_side_plus)
+        addPlaceButton.setImage(sidePlusImage, for: .normal)
+        addPlaceButton.addTarget(self, action: #selector(addPlaceButtonTapped), for: .touchUpInside)
 
         tableView.backgroundColor = .clear
         tableView.dataSource = self
@@ -118,6 +118,22 @@ extension PlaceListViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 300
         tableView.separatorStyle = .none
+    }
+    
+    private func configureNaviBar() {
+        let searchItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(userInfoButtonTapped))
+        let personCropCircle = UIImage(systemName: "person.crop.circle")
+        let userInfoItem = UIBarButtonItem(image: personCropCircle, style: .plain, target: self, action: #selector(userInfoButtonTapped))
+        let placeTitle = UILabel()
+        
+        placeTitle.text = "애플디벨로퍼아카데미"
+        placeTitle.font = .systemFont(ofSize: 17, weight: .bold)
+        
+        navigationItem.rightBarButtonItems = [userInfoItem, searchItem]
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: placeTitle)
+        navigationItem.hidesBackButton = true
+        
+        navigationController?.navigationBar.tintColor = .black
     }
     
     private func removeBackgroundAndDivider() {
@@ -129,7 +145,7 @@ extension PlaceListViewController {
     
     private func createLayout() {
         view.addSubviews([headerView, segmentedControl, segmentIndicator, questionMarkImage, tableView])
-        headerView.addSubviews([segmentedControl, segmentIndicator, questionMarkImage, sideButtonImage])
+        headerView.addSubviews([segmentedControl, segmentIndicator, questionMarkImage, addPlaceButton])
         
         headerView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -157,7 +173,7 @@ extension PlaceListViewController {
             make.height.equalTo(21)
         }
         
-        sideButtonImage.snp.makeConstraints { make in
+        addPlaceButton.snp.makeConstraints { make in
             make.verticalEdges.equalToSuperview().inset(10)
             make.right.equalToSuperview()
         }
