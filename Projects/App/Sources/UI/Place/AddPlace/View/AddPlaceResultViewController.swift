@@ -19,7 +19,7 @@ final class AddPlaceResultViewController: UIViewController {
     private var cancelBag = Set<AnyCancellable>()
     private let input: PassthroughSubject<AddPlaceResultViewModel.Input, Never> = .init()
     
-    private let isSE = UIScreen.main.isLessThan376pt && !UIDevice.current.hasNotch
+    private let isSE = UIScreen.main.isHeightLessThan670pt
     
     private lazy var titleView = MainTitleView(title: "맛집 등록 완료 🎉")
     

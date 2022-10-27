@@ -12,7 +12,7 @@ import SnapKit
 
 final class PlaceCardView: UIView {
     
-    private let isSE = UIScreen.main.isLessThan376pt && !UIDevice.current.hasNotch
+    private let isSE = UIScreen.main.isHeightLessThan670pt
     
     // MARK: - Properties
 
