@@ -16,6 +16,7 @@ final class PlaceListViewController: UIViewController {
     
     private let segmentIndicator = UIView()
     private let segmentedControl = UISegmentedControl(items: ["전체", "선정맛집"])
+    private let questionMarkImage = UIImageView()
 
     // MARK: - LifeCycle
     
@@ -63,9 +64,9 @@ final class PlaceListViewController: UIViewController {
 extension PlaceListViewController {
     
     private func configureUI() {
-        removeBackgroundAndDivider()
         segmentIndicator.backgroundColor = .black
         
+        removeBackgroundAndDivider()
         segmentedControl.backgroundColor = .clear
         segmentedControl.tintColor = .clear
         
@@ -76,6 +77,7 @@ extension PlaceListViewController {
         segmentedControl.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 26, weight: .bold), NSAttributedString.Key.foregroundColor: UIColor.black], for: .selected)
         segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
         
+        questionMarkImage.image = UIImage(systemName: "questionmark.circle")
     }
     
     private func removeBackgroundAndDivider() {
@@ -86,13 +88,13 @@ extension PlaceListViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([segmentedControl, segmentIndicator])
+        view.addSubviews([segmentedControl, segmentIndicator, questionMarkImage])
         
         segmentedControl.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).inset(20)
+            make.left.equalTo(view.safeAreaLayoutGuide.snp.left).inset(20)
             make.height.equalTo(30)
-            make.width.equalTo(173)
+            make.width.equalTo(172)
         }
         
         segmentIndicator.snp.makeConstraints { make in
@@ -100,6 +102,13 @@ extension PlaceListViewController {
             make.height.equalTo(3)
             make.width.equalTo(20)
             make.centerX.equalTo(segmentedControl.snp.centerX).dividedBy(segmentedControl.numberOfSegments)
+        }
+        
+        questionMarkImage.snp.makeConstraints { make in
+            make.left.equalTo(segmentedControl.snp.right)
+            make.top.equalTo(segmentedControl.snp.top)
+            make.width.equalTo(21)
+            make.height.equalTo(21)
         }
     }
     
