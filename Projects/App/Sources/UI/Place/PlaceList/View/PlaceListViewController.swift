@@ -6,18 +6,17 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
-import SwiftUI
 import UIKit
 import DesignSystem
 
 final class PlaceListViewController: UIViewController {
     
     // MARK: - Properties
-    
+
     private let segmentIndicator = UIView()
     private let segmentedControl = UISegmentedControl(items: ["전체", "선정맛집"])
     private let questionMarkImage = UIImageView()
-
+    
     // MARK: - LifeCycle
     
     override func viewDidLoad() {
@@ -64,6 +63,8 @@ final class PlaceListViewController: UIViewController {
 extension PlaceListViewController {
     
     private func configureUI() {
+        view.backgroundColor = .zestyColor(.background)
+        
         segmentIndicator.backgroundColor = .black
         
         removeBackgroundAndDivider()
@@ -80,6 +81,7 @@ extension PlaceListViewController {
         let imageConfiguration = UIImage.SymbolConfiguration(weight: .semibold)
         questionMarkImage.image = UIImage(systemName: "questionmark.circle", withConfiguration: imageConfiguration)
         questionMarkImage.tintColor = .zestyColor(.gray54)
+        
     }
     
     private func removeBackgroundAndDivider() {
@@ -118,6 +120,9 @@ extension PlaceListViewController {
 
 // MARK: - Preview
 
+#if DEBUG
+import SwiftUI
+
 struct PlaceListViewControllerTemplatePreview: PreviewProvider {
     
     static var previews: some View {
@@ -125,3 +130,5 @@ struct PlaceListViewControllerTemplatePreview: PreviewProvider {
     }
     
 }
+
+#endif
