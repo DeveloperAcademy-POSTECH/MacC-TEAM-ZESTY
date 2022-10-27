@@ -14,222 +14,95 @@ final class PlaceListViewController: UIViewController {
     
     // MARK: - Properties
     
-    private var collectionView: UICollectionView!
-    private var dataSource: DataSource!
-    
-    private var searchBarItem = UIBarButtonItem()
-    private var profileBarItem = UIBarButtonItem()
-    private let registerButton = FullWidthBlackButton()
-    
+    private let segmentIndicator = UIView()
+    private let segmentedControl = UISegmentedControl(items: ["전체", "선정맛집"])
+
     // MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        configureHierachy()
         createLayout()
-        configureDataSource()
-        applySnapShot()
     }
     
     // MARK: - Function
     
-    @objc func searchButtonPressed() {
-    }
-
-    @objc func profileButtonPressed() {
-    }
-    
-}
-
-// MARK: - CollectionView Function
-
-extension PlaceListViewController: UICollectionViewDelegate {
-
-    private func configureHierachy() {
-        collectionView = UICollectionView(frame: view.frame, collectionViewLayout: createCollectionViewLayout())
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        collectionView.backgroundColor = .clear
-        collectionView.delegate = self
-        view.addSubview(collectionView)
-    }
-    
-    private func createCollectionViewLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { [unowned self] sectionIndex, _ in
-            let sectionType = SectionType(index: sectionIndex)
-            let section: NSCollectionLayoutSection
-            let supplymentaryView: NSCollectionLayoutBoundarySupplementaryItem
-            
-            switch sectionType {
-            case .banner:
-                section = self.createSectionLayout(width: .fractionalWidth(1), height: .estimated(100))
-                section.orthogonalScrollingBehavior = .groupPagingCentered
-                
-            case .picked:
-                section = self.createSectionLayout(width: .fractionalWidth(0.35), height: .estimated(100))
-                supplymentaryView = createSupplymentaryViewLayout(type: .header)
-                section.boundarySupplementaryItems = [supplymentaryView]
-                section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-                
-            case .whole:
-                section = self.createSectionLayout(width: .fractionalWidth(1), height: .estimated(100))
-                supplymentaryView = createSupplymentaryViewLayout(type: .header)
-                section.boundarySupplementaryItems = [supplymentaryView]
+    @objc func indexChanged(_ sender: UISegmentedControl) {
+        let numberOfSegments = CGFloat(segmentedControl.numberOfSegments)
+        let selectedIndex = CGFloat(sender.selectedSegmentIndex)
+        let titlecount = CGFloat((segmentedControl.titleForSegment(at: sender.selectedSegmentIndex)!.count))
+        if selectedIndex == 1 {
+            segmentIndicator.snp.remakeConstraints { (make) in
+                make.top.equalTo(segmentedControl.snp.bottom).offset(3)
+                make.height.equalTo(3)
+                make.width.equalTo(titlecount * 11)
+                make.centerX.equalTo(segmentedControl.snp.centerX).dividedBy(numberOfSegments / CGFloat(2.58 + CGFloat(selectedIndex-1.0)*2.0))
             }
-            section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
-            return section
-        }
-        return layout
-    }
-    
-    private func createSectionLayout(width: NSCollectionLayoutDimension,
-                                     height: NSCollectionLayoutDimension) -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(100))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let groupSize = NSCollectionLayoutSize(widthDimension: width, heightDimension: height)
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 15
-        
-        return section
-    }
-    
-    private func createSupplymentaryViewLayout(type: SupplementaryKind) -> NSCollectionLayoutBoundarySupplementaryItem {
-        let sectionHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(50))
-        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: sectionHeaderSize,
-                                                                        elementKind: SupplementaryKind.header.string,
-                                                                        alignment: .topLeading)
-        switch type {
-        case .header:
-            return sectionHeader
-        }
-        
-    }
-    
-    private func configureDataSource() {
-        let bannerRegisteration = UICollectionView.CellRegistration<BannerCell, Tmp> { _, _, _ in
-        }
-        let pickedRegisteration = UICollectionView.CellRegistration<PickedPlaceCell, Tmp> { _, _, _ in
-        }
-        let wholeRegisteration = UICollectionView.CellRegistration<WholePlaceCell, Tmp> { _, _, _ in
-        }
-
-        dataSource = DataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
-            guard let section = SectionType(rawValue: indexPath.section) else { return nil }
-            switch section {
-            case .banner:
-                return collectionView.dequeueConfiguredReusableCell(using: bannerRegisteration, for: indexPath, item: item)
-            case .picked:
-                return collectionView.dequeueConfiguredReusableCell(using: pickedRegisteration, for: indexPath, item: item)
-            case .whole:
-                return collectionView.dequeueConfiguredReusableCell(using: wholeRegisteration, for: indexPath, item: item)
-            }
-        })
-
-        typealias HeaderRegistration = UICollectionView.SupplementaryRegistration<PlaceListHeaderView>
-
-        let headerRegisteration = HeaderRegistration(elementKind: SupplementaryKind.header.string) { supplementaryView, _, index in
-            let title = SectionType(index: index.section).title
-            supplementaryView.configureUI(with: title)
-        }
-
-        dataSource.supplementaryViewProvider = { collectionView, _, index in
-            return collectionView.dequeueConfiguredReusableSupplementary(using: headerRegisteration, for: index)
-        }
-    }
-    
-    private func applySnapShot() {
-        var snapshot = Snapshot()
-        let sections = SectionType.allCases
-        snapshot.appendSections(sections)
-        snapshot.appendItems([Tmp()], toSection: .banner)
-        snapshot.appendItems([Tmp(), Tmp(), Tmp(), Tmp()], toSection: .picked)
-        snapshot.appendItems([Tmp(), Tmp(), Tmp(), Tmp(), Tmp()], toSection: .whole)
-        dataSource.apply(snapshot)
-    }
-
-}
-
-extension PlaceListViewController {
-    
-    private typealias DataSource = UICollectionViewDiffableDataSource<SectionType, Tmp>
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<SectionType, Tmp>
-    
-    private enum SupplementaryKind {
-        case header
-        
-        var string: String {
-            switch self {
-            case .header:
-                return "section-header-element-kind"
-            }
-        }
-    }
-    
-    private enum SectionType: Int, CaseIterable {
-        case banner
-        case picked
-        case whole
-        
-        init(index: Int) {
-            switch index {
-            case 0: self = .banner
-            case 1: self = .picked
-            case 2: self = .whole
-            default: // sectionIndex가 범위 밖인 경우
-                self = .picked
+        } else {
+            segmentIndicator.snp.makeConstraints { make in
+                make.top.equalTo(segmentedControl.snp.bottom).offset(3)
+                make.height.equalTo(3)
+                make.width.equalTo(20)
+                make.centerX.equalTo(segmentedControl.snp.centerX).dividedBy(segmentedControl.numberOfSegments)
             }
         }
         
-        var title: String {
-            switch self {
-            case .picked:
-                return "선정된 맛집"
-            case .whole:
-                return "등록된 전체 맛집"
-            default:
-                return ""
-            }
+        UIView.animate(withDuration: 0.5, animations: {
+            self.view.layoutIfNeeded()
+            self.segmentIndicator.transform = CGAffineTransform(scaleX: 1.1, y: 1)
+        }) { _ in
+            UIView.animate(withDuration: 0.4, animations: {
+                self.segmentIndicator.transform = CGAffineTransform.identity
+            })
         }
     }
-    
-    struct Tmp: Hashable {
-        let id = UUID()
-        let some: Int
-        
-        init(some: Int = 1) {
-            self.some = some
-        }
-    }
-
 }
 
 // MARK: - UI function
 
 extension PlaceListViewController {
-
+    
     private func configureUI() {
-        view.backgroundColor = .systemBackground
-        searchBarItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain,
-                                          target: self, action: #selector(searchButtonPressed))
-        profileBarItem = UIBarButtonItem(image: UIImage(systemName: "person.crop.circle"), style: .plain, target: self, action: #selector(profileButtonPressed))
-        searchBarItem.tintColor = .black
-        profileBarItem.tintColor = .black
-        navigationItem.rightBarButtonItems = [searchBarItem, profileBarItem]
-        navigationItem.title = "애플디벨로퍼아카데미"
+        removeBackgroundAndDivider()
+        segmentIndicator.backgroundColor = .black
         
-        registerButton.setTitle("나의 맛집 등록하기", for: .normal)
+        segmentedControl.backgroundColor = .clear
+        segmentedControl.tintColor = .clear
+        
+        segmentedControl.apportionsSegmentWidthsByContent = true
+        segmentedControl.selectedSegmentIndex = 0
+        
+        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 26, weight: .bold), NSAttributedString.Key.foregroundColor: UIColor.lightGray], for: .normal)
+        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 26, weight: .bold), NSAttributedString.Key.foregroundColor: UIColor.black], for: .selected)
+        segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
+        
+    }
+    
+    private func removeBackgroundAndDivider() {
+        let removeBackgroundDivider = UIImage()
+        segmentedControl.setBackgroundImage(removeBackgroundDivider, for: .normal, barMetrics: .default)
+        segmentedControl.setBackgroundImage(removeBackgroundDivider, for: .selected, barMetrics: .default)
+        segmentedControl.setDividerImage(removeBackgroundDivider, forLeftSegmentState: .selected, rightSegmentState: .normal, barMetrics: .default)
     }
     
     private func createLayout() {
-        view.addSubview(registerButton)
+        view.addSubviews([segmentedControl, segmentIndicator])
         
-        registerButton.snp.makeConstraints {
-            $0.leading.trailing.bottom.equalToSuperview().inset(20)
-            $0.height.equalTo(50)
+        segmentedControl.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).inset(20)
+            make.height.equalTo(30)
+            make.width.equalTo(173)
+        }
+        
+        segmentIndicator.snp.makeConstraints { make in
+            make.top.equalTo(segmentedControl.snp.bottom).offset(3)
+            make.height.equalTo(3)
+            make.width.equalTo(20)
+            make.centerX.equalTo(segmentedControl.snp.centerX).dividedBy(segmentedControl.numberOfSegments)
         }
     }
-
+    
 }
 
 // MARK: - Preview
@@ -239,5 +112,5 @@ struct PlaceListViewControllerTemplatePreview: PreviewProvider {
     static var previews: some View {
         UINavigationController(rootViewController: PlaceListViewController()).toPreview()
     }
-
+    
 }
