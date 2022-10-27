@@ -74,7 +74,7 @@ extension ProfileNickNameView {
 #if DEBUG
 import SwiftUI
 
-struct OrgDetailCellPreview: PreviewProvider {
+struct ProfileNickNameViewPreview: PreviewProvider {
 
     static var previews: some View {
         ProfileNickNameView().toPreview()
