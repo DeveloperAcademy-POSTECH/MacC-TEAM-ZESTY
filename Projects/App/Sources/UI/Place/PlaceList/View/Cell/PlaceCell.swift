@@ -54,10 +54,12 @@ final class PlaceCell: UITableViewCell {
 extension PlaceCell {
     
     func setUp(with place: Place) {
-        mainView.layer.borderWidth = place.reviews[0].menuName!.isEmpty ? 1 : 0
-        reviewImageView.load(url: place.reviews[0].imageURL)
-        gradientView.isHidden = place.reviews[0].menuName!.isEmpty ? true : false
-        menuLabel.text = place.reviews[0].menuName
+        if !place.reviews.isEmpty {
+            mainView.layer.borderWidth = place.reviews[0].menuName?.isEmpty ?? true ? 1 : 0
+            reviewImageView.load(url: place.reviews[0].imageURL)
+            gradientView.isHidden = place.reviews[0].menuName?.isEmpty ?? true ? true : false
+            menuLabel.text = place.reviews[0].menuName
+        }
         placeNameLabel.text = place.name
         goodEmojiStackView.setUp(count: place.evaluationSum.good)
         sosoEmojiStackView.setUp(count: place.evaluationSum.soso)

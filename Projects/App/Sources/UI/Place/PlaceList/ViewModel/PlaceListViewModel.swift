@@ -28,6 +28,7 @@ class PlaceListViewModel {
     
     init(useCase: PlaceListUseCase = PlaceListUseCase()) {
         self.useCase = useCase
+        bind()
     }
     
 }
@@ -36,18 +37,32 @@ class PlaceListViewModel {
 
 extension PlaceListViewModel: ErrorMapper {
     
-    func bind() {
-        useCase.fetchPlaceList(with: page)
-            .sink { error in
-                switch error {
-                case .failure(let error):
-                    let errorMessage = self.errorMessage(for: error)
-                    self.isRegisterFail.send(errorMessage)
-                case .finished: break
-                }
-            } receiveValue: { [weak self] placeList in
+    func prefetch(at rows: [Int]) {
+        let unit = 10
+        for row in rows {
+            if (page - 1) * unit <= row && (page * unit) > row {
+                page += 1
+                break
+            }
+        }
+    }
+    
+    private func bind() {
+        $page
+            .sink { [weak self] currentPage in
                 guard let self = self else { return }
-                self.result = placeList
+                self.useCase.fetchPlaceList(with: currentPage)
+                    .sink { error in
+                        switch error {
+                        case .failure(let error):
+                            let errorMessage = self.errorMessage(for: error)
+                            self.isRegisterFail.send(errorMessage)
+                        case .finished: break
+                        }
+                    } receiveValue: { placeList in
+                        self.result += placeList
+                    }
+                    .store(in: &self.cancelBag)
             }
             .store(in: &cancelBag)
     }
