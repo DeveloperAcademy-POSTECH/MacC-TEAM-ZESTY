@@ -89,8 +89,9 @@ extension Place {
     ]
     
     static let empty: Place =
-        Place(id: 0,
-              creator: nil,
+    Place(id: 0,
+          kakaoPlaceId: 0,
+          creator: User.mockData[0],
               organizationId: -1,
               name: "(가게정보없음)",
               address: "",
