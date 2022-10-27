@@ -144,7 +144,7 @@ extension PlaceListViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([headerView, segmentedControl, segmentIndicator, questionMarkImage, tableView])
+        view.addSubviews([headerView, segmentIndicator, questionMarkImage, tableView])
         headerView.addSubviews([segmentedControl, segmentIndicator, questionMarkImage, addPlaceButton])
         
         headerView.snp.makeConstraints { make in
