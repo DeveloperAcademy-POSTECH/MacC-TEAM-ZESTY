@@ -98,7 +98,7 @@ extension OrgDetailViewController {
     }
 
     private func createLayout() {
-        view.addSubviews([orgNameLabel, orgInformationSuperStackView, orgInformationStackView1, orgInformationStackView2, orgInformationStackView3, orgInviteButton])
+        view.addSubviews([orgNameLabel, orgInformationSuperStackView, orgInviteButton])
         orgInformationSuperStackView.addArrangedSubviews([orgInformationStackView1, orgInformationStackView2, orgInformationStackView3])
         orgInformationStackView1.addArrangedSubviews([orgInformationImage1, orgDetailInformationView1])
         orgInformationStackView2.addArrangedSubviews([orgInformationImage2, orgDetailInformationView2])
@@ -107,28 +107,36 @@ extension OrgDetailViewController {
         orgNameLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(30)
             make.centerX.equalToSuperview()
-            make.height.equalTo(31)
+            make.horizontalEdges.equalToSuperview().inset(40)
         }
         
         orgInformationSuperStackView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(40)
-            make.trailing.equalToSuperview().inset(173)
             make.top.equalTo(orgNameLabel.snp.bottom).offset(50)
         }
         
         orgInformationStackView1.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(60)
+            make.horizontalEdges.equalToSuperview()
         }
         
         orgInformationStackView2.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(60)
+            make.horizontalEdges.equalToSuperview()
         }
         
         orgInformationStackView3.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(60)
+            make.horizontalEdges.equalToSuperview()
+        }
+        
+        orgInformationImage1.snp.makeConstraints { make in
+            make.width.height.equalTo(60)
+        }
+        
+        orgInformationImage2.snp.makeConstraints { make in
+            make.width.height.equalTo(60)
+        }
+        
+        orgInformationImage3.snp.makeConstraints { make in
+            make.width.height.equalTo(60)
         }
 
         orgInviteButton.snp.makeConstraints { make in
