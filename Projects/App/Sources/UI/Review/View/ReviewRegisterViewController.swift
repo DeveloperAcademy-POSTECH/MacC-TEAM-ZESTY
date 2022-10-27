@@ -14,21 +14,34 @@ import SnapKit
 final class ReviewRegisterViewController: UIViewController {
     
     // MARK: - Properties
+    private let viewModel: ReviewRegisterViewModel!
+    
     private var cancelBag = Set<AnyCancellable>()
     private let keyboardShowPublisher = NotificationCenter.default.publisher(for: UIApplication.keyboardWillShowNotification)
     private let keyboardHidePublisher = NotificationCenter.default.publisher(for: UIApplication.keyboardWillHideNotification)
     
+    private let imagePickerController = UIImagePickerController()
     private let keyboardSafeArea = UIView()
-    private let titleView = MainTitleView(title: "요기쿠시동에서 \n무엇을 드셨나요?")
+    private let titleView = MainTitleView()
     private let containerView = UIView()
     private let backgroundView = UIView()
     private let plusImageView = UIImageView()
+    private let menuImageView = UIImageView()
     private let imageButton = UIButton()
     private let menuTextField = UITextField()
     private let underline = UIView()
     private let registerButton = FullWidthBlackButton()
     
     // MARK: - LifeCycle
+    
+    init(viewModel: ReviewRegisterViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,15 +50,40 @@ final class ReviewRegisterViewController: UIViewController {
         createLayout()
         bindKeyboardAction()
     }
-
-    // MARK: - Function
     
-    @objc func registerButtonTouched() {
-        navigationController?.pushViewController(ReviewCardViewController(), animated: true)
+    @objc private func openGallery() {
+        self.imagePickerController.delegate = self
+        self.imagePickerController.sourceType = .photoLibrary
+        present(self.imagePickerController, animated: true, completion: nil)
     }
     
-    @objc func dismissKeyboard() {
+    @objc private func registerButtonTouched() {
+        viewModel.image = plusImageView.image
+        viewModel.menu = menuTextField.text
+        viewModel.registerReview()
+        navigationController?.pushViewController(ReviewCardViewController(viewModel: viewModel), animated: true)
+    }
+    
+    @objc private func dismissKeyboard() {
         view.endEditing(true)
+    }
+    
+}
+
+// MARK: - Function
+
+extension ReviewRegisterViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            menuImageView.image = image
+            registerButton.setTitle("리뷰 등록", for: .normal)
+        }
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
     
 }
@@ -59,6 +97,8 @@ extension ReviewRegisterViewController {
         navigationController?.navigationBar.topItem?.title = ""
         navigationController?.navigationBar.tintColor = .black
         
+        titleView.titleLabel.text = "\(viewModel.placeName)에서\n무엇을 드셨나요?"
+        
         var config = UIImage.SymbolConfiguration(paletteColors: [.darkGray])
         config = config.applying(UIImage.SymbolConfiguration(weight: .semibold) )
         let plusImage = UIImage(systemName: "plus", withConfiguration: config)
@@ -67,8 +107,13 @@ extension ReviewRegisterViewController {
         backgroundView.clipsToBounds = true
         backgroundView.layer.cornerRadius = 10
         
+        menuImageView.contentMode = .scaleAspectFill
+        menuImageView.clipsToBounds = true
+        menuImageView.layer.cornerRadius = 10
+        
         imageButton.clipsToBounds = true
         imageButton.layer.cornerRadius = 10
+        imageButton.addTarget(self, action: #selector(openGallery), for: .touchUpInside)
         
         menuTextField.placeholder = "음식 이름"
         menuTextField.textAlignment = .center
@@ -88,7 +133,7 @@ extension ReviewRegisterViewController {
     private func createLayout() {
         view.addSubviews([keyboardSafeArea, titleView,
                           containerView, registerButton])
-        containerView.addSubviews([backgroundView, plusImageView,
+        containerView.addSubviews([backgroundView, plusImageView, menuImageView,
                                        imageButton, menuTextField, underline])
         
         titleView.snp.makeConstraints {
@@ -109,6 +154,9 @@ extension ReviewRegisterViewController {
         plusImageView.snp.makeConstraints {
             $0.center.equalTo(backgroundView.snp.center)
             $0.width.height.equalTo(35)
+        }
+        menuImageView.snp.makeConstraints {
+            $0.edges.equalTo(backgroundView.snp.edges)
         }
         imageButton.snp.makeConstraints {
             $0.edges.equalTo(backgroundView.snp.edges)
@@ -208,7 +256,7 @@ import SwiftUI
 struct ReviewRegisterPreview: PreviewProvider {
     
     static var previews: some View {
-        UINavigationController(rootViewController: ReviewRegisterViewController()).toPreview()
+        UINavigationController(rootViewController: ReviewRegisterViewController(viewModel: ReviewRegisterViewModel(placeId: 0, placeName: "요기쿠시동"))).toPreview()
     }
     
 }
