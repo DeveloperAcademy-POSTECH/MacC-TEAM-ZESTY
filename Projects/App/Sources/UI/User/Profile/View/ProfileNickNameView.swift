@@ -70,7 +70,7 @@ extension ProfileNickNameView {
 }
 
 // MARK: - Previews
-
+/*
 #if DEBUG
 import SwiftUI
 
@@ -82,3 +82,4 @@ struct OrgDetailCellPreview: PreviewProvider {
 
 }
 #endif
+*/

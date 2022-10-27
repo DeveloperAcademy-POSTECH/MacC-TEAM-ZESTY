@@ -14,6 +14,8 @@ final class SearchResultCell: UITableViewCell {
     
     // MARK: - Properties
     
+    private var cancelBag = Set<AnyCancellable>()
+    
     private let input: PassthroughSubject<AddPlaceSearchViewModel.Input, Never> = .init()
     private var kakaoPlace: KakaoPlace?
     
@@ -45,9 +47,6 @@ final class SearchResultCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        if selected == true {
-            input.send(.placeResultCellDidTap(kakaoPlace: kakaoPlace!))
-        }
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -62,6 +61,7 @@ final class SearchResultCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        cancelBag.removeAll()
     }
     
     override func layoutSubviews() {
@@ -69,8 +69,7 @@ final class SearchResultCell: UITableViewCell {
     }
     
     // MARK: - Function
-    func bind(with place: KakaoPlace, viewModel: AddPlaceSearchViewModel) {
-        _ = viewModel.transform(input: input.eraseToAnyPublisher())
+    func bind(with place: KakaoPlace) {
         DispatchQueue.main.async {
             self.kakaoPlace = place
             self.nameLabel.text = place.placeName
@@ -93,7 +92,7 @@ extension SearchResultCell {
         nextIcon.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(20)
-            $0.width.equalTo(12) // config 사용해서 걷어내기?
+            $0.width.equalTo(12)
             $0.height.equalTo(21)
         }
         

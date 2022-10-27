@@ -97,8 +97,9 @@ extension AddPlaceSearchViewController {
                 case .addSelectedPlaceFail(let error):
                     print(error.localizedDescription)
                 case .addSelectedPlaceDidSucceed(let kakaoPlace):
-                    let viewModel = AddPlaceViewModel(kakaoPlace: kakaoPlace)
-                    self?.navigationController?.pushViewController(AddCategoryViewController(viewModel: viewModel), animated: true)
+                        let viewModel = AddPlaceViewModel(kakaoPlace: kakaoPlace)
+                        self?.navigationController?.pushViewController(AddCategoryViewController(viewModel: viewModel), animated: true)
+                    
                 }
             }.store(in: &cancelBag)
         
@@ -184,7 +185,7 @@ extension AddPlaceSearchViewController: UITableViewDataSource {
          
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultCell", for: indexPath) as? SearchResultCell else { return UITableViewCell() }
         
-        cell.bind(with: searchResults[indexPath.row], viewModel: viewModel)
+        cell.bind(with: searchResults[indexPath.row])
         cell.selectionStyle = .none
         return cell
 
@@ -198,6 +199,21 @@ extension AddPlaceSearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 82
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("🚀didSelectRowAt")
+        let place = searchResults[indexPath.row]
+        self.input.send(.placeResultCellDidTap(kakaoPlace: place))
+        
+    }
+    
+//
+//    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+//        if indexPath.row == 0 {
+//            return nil
+//        }
+//        return indexPath
+//    }
 
 }
 
