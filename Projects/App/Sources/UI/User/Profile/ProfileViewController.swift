@@ -53,7 +53,7 @@ extension ProfileViewController {
         
         profileImageView.image = UIImage(.img_signup)
         profileImageView.contentMode = .scaleAspectFit
-        
+
         profileMenuSuperStackView.axis = .vertical
         profileMenuSuperStackView.alignment = .top
         profileMenuSuperStackView.distribution = .fillProportionally
