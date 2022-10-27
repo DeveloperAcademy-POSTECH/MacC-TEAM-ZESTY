@@ -143,7 +143,7 @@ final class AddPlaceResultViewController: UIViewController {
     
     // MARK: - Function
     @objc func backButtonDidTap() {
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     @objc func saveButtonDidTap() {
@@ -280,9 +280,9 @@ extension AddPlaceResultViewController {
     }
     
     private func setNavigationBar() {
-        let leftBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonDidTap))
-        leftBarButton.tintColor = .label
-        navigationItem.leftBarButtonItem = leftBarButton
+        let rightBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(backButtonDidTap))
+        rightBarButton.tintColor = .label
+        navigationItem.leftBarButtonItem = rightBarButton
     }
     
 }

@@ -54,7 +54,6 @@ final class AddPlaceSearchViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         
- 
     }
     
     // MARK: - Function
@@ -208,6 +207,7 @@ extension AddPlaceSearchViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        input.send(.searchBtnDidTap(placeName: searchingTextFieldView.textField.text ?? "" ))
         return true
     }
     
