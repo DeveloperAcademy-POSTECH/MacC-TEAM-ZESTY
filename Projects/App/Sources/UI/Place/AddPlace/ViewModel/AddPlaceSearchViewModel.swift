@@ -39,7 +39,6 @@ class AddPlaceSearchViewModel {
     
     // MARK: - transform : Input -> Output
     func transform(input: AnyPublisher<Input, Never>) -> AnyPublisher<Output, Never> {
-        print("왜?두번불리지")
         input.sink { [weak self] event in
             switch event {
             case .searchBtnDidTap(let placeName):
