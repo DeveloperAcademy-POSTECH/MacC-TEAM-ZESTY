@@ -1,14 +1,16 @@
 //
-//  PlaceListViewController.swift
+//  SubPlaceListViewControllerViewController.swift
 //  App
 //
-//  Created by 리아 on 2022/10/17.
-//  Copyright © 2022 zesty. All rights reserved.
+//  Created by 김태호 on 2022/10/25.
+//  Copyright (c) 2022 zesty. All rights reserved.
 //
 
+import Combine
 import UIKit
-import DesignSystem
+import SnapKit
 
+// TODO: cell을 실험하기 위한 뷰입니다. 수정 예정입니다.
 final class PlaceListViewController: UIViewController {
     
     // MARK: - Properties
@@ -16,6 +18,8 @@ final class PlaceListViewController: UIViewController {
     private let segmentIndicator = UIView()
     private let segmentedControl = UISegmentedControl(items: ["전체", "선정맛집"])
     private let questionMarkImage = UIImageView()
+    private let cancelBag = Set<AnyCancellable>()
+    private let tableView = UITableView()
     
     // MARK: - LifeCycle
     
@@ -81,7 +85,13 @@ extension PlaceListViewController {
         let imageConfiguration = UIImage.SymbolConfiguration(weight: .semibold)
         questionMarkImage.image = UIImage(systemName: "questionmark.circle", withConfiguration: imageConfiguration)
         questionMarkImage.tintColor = .zestyColor(.gray54)
-        
+
+        tableView.backgroundColor = .clear
+        tableView.dataSource = self
+        tableView.register(PlaceCell.self, forCellReuseIdentifier: PlaceCell.identifier)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 300
+        tableView.separatorStyle = .none
     }
     
     private func removeBackgroundAndDivider() {
@@ -92,7 +102,7 @@ extension PlaceListViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([segmentedControl, segmentIndicator, questionMarkImage])
+        view.addSubviews([segmentedControl, segmentIndicator, questionMarkImage, tableView])
         
         segmentedControl.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -113,22 +123,47 @@ extension PlaceListViewController {
             make.top.equalTo(segmentedControl.snp.top)
             make.width.equalTo(21)
             make.height.equalTo(21)
+            tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            }
+        
         }
     }
     
 }
 
-// MARK: - Preview
-
-#if DEBUG
-import SwiftUI
-
-struct PlaceListViewControllerTemplatePreview: PreviewProvider {
+extension PlaceListViewController: UITableViewDataSource {
     
-    static var previews: some View {
-        UINavigationController(rootViewController: PlaceListViewController()).toPreview()
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: PlaceCell.identifier, for: indexPath) as? PlaceCell
+        guard let cell = cell else { return UITableViewCell() }
+        cell.selectionStyle = .none
+        
+        return cell
     }
     
 }
 
+extension PlaceListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+}
+
+// MARK: - Previews
+
+#if DEBUG
+import SwiftUI
+
+struct PlaceListViewControllerPreview: PreviewProvider {
+    
+    static var previews: some View {
+        PlaceListViewController().toPreview()
+    }
+    
+}
 #endif
