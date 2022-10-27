@@ -17,6 +17,7 @@ public enum Color: String {
     case grayF6
     case gray3C
     case gray3C3C43
+    case gray54
     case whiteEBEBF5
     
     var hexString: String {
@@ -35,6 +36,8 @@ public enum Color: String {
             return "#F6F6F6FF"
         case .gray3C:
             return "#3C3C3CFF"
+        case .gray54:
+            return "#545454FF"
         case .gray3C3C43:
             return "#3C3C43FF"
         case .whiteEBEBF5:
