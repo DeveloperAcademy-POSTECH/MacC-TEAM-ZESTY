@@ -21,7 +21,7 @@ public final class MainTitleView: UIView {
     public var subtitleLabel = UILabel()
     private let titleStackView = UIStackView()
     
-    public init(title: String, subtitle: String = "") {
+    public init(title: String = "", subtitle: String = "") {
         super.init(frame: .zero)
         
         titleLabel.text = title

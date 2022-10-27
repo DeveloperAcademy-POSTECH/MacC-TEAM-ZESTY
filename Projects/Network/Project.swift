@@ -12,5 +12,6 @@ let project = Project.makeModule(
     name: "Network",
     product: .staticFramework,
     dependencies: [
+        .external(name: "AWSS3")
     ]
 )
