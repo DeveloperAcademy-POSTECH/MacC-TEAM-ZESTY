@@ -16,8 +16,6 @@ final class ProfileLinkButtonView: UIView {
         
     private let instaButton = UIButton()
     private let mailButton = UIButton()
-//    private let instaLabel = UILabel()
-//    private let mailLabel = UILabel()
     
     // MARK: LifeCycle
     
@@ -41,20 +39,8 @@ extension ProfileLinkButtonView {
         backgroundColor = .zestyColor(.background)
 
         instaButton.setImage(UIImage(.btn_link_instargram), for: .normal)
-        
-//        instaLabel.text = "인스타"
-//        instaLabel.textColor = .black
-//        instaLabel.font = .systemFont(ofSize: 13, weight: .regular)
-//        instaLabel.textAlignment = .center
-//        instaLabel.numberOfLines = 1
 
         mailButton.setImage(UIImage(.btn_link_mail), for: .normal)
-
-//        mailLabel.text = "문의"
-//        mailLabel.textColor = .black
-//        mailLabel.font = .systemFont(ofSize: 13, weight: .regular)
-//        mailLabel.textAlignment = .center
-//        mailLabel.numberOfLines = 1
     }
     
     private func createLayout() {
