@@ -103,6 +103,7 @@ extension PlaceListViewController {
         let selectedIndex = CGFloat(sender.selectedSegmentIndex)
         let titlecount = CGFloat((segmentedControl.titleForSegment(at: sender.selectedSegmentIndex)!.count))
         if selectedIndex == 1 {
+            viewModel.placeType = .hot
             segmentIndicator.snp.remakeConstraints { (make) in
                 make.top.equalTo(segmentedControl.snp.bottom).offset(3)
                 make.height.equalTo(3)
@@ -110,6 +111,7 @@ extension PlaceListViewController {
                 make.centerX.equalTo(segmentedControl.snp.centerX).dividedBy(numberOfSegments / CGFloat(2.58 + CGFloat(selectedIndex-1.0)*2.0))
             }
         } else {
+            viewModel.placeType = .whole
             segmentIndicator.snp.makeConstraints { make in
                 make.top.equalTo(segmentedControl.snp.bottom).offset(3)
                 make.height.equalTo(3)
@@ -138,7 +140,6 @@ extension PlaceListViewController {
     }
     
     @objc func addPlaceButtonTapped() {
-        
         navigationController?.pushViewController(AddPlaceSearchViewController(viewModel: AddPlaceSearchViewModel()), animated: true)
     }
 
