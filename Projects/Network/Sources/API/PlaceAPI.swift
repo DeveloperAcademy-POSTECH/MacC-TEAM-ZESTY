@@ -69,5 +69,5 @@ public struct PlaceAPI {
 
         return networkService.request(with: endpoint, responseType: PlacePostResDTO.self)
     }
-    
+
 }

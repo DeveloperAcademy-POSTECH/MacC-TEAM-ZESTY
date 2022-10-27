@@ -14,21 +14,22 @@ final class PlaceCell: UITableViewCell {
     
     // MARK: - Properties
     
-    static let identifier = "WholePlaceCell"
+    static let identifier = "PlaceCell"
+     
+    private lazy var containerView = UIView()
     
-    private lazy var mainView = UIView()
+    private lazy var scrollView = UIScrollView()
+    private lazy var pageStackView = UIStackView()
+    private lazy var pageControl = UIPageControl()
+    private lazy var reviewViews = [ReviewPageView(), ReviewPageView(), ReviewPageView()]
     
-    private lazy var reviewImageView = UIImageView()
-    
-    private lazy var gradientView = GradientView(gradientStartColor: .clear, gradientEndColor: .black)
-    private lazy var menuLabel = UILabel()
-    
+    private lazy var middelView = UIView()
+    private lazy var gradientStackView = UIStackView()
     private lazy var bottomView = UIView()
     
     private lazy var placeNameLabel = UILabel()
     
     private lazy var emojiStackView = UIStackView()
-    
     private lazy var goodEmojiStackView = EmojiCountStackView(type: .good)
     private lazy var sosoEmojiStackView = EmojiCountStackView(type: .soso)
     private lazy var badEmojiStackView = EmojiCountStackView(type: .bad)
@@ -41,44 +42,77 @@ final class PlaceCell: UITableViewCell {
         configureUI()
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-    }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+        pageControl.currentPage = 0
+        pageControl.numberOfPages = 0
     }
     
 }
 
 // MARK: - UI Function
 
-extension PlaceCell {
+extension PlaceCell: UIScrollViewDelegate {
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let pageWidth = scrollView.bounds.width
+        let pageFraction = scrollView.contentOffset.x / pageWidth
+        
+        pageControl.currentPage = Int((round(pageFraction)))
+        
+        scrollView.bounces = scrollView.contentOffset.x > 0 && scrollView.contentOffset.x < pageWidth
+    }
+    
+}
+
+extension PlaceCell {
+
     func setUp(with place: Place) {
-        if !place.reviews.isEmpty {
-            reviewImageView.load(url: place.reviews[0].imageURL)
-            menuLabel.text = place.reviews[0].menuName
-        } else {
-//            reviewImageView.image = UIImage(.img_categoryfriends)
-        }
         placeNameLabel.text = place.name
         goodEmojiStackView.setUp(count: place.evaluationSum.good)
         sosoEmojiStackView.setUp(count: place.evaluationSum.soso)
         badEmojiStackView.setUp(count: place.evaluationSum.bad)
+        
+        if place.reviews.isEmpty {
+            reviewViews[0].setEmptyView()
+            pageStackView.addArrangedSubview(reviewViews[0])
+            reviewViews[0].snp.makeConstraints {
+                $0.verticalEdges.equalToSuperview()
+                $0.width.equalTo(containerView.snp.width)
+            }
+        }
+        
+        for index in 0..<place.reviews.count {
+            let review = place.reviews[index]
+            reviewViews[index].setUp(with: review)
+            pageStackView.addArrangedSubview(reviewViews[index])
+            reviewViews[index].snp.makeConstraints {
+                $0.verticalEdges.equalToSuperview()
+                $0.width.equalTo(containerView.snp.width)
+            }
+        }
+        pageControl.numberOfPages = place.reviews.count
     }
-    
+
     private func configureUI() {
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.isPagingEnabled = true
+        scrollView.delegate = self
         
-        mainView.layer.cornerRadius = 16
-        mainView.layer.masksToBounds = true
+        pageStackView.axis = .horizontal
+        pageStackView.distribution = .fillEqually
         
-        reviewImageView.contentMode = .scaleAspectFill
+        containerView.layer.applyFigmaShadow()
+        containerView.layer.cornerRadius = 16
+        containerView.layer.masksToBounds = true
 
-        menuLabel.textColor = .white
-        
         bottomView.backgroundColor = .label
-
+        
         placeNameLabel.textColor = .white
         placeNameLabel.numberOfLines = 2
         placeNameLabel.font = .systemFont(ofSize: 20, weight: .bold)
@@ -89,52 +123,43 @@ extension PlaceCell {
     }
     
     private func createLayout() {
-        contentView.addSubview(mainView)
-        mainView.addSubviews([reviewImageView, gradientView, menuLabel, bottomView])
+        contentView.addSubview(containerView)
+        containerView.addSubviews([scrollView, bottomView, pageControl])
+        scrollView.addSubview(pageStackView)
         bottomView.addSubviews([placeNameLabel, emojiStackView])
-        
         emojiStackView.addArrangedSubviews([goodEmojiStackView, sosoEmojiStackView, badEmojiStackView])
-        
-        mainView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(10)
-            make.horizontalEdges.equalToSuperview().inset(45)
-            make.bottom.equalToSuperview().inset(20)
+
+        containerView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(45)
+            $0.top.height.equalToSuperview().inset(15)
         }
         
-        reviewImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.horizontalEdges.equalToSuperview()
-            make.height.equalTo(reviewImageView.snp.width)
+        scrollView.snp.makeConstraints {
+            $0.top.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(scrollView.snp.width)
         }
-        
-        gradientView.snp.makeConstraints { make in
-            make.horizontalEdges.equalToSuperview()
-            make.bottom.equalTo(reviewImageView.snp.bottom)
-            make.height.greaterThanOrEqualTo(58)
+        pageStackView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(containerView.snp.width)
         }
-        
-        menuLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(20)
-            make.bottom.equalTo(gradientView.snp.bottom)
+        pageControl.snp.makeConstraints {
+            $0.bottom.equalTo(scrollView.snp.bottom)
+            $0.trailing.equalToSuperview()
         }
         
         bottomView.snp.makeConstraints { make in
-            make.top.equalTo(reviewImageView.snp.bottom)
+            make.top.equalTo(scrollView.snp.bottom)
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalToSuperview()
-            
         }
-        
         placeNameLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(15)
             make.horizontalEdges.equalToSuperview().inset(20)
         }
-        
         emojiStackView.snp.makeConstraints { make in
             make.top.equalTo(placeNameLabel.snp.bottom).offset(10)
-            make.left.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().inset(20)
-            make.width.greaterThanOrEqualTo(130)
+            make.leading.bottom.equalToSuperview().inset(20)
+            make.height.equalTo(30)
         }
     }
     
@@ -145,10 +170,11 @@ extension PlaceCell {
 #if DEBUG
 import SwiftUI
 
-struct WholePlaceCellPreview: PreviewProvider {
+struct PlaceCellPreview: PreviewProvider {
     
     static var previews: some View {
         PlaceCell().toPreview()
+            .frame(width: 400, height: 450)
     }
     
 }

@@ -13,11 +13,11 @@ import SnapKit
 final class PlaceListViewController: UIViewController {
     
     // MARK: - Properties
+
     private var cancelBag = Set<AnyCancellable>()
     private let viewModel: PlaceListViewModel
 
     private let headerView = UIView()
-    
     private let segmentIndicator = UIView()
     private let segmentedControl = UISegmentedControl(items: ["전체", "선정맛집"])
     
@@ -91,12 +91,19 @@ extension PlaceListViewController: UITableViewDelegate {
         let placeDetailViewModel = PlaceDetailViewModel(placeId: placeId)
         show(PlaceDetailViewController(viewModel: placeDetailViewModel), sender: nil)
     }
+    
+}
 
+// MARK: - UI function
+
+extension PlaceListViewController {
+    
     @objc func indexChanged(_ sender: UISegmentedControl) {
         let numberOfSegments = CGFloat(segmentedControl.numberOfSegments)
         let selectedIndex = CGFloat(sender.selectedSegmentIndex)
         let titlecount = CGFloat((segmentedControl.titleForSegment(at: sender.selectedSegmentIndex)!.count))
         if selectedIndex == 1 {
+            viewModel.placeType = .hot
             segmentIndicator.snp.remakeConstraints { (make) in
                 make.top.equalTo(segmentedControl.snp.bottom).offset(3)
                 make.height.equalTo(3)
@@ -104,6 +111,7 @@ extension PlaceListViewController: UITableViewDelegate {
                 make.centerX.equalTo(segmentedControl.snp.centerX).dividedBy(numberOfSegments / CGFloat(2.58 + CGFloat(selectedIndex-1.0)*2.0))
             }
         } else {
+            viewModel.placeType = .whole
             segmentIndicator.snp.makeConstraints { make in
                 make.top.equalTo(segmentedControl.snp.bottom).offset(3)
                 make.height.equalTo(3)
@@ -134,10 +142,8 @@ extension PlaceListViewController: UITableViewDelegate {
     @objc func addPlaceButtonTapped() {
         navigationController?.pushViewController(AddPlaceSearchViewController(viewModel: AddPlaceSearchViewModel()), animated: true)
     }
-    
-}
 
-// MARK: - UI function
+}
 
 extension PlaceListViewController {
     
@@ -155,9 +161,7 @@ extension PlaceListViewController {
         configureNaviBar()
         
         view.backgroundColor = .white
-        
         headerView.backgroundColor = .white
-        
         segmentIndicator.backgroundColor = .black
         
         segmentedControl.backgroundColor = .clear

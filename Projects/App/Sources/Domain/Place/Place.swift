@@ -61,7 +61,6 @@ extension Place {
         reviews = []
     }
     
-
 }
 
 extension EvaluationSum {
