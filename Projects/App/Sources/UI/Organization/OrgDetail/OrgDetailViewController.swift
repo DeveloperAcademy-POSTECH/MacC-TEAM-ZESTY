@@ -58,7 +58,7 @@ extension OrgDetailViewController {
         orgNameLabel.numberOfLines = 2
         
         orgInformationSuperStackView.axis = .vertical
-        orgInformationSuperStackView.alignment = .top
+        orgInformationSuperStackView.alignment = .leading
         orgInformationSuperStackView.distribution = . fillProportionally
         orgInformationSuperStackView.spacing = 50
         
@@ -82,8 +82,8 @@ extension OrgDetailViewController {
         orgDetailInformationView1.informationLabel.text = "함께하는 친구들"
         orgDetailInformationView1.numberLabel.text = "13,966명"
         
-        orgInformationImage1.image = UIImage(.img_categoryfriends_western)
-        orgInformationImage1.contentMode = .scaleAspectFit
+        orgInformationImage2.image = UIImage(.img_categoryfriends_western)
+        orgInformationImage2.contentMode = .scaleAspectFit
         orgDetailInformationView2.informationLabel.text = "등록된 맛집"
         orgDetailInformationView2.numberLabel.text = "1,425곳"
         
@@ -100,7 +100,7 @@ extension OrgDetailViewController {
         view.addSubviews([orgNameLabel, orgInformationSuperStackView, orgInformationStackView1, orgInformationStackView2, orgInformationStackView3, orgInviteButton])
         orgInformationSuperStackView.addArrangedSubviews([orgInformationStackView1, orgInformationStackView2, orgInformationStackView3])
         orgInformationStackView1.addArrangedSubviews([orgInformationImage1, orgDetailInformationView1])
-        orgInformationStackView2.addArrangedSubviews([orgInformationImage1, orgDetailInformationView2])
+        orgInformationStackView2.addArrangedSubviews([orgInformationImage2, orgDetailInformationView2])
         orgInformationStackView3.addArrangedSubviews([orgInformationImage3, orgDetailInformationView3])
 
         orgNameLabel.snp.makeConstraints { make in
