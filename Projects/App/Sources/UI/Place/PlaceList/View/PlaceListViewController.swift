@@ -20,7 +20,8 @@ final class PlaceListViewController: UIViewController {
     
     private let segmentIndicator = UIView()
     private let segmentedControl = UISegmentedControl(items: ["전체", "선정맛집"])
-    private let questionMarkImage = UIImageView()
+    
+    private let questionButton = UIButton()
     private let addPlaceButton = UIButton()
     
     private let tableView = UITableView()
@@ -105,8 +106,10 @@ extension PlaceListViewController {
         segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
         
         let imageConfiguration = UIImage.SymbolConfiguration(weight: .semibold)
-        questionMarkImage.image = UIImage(systemName: "questionmark.circle", withConfiguration: imageConfiguration)
-        questionMarkImage.tintColor = .zestyColor(.gray54)
+        let questionMarkImage = UIImage(systemName: "questionmark.circle", withConfiguration: imageConfiguration)
+        
+        questionButton.setImage(questionMarkImage, for: .normal)
+        questionButton.tintColor = .zestyColor(.gray54)
         
         let sidePlusImage = UIImage(.btn_side_plus)
         addPlaceButton.setImage(sidePlusImage, for: .normal)
@@ -144,8 +147,8 @@ extension PlaceListViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([headerView, segmentIndicator, questionMarkImage, tableView])
-        headerView.addSubviews([segmentedControl, segmentIndicator, questionMarkImage, addPlaceButton])
+        view.addSubviews([headerView, segmentIndicator, tableView])
+        headerView.addSubviews([segmentedControl, segmentIndicator, questionButton, addPlaceButton])
         
         headerView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -167,7 +170,7 @@ extension PlaceListViewController {
             make.centerX.equalTo(segmentedControl.snp.centerX).dividedBy(segmentedControl.numberOfSegments)
         }
         
-        questionMarkImage.snp.makeConstraints { make in
+        questionButton.snp.makeConstraints { make in
             make.left.equalTo(segmentedControl.snp.right)
             make.top.equalTo(segmentedControl.snp.top)
             make.width.equalTo(21)
