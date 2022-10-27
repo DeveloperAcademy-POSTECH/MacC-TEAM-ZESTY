@@ -13,4 +13,5 @@ public extension UIScreen {
   /// - pro: 390.0
   /// - pro max: 428.0
   var isWiderThan425pt: Bool { self.bounds.size.width > 425 }
+  var isHeightLessThan670pt: Bool { self.bounds.size.height < 670 }
 }

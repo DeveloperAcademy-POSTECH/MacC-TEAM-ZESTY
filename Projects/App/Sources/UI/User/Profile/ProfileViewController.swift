@@ -19,7 +19,6 @@ final class ProfileViewController: UIViewController {
     private let profileMenuStackView = UIStackView()
     private let dividerView = UIView()
     private let profileUserMenuStackView = UIStackView()
-    private let emptyView = UIView()
     private let instaButton = UIButton()
     private let mailButton = UIButton()
     private let instaLabel = UILabel()
@@ -55,15 +54,17 @@ extension ProfileViewController {
         profileImageView.contentMode = .scaleAspectFit
         
         profileMenuSuperStackView.axis = .vertical
-        profileMenuSuperStackView.alignment = .top
+        profileMenuSuperStackView.alignment = .leading
         profileMenuSuperStackView.distribution = .fillProportionally
-        profileMenuSuperStackView.spacing = 20
+        profileMenuSuperStackView.spacing = 10
         
         profileMenuStackView.axis = .vertical
         profileMenuStackView.distribution = .fillEqually
+        profileMenuStackView.spacing = 0
 
         profileUserMenuStackView.axis = .vertical
         profileUserMenuStackView.distribution = .fillEqually
+        profileUserMenuStackView.spacing = 0
         
         dividerView.backgroundColor = .zestyColor(.grayF6)
 
@@ -86,10 +87,10 @@ extension ProfileViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([profileImageView, profileNickNameView, profileMenuSuperStackView, dividerView, instaButton, instaLabel, mailButton, mailLabel])
-        profileMenuSuperStackView.addArrangedSubviews([profileMenuStackView, profileUserMenuStackView])
+        view.addSubviews([profileImageView, profileNickNameView, profileMenuSuperStackView, instaButton, instaLabel, mailButton, mailLabel])
+        profileMenuSuperStackView.addArrangedSubviews([profileMenuStackView, dividerView, profileUserMenuStackView])
         profileMenuStackView.addArrangedSubviews([profileMenuView1, profileMenuView2, profileMenuView3])
-        profileUserMenuStackView.addArrangedSubviews([profileUserMenuView1, profileUserMenuView2, emptyView])
+        profileUserMenuStackView.addArrangedSubviews([profileUserMenuView1, profileUserMenuView2])
         
         profileImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -104,7 +105,6 @@ extension ProfileViewController {
         
         profileMenuSuperStackView.snp.makeConstraints { make in
             make.top.equalTo(profileNickNameView.snp.bottom).offset(30)
-            make.bottom.equalTo(instaButton.snp.top).offset(-68)
             make.leading.trailing.equalToSuperview()
         }
         
@@ -113,7 +113,7 @@ extension ProfileViewController {
         }
         
         dividerView.snp.makeConstraints { make in
-            make.centerY.equalTo(profileMenuSuperStackView.snp.centerY)
+            make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(1)
         }

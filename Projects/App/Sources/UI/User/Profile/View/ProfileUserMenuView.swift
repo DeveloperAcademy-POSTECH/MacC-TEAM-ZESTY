@@ -15,6 +15,7 @@ final class ProfileUserMenuView: UIView {
     // MARK: Properties
         
     private let userMenuLabel = UILabel()
+    private let isSE = UIScreen.main.isHeightLessThan670pt
     
     // MARK: LifeCycle
     
@@ -50,6 +51,16 @@ extension ProfileUserMenuView {
     
     private func createLayout() {
         addSubview(userMenuLabel)
+        
+        if isSE {
+            snp.makeConstraints {
+                $0.height.equalTo(50)
+            }
+        } else {
+            snp.makeConstraints {
+                $0.height.equalTo(60)
+            }
+        }
         
         userMenuLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(30)
