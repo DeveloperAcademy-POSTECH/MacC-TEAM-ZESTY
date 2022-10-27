@@ -14,23 +14,17 @@ final class PlaceCell: UITableViewCell {
     
     // MARK: - Properties
     
-    static let identifier = "WholePlaceCell"
-    
-    private lazy var mainView = UIView()
-    
-    private lazy var reviewImageView = UIImageView()
-    
+    static let identifier = "PlaceCell"
+     
+    private lazy var containerView = UIView()
+    private lazy var reviewView = ReviewPageView()
     private lazy var middelView = UIView()
     private lazy var gradientStackView = UIStackView()
-    private lazy var gradientView = GradientView(gradientStartColor: .clear, gradientEndColor: .black)
-    private lazy var menuLabel = UILabel()
-    
     private lazy var bottomView = UIView()
     
     private lazy var placeNameLabel = UILabel()
     
     private lazy var emojiStackView = UIStackView()
-    
     private lazy var goodEmojiStackView = EmojiCountStackView(type: .good)
     private lazy var sosoEmojiStackView = EmojiCountStackView(type: .soso)
     private lazy var badEmojiStackView = EmojiCountStackView(type: .bad)
@@ -41,6 +35,7 @@ final class PlaceCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         createLayout()
         configureUI()
+        setUp(with: Place.mockData[0])
     }
     
     required init?(coder: NSCoder) {
@@ -52,33 +47,25 @@ final class PlaceCell: UITableViewCell {
 // MARK: - UI Function
 
 extension PlaceCell {
-    
+
     func setUp(with place: Place) {
-        if !place.reviews.isEmpty {
-            mainView.layer.borderWidth = place.reviews[0].menuName?.isEmpty ?? true ? 1 : 0
-            reviewImageView.load(url: place.reviews[0].imageURL)
-            gradientView.isHidden = place.reviews[0].menuName?.isEmpty ?? true ? true : false
-            menuLabel.text = place.reviews[0].menuName
-        }
         placeNameLabel.text = place.name
         goodEmojiStackView.setUp(count: place.evaluationSum.good)
         sosoEmojiStackView.setUp(count: place.evaluationSum.soso)
         badEmojiStackView.setUp(count: place.evaluationSum.bad)
+        
+        place.reviews.forEach { review in
+            reviewView.setUp(with: review)
+        }
     }
-    
+
     private func configureUI() {
-        configureGradientView()
-        
-        mainView.layer.applyFigmaShadow()
-        mainView.layer.cornerRadius = 16
-        mainView.layer.masksToBounds = true
-        
-        reviewImageView.contentMode = .scaleAspectFill
+        containerView.layer.applyFigmaShadow()
+        containerView.layer.cornerRadius = 16
+        containerView.layer.masksToBounds = true
 
-        menuLabel.textColor = .white
-        
         bottomView.backgroundColor = .label
-
+        
         placeNameLabel.textColor = .white
         placeNameLabel.numberOfLines = 2
         placeNameLabel.font = .systemFont(ofSize: 20, weight: .bold)
@@ -89,40 +76,25 @@ extension PlaceCell {
     }
     
     private func createLayout() {
-        contentView.addSubview(mainView)
-        mainView.addSubviews([reviewImageView, gradientView, menuLabel, bottomView])
+        contentView.addSubview(containerView)
+        containerView.addSubviews([reviewView, bottomView])
         bottomView.addSubviews([placeNameLabel, emojiStackView])
-        
         emojiStackView.addArrangedSubviews([goodEmojiStackView, sosoEmojiStackView, badEmojiStackView])
-        
-        mainView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(10)
-            make.horizontalEdges.equalToSuperview().inset(45)
-            make.bottom.equalToSuperview().inset(20)
+
+        containerView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(45)
+            $0.top.height.equalToSuperview().inset(15)
         }
         
-        reviewImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.horizontalEdges.equalToSuperview()
-            make.height.equalTo(reviewImageView.snp.width)
-        }
-        
-        gradientView.snp.makeConstraints { make in
-            make.horizontalEdges.equalToSuperview()
-            make.bottom.equalTo(reviewImageView.snp.bottom)
-            make.height.greaterThanOrEqualTo(58)
-        }
-        
-        menuLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(20)
-            make.bottom.equalTo(gradientView.snp.bottom)
+        reviewView.snp.makeConstraints {
+            $0.top.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(reviewView.snp.width)
         }
         
         bottomView.snp.makeConstraints { make in
-            make.top.equalTo(reviewImageView.snp.bottom)
+            make.top.equalTo(reviewView.snp.bottom)
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalToSuperview()
-            
         }
         
         placeNameLabel.snp.makeConstraints { make in
@@ -132,17 +104,9 @@ extension PlaceCell {
         
         emojiStackView.snp.makeConstraints { make in
             make.top.equalTo(placeNameLabel.snp.bottom).offset(10)
-            make.left.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().inset(20)
-            make.width.greaterThanOrEqualTo(130)
+            make.leading.bottom.equalToSuperview().inset(20)
+            make.height.equalTo(30)
         }
-    }
-    
-    private func configureGradientView() {
-        let gradientLayer: CAGradientLayer = CAGradientLayer()
-        gradientLayer.frame = gradientView.bounds
-        gradientLayer.colors = [UIColor.white.cgColor, UIColor.black.cgColor]
-        gradientView.layer.addSublayer(gradientLayer)
     }
     
 }
@@ -152,10 +116,11 @@ extension PlaceCell {
 #if DEBUG
 import SwiftUI
 
-struct WholePlaceCellPreview: PreviewProvider {
+struct PlaceCellPreview: PreviewProvider {
     
     static var previews: some View {
         PlaceCell().toPreview()
+            .frame(width: 400, height: 450)
     }
     
 }
