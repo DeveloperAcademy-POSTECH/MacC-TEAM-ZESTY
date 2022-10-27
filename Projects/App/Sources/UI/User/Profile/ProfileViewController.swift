@@ -6,8 +6,8 @@
 //  Copyright (c) 2022 zesty. All rights reserved.
 //
 
-import Combine
 import UIKit
+import DesignSystem
 import SnapKit
 
 final class ProfileViewController: UIViewController {
@@ -26,8 +26,6 @@ final class ProfileViewController: UIViewController {
     private let mailButton = UIButton()
     private let instaLabel = UILabel()
     private let mailLabel = UILabel()
-//    private let changeNickNameButton = UIButton()
-//    private let nickNameLabel = UILabel()
     
     private var menuView1 = ProfileMenuView()
     private var menuView2 = ProfileMenuView()
@@ -62,15 +60,6 @@ extension ProfileViewController {
         nickNameStackView.alignment = .center
         nickNameStackView.distribution = .fillProportionally
         nickNameStackView.spacing = 10
-        
-//        nickNameLabel.text = "6글자제한O"
-//        nickNameLabel.backgroundColor = .zestyColor(.background)
-//        nickNameLabel.textColor = .black
-//        nickNameLabel.font = UIFont.systemFont(ofSize: CGFloat(22), weight: .bold)
-//
-//        changeNickNameButton.setImage(UIImage(systemName: "pencil"), for: .normal)
-//        changeNickNameButton.tintColor = .black
-//        changeNickNameButton.backgroundColor = .zestyColor(.background)
         
         superStackView.axis = .vertical
         superStackView.alignment = .top
@@ -125,7 +114,6 @@ extension ProfileViewController {
         
         nickNameStackView.snp.makeConstraints { make in
             make.top.equalTo(profileImage.snp.bottom).offset(20)
-//            make.leading.trailing.equalToSuperview().inset(125)
             make.centerX.equalToSuperview()
         }
         
