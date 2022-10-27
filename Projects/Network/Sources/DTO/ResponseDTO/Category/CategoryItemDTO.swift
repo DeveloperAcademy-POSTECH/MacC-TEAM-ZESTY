@@ -8,11 +8,12 @@
 
 import Foundation
 
-public struct CategoryDTO: Decodable {
+// MARK: - Category
+public struct CategoryItemDTO: Codable {
     public let id: Int
     public let name: String
     public let img: String
     public let createdAt, updatedAt: String
 }
 
-public typealias CategoryListDTO = [CategoryDTO]
+public typealias CategoryListDTO = [CategoryItemDTO]

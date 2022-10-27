@@ -81,5 +81,4 @@ class AddPlaceSearchViewModel {
             }
             .store(in: &cancelBag)
     }
-    
 }

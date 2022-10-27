@@ -37,7 +37,6 @@ public struct PlaceAPI {
         return networkService.request(with: endpoint, responseType: Bool.self)
     }
 
-    
     public static func fetchPlaceDetail(placeId: Int) ->
         AnyPublisher<PlaceDetailDTOResult, NetworkError> {
         let header = ["Content-Type": "application/json"]

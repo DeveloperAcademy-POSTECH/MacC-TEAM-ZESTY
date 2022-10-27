@@ -12,7 +12,8 @@ import Network
 
 protocol AddPlaceUseCaseType {
     func searchKakaoPlaces(with name: String) -> AnyPublisher<[KakaoPlace], Error>
-    func checkRegisterdPlace(with kakaoPlaceId: Int) -> AnyPublisher<Bool, Error>
+//    func checkRegisterdPlace(with kakaoPlaceId: Int) -> AnyPublisher<Bool, Error>
+    func checkRegisterdPlace(with kakaoPlaceId: Int) -> AnyPublisher<Bool, AddPlaceError>
     func fetchCategories() -> AnyPublisher<[Category], Error>
     func addNewPlace(with place: KakaoPlace, category: Int) -> AnyPublisher<PlaceResult, Error>
 }
@@ -73,6 +74,7 @@ final class AddPlaceUseCase: AddPlaceUseCaseType {
 
     }
     
+    /* 임시 삭제
     func checkRegisterdPlace(with kakaoPlaceId: Int) -> AnyPublisher<Bool, Error> {
         PlaceAPI.checkRegisterdPlace(kakaoPlaceId: kakaoPlaceId)
             .sink { error in
@@ -87,6 +89,7 @@ final class AddPlaceUseCase: AddPlaceUseCaseType {
 
         return outputBool.eraseToAnyPublisher()
     }
+     */
     
     func checkRegisterdPlace(with kakaoPlaceId: Int) -> AnyPublisher<Bool, AddPlaceError> {
         PlaceAPI.checkRegisterdPlace(kakaoPlaceId: kakaoPlaceId)
@@ -94,6 +97,7 @@ final class AddPlaceUseCase: AddPlaceUseCaseType {
                 return .none
             }.eraseToAnyPublisher()
     }
+    
     func fetchCategories() -> AnyPublisher<[Category], Error> {
         CategoryAPI.fetchCategoryList()
             .sink { error in

@@ -89,13 +89,14 @@ extension Place {
     ]
     
     static let empty: Place =
-        Place(id: 0,
+    Place(id: 0,
+          kakaoPlaceId: 0,
               creator: nil,
               organizationId: -1,
               name: "(가게정보없음)",
               address: "",
               lat: "",
-              lan: "",
+              lon: "",
               category: [Category.init(id: -1, name: "카테고리", imageURL: nil)],
               evaluationSum: EvaluationSum(good: 0, soso: 0, bad: 0),
               reviews: [])

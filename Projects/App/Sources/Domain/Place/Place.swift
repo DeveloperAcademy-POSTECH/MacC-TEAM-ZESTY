@@ -47,18 +47,20 @@ extension Place {
     
     init(detailDTO dto: PlaceDetailDTO) {
         id = dto.placeID
+        kakaoPlaceId = 0
         creator = nil
         organizationId = -1
         name = dto.placeName
         address = dto.address
         lat = dto.lat
-        lan = dto.long
+        lon = dto.long
         category = [Category(id: dto.category.id, name: dto.category.name, imageURL: nil)]
         evaluationSum = EvaluationSum(good: dto.evaluationSummary.goodCount,
                                       soso: dto.evaluationSummary.sosoCount,
                                       bad: dto.evaluationSummary.badCount)
         reviews = []
     }
+    
 
 }
 

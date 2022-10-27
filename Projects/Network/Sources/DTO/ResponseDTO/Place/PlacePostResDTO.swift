@@ -11,7 +11,7 @@ import Foundation
 public struct PlacePostResDTO: Codable {
     public let id: Int
     public let address, name, latitude, longitude: String
-    public let category: Category
+    public let category: CategoryItemDTO
     public let organization: Organization
     public let creator: Creator
     public let kakaoPlaceID: Int
@@ -22,14 +22,6 @@ public struct PlacePostResDTO: Codable {
         case kakaoPlaceID = "kakaoPlaceId"
         case createdAt, updatedAt
     }
-}
-
-// MARK: - Category
-public struct Category: Codable {
-    public let id: Int
-    public let name: String
-    public let img: String
-    public let createdAt, updatedAt: String
 }
 
 // MARK: - Creator
