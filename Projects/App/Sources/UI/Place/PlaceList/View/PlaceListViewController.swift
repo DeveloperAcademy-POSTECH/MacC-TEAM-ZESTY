@@ -68,6 +68,9 @@ final class PlaceListViewController: UIViewController {
     
     @objc func searchButtonTapped() {
         // TODO: 검색뷰 완성 시 연결
+        // 임시로 상세페이지 연결 둡니다
+        let placeId = 18
+        navigationController?.pushViewController(PlaceDetailViewController(viewModel: PlaceDetailViewModel(placeId: placeId)), animated: true)
     }
     
     @objc func userInfoButtonTapped() {
@@ -124,7 +127,7 @@ extension PlaceListViewController {
     }
     
     private func configureNaviBar() {
-        let searchItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(userInfoButtonTapped))
+        let searchItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchButtonTapped))
         let personCropCircle = UIImage(systemName: "person.crop.circle")
         let userInfoItem = UIBarButtonItem(image: personCropCircle, style: .plain, target: self, action: #selector(userInfoButtonTapped))
         let placeTitle = UILabel()
