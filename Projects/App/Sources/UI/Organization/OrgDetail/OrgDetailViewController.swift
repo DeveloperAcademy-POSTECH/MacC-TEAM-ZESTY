@@ -6,7 +6,6 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
-import Combine
 import UIKit
 import DesignSystem
 import SnapKit
@@ -107,7 +106,6 @@ extension OrgDetailViewController {
 
         orgName.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(30)
-//            make.leading.trailing.equalToSuperview().inset(40)
             make.centerX.equalToSuperview()
             make.height.equalTo(31)
         }
@@ -116,7 +114,6 @@ extension OrgDetailViewController {
             make.leading.equalToSuperview().inset(40)
             make.trailing.equalToSuperview().inset(173)
             make.top.equalTo(orgName.snp.bottom).offset(50)
-//            make.bottom.equalTo(inviteButton.snp.top).offset(-253)
         }
         
         informationStackView1.snp.makeConstraints { make in
