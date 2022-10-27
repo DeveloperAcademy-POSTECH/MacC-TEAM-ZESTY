@@ -52,6 +52,10 @@ final class AddPlaceSearchViewController: UIViewController {
         createLayout()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+    }
+    
     // MARK: - Function
     @objc func backButtonDidTap() {
         self.navigationController?.popViewController(animated: true)
@@ -203,6 +207,7 @@ extension AddPlaceSearchViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        input.send(.searchBtnDidTap(placeName: searchingTextFieldView.textField.text ?? "" ))
         return true
     }
     

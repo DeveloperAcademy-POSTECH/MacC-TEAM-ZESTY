@@ -17,9 +17,11 @@ final class AddCategoryViewController: UIViewController {
     // MARK: - Properties
     private let viewModel: AddPlaceViewModel
     private var cancelBag = Set<AnyCancellable>()
+    private let input: PassthroughSubject<AddPlaceViewModel.Input, Never> = .init()
+    
     private var place: Place?
     private var reviews: [Review] = []
-    private var categories: [Category] = Category.mockData
+    private var categories: [Category] = []
     
     private var selectedIcon: String = ""
     
@@ -28,6 +30,7 @@ final class AddCategoryViewController: UIViewController {
     private lazy var categoryCollectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: createCollecionViewLayout())
     
     private lazy var addPlaceButton: FullWidthBlackButton = {
+        $0.isEnabled = false
         $0.setTitle("맛집 등록하기", for: .normal)
         $0.addTarget(self, action: #selector(addPlaceButtonDidTap), for: .touchUpInside)
         return $0
@@ -46,7 +49,8 @@ final class AddCategoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setNavigationBar()
+        bind()
+        input.send(.categoryViewDidLoad)
         configureUI()
         createLayout()
     }
@@ -57,7 +61,7 @@ final class AddCategoryViewController: UIViewController {
     }
     
     @objc func addPlaceButtonDidTap() {
-        self.navigationController?.pushViewController(AddPlaceResultViewController(viewModel: viewModel), animated: true)
+        input.send(.addPlaceBtnDidTap)
     }
     
 }
@@ -66,7 +70,26 @@ final class AddCategoryViewController: UIViewController {
 extension AddCategoryViewController {
     
     private func bind() {
+        let output = viewModel.transform(input: input.eraseToAnyPublisher())
         
+        output
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                switch state {
+                case .fetchCategoriesFail(let error):
+                    print(error.localizedDescription)
+                case .fetchCategoriesDidSucceed(let categories):
+                    self?.categories = categories
+                    self?.categoryCollectionView.reloadData()
+                case .categoryCellSelected:
+                    self?.addPlaceButton.isEnabled = true
+                case .addPlaceFail(let error):
+                    print(error.localizedDescription)
+                case .addPlaceDidSucceed(let place):
+                    let viewModel = AddPlaceResultViewModel(place: place)
+                    self?.navigationController?.pushViewController(AddPlaceResultViewController(viewModel: viewModel), animated: true)
+                }
+            }.store(in: &cancelBag)
     }
 
 }
@@ -76,6 +99,8 @@ extension AddCategoryViewController {
 extension AddCategoryViewController {
     
     private func configureUI() {
+        setNavigationBar()
+        
         view.backgroundColor = .white // zestyColor(.backgroundColor)
         categoryCollectionView.register(CategoryIconCell.self, forCellWithReuseIdentifier: "CategoryIconCell")
         categoryCollectionView.isScrollEnabled = false
@@ -153,7 +178,7 @@ extension AddCategoryViewController: UICollectionViewDelegate, UICollectionViewD
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryIconCell", for: indexPath) as? CategoryIconCell else { return UICollectionViewCell() }
-        cell.configure(with: categories[indexPath.row])
+        cell.configure(with: categories[indexPath.row], viewModel: viewModel)
         return cell
     }
     
