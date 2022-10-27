@@ -39,12 +39,12 @@ extension OrgDetailInformationView {
         
         informationLabel.textColor = .zestyColor(.gray3C3C43)
         informationLabel.font = UIFont.systemFont(ofSize: CGFloat(13), weight: .regular)
-        informationLabel.textAlignment = .center
+        informationLabel.textAlignment = .left
         informationLabel.numberOfLines = 1
                 
         numberLabel.textColor = .black
         numberLabel.font = UIFont.systemFont(ofSize: CGFloat(17), weight: .medium)
-        numberLabel.textAlignment = .center
+        numberLabel.textAlignment = .left
         numberLabel.numberOfLines = 1
     }
 
@@ -52,13 +52,14 @@ extension OrgDetailInformationView {
         addSubviews([informationLabel, numberLabel])
         
         informationLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.top.equalToSuperview().inset(8)
         }
         
         numberLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.top.equalTo(informationLabel.snp.bottom).offset(4)
+            make.bottom.equalToSuperview().inset(8)
         }
     }
 

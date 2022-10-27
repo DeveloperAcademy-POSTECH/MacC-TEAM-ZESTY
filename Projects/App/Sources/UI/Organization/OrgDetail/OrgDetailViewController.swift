@@ -15,8 +15,13 @@ final class OrgDetailViewController: UIViewController {
 
     // MARK: - Properties
 
-    private let inviteButton = FullWidthBlackButton()
     let orgName = UILabel()
+    let superStackView = UIStackView()
+    let informationStackView1 = UIStackView()
+    let informationStackView2 = UIStackView()
+    let informationStackView3 = UIStackView()
+
+    private let inviteButton = FullWidthBlackButton()
     private let logoImage1 = UIImageView()
     private let logoImage2 = UIImageView()
     private let logoImage3 = UIImageView()
@@ -54,51 +59,79 @@ extension OrgDetailViewController {
         orgName.textAlignment = .center
         orgName.numberOfLines = 2
         
-//        orgDetailCell1.logoImage.image = UIImage(.img_reviewfriends_together)
-        orgDetailCell1.informationLabel.text = "함께하는 친구들"
-        orgDetailCell1.numberLabel.text = "13.966명"
-        logoImage1.image = UIImage(.img_reviewfriends_together)
+        superStackView.axis = .vertical
+        superStackView.alignment = .top
+        superStackView.distribution = . fillProportionally
+        superStackView.spacing = 50
         
+        informationStackView1.axis = .horizontal
+        informationStackView1.alignment = .center
+        informationStackView1.distribution = .fillEqually
+        informationStackView1.spacing = 30
+        
+        informationStackView2.axis = .horizontal
+        informationStackView2.alignment = .center
+        informationStackView2.distribution = .fillEqually
+        informationStackView2.spacing = 30
+
+        informationStackView3.axis = .horizontal
+        informationStackView3.alignment = .center
+        informationStackView3.distribution = .fillEqually
+        informationStackView3.spacing = 30
+
+        logoImage1.image = UIImage(.img_reviewfriends_together)
+        logoImage1.contentMode = .scaleAspectFit
+        orgDetailCell1.informationLabel.text = "함께하는 친구들"
+        orgDetailCell1.numberLabel.text = "13,966명"
+        
+        logoImage2.image = UIImage(.img_categoryfriends_western)
+        logoImage2.contentMode = .scaleAspectFit
         orgDetailCell2.informationLabel.text = "등록된 맛집"
         orgDetailCell2.numberLabel.text = "1,425곳"
-        logoImage2.image = UIImage(.img_cate)
         
+        logoImage3.image = UIImage(.img_reviewfriends_photo)
+        logoImage3.contentMode = .scaleAspectFit
+        logoImage3.layer.applyFigmaShadow(color: .black, opacity: 0.05, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
         orgDetailCell3.informationLabel.text = "업로드된 사진"
         orgDetailCell3.numberLabel.text = "124,513개"
-        logoImage3.image = UIImage(.img_reviewfriends_together)
-        
         
         inviteButton.setTitle("우리학교 사람들 초대하기", for: .normal)
     }
 
     private func createLayout() {
-        view.addSubview(orgName)
-        view.addSubview(orgDetailCell1)
-        view.addSubview(orgDetailCell2)
-        view.addSubview(orgDetailCell3)
-        view.addSubview(inviteButton)
+        view.addSubviews([orgName, superStackView, informationStackView1, informationStackView2, informationStackView3, inviteButton])
+        superStackView.addArrangedSubviews([informationStackView1, informationStackView2, informationStackView3])
+        informationStackView1.addArrangedSubviews([logoImage1, orgDetailCell1])
+        informationStackView2.addArrangedSubviews([logoImage2, orgDetailCell2])
+        informationStackView3.addArrangedSubviews([logoImage3, orgDetailCell3])
 
         orgName.snp.makeConstraints { make in
-            make.horizontalEdges.top.equalTo(view.safeAreaLayoutGuide).inset(30)
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(30)
+//            make.leading.trailing.equalToSuperview().inset(40)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(31)
         }
         
-        orgDetailCell1.snp.makeConstraints { make in
-            make.top.equalTo(orgName.snp.bottom).offset(60)
+        superStackView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(40)
-            make.trailing.equalToSuperview().inset(20)
-            
+            make.trailing.equalToSuperview().inset(173)
+            make.top.equalTo(orgName.snp.bottom).offset(50)
+//            make.bottom.equalTo(inviteButton.snp.top).offset(-253)
         }
         
-        orgDetailCell2.snp.makeConstraints { make in
-            make.top.equalTo(orgDetailCell1.snp.bottom).offset(60)
-            make.leading.equalToSuperview().inset(40)
-            make.trailing.equalToSuperview().inset(20)
+        informationStackView1.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(60)
         }
         
-        orgDetailCell3.snp.makeConstraints { make in
-            make.top.equalTo(orgDetailCell2.snp.bottom).offset(60)
-            make.leading.equalToSuperview().inset(40)
-            make.trailing.equalToSuperview().inset(20)
+        informationStackView2.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(60)
+        }
+        
+        informationStackView3.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(60)
         }
 
         inviteButton.snp.makeConstraints { make in
