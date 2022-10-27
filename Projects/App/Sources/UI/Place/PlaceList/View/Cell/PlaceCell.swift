@@ -20,8 +20,6 @@ final class PlaceCell: UITableViewCell {
     
     private lazy var reviewImageView = UIImageView()
     
-    private lazy var middelView = UIView()
-    private lazy var gradientStackView = UIStackView()
     private lazy var gradientView = GradientView(gradientStartColor: .clear, gradientEndColor: .black)
     private lazy var menuLabel = UILabel()
     
@@ -43,6 +41,10 @@ final class PlaceCell: UITableViewCell {
         configureUI()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -55,10 +57,10 @@ extension PlaceCell {
     
     func setUp(with place: Place) {
         if !place.reviews.isEmpty {
-            mainView.layer.borderWidth = place.reviews[0].menuName?.isEmpty ?? true ? 1 : 0
             reviewImageView.load(url: place.reviews[0].imageURL)
-            gradientView.isHidden = place.reviews[0].menuName?.isEmpty ?? true ? true : false
             menuLabel.text = place.reviews[0].menuName
+        } else {
+            reviewImageView.image = UIImage(.img_categoryfriends)
         }
         placeNameLabel.text = place.name
         goodEmojiStackView.setUp(count: place.evaluationSum.good)
@@ -67,9 +69,7 @@ extension PlaceCell {
     }
     
     private func configureUI() {
-        configureGradientView()
         
-        mainView.layer.applyFigmaShadow()
         mainView.layer.cornerRadius = 16
         mainView.layer.masksToBounds = true
         
@@ -136,13 +136,6 @@ extension PlaceCell {
             make.bottom.equalToSuperview().inset(20)
             make.width.greaterThanOrEqualTo(130)
         }
-    }
-    
-    private func configureGradientView() {
-        let gradientLayer: CAGradientLayer = CAGradientLayer()
-        gradientLayer.frame = gradientView.bounds
-        gradientLayer.colors = [UIColor.white.cgColor, UIColor.black.cgColor]
-        gradientView.layer.addSublayer(gradientLayer)
     }
     
 }
