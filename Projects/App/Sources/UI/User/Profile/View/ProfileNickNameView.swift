@@ -47,7 +47,7 @@ extension ProfileNickNameView {
         nickNameLabel.backgroundColor = .zestyColor(.background)
         nickNameLabel.textColor = .black
         nickNameLabel.font = UIFont.systemFont(ofSize: CGFloat(22), weight: .bold)
-        nickNameLabel.textAlignment = .center
+//        nickNameLabel.textAlignment = .center
     }
 
     private func createLayout() {
@@ -61,7 +61,7 @@ extension ProfileNickNameView {
             make.leading.equalTo(nickNameLabel.snp.trailing).offset(10)
             make.trailing.equalToSuperview()
             make.centerY.equalToSuperview()
-            make.width.equalTo(25)
+//            make.width.equalTo(25)
         }
 
         nickNameLabel.snp.makeConstraints { make in

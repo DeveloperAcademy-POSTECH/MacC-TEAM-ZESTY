@@ -59,6 +59,7 @@ extension ProfileMenuView {
             make.centerY.equalTo(menuLabel.snp.centerY)
             make.leading.equalTo(menuLabel.snp.trailing).offset(10)
             make.trailing.equalToSuperview().inset(30)
+            make.width.equalTo(12)
         }
     }
      

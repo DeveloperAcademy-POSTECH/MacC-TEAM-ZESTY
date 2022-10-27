@@ -17,6 +17,7 @@ final class ProfileViewController: UIViewController {
     let stackView1 = UIStackView()
     let stackView2 = UIStackView()
     let superStackView = UIStackView()
+    let nickNameStackView = UIStackView()
     
     private let profileImage = UIImageView()
     private let dividerView = UIView()
@@ -25,6 +26,8 @@ final class ProfileViewController: UIViewController {
     private let mailButton = UIButton()
     private let instaLabel = UILabel()
     private let mailLabel = UILabel()
+//    private let changeNickNameButton = UIButton()
+//    private let nickNameLabel = UILabel()
     
     private var menuView1 = ProfileMenuView()
     private var menuView2 = ProfileMenuView()
@@ -54,6 +57,20 @@ extension ProfileViewController {
         
         profileImage.image = UIImage(.img_signup)
         profileImage.contentMode = .scaleAspectFit
+        
+        nickNameStackView.axis = .horizontal
+        nickNameStackView.alignment = .center
+        nickNameStackView.distribution = .fillProportionally
+        nickNameStackView.spacing = 10
+        
+//        nickNameLabel.text = "6글자제한O"
+//        nickNameLabel.backgroundColor = .zestyColor(.background)
+//        nickNameLabel.textColor = .black
+//        nickNameLabel.font = UIFont.systemFont(ofSize: CGFloat(22), weight: .bold)
+//
+//        changeNickNameButton.setImage(UIImage(systemName: "pencil"), for: .normal)
+//        changeNickNameButton.tintColor = .black
+//        changeNickNameButton.backgroundColor = .zestyColor(.background)
         
         superStackView.axis = .vertical
         superStackView.alignment = .top
@@ -90,13 +107,12 @@ extension ProfileViewController {
         mailLabel.font = .systemFont(ofSize: 13, weight: .regular)
         mailLabel.textAlignment = .center
         mailLabel.numberOfLines = 1
-
-        profileNickNameView = ProfileNickNameView()
         
     }
     
     private func createLayout() {
-        view.addSubviews([profileImage, superStackView, stackView1, stackView2, dividerView, profileNickNameView, instaButton, instaLabel, mailButton, mailLabel])
+        view.addSubviews([profileImage, nickNameStackView, superStackView, stackView1, stackView2, dividerView, instaButton, instaLabel, mailButton, mailLabel])
+        nickNameStackView.addArrangedSubview(profileNickNameView)
         superStackView.addArrangedSubviews([stackView1, stackView2])
         stackView1.addArrangedSubviews([menuView1, menuView2, menuView3])
         stackView2.addArrangedSubviews([userMenuView1, userMenuView2, emptyView])
@@ -107,8 +123,14 @@ extension ProfileViewController {
             make.height.equalTo(100)
         }
         
+        nickNameStackView.snp.makeConstraints { make in
+            make.top.equalTo(profileImage.snp.bottom).offset(20)
+//            make.leading.trailing.equalToSuperview().inset(125)
+            make.centerX.equalToSuperview()
+        }
+        
         superStackView.snp.makeConstraints { make in
-            make.top.equalTo(profileNickNameView.snp.bottom).offset(30)
+            make.top.equalTo(nickNameStackView.snp.bottom).offset(30)
             make.bottom.equalTo(instaButton.snp.top).offset(-68)
             make.leading.trailing.equalToSuperview()
         }
@@ -118,8 +140,6 @@ extension ProfileViewController {
         }
         
         dividerView.snp.makeConstraints { make in
-//            make.top.equalTo(stackView1.snp.bottom).offset(10)
-//            make.bottom.equalTo(stackView2.snp.top).offset(10)
             make.centerY.equalTo(superStackView.snp.centerY)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(1)
@@ -132,34 +152,23 @@ extension ProfileViewController {
         instaButton.snp.makeConstraints { make in
             make.bottom.equalTo(instaLabel.snp.top).offset(-10)
             make.leading.equalToSuperview().inset(115)
-            make.trailing.equalToSuperview().inset(215)
-//            make.height.equalTo(60)
         }
         
         instaLabel.snp.makeConstraints { make in
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(30)
             make.centerX.equalTo(instaButton.snp.centerX)
-//            make.height.equalTo(18)
         }
         
-//        mailButton.snp.makeConstraints { make in
-//            make.centerY.equalTo(instaButton.snp.centerY)
-//            make.trailing.equalToSuperview().inset(115)
-//            make.leading.equalToSuperview().inset(215)
-//            make.height.equalTo(60)
-//        }
-//
-//        mailLabel.snp.makeConstraints { make in
-//            make.centerY.equalTo(instaLabel.snp.centerY)
-//            make.centerX.equalTo(mailButton.snp.centerX)
-//            make.height.equalTo(18)
-//        }
-        
-        profileNickNameView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(profileImage.snp.bottom).offset(20)
-            make.leading.trailing.equalToSuperview().inset(136)
+        mailButton.snp.makeConstraints { make in
+            make.centerY.equalTo(instaButton.snp.centerY)
+            make.trailing.equalToSuperview().inset(115)
         }
+
+        mailLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(30)
+            make.centerX.equalTo(mailButton.snp.centerX)
+        }
+        
     }
     
 }
