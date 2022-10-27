@@ -15,7 +15,6 @@ final class ProfileViewController: UIViewController {
     // MARK: - Properties
     
     private let profileImageView = UIImageView()
-    private let nickNameStackView = UIStackView()
     private let profileMenuSuperStackView = UIStackView()
     private let profileMenuStackView = UIStackView()
     private let dividerView = UIView()
@@ -26,12 +25,12 @@ final class ProfileViewController: UIViewController {
     private let instaLabel = UILabel()
     private let mailLabel = UILabel()
     
+    private var profileNickNameView = ProfileNickNameView()
     private var profileMenuView1 = ProfileMenuView(menuText: "공지사항")
     private var profileMenuView2 = ProfileMenuView(menuText: "이용약관")
     private var profileMenuView3 = ProfileMenuView(menuText: "제스티를 만든 사람들")
     private var profileUserMenuView1 = ProfileUserMenuView(userMenuText: "로그아웃")
     private var profileUserMenuView2 = ProfileUserMenuView(userMenuText: "회원탈퇴")
-    private var profileNickNameView = ProfileNickNameView()
 
     // MARK: - LifeCycle
     
@@ -54,11 +53,6 @@ extension ProfileViewController {
         
         profileImageView.image = UIImage(.img_signup)
         profileImageView.contentMode = .scaleAspectFit
-        
-        nickNameStackView.axis = .horizontal
-        nickNameStackView.alignment = .center
-        nickNameStackView.distribution = .fillProportionally
-        nickNameStackView.spacing = 10
         
         profileMenuSuperStackView.axis = .vertical
         profileMenuSuperStackView.alignment = .top
@@ -92,8 +86,7 @@ extension ProfileViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([profileImageView, nickNameStackView, profileMenuSuperStackView, profileMenuStackView, profileUserMenuStackView, dividerView, instaButton, instaLabel, mailButton, mailLabel])
-        nickNameStackView.addArrangedSubview(profileNickNameView)
+        view.addSubviews([profileImageView, profileNickNameView, profileMenuSuperStackView, dividerView, instaButton, instaLabel, mailButton, mailLabel])
         profileMenuSuperStackView.addArrangedSubviews([profileMenuStackView, profileUserMenuStackView])
         profileMenuStackView.addArrangedSubviews([profileMenuView1, profileMenuView2, profileMenuView3])
         profileUserMenuStackView.addArrangedSubviews([profileUserMenuView1, profileUserMenuView2, emptyView])
@@ -104,13 +97,13 @@ extension ProfileViewController {
             make.height.equalTo(100)
         }
         
-        nickNameStackView.snp.makeConstraints { make in
+        profileNickNameView.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
         }
         
         profileMenuSuperStackView.snp.makeConstraints { make in
-            make.top.equalTo(nickNameStackView.snp.bottom).offset(30)
+            make.top.equalTo(profileNickNameView.snp.bottom).offset(30)
             make.bottom.equalTo(instaButton.snp.top).offset(-68)
             make.leading.trailing.equalToSuperview()
         }
