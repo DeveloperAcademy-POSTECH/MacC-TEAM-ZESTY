@@ -61,7 +61,7 @@ extension PlaceCell {
             reviewImageView.load(url: place.reviews[0].imageURL)
             menuLabel.text = place.reviews[0].menuName
         } else {
-//            reviewImageView.image = UIImage(.img_categoryfriends)
+            reviewImageView.image = UIImage(.img_categoryfriends)
         }
         placeNameLabel.text = place.name
         goodEmojiStackView.setUp(count: place.evaluationSum.good)
