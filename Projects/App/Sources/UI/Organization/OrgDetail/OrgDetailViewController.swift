@@ -19,9 +19,9 @@ final class OrgDetailViewController: UIViewController {
     private let orgInformationStackView1 = UIStackView()
     private let orgInformationStackView2 = UIStackView()
     private let orgInformationStackView3 = UIStackView()
-    private let orgInformationImage1 = UIImageView()
-    private let orgInformationImage2 = UIImageView()
-    private let orgInformationImage3 = UIImageView()
+    private let orgInfoImageView1 = UIImageView()
+    private let orgInfoImageView2 = UIImageView()
+    private let orgInfoImageView3 = UIImageView()
     private let orgInviteButton = FullWidthBlackButton()
 
     private var orgDetailInformationView1 = OrgDetailInformationView()
@@ -77,20 +77,20 @@ extension OrgDetailViewController {
         orgInformationStackView3.distribution = .fillEqually
         orgInformationStackView3.spacing = 30
 
-        orgInformationImage1.image = UIImage(.img_reviewfriends_together)
-        orgInformationImage1.contentMode = .scaleAspectFit
-        orgInformationImage1.layer.applyFigmaShadow(color: .black, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
+        orgInfoImageView1.image = UIImage(.img_reviewfriends_together)
+        orgInfoImageView1.contentMode = .scaleAspectFit
+        orgInfoImageView1.layer.applyFigmaShadow(color: .black, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
         orgDetailInformationView1.informationLabel.text = "함께하는 친구들"
         orgDetailInformationView1.numberLabel.text = "13,966명"
         
-        orgInformationImage2.image = UIImage(.img_categoryfriends_western)
-        orgInformationImage2.contentMode = .scaleAspectFit
+        orgInfoImageView2.image = UIImage(.img_categoryfriends_western)
+        orgInfoImageView2.contentMode = .scaleAspectFit
         orgDetailInformationView2.informationLabel.text = "등록된 맛집"
         orgDetailInformationView2.numberLabel.text = "1,425곳"
         
-        orgInformationImage3.image = UIImage(.img_reviewfriends_photo)
-        orgInformationImage3.contentMode = .scaleAspectFit
-        orgInformationImage3.layer.applyFigmaShadow(color: .black, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
+        orgInfoImageView3.image = UIImage(.img_reviewfriends_photo)
+        orgInfoImageView3.contentMode = .scaleAspectFit
+        orgInfoImageView3.layer.applyFigmaShadow(color: .black, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
         orgDetailInformationView3.informationLabel.text = "업로드된 사진"
         orgDetailInformationView3.numberLabel.text = "124,513개"
         
@@ -100,9 +100,9 @@ extension OrgDetailViewController {
     private func createLayout() {
         view.addSubviews([orgNameLabel, orgInformationSuperStackView, orgInviteButton])
         orgInformationSuperStackView.addArrangedSubviews([orgInformationStackView1, orgInformationStackView2, orgInformationStackView3])
-        orgInformationStackView1.addArrangedSubviews([orgInformationImage1, orgDetailInformationView1])
-        orgInformationStackView2.addArrangedSubviews([orgInformationImage2, orgDetailInformationView2])
-        orgInformationStackView3.addArrangedSubviews([orgInformationImage3, orgDetailInformationView3])
+        orgInformationStackView1.addArrangedSubviews([orgInfoImageView1, orgDetailInformationView1])
+        orgInformationStackView2.addArrangedSubviews([orgInfoImageView2, orgDetailInformationView2])
+        orgInformationStackView3.addArrangedSubviews([orgInfoImageView3, orgDetailInformationView3])
 
         orgNameLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(30)
@@ -127,15 +127,15 @@ extension OrgDetailViewController {
             make.horizontalEdges.equalToSuperview()
         }
         
-        orgInformationImage1.snp.makeConstraints { make in
+        orgInfoImageView1.snp.makeConstraints { make in
             make.width.height.equalTo(60)
         }
         
-        orgInformationImage2.snp.makeConstraints { make in
+        orgInfoImageView2.snp.makeConstraints { make in
             make.width.height.equalTo(60)
         }
         
-        orgInformationImage3.snp.makeConstraints { make in
+        orgInfoImageView3.snp.makeConstraints { make in
             make.width.height.equalTo(60)
         }
 
