@@ -18,7 +18,7 @@ public extension Project {
                 .debug(name: .debug, xcconfig: .relativeToRoot("config.xcconfig")),
                 .release(name: .release, xcconfig: .relativeToRoot("config.xcconfig"))
             ], defaultSettings: .recommended)
-
+        
         let appTarget = Target(
             name: name,
             platform: platform,
@@ -31,7 +31,7 @@ public extension Project {
             scripts: [.SwiftLintString],
             dependencies: dependencies
         )
-
+        
         let testTarget = Target(
             name: "\(name)Tests",
             platform: platform,
@@ -42,11 +42,11 @@ public extension Project {
             sources: ["Tests/**"],
             dependencies: [.target(name: name)]
         )
-
+        
         let schemes: [Scheme] = [.makeScheme(target: .debug, name: name)]
-
+        
         let targets: [Target] = [appTarget, testTarget]
-
+        
         return Project(
             name: name,
             organizationName: organizationName,
@@ -56,10 +56,8 @@ public extension Project {
             schemes: schemes
         )
     }
-}
-
-public extension Project {
-    static func makeModule(
+    
+    static func makeDesignSystemModule(
         name: String,
         platform: Platform = .iOS,
         product: Product,
@@ -76,7 +74,7 @@ public extension Project {
                 .debug(name: .debug),
                 .release(name: .release)
             ], defaultSettings: .recommended)
-
+        
         let appTarget = Target(
             name: name,
             platform: platform,
@@ -89,7 +87,7 @@ public extension Project {
             scripts: [.SwiftLintString],
             dependencies: dependencies
         )
-
+        
         let testTarget = Target(
             name: "\(name)Tests",
             platform: platform,
@@ -100,11 +98,67 @@ public extension Project {
             sources: ["Tests/**"],
             dependencies: [.target(name: name)]
         )
-
+        
         let schemes: [Scheme] = [.makeScheme(target: .debug, name: name)]
-
+        
         let targets: [Target] = [appTarget, testTarget]
-
+        
+        return Project(
+            name: name,
+            organizationName: organizationName,
+            packages: packages,
+            settings: settings,
+            targets: targets,
+            schemes: schemes
+        )
+    }
+    
+    static func makeNetworkModule(
+        name: String,
+        platform: Platform = .iOS,
+        product: Product,
+        organizationName: String = "com.zesty",
+        packages: [Package] = [],
+        deploymentTarget: DeploymentTarget? = .iOS(targetVersion: "15.0", devices: [.iphone]),
+        dependencies: [TargetDependency] = [],
+        sources: SourceFilesList = ["Sources/**"],
+        resources: ResourceFileElements? = nil,
+        infoPlist: InfoPlist = .default
+    ) -> Project {
+        let settings: Settings = .settings(
+            configurations: [
+                .debug(name: .debug),
+                .release(name: .release)
+            ], defaultSettings: .recommended)
+        
+        let appTarget = Target(
+            name: name,
+            platform: platform,
+            product: product,
+            bundleId: "\(organizationName).\(name)",
+            deploymentTarget: deploymentTarget,
+            infoPlist: infoPlist,
+            sources: sources,
+            resources: resources,
+            scripts: [.SwiftLintString],
+            dependencies: dependencies
+        )
+        
+        let testTarget = Target(
+            name: "\(name)Tests",
+            platform: platform,
+            product: .unitTests,
+            bundleId: "\(organizationName).\(name)Tests",
+            deploymentTarget: deploymentTarget,
+            infoPlist: .default,
+            sources: ["Tests/**"],
+            dependencies: [.target(name: name)]
+        )
+        
+        let schemes: [Scheme] = [.makeScheme(target: .debug, name: name)]
+        
+        let targets: [Target] = [appTarget, testTarget]
+        
         return Project(
             name: name,
             organizationName: organizationName,
