@@ -15,12 +15,15 @@ final class PlaceListViewController: UIViewController {
     
     // MARK: - Properties
     
+    private let cancelBag = Set<AnyCancellable>()
+    
     private let headerView = UIView()
+    
     private let segmentIndicator = UIView()
     private let segmentedControl = UISegmentedControl(items: ["전체", "선정맛집"])
     private let questionMarkImage = UIImageView()
     private let sideButtonImage = UIImageView()
-    private let cancelBag = Set<AnyCancellable>()
+    
     private let tableView = UITableView()
     
     // MARK: - LifeCycle
@@ -53,7 +56,7 @@ final class PlaceListViewController: UIViewController {
             }
         }
         
-        UIView.animate(withDuration: 0.5, animations: {
+        UIView.animate(withDuration: 0.3, animations: {
             self.view.layoutIfNeeded()
             self.segmentIndicator.transform = CGAffineTransform(scaleX: 1.1, y: 1)
         }) { _ in
@@ -62,6 +65,11 @@ final class PlaceListViewController: UIViewController {
             })
         }
     }
+    
+    @objc func barButtonTapped() {
+        
+    }
+    
 }
 
 // MARK: - UI function
@@ -69,7 +77,21 @@ final class PlaceListViewController: UIViewController {
 extension PlaceListViewController {
     
     private func configureUI() {
-        view.backgroundColor = .zestyColor(.background)
+        view.backgroundColor = .white
+        
+        let searchItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(barButtonTapped))
+        let personCropCircle = UIImage(systemName: "person.crop.circle")
+        let userInfoItem = UIBarButtonItem(image: personCropCircle, style: .plain, target: self, action: #selector(barButtonTapped))
+        let placeTitle = UILabel()
+        placeTitle.text = "애플디벨로퍼아카데미"
+        placeTitle.font = .systemFont(ofSize: 17, weight: .bold)
+        navigationItem.rightBarButtonItems = [userInfoItem, searchItem]
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: placeTitle)
+        navigationItem.hidesBackButton = true
+        
+        navigationController?.navigationBar.tintColor = .black
+        
+        headerView.backgroundColor = .white
         
         segmentIndicator.backgroundColor = .black
         
