@@ -23,6 +23,8 @@ final class AddPlaceResultViewController: UIViewController {
     
     private lazy var titleView = MainTitleView(title: "맛집 등록 완료 🎉")
     
+    private let placeCard = PlaceCardView()
+    
     private lazy var ticketImageView: UIImageView = {
         $0.contentMode = .scaleAspectFit
         $0.image = UIImage(.img_ticket_bg)
@@ -167,23 +169,13 @@ extension AddPlaceResultViewController {
             .sink { [weak self] state in
                 switch state {
                 case .loadPlaceResultSucceed(let place):
-                    self?.setup(with: place)
+                    self?.placeCard.setup(with: place)
                 }
             }
             .store(in: &cancelBag)
     }
     
-    private func setup(with place: PlaceResult) {
-        categoryTagLabel.text = place.category.name
-        placeNameLabel.text = place.name
-        addressLabel.text = place.address
-        orgLabel.text = place.organizationId
-        creatorLabel.text = place.creator
-        dateLabel.text = place.createdAt.getDateToString(format: "YYYY.MM.dd")
-        iconView.kf.setImage(with: URL(string: place.category.imageURL ?? "https://user-images.githubusercontent.com/63157395/197410857-e13c1bbb-b19a-4c59-a493-77501a4a529b.png"))
-        
-    }
-    
+
 }
 
 // MARK: - UI Function
@@ -195,10 +187,7 @@ extension AddPlaceResultViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([titleView, ticketImageView, iconView,
-                          categoryTagLabel, placeNameLabel, addressLabel,
-                          orgTitle, creatorTitle, dateTitle,
-                          orgLabel, creatorLabel, dateLabel,
+        view.addSubviews([titleView, placeCard,
                           saveButton, doneButton])
         
         titleView.snp.makeConstraints {
@@ -206,68 +195,15 @@ extension AddPlaceResultViewController {
             $0.horizontalEdges.equalToSuperview()
         }
         
-        ticketImageView.snp.makeConstraints {
+        placeCard.snp.makeConstraints {
             $0.top.equalTo(titleView.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
-            $0.width.equalToSuperview().multipliedBy(0.77)
-            $0.height.equalToSuperview().multipliedBy(0.59)
-        }
-        
-        orgTitle.snp.makeConstraints {
-            $0.top.equalTo(ticketImageView).offset(30)
-            $0.leading.trailing.equalTo(ticketImageView).inset(isSE ? 40 : 25)
-        }
-        
-        orgLabel.snp.makeConstraints {
-            $0.top.equalTo(orgTitle.snp.bottom).offset(4)
-            $0.leading.trailing.equalTo(ticketImageView).inset(isSE ? 40 : 25)
-        }
-        
-        creatorTitle.snp.makeConstraints {
-            $0.top.equalTo(orgLabel.snp.bottom).offset(20)
-            $0.leading.trailing.equalTo(ticketImageView).inset(isSE ? 40 : 25)
-        }
-        
-        creatorLabel.snp.makeConstraints {
-            $0.top.equalTo(creatorTitle.snp.bottom).offset(4)
-            $0.leading.trailing.equalTo(ticketImageView).inset(isSE ? 40 : 25)
-        }
-        
-        dateTitle.snp.makeConstraints {
-            $0.top.equalTo(creatorLabel.snp.bottom).offset(20)
-            $0.leading.trailing.equalTo(ticketImageView).inset(isSE ? 40 : 25)
-        }
-        
-        dateLabel.snp.makeConstraints {
-            $0.top.equalTo(dateTitle.snp.bottom).offset(4)
-            $0.leading.trailing.equalTo(ticketImageView).inset(isSE ? 40 : 25)
-        }
-        
-        categoryTagLabel.snp.makeConstraints {
-            $0.bottom.equalTo(placeNameLabel.snp.top).offset(-4)
-            $0.leading.equalTo(ticketImageView).inset(isSE ? 40 : 25)
+            $0.width.equalTo(300)
+            $0.height.equalTo(400)
         }
 
-        placeNameLabel.snp.makeConstraints {
-            $0.bottom.equalTo(addressLabel.snp.top).offset(-4)
-            $0.leading.equalTo(ticketImageView).inset(isSE ? 40 : 25)
-            $0.trailing.equalTo(iconView.snp.leading).offset(-10)
-        }
-
-        addressLabel.snp.makeConstraints {
-            $0.bottom.equalTo(ticketImageView.snp.bottom).offset(isSE ? -100 : -130)
-            $0.leading.equalTo(ticketImageView).inset(isSE ? 40 : 25)
-            $0.trailing.equalTo(iconView.snp.leading).offset(isSE ? -8 : -10)
-        }
-
-        iconView.snp.makeConstraints {
-            $0.bottom.equalTo(ticketImageView.snp.bottom).offset(isSE ? -100 : -130)
-            $0.trailing.equalTo(ticketImageView).offset(-40)
-            $0.width.height.equalTo(isSE ? 55 : 65)
-        }
-        
         saveButton.snp.makeConstraints {
-            $0.top.equalTo(ticketImageView.snp.bottom).offset(15)
+            $0.top.equalTo(placeCard.snp.bottom).offset(30)
             $0.centerX.equalToSuperview()
         }
         
