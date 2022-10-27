@@ -12,7 +12,7 @@ import Network
 struct Review {
     let id: Int
     let placeId: Int
-    let reviewer: User
+    let reviewer: User?
     let evaluation: Evaluation
     let menuName: String?
     let imageURL: String?
@@ -20,10 +20,19 @@ struct Review {
 //    let updatedAt: Date
 }
 
-enum Evaluation {
-    case good
-    case soso
-    case bad
+enum Evaluation: Int {
+    case good = 3
+    case soso = 2
+    case bad = 1
+    
+    init(_ num: Int) {
+        switch num {
+        case 3: self = .good
+        case 2: self = .soso
+        case 1: self = .bad
+        default: self = .soso
+        }
+    }
 }
 
 extension Review {
@@ -36,6 +45,34 @@ extension Review {
         menuName = dto.menuname
         imageURL = dto.image
         createdAt = Date()
+    }
+    
+    init(dto: ReviewDetailDTO) {
+        id = dto.id
+        placeId = dto.place.id
+        reviewer = User(dto.reviewer)
+        evaluation =  Evaluation(dto.evaluation)
+        menuName = dto.menuName
+        imageURL = dto.image
+        createdAt = Date.getStringToDate(dto.createdAt)
+    }
+
+    init(placeReviewDto dto: PlaceReviewDTO) {
+        id = 0
+        placeId = 0
+        reviewer = nil
+        evaluation = {
+            if dto.evaluationSummary.goodCount == 1 {
+                return .good
+            } else if dto.evaluationSummary.sosoCount == 1 {
+                return .soso
+            } else {
+                return .bad
+            }
+        }()
+        menuName = dto.menuName
+        imageURL = dto.image
+        createdAt = dto.createdAt.toDate()!
     }
     
 }

@@ -6,6 +6,7 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
+import Combine
 import UIKit
 import SnapKit
 import DesignSystem
@@ -13,6 +14,8 @@ import DesignSystem
 final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     
     // MARK: - Properties
+    private let input: PassthroughSubject<PlaceDetailViewModel.Input, Never> = .init()
+    private var cancelBag = Set<AnyCancellable>()
     
     private lazy var placeView = UIView()
     private var kakaoUrl = ""
@@ -34,7 +37,6 @@ final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     }(UIButton(type: .custom))
 
     private lazy var placeNameLabel: UILabel = {
-        $0.text = "(가게이름없음)"
         $0.textColor = .black
         $0.font = .systemFont(ofSize: 26, weight: .bold)
         return $0
@@ -117,28 +119,28 @@ final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     }
     
     @objc func addReviewButtonDidTap() {
-        // 리뷰하기 추가버트
+        input.send(.addReviewBtnDidTap)
     }
     
-}
-
-extension PlaceInfoHeaderView {
-    
-    public func setUp(with place: Place) {
-        
+    private func setUp(with place: Place) {
         categoryTagLabel.text = place.category[0].name
-        
         placeNameLabel.text = place.name
-        
         addressLabel.text = place.address
-        kakaoUrl = "https://map.kakao.com/link/to/\(place.name),\(place.lat),\(place.lan)"
-        naverUrl = "http://app.map.naver.com/launchApp/?version=11&menu=navigation&elat=\(place.lat)&elng=\(place.lan)&etitle=\(place.name)"
-        
+        kakaoUrl = "https://map.kakao.com/link/to/\(place.name),\(place.lat),\(place.lon)"
+        naverUrl = "http://app.map.naver.com/launchApp/?version=11&menu=navigation&elat=\(place.lat)&elng=\(place.lon)&etitle=\(place.name)"
         goodView.configure(with: EvaluationViewModel(evaluation: .good, count: place.evaluationSum.good))
         sosoView.configure(with: EvaluationViewModel(evaluation: .soso, count: place.evaluationSum.soso))
         badView.configure(with: EvaluationViewModel(evaluation: .bad, count: place.evaluationSum.bad))
     }
-        
+    
+}
+
+// MARK: - Binding
+extension PlaceInfoHeaderView {
+    func bind(to viewModel: PlaceDetailViewModel) {
+        _ = viewModel.transform(input: input.eraseToAnyPublisher())
+        setUp(with: viewModel.getPlace())
+    }
 }
 
 // MARK: - UI Function
@@ -146,17 +148,12 @@ extension PlaceInfoHeaderView {
 extension PlaceInfoHeaderView {
     
     private func configureUI() {
-        self.backgroundColor = .zestyColor(.background)
+        contentView.backgroundColor = .zestyColor(.background)
     }
     
     private func createLayout() {
 
-        self.addSubviews([placeView, addReviewButton])
-        
-        contentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-            $0.height.equalTo(330)
-        }
+        contentView.addSubviews([placeView, addReviewButton])
         
         addReviewButton.snp.makeConstraints {
             $0.top.equalToSuperview().offset(20)
@@ -213,18 +210,17 @@ extension PlaceInfoHeaderView {
             $0.leading.equalToSuperview().inset(20)
             $0.trailing.equalTo(kakaoButton.snp.leading).offset(-20)
             $0.centerY.equalToSuperview()
-            $0.width.lessThanOrEqualTo(200)
         }
         
         naverButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(20)
-            $0.width.height.equalTo(36)
+            $0.width.equalTo(36)
             $0.top.bottom.equalToSuperview().inset(16)
         }
         
         kakaoButton.snp.makeConstraints {
             $0.trailing.equalTo(naverButton.snp.leading).offset(-8)
-            $0.width.height.equalTo(36)
+            $0.width.equalTo(36)
             $0.top.bottom.equalToSuperview().inset(16)
         }
 
