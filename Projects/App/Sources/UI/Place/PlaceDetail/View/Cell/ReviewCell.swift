@@ -17,7 +17,6 @@ final class ReviewCell: UITableViewCell {
     private let cardView = UIView()
     
     private let reviewImageView: UIImageView = {
-        $0.image = UIImage(named: "test-pasta")
         $0.contentMode = .scaleToFill
         $0.layer.cornerRadius = 16
         $0.layer.masksToBounds = true
