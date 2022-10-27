@@ -22,4 +22,12 @@ final class PlaceListUseCase {
             .eraseToAnyPublisher()
     }
     
+    func fetchHotPlaceList(with page: Int) -> AnyPublisher<[Place], NetworkError> {
+        return PlaceAPI.fetchHotPlaceList(with: page)
+            .map { placeList in
+                placeList.map { Place(dto: $0) }
+            }
+            .eraseToAnyPublisher()
+    }
+    
 }
