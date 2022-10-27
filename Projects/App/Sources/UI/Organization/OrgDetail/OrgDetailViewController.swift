@@ -14,20 +14,20 @@ final class OrgDetailViewController: UIViewController {
 
     // MARK: - Properties
 
-    let orgName = UILabel()
-    let superStackView = UIStackView()
-    let informationStackView1 = UIStackView()
-    let informationStackView2 = UIStackView()
-    let informationStackView3 = UIStackView()
+    let orgNameLabel = UILabel()
+    let orgInformationSuperStackView = UIStackView()
+    let orgInformationStackView1 = UIStackView()
+    let orgInformationStackView2 = UIStackView()
+    let orgInformationStackView3 = UIStackView()
 
-    private let inviteButton = FullWidthBlackButton()
-    private let logoImage1 = UIImageView()
-    private let logoImage2 = UIImageView()
-    private let logoImage3 = UIImageView()
+    private let orgInviteButton = FullWidthBlackButton()
+    private let orgInformationImage1 = UIImageView()
+    private let orgInformationImage2 = UIImageView()
+    private let orgInformationImage3 = UIImageView()
     
-    private var orgDetailCell1 = OrgDetailInformationView()
-    private var orgDetailCell2 = OrgDetailInformationView()
-    private var orgDetailCell3 = OrgDetailInformationView()
+    private var orgDetailInformationView1 = OrgDetailInformationView()
+    private var orgDetailInformationView2 = OrgDetailInformationView()
+    private var orgDetailInformationView3 = OrgDetailInformationView()
 
     // MARK: - LifeCycle
 
@@ -48,90 +48,90 @@ extension OrgDetailViewController {
     private func configureUI() {
         view.backgroundColor = .zestyColor(.background)
         
-        orgDetailCell1 = OrgDetailInformationView()
-        orgDetailCell2 = OrgDetailInformationView()
-        orgDetailCell3 = OrgDetailInformationView()
+        orgDetailInformationView1 = OrgDetailInformationView()
+        orgDetailInformationView2 = OrgDetailInformationView()
+        orgDetailInformationView3 = OrgDetailInformationView()
         
-        orgName.text = "애플 디벨로퍼 아카데미"
-        orgName.textColor = .black
-        orgName.font = UIFont.systemFont(ofSize: CGFloat(26), weight: .bold)
-        orgName.textAlignment = .center
-        orgName.numberOfLines = 2
+        orgNameLabel.text = "애플 디벨로퍼 아카데미"
+        orgNameLabel.textColor = .black
+        orgNameLabel.font = UIFont.systemFont(ofSize: CGFloat(26), weight: .bold)
+        orgNameLabel.textAlignment = .center
+        orgNameLabel.numberOfLines = 2
         
-        superStackView.axis = .vertical
-        superStackView.alignment = .top
-        superStackView.distribution = . fillProportionally
-        superStackView.spacing = 50
+        orgInformationSuperStackView.axis = .vertical
+        orgInformationSuperStackView.alignment = .top
+        orgInformationSuperStackView.distribution = . fillProportionally
+        orgInformationSuperStackView.spacing = 50
         
-        informationStackView1.axis = .horizontal
-        informationStackView1.alignment = .center
-        informationStackView1.distribution = .fillEqually
-        informationStackView1.spacing = 30
+        orgInformationStackView1.axis = .horizontal
+        orgInformationStackView1.alignment = .center
+        orgInformationStackView1.distribution = .fillEqually
+        orgInformationStackView1.spacing = 30
         
-        informationStackView2.axis = .horizontal
-        informationStackView2.alignment = .center
-        informationStackView2.distribution = .fillEqually
-        informationStackView2.spacing = 30
+        orgInformationStackView2.axis = .horizontal
+        orgInformationStackView2.alignment = .center
+        orgInformationStackView2.distribution = .fillEqually
+        orgInformationStackView2.spacing = 30
 
-        informationStackView3.axis = .horizontal
-        informationStackView3.alignment = .center
-        informationStackView3.distribution = .fillEqually
-        informationStackView3.spacing = 30
+        orgInformationStackView3.axis = .horizontal
+        orgInformationStackView3.alignment = .center
+        orgInformationStackView3.distribution = .fillEqually
+        orgInformationStackView3.spacing = 30
 
-        logoImage1.image = UIImage(.img_reviewfriends_together)
-        logoImage1.contentMode = .scaleAspectFit
-        orgDetailCell1.informationLabel.text = "함께하는 친구들"
-        orgDetailCell1.numberLabel.text = "13,966명"
+        orgInformationImage1.image = UIImage(.img_reviewfriends_together)
+        orgInformationImage1.contentMode = .scaleAspectFit
+        orgDetailInformationView1.informationLabel.text = "함께하는 친구들"
+        orgDetailInformationView1.numberLabel.text = "13,966명"
         
-        logoImage2.image = UIImage(.img_categoryfriends_western)
-        logoImage2.contentMode = .scaleAspectFit
-        orgDetailCell2.informationLabel.text = "등록된 맛집"
-        orgDetailCell2.numberLabel.text = "1,425곳"
+        orgInformationImage1.image = UIImage(.img_categoryfriends_western)
+        orgInformationImage1.contentMode = .scaleAspectFit
+        orgDetailInformationView2.informationLabel.text = "등록된 맛집"
+        orgDetailInformationView2.numberLabel.text = "1,425곳"
         
-        logoImage3.image = UIImage(.img_reviewfriends_photo)
-        logoImage3.contentMode = .scaleAspectFit
-        logoImage3.layer.applyFigmaShadow(color: .black, opacity: 0.05, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
-        orgDetailCell3.informationLabel.text = "업로드된 사진"
-        orgDetailCell3.numberLabel.text = "124,513개"
+        orgInformationImage3.image = UIImage(.img_reviewfriends_photo)
+        orgInformationImage3.contentMode = .scaleAspectFit
+        orgInformationImage3.layer.applyFigmaShadow(color: .black, opacity: 0.05, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
+        orgDetailInformationView3.informationLabel.text = "업로드된 사진"
+        orgDetailInformationView3.numberLabel.text = "124,513개"
         
-        inviteButton.setTitle("우리학교 사람들 초대하기", for: .normal)
+        orgInviteButton.setTitle("우리학교 사람들 초대하기", for: .normal)
     }
 
     private func createLayout() {
-        view.addSubviews([orgName, superStackView, informationStackView1, informationStackView2, informationStackView3, inviteButton])
-        superStackView.addArrangedSubviews([informationStackView1, informationStackView2, informationStackView3])
-        informationStackView1.addArrangedSubviews([logoImage1, orgDetailCell1])
-        informationStackView2.addArrangedSubviews([logoImage2, orgDetailCell2])
-        informationStackView3.addArrangedSubviews([logoImage3, orgDetailCell3])
+        view.addSubviews([orgNameLabel, orgInformationSuperStackView, orgInformationStackView1, orgInformationStackView2, orgInformationStackView3, orgInviteButton])
+        orgInformationSuperStackView.addArrangedSubviews([orgInformationStackView1, orgInformationStackView2, orgInformationStackView3])
+        orgInformationStackView1.addArrangedSubviews([orgInformationImage1, orgDetailInformationView1])
+        orgInformationStackView2.addArrangedSubviews([orgInformationImage1, orgDetailInformationView2])
+        orgInformationStackView3.addArrangedSubviews([orgInformationImage3, orgDetailInformationView3])
 
-        orgName.snp.makeConstraints { make in
+        orgNameLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(30)
             make.centerX.equalToSuperview()
             make.height.equalTo(31)
         }
         
-        superStackView.snp.makeConstraints { make in
+        orgInformationSuperStackView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(40)
             make.trailing.equalToSuperview().inset(173)
-            make.top.equalTo(orgName.snp.bottom).offset(50)
+            make.top.equalTo(orgNameLabel.snp.bottom).offset(50)
         }
         
-        informationStackView1.snp.makeConstraints { make in
+        orgInformationStackView1.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(60)
         }
         
-        informationStackView2.snp.makeConstraints { make in
+        orgInformationStackView2.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(60)
         }
         
-        informationStackView3.snp.makeConstraints { make in
+        orgInformationStackView3.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(60)
         }
 
-        inviteButton.snp.makeConstraints { make in
+        orgInviteButton.snp.makeConstraints { make in
             make.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
     }
