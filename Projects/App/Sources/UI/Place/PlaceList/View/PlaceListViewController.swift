@@ -77,7 +77,9 @@ extension PlaceListViewController {
         segmentedControl.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 26, weight: .bold), NSAttributedString.Key.foregroundColor: UIColor.black], for: .selected)
         segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
         
-        questionMarkImage.image = UIImage(systemName: "questionmark.circle")
+        let imageConfiguration = UIImage.SymbolConfiguration(weight: .semibold)
+        questionMarkImage.image = UIImage(systemName: "questionmark.circle", withConfiguration: imageConfiguration)
+        questionMarkImage.tintColor = .zestyColor(.gray54)
     }
     
     private func removeBackgroundAndDivider() {
