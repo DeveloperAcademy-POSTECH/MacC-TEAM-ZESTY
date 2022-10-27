@@ -14,10 +14,12 @@ import SnapKit
 final class PlaceListViewController: UIViewController {
     
     // MARK: - Properties
-
+    
+    private let headerView = UIView()
     private let segmentIndicator = UIView()
     private let segmentedControl = UISegmentedControl(items: ["전체", "선정맛집"])
     private let questionMarkImage = UIImageView()
+    private let sideButtonImage = UIImageView()
     private let cancelBag = Set<AnyCancellable>()
     private let tableView = UITableView()
     
@@ -85,6 +87,8 @@ extension PlaceListViewController {
         let imageConfiguration = UIImage.SymbolConfiguration(weight: .semibold)
         questionMarkImage.image = UIImage(systemName: "questionmark.circle", withConfiguration: imageConfiguration)
         questionMarkImage.tintColor = .zestyColor(.gray54)
+        
+        sideButtonImage.image = UIImage(.btn_side_plus)
 
         tableView.backgroundColor = .clear
         tableView.dataSource = self
@@ -102,12 +106,18 @@ extension PlaceListViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([segmentedControl, segmentIndicator, questionMarkImage, tableView])
+        view.addSubviews([headerView, segmentedControl, segmentIndicator, questionMarkImage, tableView])
+        headerView.addSubviews([segmentedControl, segmentIndicator, questionMarkImage, sideButtonImage])
+        
+        headerView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.horizontalEdges.equalToSuperview()
+            make.height.equalTo(85)
+        }
         
         segmentedControl.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.left.equalTo(view.safeAreaLayoutGuide.snp.left).inset(20)
-            make.height.equalTo(30)
+            make.verticalEdges.equalToSuperview().inset(27)
+            make.left.equalToSuperview().inset(20)
             make.width.equalTo(172)
         }
         
@@ -123,10 +133,16 @@ extension PlaceListViewController {
             make.top.equalTo(segmentedControl.snp.top)
             make.width.equalTo(21)
             make.height.equalTo(21)
-            tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            }
+        }
         
+        sideButtonImage.snp.makeConstraints { make in
+            make.verticalEdges.equalToSuperview().inset(10)
+            make.right.equalToSuperview()
+        }
+        
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(headerView.snp.bottom).offset(20)
+            make.horizontalEdges.bottom.equalToSuperview()
         }
     }
     
