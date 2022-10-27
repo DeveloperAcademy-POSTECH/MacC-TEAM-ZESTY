@@ -16,7 +16,10 @@ final class OrgDetailViewController: UIViewController {
     // MARK: - Properties
 
     private let inviteButton = FullWidthBlackButton()
-    private let orgName = UILabel()
+    let orgName = UILabel()
+    private let logoImage1 = UIImageView()
+    private let logoImage2 = UIImageView()
+    private let logoImage3 = UIImageView()
     
     private var orgDetailCell1 = OrgDetailInformationView()
     private var orgDetailCell2 = OrgDetailInformationView()
@@ -41,15 +44,29 @@ extension OrgDetailViewController {
     private func configureUI() {
         view.backgroundColor = .zestyColor(.background)
         
-        orgName.text = "경상국립대학교 칠암캠퍼스(경남과기대)"
+        orgDetailCell1 = OrgDetailInformationView()
+        orgDetailCell2 = OrgDetailInformationView()
+        orgDetailCell3 = OrgDetailInformationView()
+        
+        orgName.text = "애플 디벨로퍼 아카데미"
         orgName.textColor = .black
         orgName.font = UIFont.systemFont(ofSize: CGFloat(26), weight: .bold)
         orgName.textAlignment = .center
         orgName.numberOfLines = 2
         
-        orgDetailCell1 = OrgDetailInformationView()
-        orgDetailCell2 = OrgDetailInformationView()
-        orgDetailCell3 = OrgDetailInformationView()
+//        orgDetailCell1.logoImage.image = UIImage(.img_reviewfriends_together)
+        orgDetailCell1.informationLabel.text = "함께하는 친구들"
+        orgDetailCell1.numberLabel.text = "13.966명"
+        logoImage1.image = UIImage(.img_reviewfriends_together)
+        
+        orgDetailCell2.informationLabel.text = "등록된 맛집"
+        orgDetailCell2.numberLabel.text = "1,425곳"
+        logoImage2.image = UIImage(.img_cate)
+        
+        orgDetailCell3.informationLabel.text = "업로드된 사진"
+        orgDetailCell3.numberLabel.text = "124,513개"
+        logoImage3.image = UIImage(.img_reviewfriends_together)
+        
         
         inviteButton.setTitle("우리학교 사람들 초대하기", for: .normal)
     }

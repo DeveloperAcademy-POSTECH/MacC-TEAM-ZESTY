@@ -7,14 +7,13 @@
 //
 
 import UIKit
-import DesignSystem
 import SnapKit
 
 final class OrgDetailInformationView: UIView {
 
     // MARK: - Properties
-    private let logo = UIImageView()
-    private let users = UILabel()
+    let informationLabel = UILabel()
+    let numberLabel = UILabel()
 
     // MARK: - LifeCycle
     
@@ -38,31 +37,28 @@ extension OrgDetailInformationView {
     private func configureUI() {
         backgroundColor = .zestyColor(.background)
         
-        logo.image = UIImage(.img_reviewfriends_together)
-        logo.contentMode = .scaleAspectFit
-        
-        users.text = "13,996명의 Zesters"
-        users.textColor = .black
-        users.font = UIFont.systemFont(ofSize: CGFloat(20), weight: .medium)
-        users.textAlignment = .left
-        users.numberOfLines = 1
+        informationLabel.textColor = .zestyColor(.gray3C3C43)
+        informationLabel.font = UIFont.systemFont(ofSize: CGFloat(13), weight: .regular)
+        informationLabel.textAlignment = .center
+        informationLabel.numberOfLines = 1
+                
+        numberLabel.textColor = .black
+        numberLabel.font = UIFont.systemFont(ofSize: CGFloat(17), weight: .medium)
+        numberLabel.textAlignment = .center
+        numberLabel.numberOfLines = 1
     }
 
     private func createLayout() {
-        addSubviews([logo, users])
+        addSubviews([informationLabel, numberLabel])
         
-        snp.makeConstraints { make in
-            make.height.equalTo(50)
+        informationLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview()
         }
         
-        logo.snp.makeConstraints { make in
+        numberLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview()
-            make.centerY.equalToSuperview()
-        }
-        
-        users.snp.makeConstraints { make in
-            make.leading.equalTo(logo.snp.trailing).offset(20)
-            make.centerY.equalToSuperview()
+            make.top.equalTo(informationLabel.snp.bottom).offset(4)
         }
     }
 
