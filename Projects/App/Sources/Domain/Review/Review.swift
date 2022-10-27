@@ -42,9 +42,9 @@ extension Review {
         placeId = 0
         reviewer = User.mockData[0]
         evaluation = .good
-        menuName = dto.menuname
+        menuName = dto.menuName
         imageURL = dto.image
-        createdAt = Date()
+        createdAt = Date.getStringToDate(dto.registeredAt)
     }
     
     init(dto: ReviewDetailDTO) {
