@@ -16,7 +16,7 @@ final class ThirdPartyLoginViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let mainTitleView = MainTitleView(title: "안녕하세요,\n제스티입니다", subtitle: "로그인하여 모든 맛집을 확인하세요.")
+    private let mainTitleView = MainTitleView(title: "안녕하세요,\n제스티입니다", subtitle: "시작하기 버튼을 눌러 모든 맛집을 확인하세요.")
     private let backgroundImageView = UIImageView()
     private let viewModel = ThirdPartyLoginViewModel()
     private let loginStackView = UIStackView()
@@ -41,11 +41,11 @@ final class ThirdPartyLoginViewController: UIViewController {
     }
     
     @objc func kakaoLoginButtonClicked() {
-        viewModel.kakaoLogin()
+        navigationController?.pushViewController(PlaceListViewController(), animated: true)
     }
     
     @objc func appleLoginButtonClicked() {
-        navigationController?.pushViewController(NickNameInputViewController(), animated: true)
+        navigationController?.pushViewController(PlaceListViewController(), animated: true)
     }
     
 }
@@ -96,14 +96,23 @@ extension ThirdPartyLoginViewController {
         termsOfServiceLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(termsOfServiceLabelClicked)))
         termsOfServiceLabel.isUserInteractionEnabled = true
         termsOfServiceLabel.textColor = UIColor.zestyColor(.gray3C3C43)
+        termsOfServiceLabel.isHidden = true
         
         kakaoLoginButton.addTarget(self, action: #selector(kakaoLoginButtonClicked), for: .touchUpInside)
-        kakaoLoginButton.setImage(UIImage(.btn_kakaologin), for: .normal)
-        kakaoLoginButton.imageView?.contentMode = .scaleAspectFit
+//        kakaoLoginButton.setImage(UIImage(.btn_kakaologin), for: .normal)
+//        kakaoLoginButton.imageView?.contentMode = .scaleAspectFit
+        kakaoLoginButton.configuration = .plain()
+        kakaoLoginButton.setTitle("시작하기", for: .normal)
+        kakaoLoginButton.setTitleColor(.white, for: .normal)
+        kakaoLoginButton.tintColor = .white
+        kakaoLoginButton.backgroundColor = .black
+        kakaoLoginButton.layer.cornerRadius = 27
+        kakaoLoginButton.clipsToBounds = true
         
         appleLoginButton.addTarget(self, action: #selector(appleLoginButtonClicked), for: .touchUpInside)
         appleLoginButton.setImage(UIImage(.btn_applelogin), for: .normal)
         appleLoginButton.imageView?.contentMode = .scaleAspectFit
+        appleLoginButton.isHidden = true
     }
     
     private func createLayout() {
@@ -113,6 +122,7 @@ extension ThirdPartyLoginViewController {
         mainTitleView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.height.equalTo(130)
         }
         
         backgroundImageView.snp.makeConstraints { make in
