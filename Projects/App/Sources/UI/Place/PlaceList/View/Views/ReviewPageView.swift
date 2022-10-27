@@ -42,6 +42,10 @@ extension ReviewPageView {
         menuLabel.text = review.menuName
     }
     
+    func setEmptyView() {
+        reviewImageView.image = UIImage(.img_categoryfriends)
+    }
+    
     private func configure() {
         clipsToBounds = true
         configureGradientView()

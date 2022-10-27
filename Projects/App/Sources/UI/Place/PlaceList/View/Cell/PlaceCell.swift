@@ -30,10 +30,6 @@ final class PlaceCell: UITableViewCell {
     private lazy var placeNameLabel = UILabel()
     
     private lazy var emojiStackView = UIStackView()
-<<<<<<< HEAD
-=======
-    
->>>>>>> dev
     private lazy var goodEmojiStackView = EmojiCountStackView(type: .good)
     private lazy var sosoEmojiStackView = EmojiCountStackView(type: .soso)
     private lazy var badEmojiStackView = EmojiCountStackView(type: .bad)
@@ -77,19 +73,19 @@ extension PlaceCell: UIScrollViewDelegate {
 extension PlaceCell {
 
     func setUp(with place: Place) {
-<<<<<<< HEAD
-=======
-        if !place.reviews.isEmpty {
-            reviewImageView.load(url: place.reviews[0].imageURL)
-            menuLabel.text = place.reviews[0].menuName
-        } else {
-//            reviewImageView.image = UIImage(.img_categoryfriends)
-        }
->>>>>>> dev
         placeNameLabel.text = place.name
         goodEmojiStackView.setUp(count: place.evaluationSum.good)
         sosoEmojiStackView.setUp(count: place.evaluationSum.soso)
         badEmojiStackView.setUp(count: place.evaluationSum.bad)
+        
+        if place.reviews.isEmpty {
+            reviewViews[0].setEmptyView()
+            pageStackView.addArrangedSubview(reviewViews[0])
+            reviewViews[0].snp.makeConstraints {
+                $0.verticalEdges.equalToSuperview()
+                $0.width.equalTo(containerView.snp.width)
+            }
+        }
         
         for index in 0..<place.reviews.count {
             let review = place.reviews[index]
