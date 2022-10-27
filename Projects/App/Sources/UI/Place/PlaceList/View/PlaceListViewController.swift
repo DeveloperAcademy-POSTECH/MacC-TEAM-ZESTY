@@ -10,7 +10,6 @@ import Combine
 import UIKit
 import SnapKit
 
-// TODO: cell을 실험하기 위한 뷰입니다. 수정 예정입니다.
 final class PlaceListViewController: UIViewController {
     
     // MARK: - Properties
