@@ -27,11 +27,11 @@ final class ProfileViewController: UIViewController {
     private let instaLabel = UILabel()
     private let mailLabel = UILabel()
     
-    private var menuView1 = ProfileMenuView()
-    private var menuView2 = ProfileMenuView()
-    private var menuView3 = ProfileMenuView()
-    private var userMenuView1 = ProfileUserMenuView()
-    private var userMenuView2 = ProfileUserMenuView()
+    private var menuView1 = ProfileMenuView(menuText: "공지사항")
+    private var menuView2 = ProfileMenuView(menuText: "이용약관")
+    private var menuView3 = ProfileMenuView(menuText: "제스티를 만든 사람들")
+    private var userMenuView1 = ProfileUserMenuView(userMenuText: "로그아웃")
+    private var userMenuView2 = ProfileUserMenuView(userMenuText: "회원탈퇴")
     private var profileNickNameView = ProfileNickNameView()
 
     // MARK: - LifeCycle
@@ -71,13 +71,6 @@ extension ProfileViewController {
 
         stackView2.axis = .vertical
         stackView2.distribution = .fillEqually
-        
-        menuView1.menuLabel.text = "공지사항"
-        menuView2.menuLabel.text = "이용약관"
-        menuView3.menuLabel.text = "제스티를 만든 사람들"
-        
-        userMenuView1.userMenuLabel.text = "로그아웃"
-        userMenuView2.userMenuLabel.text = "회원탈퇴"
         
         dividerView.backgroundColor = .zestyColor(.grayF6)
 

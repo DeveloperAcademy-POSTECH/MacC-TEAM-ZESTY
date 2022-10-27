@@ -13,8 +13,8 @@ final class ProfileMenuView: UIView {
     
     // MARK: Properties
         
-    let menuLabel = UILabel()
-    private let chevronIndicator = UIImageView()
+    private let menuLabel = UILabel()
+    private let chevronImageView = UIImageView()
     
     // MARK: LifeCycle
     
@@ -22,6 +22,11 @@ final class ProfileMenuView: UIView {
         super.init(frame: frame)
         configureUI()
         createLayout()
+    }
+    
+    convenience init(menuText: String) {
+        self.init(frame: .zero)
+        menuLabel.text = menuText
     }
 
     required init?(coder: NSCoder) {
@@ -42,20 +47,20 @@ extension ProfileMenuView {
         menuLabel.textAlignment = .left
         menuLabel.numberOfLines = 1
         
-        chevronIndicator.image = UIImage(systemName: "chevron.right")
-        chevronIndicator.contentMode = .scaleAspectFit
-        chevronIndicator.tintColor = .black
+        chevronImageView.image = UIImage(systemName: "chevron.right")
+        chevronImageView.contentMode = .scaleAspectFit
+        chevronImageView.tintColor = .black
     }
     
     private func createLayout() {
-        addSubviews([menuLabel, chevronIndicator])
+        addSubviews([menuLabel, chevronImageView])
         
         menuLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(30)
             make.centerY.equalToSuperview()
         }
         
-        chevronIndicator.snp.makeConstraints { make in
+        chevronImageView.snp.makeConstraints { make in
             make.centerY.equalTo(menuLabel.snp.centerY)
             make.leading.equalTo(menuLabel.snp.trailing).offset(10)
             make.trailing.equalToSuperview().inset(30)

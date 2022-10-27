@@ -13,7 +13,7 @@ final class ProfileUserMenuView: UIView {
     
     // MARK: Properties
         
-    let userMenuLabel = UILabel()
+    private let userMenuLabel = UILabel()
     
     // MARK: LifeCycle
     
@@ -21,6 +21,11 @@ final class ProfileUserMenuView: UIView {
         super.init(frame: frame)
         configureUI()
         createLayout()
+    }
+    
+    convenience init(userMenuText: String) {
+        self.init(frame: .zero)
+        userMenuLabel.text = userMenuText
     }
 
     required init?(coder: NSCoder) {
