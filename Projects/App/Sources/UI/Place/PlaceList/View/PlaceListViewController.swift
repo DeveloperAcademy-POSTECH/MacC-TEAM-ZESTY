@@ -72,7 +72,7 @@ final class PlaceListViewController: UIViewController {
     
     @objc func userInfoButtonTapped() {
         // TODO: 민이 만든 프로필 뷰로 이동
-        // navigationController?.pushViewController(profile, animated: true)
+         navigationController?.pushViewController(ProfileViewController(), animated: true)
     }
     
     @objc func addPlaceButtonTapped() {
@@ -87,16 +87,17 @@ final class PlaceListViewController: UIViewController {
 extension PlaceListViewController {
     
     private func configureUI() {
+        removeBackgroundAndDivider()
+        configureNaviBar()
+        
         view.backgroundColor = .white
         
         headerView.backgroundColor = .white
         
         segmentIndicator.backgroundColor = .black
         
-        removeBackgroundAndDivider()
         segmentedControl.backgroundColor = .clear
         segmentedControl.tintColor = .clear
-        
         segmentedControl.apportionsSegmentWidthsByContent = true
         segmentedControl.selectedSegmentIndex = 0
         
