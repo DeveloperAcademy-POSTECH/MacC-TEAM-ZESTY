@@ -12,7 +12,6 @@ import DesignSystem
 
 final class PlaceCell: UITableViewCell {
     // TODO: 리뷰가 없는 상황을 가정한 cell입니다. 변경 예정
-    private let viewModel = PlaceCellVeiwModel(placeName: "쌀국수 집을 하려다가 망한\n소바집인데 쌀국수가 잘팔리는 곳", category: Category(id: 2, name: "일식", imageURL: nil), goodCount: 17, sosoCount: 2, badCount: 4, menuName: "", reviewImage: UIImage(.img_reviewfriends_together))
     
     // MARK: - Properties
     
@@ -22,8 +21,6 @@ final class PlaceCell: UITableViewCell {
     
     private lazy var reviewImageView = UIImageView()
     
-    private lazy var middelView = UIView()
-    private lazy var gradientStackView = UIStackView()
     private lazy var gradientView = GradientView(gradientStartColor: .clear, gradientEndColor: .black)
     private lazy var menuLabel = UILabel()
     
@@ -33,9 +30,9 @@ final class PlaceCell: UITableViewCell {
     
     private lazy var emojiStackView = UIStackView()
     
-    lazy var goodEmojiStackView = EmojiCountStackView(emojiCount: viewModel.goodCount, emoji: UIImage(.img_reviewfriends_good))
-    lazy var sosoEmojiStackView = EmojiCountStackView(emojiCount: viewModel.sosoCount, emoji: UIImage(.img_reviewfriends_soso))
-    lazy var badEmojiStackView = EmojiCountStackView(emojiCount: viewModel.badCount, emoji: UIImage(.img_reviewfriends_bad))
+    private lazy var goodEmojiStackView = EmojiCountStackView(type: .good)
+    private lazy var sosoEmojiStackView = EmojiCountStackView(type: .soso)
+    private lazy var badEmojiStackView = EmojiCountStackView(type: .bad)
     
     // MARK: - LifeCycle
     
@@ -43,6 +40,10 @@ final class PlaceCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         createLayout()
         configureUI()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
     }
     
     required init?(coder: NSCoder) {
@@ -55,33 +56,37 @@ final class PlaceCell: UITableViewCell {
 
 extension PlaceCell {
     
-    func configureUI() {
-        configureGradientView()
-        
-        mainView.layer.applyFigmaShadow()
-        mainView.layer.borderWidth = viewModel.menuName!.isEmpty ? 1 : 0
+    func setUp(with place: Place) {
+        if !place.reviews.isEmpty {
+            reviewImageView.load(url: place.reviews[0].imageURL)
+            menuLabel.text = place.reviews[0].menuName
+        } else {
+//            reviewImageView.image = UIImage(.img_categoryfriends)
+        }
+        placeNameLabel.text = place.name
+        goodEmojiStackView.setUp(count: place.evaluationSum.good)
+        sosoEmojiStackView.setUp(count: place.evaluationSum.soso)
+        badEmojiStackView.setUp(count: place.evaluationSum.bad)
+    }
+    
+    private func configureUI() {
         
         mainView.layer.cornerRadius = 16
         mainView.layer.masksToBounds = true
         
-        reviewImageView.image = viewModel.reviewImage
         reviewImageView.contentMode = .scaleAspectFill
-        
-        gradientView.isHidden = viewModel.menuName!.isEmpty ? true : false
-        
-        menuLabel.text = viewModel.menuName
+
         menuLabel.textColor = .white
         
         bottomView.backgroundColor = .label
-        
+
         placeNameLabel.textColor = .white
-        placeNameLabel.text = viewModel.placeName
         placeNameLabel.numberOfLines = 2
         placeNameLabel.font = .systemFont(ofSize: 20, weight: .bold)
         
         emojiStackView.spacing = 15
         emojiStackView.axis = .horizontal
-        emojiStackView.distribution = .fill
+        emojiStackView.distribution = .fillEqually
     }
     
     private func createLayout() {
@@ -132,13 +137,6 @@ extension PlaceCell {
             make.bottom.equalToSuperview().inset(20)
             make.width.greaterThanOrEqualTo(130)
         }
-    }
-    
-    private func configureGradientView() {
-        let gradientLayer: CAGradientLayer = CAGradientLayer()
-        gradientLayer.frame = gradientView.bounds
-        gradientLayer.colors = [UIColor.white.cgColor, UIColor.black.cgColor]
-        gradientView.layer.addSublayer(gradientLayer)
     }
     
 }

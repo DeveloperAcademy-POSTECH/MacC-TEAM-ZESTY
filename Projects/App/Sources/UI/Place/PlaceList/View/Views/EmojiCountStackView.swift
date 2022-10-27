@@ -7,14 +7,15 @@
 //
 
 import UIKit
+import SnapKit
 
-class EmojiCountStackView: UIStackView {
+final class EmojiCountStackView: UIStackView {
     private let countLabel = UILabel()
     private let imageView = UIImageView()
     
-    init(emojiCount: Int = 0, emoji: UIImage? = nil) {
+    init(type: Evaluation, count: Int = 0) {
         super.init(frame: .zero)
-        configureUI(emojiCount: emojiCount, emoji: emoji)
+        configureUI(type: type, count: count)
         createLayout()
     }
     
@@ -26,17 +27,39 @@ class EmojiCountStackView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureUI(emojiCount: Int = 0, emoji: UIImage? = nil) {
+    func setUp(count: Int) {
+        countLabel.text = "\(count)"
+    }
+    
+    private func configureUI(type: Evaluation, count: Int) {
         spacing = 5
         axis = .horizontal
-        countLabel.text = String(emojiCount)
         countLabel.textColor = .white
         countLabel.font = .systemFont(ofSize: 13)
-        imageView.image = emoji
+        imageView.image = type.image
         imageView.contentMode = .scaleAspectFit
     }
     
     private func createLayout() {
         addArrangedSubviews([imageView, countLabel])
+        
+        imageView.snp.makeConstraints {
+            $0.size.equalTo(30)
+        }
     }
+}
+
+fileprivate extension Evaluation {
+    
+    var image: UIImage? {
+        switch self {
+        case .good:
+            return UIImage(.img_reviewfriends_good)
+        case .soso:
+            return UIImage(.img_reviewfriends_soso)
+        case .bad:
+            return UIImage(.img_reviewfriends_bad)
+        }
+    }
+    
 }

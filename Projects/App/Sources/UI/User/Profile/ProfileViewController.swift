@@ -19,11 +19,6 @@ final class ProfileViewController: UIViewController {
     private let profileMenuStackView = UIStackView()
     private let dividerView = UIView()
     private let profileUserMenuStackView = UIStackView()
-    private let emptyView = UIView()
-    private let instaButton = UIButton()
-    private let mailButton = UIButton()
-    private let instaLabel = UILabel()
-    private let mailLabel = UILabel()
     
     private var profileNickNameView = ProfileNickNameView()
     private var profileMenuView1 = ProfileMenuView(menuText: "공지사항")
@@ -31,6 +26,8 @@ final class ProfileViewController: UIViewController {
     private var profileMenuView3 = ProfileMenuView(menuText: "제스티를 만든 사람들")
     private var profileUserMenuView1 = ProfileUserMenuView(userMenuText: "로그아웃")
     private var profileUserMenuView2 = ProfileUserMenuView(userMenuText: "회원탈퇴")
+    private var profileLinkButtonView = ProfileLinkButtonView()
+    private var profileLinkLabelView = ProfileLinkLabelView()
 
     // MARK: - LifeCycle
     
@@ -55,41 +52,26 @@ extension ProfileViewController {
         profileImageView.contentMode = .scaleAspectFit
 
         profileMenuSuperStackView.axis = .vertical
-        profileMenuSuperStackView.alignment = .top
+        profileMenuSuperStackView.alignment = .leading
         profileMenuSuperStackView.distribution = .fillProportionally
-        profileMenuSuperStackView.spacing = 20
+        profileMenuSuperStackView.spacing = 10
         
         profileMenuStackView.axis = .vertical
         profileMenuStackView.distribution = .fillEqually
+        profileMenuStackView.spacing = 0
 
         profileUserMenuStackView.axis = .vertical
         profileUserMenuStackView.distribution = .fillEqually
+        profileUserMenuStackView.spacing = 0
         
         dividerView.backgroundColor = .zestyColor(.grayF6)
-
-        instaButton.setImage(UIImage(.btn_link_instargram), for: .normal)
-        
-        instaLabel.text = "인스타"
-        instaLabel.textColor = .black
-        instaLabel.font = .systemFont(ofSize: 13, weight: .regular)
-        instaLabel.textAlignment = .center
-        instaLabel.numberOfLines = 1
-
-        mailButton.setImage(UIImage(.btn_link_mail), for: .normal)
-
-        mailLabel.text = "문의"
-        mailLabel.textColor = .black
-        mailLabel.font = .systemFont(ofSize: 13, weight: .regular)
-        mailLabel.textAlignment = .center
-        mailLabel.numberOfLines = 1
-        
     }
     
     private func createLayout() {
-        view.addSubviews([profileImageView, profileNickNameView, profileMenuSuperStackView, dividerView, instaButton, instaLabel, mailButton, mailLabel])
-        profileMenuSuperStackView.addArrangedSubviews([profileMenuStackView, profileUserMenuStackView])
+        view.addSubviews([profileImageView, profileNickNameView, profileMenuSuperStackView, profileLinkButtonView, profileLinkLabelView])
+        profileMenuSuperStackView.addArrangedSubviews([profileMenuStackView, dividerView, profileUserMenuStackView])
         profileMenuStackView.addArrangedSubviews([profileMenuView1, profileMenuView2, profileMenuView3])
-        profileUserMenuStackView.addArrangedSubviews([profileUserMenuView1, profileUserMenuView2, emptyView])
+        profileUserMenuStackView.addArrangedSubviews([profileUserMenuView1, profileUserMenuView2])
         
         profileImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -104,7 +86,6 @@ extension ProfileViewController {
         
         profileMenuSuperStackView.snp.makeConstraints { make in
             make.top.equalTo(profileNickNameView.snp.bottom).offset(30)
-            make.bottom.equalTo(instaButton.snp.top).offset(-68)
             make.leading.trailing.equalToSuperview()
         }
         
@@ -113,7 +94,7 @@ extension ProfileViewController {
         }
         
         dividerView.snp.makeConstraints { make in
-            make.centerY.equalTo(profileMenuSuperStackView.snp.centerY)
+            make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(1)
         }
@@ -121,25 +102,15 @@ extension ProfileViewController {
         profileUserMenuStackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
         }
-
-        instaButton.snp.makeConstraints { make in
-            make.bottom.equalTo(instaLabel.snp.top).offset(-10)
-            make.leading.equalToSuperview().inset(115)
-        }
         
-        instaLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(30)
-            make.centerX.equalTo(instaButton.snp.centerX)
-        }
-        
-        mailButton.snp.makeConstraints { make in
-            make.centerY.equalTo(instaButton.snp.centerY)
-            make.trailing.equalToSuperview().inset(115)
+        profileLinkButtonView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(profileLinkLabelView.snp.top).offset(-10)
         }
 
-        mailLabel.snp.makeConstraints { make in
+        profileLinkLabelView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview().offset(-3)
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(30)
-            make.centerX.equalTo(mailButton.snp.centerX)
         }
         
     }
