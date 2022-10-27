@@ -211,7 +211,7 @@ extension AddPlaceResultViewController {
         }
 
         saveButton.snp.makeConstraints {
-            $0.top.equalTo(placeCard.snp.bottom).offset(30)
+            $0.top.equalTo(placeCard.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
         }
         
