@@ -52,11 +52,11 @@ class EvaluationItemView: UIView {
             
             switch viewModel.evaluation {
             case .good:
-                self.imageView.image = UIImage(.img_reviewfriends_good_30)
+                self.imageView.image = UIImage(.img_reviewfriends_good)
             case .soso:
-                self.imageView.image = UIImage(.img_reviewfriends_soso_30)
+                self.imageView.image = UIImage(.img_reviewfriends_soso)
             case .bad:
-                self.imageView.image = UIImage(.img_reviewfriends_bad_30)
+                self.imageView.image = UIImage(.img_reviewfriends_bad)
             }
             
         }

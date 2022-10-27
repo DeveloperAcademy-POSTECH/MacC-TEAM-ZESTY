@@ -13,7 +13,7 @@ struct PlaceResult {
     let id: Int
     let kakaoPlaceId: Int
     let creator: String
-    let organizationId: String
+    let organizationName: String
     let name: String
     let address: String
     let category: Category
@@ -26,7 +26,7 @@ extension PlaceResult {
         id = dto.id
         kakaoPlaceId = dto.kakaoPlaceID
         creator = dto.creator.nickname
-        organizationId = dto.organization.name
+        organizationName = dto.organization.name
         name = dto.name
         address = dto.address
         category = Category(id: dto.category.id,

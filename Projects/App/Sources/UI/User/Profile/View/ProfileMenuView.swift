@@ -15,6 +15,7 @@ final class ProfileMenuView: UIView {
         
     private let menuLabel = UILabel()
     private let chevronImageView = UIImageView()
+    private let isSE = UIScreen.main.isHeightLessThan670pt
     
     // MARK: LifeCycle
     
@@ -54,6 +55,16 @@ extension ProfileMenuView {
     
     private func createLayout() {
         addSubviews([menuLabel, chevronImageView])
+        
+        if isSE {
+            snp.makeConstraints {
+                $0.height.equalTo(50)
+            }
+        } else {
+            snp.makeConstraints {
+                $0.height.equalTo(60)
+            }
+        }
         
         menuLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(30)

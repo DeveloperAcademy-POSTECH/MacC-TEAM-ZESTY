@@ -30,11 +30,10 @@ final class AddCategoryViewController: UIViewController {
     private lazy var categoryCollectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: createCollecionViewLayout())
     
     private lazy var addPlaceButton: FullWidthBlackButton = {
-        $0.isEnabled = false
         $0.setTitle("맛집 등록하기", for: .normal)
         $0.addTarget(self, action: #selector(addPlaceButtonDidTap), for: .touchUpInside)
         return $0
-    }(FullWidthBlackButton())
+    }(FullWidthBlackButton(state: false))
     
     // MARK: - LifeCycle
     
@@ -82,7 +81,8 @@ extension AddCategoryViewController {
                     self?.categories = categories
                     self?.categoryCollectionView.reloadData()
                 case .categoryCellSelected:
-                    self?.addPlaceButton.isEnabled = true
+//                    self?.addPlaceButton.isEnabled = true
+                    self?.addPlaceButton.setButtonState(true)
                 case .addPlaceFail(let error):
                     print(error.localizedDescription)
                 case .addPlaceDidSucceed(let place):

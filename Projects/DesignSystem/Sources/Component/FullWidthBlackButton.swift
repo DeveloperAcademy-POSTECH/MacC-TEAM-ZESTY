@@ -21,6 +21,13 @@ public final class FullWidthBlackButton: UIButton {
         createLayout()
     }
     
+    public init(state: Bool) {
+        super.init(frame: .zero)
+        configureUI()
+        createLayout()
+        setButtonState(state)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -30,6 +37,11 @@ public final class FullWidthBlackButton: UIButton {
         let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 15, weight: .medium)]
         let attributedString = NSAttributedString(string: title, attributes: attributes)
         setAttributedTitle(attributedString, for: state)
+    }
+    
+    public func setButtonState(_ state: Bool) {
+        isEnabled = state
+        backgroundColor = state ? .black : .zestyColor(.disabled)
     }
     
 }
