@@ -14,17 +14,16 @@ final class OrgDetailViewController: UIViewController {
 
     // MARK: - Properties
 
-    let orgNameLabel = UILabel()
-    let orgInformationSuperStackView = UIStackView()
-    let orgInformationStackView1 = UIStackView()
-    let orgInformationStackView2 = UIStackView()
-    let orgInformationStackView3 = UIStackView()
-
-    private let orgInviteButton = FullWidthBlackButton()
+    private let orgNameLabel = UILabel()
+    private let orgInformationSuperStackView = UIStackView()
+    private let orgInformationStackView1 = UIStackView()
+    private let orgInformationStackView2 = UIStackView()
+    private let orgInformationStackView3 = UIStackView()
     private let orgInformationImage1 = UIImageView()
     private let orgInformationImage2 = UIImageView()
     private let orgInformationImage3 = UIImageView()
-    
+    private let orgInviteButton = FullWidthBlackButton()
+
     private var orgDetailInformationView1 = OrgDetailInformationView()
     private var orgDetailInformationView2 = OrgDetailInformationView()
     private var orgDetailInformationView3 = OrgDetailInformationView()
