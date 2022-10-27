@@ -126,8 +126,8 @@ final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
         categoryTagLabel.text = place.category[0].name
         placeNameLabel.text = place.name
         addressLabel.text = place.address
-        kakaoUrl = "https://map.kakao.com/link/to/\(place.name),\(place.lat),\(place.lan)"
-        naverUrl = "http://app.map.naver.com/launchApp/?version=11&menu=navigation&elat=\(place.lat)&elng=\(place.lan)&etitle=\(place.name)"
+        kakaoUrl = "https://map.kakao.com/link/to/\(place.name),\(place.lat),\(place.lon)"
+        naverUrl = "http://app.map.naver.com/launchApp/?version=11&menu=navigation&elat=\(place.lat)&elng=\(place.lon)&etitle=\(place.name)"
         goodView.configure(with: EvaluationViewModel(evaluation: .good, count: place.evaluationSum.good))
         sosoView.configure(with: EvaluationViewModel(evaluation: .soso, count: place.evaluationSum.soso))
         badView.configure(with: EvaluationViewModel(evaluation: .bad, count: place.evaluationSum.bad))

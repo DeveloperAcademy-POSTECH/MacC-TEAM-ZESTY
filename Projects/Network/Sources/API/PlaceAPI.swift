@@ -61,5 +61,13 @@ public struct PlaceAPI {
             
             return networkService.request(with: endpoint, responseType: PlaceReviewListDTO.self)
     }
+    
+    public static func postPlace(with DTO: PlacePostDTO) -> AnyPublisher<PlacePostResDTO, NetworkError> {
+        let header = ["Content-Type": "application/json"]
+        let place = DTO
+        let endpoint = Endpoint(path: "/api/places", method: .post, bodyParams: place, headers: header)
+
+        return networkService.request(with: endpoint, responseType: PlacePostResDTO.self)
+    }
 
 }

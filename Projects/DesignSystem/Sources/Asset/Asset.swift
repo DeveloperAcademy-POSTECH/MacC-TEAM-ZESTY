@@ -16,6 +16,8 @@ public enum Asset: String {
     case btn_kakaomap
     case btn_navermap
     case btn_side_plus
+    case btn_link_instargram
+    case btn_link_mail
     
     // img_reviewfriends
     case img_reviewfriends_together
@@ -52,6 +54,8 @@ public enum Asset: String {
     case img_ticket_bg
     case img_ticket_top
     case img_ticket_bottom
+    case img_categoryfriends_western
+    case img_reviewfriends_photo
     
     // img_emptyfriends
     case img_emptyfriends_search
