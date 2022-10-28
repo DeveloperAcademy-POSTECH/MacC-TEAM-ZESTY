@@ -13,16 +13,17 @@ import Kingfisher
 extension UIImageView {
     
     func load(url: String?) {
-        guard let url = URL(string: url!) else {
+        guard let url = URL(string: url ?? "") else {
             self.image = UIImage(.img_errorfriends)
             return
         }
         self.kf.setImage(with: url) { result in
             switch result {
             case .success( _):
+                print("string -> image success")
                 break
             case .failure(let error):
-                print(error)
+                print("string -> image fail: \(error)")
                 self.image = UIImage(.img_errorfriends)
             }
         }

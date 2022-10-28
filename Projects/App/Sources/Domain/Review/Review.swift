@@ -53,7 +53,11 @@ extension Review {
         reviewer = User(dto.reviewer)
         evaluation =  Evaluation(dto.evaluation)
         menuName = dto.menuName
-        imageURL = dto.image
+        if !dto.image.isEmpty {
+            imageURL = dto.image[0]
+        } else {
+            imageURL = nil
+        }
         createdAt = Date.getStringToDate(dto.createdAt)
     }
 

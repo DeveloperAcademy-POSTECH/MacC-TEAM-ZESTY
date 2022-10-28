@@ -10,6 +10,7 @@ import Combine
 import UIKit
 import DesignSystem
 import SnapKit
+import Kingfisher
 
 final class ReviewCardView: UIView {
     
@@ -57,12 +58,11 @@ extension ReviewCardView {
     
     private func bind() {
         viewModel.$result
-            .dropFirst()
+            .dropFirst(2)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
                 print(result)
                 guard let self = self else { return }
-                
                 self.menuImageView.load(url: result.image)
                 self.evaluationImageView.image = result.evaluation.image
                 self.nicknameLabel.text = result.reviewer

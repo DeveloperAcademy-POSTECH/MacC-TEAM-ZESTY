@@ -8,27 +8,49 @@
 
 import Combine
 import Foundation
-import UIKit.UIImage
 import Network
 
 final class ReviewRegisterUseCase {
     
+    private let uploadManager = AWSS3ImageManager()
     private var cancelBag = Set<AnyCancellable>()
+    let uploadResultSubject = PassthroughSubject<String, ImageUploadError>()
     
 }
 
 extension ReviewRegisterUseCase {
     
+    func uploadImage(with data: Data?) {
+        uploadManager.requestUpload(data: data)
+        
+        uploadManager.uploadResultSubject
+            .sink { [weak self] completion in
+                guard let self = self else { return }
+                switch completion {
+                case .failure(let error):
+                    print(error.localizedString)
+                    self.uploadResultSubject.send(completion: .failure(error))
+                case .finished: break
+                }
+            } receiveValue: { [weak self] imageString in
+                guard let self = self else { return }
+                print("usecase: image upload success, urlstring: \(imageString)")
+                self.uploadResultSubject.send(imageString)
+            }
+            .store(in: &cancelBag)
+
+    }
+    
     func registerReview(placeId: Int,
                         menuName: String? = nil,
-                        image: UIImage? = nil,
+                        image: String? = nil,
                         grade: Evaluation) -> AnyPublisher<ReviewDetailDTO, NetworkError> {
         // TODO: userDefaults 에 유저 아이디 꼭!! 저장해야함
-        UserDefaults.standard.userID = 6
-        let user = UserDefaults.standard.userID ?? 6
+        UserDefaults.standard.userID = 11
+        let user = UserDefaults.standard.userID ?? 11
         let reviewDTO = RegisterReviewDTO(placeId: placeId,
                                    menuName: menuName,
-                                   image: "https://user-images.githubusercontent.com/73650994/197836640-616d1451-7ac9-492d-bf6e-d9d125f9ac44.png",
+                                   image: image,
                                    grade: grade.rawValue,
                                    reviewer: user)
         
