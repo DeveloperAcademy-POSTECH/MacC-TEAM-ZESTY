@@ -12,7 +12,7 @@ public typealias PlaceListDTO = [PlaceDTO]
 
 public struct PlaceDTO: Decodable {
     public let shopName: String
-    public let evaluations: EvaluationDTO
+    public let evaluations: EvaluationDTO?
     public let reviewContent: [ReviewDTO]
 }
 
@@ -20,11 +20,12 @@ public struct EvaluationDTO: Decodable {
     public let one: Int
     public let two: Int
     public let three: Int
+    public let byNumber: Int?
 }
 
 public struct ReviewDTO: Decodable {
-    public let menuname: String
-    public let image: String
+    public let menuName: String?
+    public let image: String?
     public let reviewer: Int
     public let registeredAt: String
 }

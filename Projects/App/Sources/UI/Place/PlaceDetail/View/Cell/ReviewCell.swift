@@ -14,8 +14,9 @@ final class ReviewCell: UITableViewCell {
 
     // MARK: - Properties
 
+    private let cardView = UIView()
+    
     private let reviewImageView: UIImageView = {
-        $0.image = UIImage(named: "test-pasta")
         $0.contentMode = .scaleToFill
         $0.layer.cornerRadius = 16
         $0.layer.masksToBounds = true
@@ -24,7 +25,7 @@ final class ReviewCell: UITableViewCell {
     
     private let emojiView: UIImageView = {
         $0.contentMode = .scaleAspectFit
-        $0.image = UIImage(.img_reviewfriends_good_60)
+        $0.image = UIImage(.img_reviewfriends_good)
         return $0
     }(UIImageView(frame: .zero))
     
@@ -77,15 +78,15 @@ final class ReviewCell: UITableViewCell {
             
             self.reviewImageView.kf.setImage(with: URL(string: review.imageURL ?? ""))
             self.menuLabel.text = review.menuName
-            self.dateLabel.text = review.createdAt.formatted("yyyy/MM/dd")
+            self.dateLabel.text = review.createdAt.formatted("yyyy.MM.dd")
 
             switch review.evaluation {
             case .good:
-                self.emojiView.image = UIImage(.img_reviewfriends_good_45)
+                self.emojiView.image = UIImage(.img_reviewfriends_good)
             case .soso:
-                self.emojiView.image = UIImage(.img_reviewfriends_soso_45)
+                self.emojiView.image = UIImage(.img_reviewfriends_soso)
             case .bad:
-                self.emojiView.image = UIImage(.img_reviewfriends_bad_45)
+                self.emojiView.image = UIImage(.img_reviewfriends_bad)
             }
         }
     }
@@ -98,24 +99,29 @@ extension ReviewCell {
     
     private func configureUI() {
         self.backgroundColor = .zestyColor(.background)
-        
+        self.cardView.layer.applyFigmaShadow()
     }
     
     private func createLayout() {
-        contentView.addSubviews([reviewImageView, emojiView, menuLabel, dateLabel])
-        
-        contentView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.width.equalToSuperview()
-            $0.height.equalTo(UIScreen.main.isWiderThan425pt ? 365 : 330)
-        }
+         contentView.addSubviews([reviewImageView, emojiView, menuLabel, dateLabel])
+         
+         contentView.snp.makeConstraints {
+             $0.centerX.equalToSuperview()
+             $0.width.equalToSuperview()
+             $0.height.equalTo(UIScreen.main.isWiderThan425pt ? 365 : 330)
+         }
+         
+         reviewImageView.snp.makeConstraints {
+             $0.center.equalToSuperview()
+             $0.width.height.equalTo(UIScreen.main.isWiderThan425pt ? 330 : 300)
+         }
+         
+         self.setImageViewBackgroundGradient()
         
         reviewImageView.snp.makeConstraints {
             $0.center.equalToSuperview()
             $0.width.height.equalTo(UIScreen.main.isWiderThan425pt ? 330 : 300)
         }
-        
-        self.setImageViewBackgroundGradient()
         
         emojiView.snp.makeConstraints {
             $0.top.equalTo(reviewImageView.snp.top).inset(20)

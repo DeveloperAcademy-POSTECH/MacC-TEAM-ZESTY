@@ -22,6 +22,12 @@
 	</array>
 	<key>KAKAO_NATIVE_APP_KEY</key>
 	<string>${KAKAO_NATIVE_APP_KEY}</string>
+    <key>AWSS3_ACCESS_KEY</key>
+    <string>${AWSS3_ACCESS_KEY}</string>
+    <key>AWSS3_SECRET_KEY</key>
+    <string>${AWSS3_SECRET_KEY}</string>
+    <key>AWSS3_BUCKET_NAME</key>
+    <string>${AWSS3_BUCKET_NAME}</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -31,10 +37,14 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleDisplayName</key>
+	<string>ZESTY</string>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>

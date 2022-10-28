@@ -16,10 +16,16 @@ extension UIView {
         }
     }
     
+    func makeViewCircular(view: UIView) {
+        view.layer.cornerRadius = view.bounds.size.width / 2.0
+        view.clipsToBounds = true
+    }
+    
 }
 
 extension UIView {
     
+    /// UIView를 UIImage로 변환하는 함수
     func transfromToImage() -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(bounds.size, isOpaque, 0.0)
         defer {
