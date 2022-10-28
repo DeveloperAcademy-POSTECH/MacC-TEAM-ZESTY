@@ -58,7 +58,7 @@ final class ReviewRegisterViewController: UIViewController {
     }
     
     @objc private func registerButtonTouched() {
-        viewModel.image = plusImageView.image
+        viewModel.uploadImage(with: menuImageView.image)
         viewModel.menu = menuTextField.text
         viewModel.registerReview()
         navigationController?.pushViewController(ReviewCardViewController(viewModel: viewModel), animated: true)

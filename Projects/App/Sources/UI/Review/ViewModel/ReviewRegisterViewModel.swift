@@ -22,7 +22,7 @@ final class ReviewRegisterViewModel {
     private let placeId: Int
     let placeName: String
     var evaluation: Evaluation = .soso
-    var image: UIImage?
+    @Published var image: String?
     var menu: String?
     
     // Output
@@ -52,31 +52,63 @@ final class ReviewRegisterViewModel {
 
 extension ReviewRegisterViewModel: ErrorMapper {
     
-    func registerReview() {
-        useCase.registerReview(placeId: placeId,
-                               menuName: menu,
-                               image: image,
-                               grade: evaluation)
+    func uploadImage(with image: UIImage?) {
+        let imageData = image?.pngData()
+        useCase.uploadImage(with: imageData)
+        useCase.uploadResultSubject
             .sink { [weak self] completion in
                 guard let self = self else { return }
                 switch completion {
                 case .failure(let error):
-                    let errorMessage = self.errorMessage(for: error)
-                    self.isRegisterFail.send(errorMessage)
-                case .finished:
-                    break
+                    print(error.localizedString)
+                    self.isRegisterFail.send(error.localizedString)
+                case .finished: break
                 }
-            } receiveValue: { [weak self] review in
+            } receiveValue: { [weak self] imageString in
                 guard let self = self else { return }
-                self.result = Result(image: review.image,
-                                     evaluation: Evaluation(review.evaluation),
-                                     reviewer: review.reviewer.nickname,
-                                     registeredAt: Date.getStringToDate(review.createdAt).getDateToString(format: "yy.MM.dd"),
-                                     category: review.place.category.name,
-                                     placeName: review.place.name,
-                                     placeAddress: review.place.address)
+                print("viewmodel: image upload success, urlstring: \(imageString)")
+                self.image = imageString
             }
             .store(in: &cancelBag)
+
+    }
+    
+    func registerReview() {
+        $image
+            .sink { [weak self] imageString in
+                guard let self = self else { return }
+                self.useCase.registerReview(placeId: self.placeId,
+                                            menuName: self.menu,
+                                            image: imageString,
+                                            grade: self.evaluation)
+                .sink { [weak self] completion in
+                    guard let self = self else { return }
+                    switch completion {
+                    case .failure(let error):
+                        print(error)
+                        let errorMessage = self.errorMessage(for: error)
+                        self.isRegisterFail.send(errorMessage)
+                    case .finished:
+                        break
+                    }
+                } receiveValue: { [weak self] review in
+                    guard let self = self else { return }
+                    var image: String?
+                    if !review.image.isEmpty {
+                        image = review.image[0]
+                    }
+                    self.result = Result(image: image,
+                                         evaluation: Evaluation(review.evaluation),
+                                         reviewer: review.reviewer.nickname,
+                                         registeredAt: Date.getStringToDate(review.createdAt).getDateToString(format: "yy.MM.dd"),
+                                         category: review.place.category.name,
+                                             placeName: review.place.name,
+                                             placeAddress: review.place.address)
+                    }
+                .store(in: &self.cancelBag)
+            }
+            .store(in: &cancelBag)
+
     }
     
 }
