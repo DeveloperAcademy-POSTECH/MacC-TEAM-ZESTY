@@ -45,11 +45,11 @@ final class ReviewCardViewController: UIViewController {
 extension ReviewCardViewController {
 
     @objc func backButtonTouched() {
-        popTo(EvaluationViewController.self)
+        popTo(PlaceDetailViewController.self)
     }
 
     @objc func completeButtonTouched() {
-        popTo(EvaluationViewController.self)
+        popTo(PlaceDetailViewController.self)
     }
     
     private func popTo<T>(_ viewController: T.Type) {
