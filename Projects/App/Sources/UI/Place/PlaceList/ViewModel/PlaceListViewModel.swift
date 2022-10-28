@@ -106,7 +106,6 @@ extension PlaceListViewModel: ErrorMapper {
                         }
                     } receiveValue: { [weak self] placeList in
                         guard let self = self else { return }
-                        
                         self.wholeResult += placeList
                         self.result = self.wholeResult
                     }
