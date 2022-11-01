@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import DesignSystem
 
-final class PlaceCell: UITableViewCell {
+final class PlaceCell: UICollectionViewCell {
     // TODO: 리뷰가 없는 상황을 가정한 cell입니다. 변경 예정
     
     // MARK: - Properties
@@ -37,8 +37,8 @@ final class PlaceCell: UITableViewCell {
     
     // MARK: - LifeCycle
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         createLayout()
         configureUI()
     }
