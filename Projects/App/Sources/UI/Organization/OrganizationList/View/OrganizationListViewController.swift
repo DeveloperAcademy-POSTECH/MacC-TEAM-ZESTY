@@ -19,8 +19,8 @@ final class OrganizationListViewController: UIViewController {
     
     private var cancelBag = Set<AnyCancellable>()
     
-    private lazy var searchingTextFieldView = SearchTextField()
-    private let searchButton = UIButton(type: .custom)
+    private let titleLabel = UILabel()
+    private let searchingTextFieldView = ShadowTextFieldView()
     private lazy var searchingTextField = searchingTextFieldView.textField
     private let tableView = UITableView()
     
@@ -96,15 +96,8 @@ extension OrganizationListViewController {
         
         setNavigationBar()
         
-        searchingTextFieldView.placeholder = "대학교 검색"
-        
-        let largeConfig = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .default)
-        let largeBoldDoc = UIImage(systemName: "magnifyingglass", withConfiguration: largeConfig)
-        searchButton.setImage(largeBoldDoc, for: .normal)
-        searchButton.backgroundColor = .black
-        searchButton.tintColor = .white
-        searchButton.layer.cornerRadius = 45/2
-        searchButton.clipsToBounds = true
+        titleLabel.text = "참여할 대학교를 알려주세요"
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 26)
         
         tableView.dataSource = self
         tableView.register(OrganizationListCell.self, forCellReuseIdentifier: OrganizationListCell.identifier)
@@ -112,19 +105,17 @@ extension OrganizationListViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([searchingTextFieldView, searchButton, tableView])
+        view.addSubviews([titleLabel, searchingTextFieldView, tableView])
         
-        searchingTextFieldView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
-            make.leading.equalToSuperview().inset(20)
-            make.height.equalTo(45)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
+            make.left.equalTo(view.snp.left).offset(20)
         }
         
-        searchButton.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
-            make.leading.equalTo(searchingTextFieldView.snp.trailing).offset(10)
-            make.trailing.equalToSuperview().inset(20)
-            make.width.height.equalTo(45)
+        searchingTextFieldView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(16)
+            make.horizontalEdges.equalToSuperview().inset(20)
+            make.height.equalTo(45)
         }
         
         tableView.snp.makeConstraints { make in
