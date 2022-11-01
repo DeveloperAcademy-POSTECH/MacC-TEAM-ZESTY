@@ -158,7 +158,14 @@ extension DomainSettingViewController {
     }
     
     private func remakeConstraintsByKeyboard(keyboardHeight: CGFloat? = nil) {
-        guard let keyboardHeight = keyboardHeight else { return }
+        guard let keyboardHeight = keyboardHeight else {
+            keyboardSafeArea.snp.makeConstraints { make in
+                make.top.equalTo(mainTitleView.snp.bottom)
+                make.horizontalEdges.equalToSuperview()
+                make.bottom.equalToSuperview()
+            }
+            return
+        }
         
         keyboardSafeArea.snp.makeConstraints { make in
             make.top.equalTo(mainTitleView.snp.bottom)
