@@ -15,6 +15,8 @@ final class DomainSettingViewController: UIViewController {
 
     // MARK: - Properties
     
+    private var cancelBag = Set<AnyCancellable>()
+    
     private let viewModel = DomainSettingViewModel()
     
     private let mainTitleView = MainTitleView(title: "학교 이메일을 알려주세요",
@@ -25,13 +27,7 @@ final class DomainSettingViewController: UIViewController {
     private let emailTextField = UITextField()
     private let emailDuplicatedLabel = UILabel()
     private let domainPlaceholder = UILabel()
-    
-    // TODO: component로 변경하기
-    private let arrowButton = UIButton()
-    
-    private var keyboardUpConstraints: NSLayoutConstraint?
-
-    private var cancelBag = Set<AnyCancellable>()
+    private let arrowButton = ArrowButton(initialDisable: true)
     
     // MARK: - LifeCycle
     
@@ -118,16 +114,6 @@ extension DomainSettingViewController {
         emailDuplicatedLabel.textColor = .red
         emailDuplicatedLabel.text = "이미 사용된 이메일이에요."
         emailDuplicatedLabel.font = .systemFont(ofSize: 13, weight: .regular)
-        
-        // TODO: Component로 변경
-        arrowButton.tintColor = .lightGray
-        arrowButton.backgroundColor = .white
-        arrowButton.configuration = .plain()
-        arrowButton.configuration?.contentInsets = .init(top: 14.5, leading: 15, bottom: 14.5, trailing: 15)
-        arrowButton.clipsToBounds = true
-        arrowButton.layer.borderWidth = 2
-        arrowButton.layer.cornerRadius = 25
-        arrowButton.layer.borderColor = UIColor.lightGray.cgColor
         
         let arrowImageConfiguration = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .default)
         let arrowImage = UIImage(systemName: "arrow.forward", withConfiguration: arrowImageConfiguration)
