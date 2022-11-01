@@ -9,7 +9,7 @@
 import Foundation
 import Network
 
-struct User {
+struct User: Hashable {
     let id: Int
     let email: String
     let social: SocialProvider
