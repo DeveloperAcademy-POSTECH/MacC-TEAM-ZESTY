@@ -9,15 +9,14 @@ import UIKit
 import SnapKit
 
 public final class SearchTextField: UIView {
-    public var placeholder: String
+    public var placeholder: String = "장소"
     
     public let textField = UITextField()
     private let leftImage = UIImageView()
     private let backgroundView = UIView()
     private let cornerRadius: CGFloat = 45/2
     
-    public init(placeholder: String) {
-        self.placeholder = placeholder
+    public init() {
         super.init(frame: .zero)
         configureUI()
         createLayout()
