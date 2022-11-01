@@ -19,7 +19,7 @@ final class OrganizationListViewController: UIViewController {
     
     private var cancelBag = Set<AnyCancellable>()
     
-    private lazy var searchingTextFieldView = SearchTextField()
+    private lazy var searchingTextFieldView = SearchTextField(placeholder: "대학교 검색")
     private let searchButton = UIButton(type: .custom)
     private lazy var searchingTextField = searchingTextFieldView.textField
     private let tableView = UITableView()
