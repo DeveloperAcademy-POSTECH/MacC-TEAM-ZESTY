@@ -52,12 +52,9 @@ extension DomainSettingViewController {
             .assign(to: \.userEmail, on: viewModel)
             .store(in: &cancelBag)
         
-        viewModel.$isEmailValid
-            .sink {[weak self] isValid in
-                // TODO: button disalbed로 변경하기
-                guard let self = self else { return }
-                self.arrowButton.layer.borderColor = isValid ? UIColor.black.cgColor : UIColor.lightGray.cgColor
-                self.arrowButton.tintColor = isValid ? .black : .lightGray
+        viewModel.$isEmailEmpty
+            .sink {[weak self] isEmailEmpty in
+                self?.arrowButton.setDisabled(isEmailEmpty)
             }
             .store(in: &cancelBag)
         
@@ -75,6 +72,7 @@ extension DomainSettingViewController {
                 let endFrameHeight = endFrame.cgRectValue.height
                 
                 self.updateLayout(keyboardHeight: endFrameHeight)
+                print(endFrameHeight)
             }
             .store(in: &cancelBag)
     }
@@ -132,15 +130,11 @@ extension DomainSettingViewController {
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.horizontalEdges.equalToSuperview()
         }
-    }
-    
-    private func updateLayout(keyboardHeight: CGFloat? = nil) {
-        guard let keyboardHeight = keyboardHeight else { return }
         
         keyboardSafeArea.snp.makeConstraints { make in
             make.top.equalTo(mainTitleView.snp.bottom)
             make.horizontalEdges.equalToSuperview()
-            make.bottom.equalToSuperview().inset(keyboardHeight)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
         
         emailInputView.snp.makeConstraints { make in
@@ -164,6 +158,16 @@ extension DomainSettingViewController {
         arrowButton.snp.makeConstraints { make in
             make.right.equalToSuperview().inset(20)
             make.bottom.equalToSuperview().inset(20)
+        }
+    }
+    
+    private func updateLayout(keyboardHeight: CGFloat? = nil) {
+        guard let keyboardHeight = keyboardHeight else { return }
+        
+        keyboardSafeArea.snp.makeConstraints { make in
+            make.top.equalTo(mainTitleView.snp.bottom)
+            make.horizontalEdges.equalToSuperview()
+            make.bottom.equalToSuperview().inset(keyboardHeight)
         }
     }
     

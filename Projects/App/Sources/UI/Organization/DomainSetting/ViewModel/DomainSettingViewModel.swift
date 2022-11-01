@@ -14,7 +14,7 @@ final class DomainSettingViewModel {
     @Published var userEmail: String = ""
     
     // output
-    @Published var isEmailValid = false
+    @Published var isEmailEmpty = true
     @Published var isDuplicateEmail = false
     @Published var isButtonValid = false
     
@@ -25,7 +25,7 @@ final class DomainSettingViewModel {
     init() {
         $userEmail
             .map(checkEmailValid)
-            .assign(to: \.isEmailValid, on: self)
+            .assign(to: \.isEmailEmpty, on: self)
             .store(in: &cancelBag)
     }
 }
@@ -35,7 +35,7 @@ final class DomainSettingViewModel {
 extension DomainSettingViewModel {
     
     private func checkEmailValid(email: String) -> Bool {
-        return !email.isEmpty
+        return email.isEmpty
     }
     
 }
