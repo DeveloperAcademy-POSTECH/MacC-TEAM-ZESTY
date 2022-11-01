@@ -65,6 +65,16 @@ extension OrganizationListViewController {
 extension OrganizationListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if viewModel.searchedOrgArray.count == 0 {
+            if searchingTextFieldView.textField.text == "" {
+                tableView.setEmptyView(message: "참여할 대학교를\n알려주세요", type: .search)
+            } else {
+                tableView.setEmptyView(message: "검색 결과가 없어요.", type: .noresult)
+                
+            }
+        } else {
+            tableView.restore()
+        }
         return viewModel.searchedOrgArray.count
     }
     
