@@ -10,6 +10,7 @@ import Combine
 import UIKit
 import DesignSystem
 import SnapKit
+import Kingfisher
 
 final class ReviewCardView: UIView {
     
@@ -57,12 +58,11 @@ extension ReviewCardView {
     
     private func bind() {
         viewModel.$result
-            .dropFirst()
+            .dropFirst(2)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
                 print(result)
                 guard let self = self else { return }
-                
                 self.menuImageView.load(url: result.image)
                 self.evaluationImageView.image = result.evaluation.image
                 self.nicknameLabel.text = result.reviewer
@@ -135,11 +135,22 @@ extension ReviewCardView {
         placeAddressLabel.font = .preferredFont(forTextStyle: .caption1)
         placeAddressLabel.textColor = isMenuImageExist ? .white : .secondaryLabel
         placeAddressLabel.numberOfLines = 0
+        
+        viewModel.$image
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] image in
+                guard let self = self else { return }
+                let isMenuImageExist = image != nil
+                self.nicknameStaticLabel.textColor = isMenuImageExist ? .white : .secondaryLabel
+                self.nicknameLabel.font = .preferredFont(forTextStyle: .callout).bold()
+                self.nicknameLabel.textColor = isMenuImageExist ? .white : .label
+                self.placeNameLabel.textColor = isMenuImageExist ? .white : .label
+                self.placeAddressLabel.textColor = isMenuImageExist ? .white : .secondaryLabel
+            }
+            .store(in: &cancelBag)
     }
     
     private func createLayout() {
-        let isMenuImageExist = viewModel.image != nil
-        
         addSubviews([
             menuImageView, backgroundView, nameStackView, dateStackView,
             placeStackView, evaluationImageView
@@ -164,43 +175,50 @@ extension ReviewCardView {
             $0.horizontalEdges.equalToSuperview()
         }
         
-        if isMenuImageExist {
-            dateStackView.snp.makeConstraints {
-                $0.top.equalTo(nameStackView.snp.bottom).offset(10)
-                $0.horizontalEdges.equalToSuperview().inset(30)
+        viewModel.$image
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] image in
+                guard let self = self else { return }
+                if image != nil {
+                    self.dateStackView.snp.remakeConstraints {
+                        $0.top.equalTo(self.nameStackView.snp.bottom).offset(10)
+                        $0.horizontalEdges.equalToSuperview().inset(30)
+                    }
+                    self.backgroundView.snp.remakeConstraints {
+                        $0.edges.equalToSuperview()
+                    }
+                    self.menuImageView.snp.remakeConstraints {
+                        $0.edges.equalToSuperview()
+                    }
+                    self.dateStaticLabel.snp.remakeConstraints {
+                        $0.horizontalEdges.equalToSuperview()
+                    }
+                    self.dateLabel.snp.remakeConstraints {
+                        $0.horizontalEdges.equalToSuperview()
+                    }
+                    self.evaluationImageView.snp.remakeConstraints {
+                        $0.trailing.bottom.equalToSuperview().inset(30)
+                        $0.width.equalToSuperview().multipliedBy(0.2)
+                        $0.height.equalTo(self.evaluationImageView.snp.width)
+                    }
+                    self.placeStackView.snp.remakeConstraints {
+                        $0.leading.bottom.equalToSuperview().inset(30)
+                        $0.trailing.equalTo(self.evaluationImageView.snp.leading).offset(-10)
+                    }
+                } else {
+                    self.evaluationImageView.snp.remakeConstraints {
+                        $0.centerX.equalToSuperview()
+                        $0.centerY.equalToSuperview().multipliedBy(0.8)
+                        $0.width.equalToSuperview().multipliedBy(0.4)
+                        $0.height.equalTo(self.evaluationImageView.snp.width)
+                    }
+                    self.placeStackView.snp.remakeConstraints {
+                        $0.horizontalEdges.bottom.equalToSuperview().inset(30)
+                    }
+                }
             }
-            backgroundView.snp.makeConstraints {
-                $0.edges.equalToSuperview()
-            }
-            menuImageView.snp.makeConstraints {
-                $0.edges.equalToSuperview()
-            }
-            dateStaticLabel.snp.makeConstraints {
-                $0.horizontalEdges.equalToSuperview()
-            }
-            dateLabel.snp.makeConstraints {
-                $0.horizontalEdges.equalToSuperview()
-            }
-            evaluationImageView.snp.makeConstraints {
-                $0.trailing.bottom.equalToSuperview().inset(30)
-                $0.width.equalToSuperview().multipliedBy(0.2)
-                $0.height.equalTo(evaluationImageView.snp.width)
-            }
-            placeStackView.snp.makeConstraints {
-                $0.leading.bottom.equalToSuperview().inset(30)
-                $0.trailing.equalTo(evaluationImageView.snp.leading).offset(-10)
-            }
-        } else {
-            evaluationImageView.snp.makeConstraints {
-                $0.centerX.equalToSuperview()
-                $0.centerY.equalToSuperview().multipliedBy(0.8)
-                $0.width.equalToSuperview().multipliedBy(0.4)
-                $0.height.equalTo(evaluationImageView.snp.width)
-            }
-            placeStackView.snp.makeConstraints {
-                $0.horizontalEdges.bottom.equalToSuperview().inset(30)
-            }
-        }
+            .store(in: &cancelBag)
+
         categoryLabel.snp.makeConstraints {
             $0.leading.equalToSuperview()
             $0.height.equalTo(20)

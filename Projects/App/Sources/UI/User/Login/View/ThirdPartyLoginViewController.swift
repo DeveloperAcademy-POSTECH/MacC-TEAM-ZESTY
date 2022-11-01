@@ -51,7 +51,6 @@ final class ThirdPartyLoginViewController: UIViewController {
 }
 
 // MARK: - Bind Function
-
 extension ThirdPartyLoginViewController {
     
     private func bindUI() {
@@ -69,7 +68,6 @@ extension ThirdPartyLoginViewController {
 }
 
 // MARK: - UI Function
-
 extension ThirdPartyLoginViewController {
     
     private func configureUI() {
@@ -113,6 +111,7 @@ extension ThirdPartyLoginViewController {
         mainTitleView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.height.equalTo(130)
         }
         
         backgroundImageView.snp.makeConstraints { make in

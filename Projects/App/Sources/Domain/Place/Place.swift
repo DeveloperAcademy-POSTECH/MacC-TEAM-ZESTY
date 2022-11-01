@@ -32,7 +32,7 @@ struct EvaluationSum {
 extension Place {
     
     init(dto: PlaceDTO) {
-        id = 1
+        id = dto.placeId
         kakaoPlaceId = 0
         creator = User.mockData[0]
         organizationId = 0

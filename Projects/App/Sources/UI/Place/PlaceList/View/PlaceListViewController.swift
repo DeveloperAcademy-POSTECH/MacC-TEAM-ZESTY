@@ -185,7 +185,7 @@ extension PlaceListViewController {
     }
     
     private func configureNaviBar() {
-        let searchItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(userInfoButtonTapped))
+        let searchItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchButtonTapped))
         let personCropCircle = UIImage(systemName: "person.crop.circle")
         let userInfoItem = UIBarButtonItem(image: personCropCircle, style: .plain, target: self, action: #selector(userInfoButtonTapped))
         let placeTitle = UILabel()

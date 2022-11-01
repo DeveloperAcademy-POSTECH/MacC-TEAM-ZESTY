@@ -22,11 +22,17 @@ final class PlaceDetailViewController: UIViewController {
     
     private let tableView = UITableView(frame: CGRect.zero, style: .grouped)
     
+    let notification = Notification.Name(rawValue: "addReview")
+    
     // MARK: - LifeCycle
     
     init(viewModel: PlaceDetailViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     required init?(coder: NSCoder) {
@@ -37,6 +43,7 @@ final class PlaceDetailViewController: UIViewController {
         super.viewDidLoad()
         bind()
         input.send(.viewDidLoad)
+        createObservers()
         setNavigationBar()
         configureUI()
         createLayout()
@@ -46,6 +53,15 @@ final class PlaceDetailViewController: UIViewController {
     @objc func backButtonDidTap() {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    func createObservers() {
+       NotificationCenter.default.addObserver(self, selector: #selector(routeToAddReview), name: notification, object: nil)
+    }
+    @objc func routeToAddReview(notification: NSNotification) {
+        let viewModel = ReviewRegisterViewModel(placeId: viewModel.place!.id, placeName: viewModel.place!.name)
+        self.navigationController?.pushViewController(EvaluationViewController(viewModel: viewModel), animated: true)
+    }
+    
 }
 
 // MARK: - Binding
@@ -72,6 +88,10 @@ extension PlaceDetailViewController {
                 case .fetchReviewListFail(let error):
                     self?.reviews = []
                     print(error.localizedDescription)
+//                case .routeToReviewAdd(let place):
+//                    let viewModel = ReviewRegisterViewModel(placeId: place.id, placeName: place.name)
+//                    self?.navigationController?.pushViewController(EvaluationViewController(viewModel: viewModel), animated: true)
+//
                 }
             }.store(in: &cancelBag)
     }
@@ -164,6 +184,7 @@ extension PlaceDetailViewController: UITableViewDelegate {
         header.bind(to: viewModel)
         return header
     }
+    
 }
 
 /*

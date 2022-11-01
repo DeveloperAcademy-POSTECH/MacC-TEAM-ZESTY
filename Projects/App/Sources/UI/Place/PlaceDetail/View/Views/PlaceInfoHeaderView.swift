@@ -20,7 +20,7 @@ final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     private lazy var placeView = UIView()
     private var kakaoUrl = ""
     private var naverUrl = ""
-    
+        
     private lazy var categoryTagLabel: BasePaddingLabel = {
         $0.font = .systemFont(ofSize: 11, weight: .bold)
         $0.textColor = .white
@@ -117,9 +117,10 @@ final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
             UrlUtils.openExternalLink(urlStr: self.naverUrl)
         }
     }
-    
+      
     @objc func addReviewButtonDidTap() {
-        input.send(.addReviewBtnDidTap)
+        let addReview = Notification.Name(rawValue: "addReview")
+        NotificationCenter.default.post(name: addReview, object: nil)
     }
     
     private func setUp(with place: Place) {
@@ -138,7 +139,6 @@ final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
 // MARK: - Binding
 extension PlaceInfoHeaderView {
     func bind(to viewModel: PlaceDetailViewModel) {
-        _ = viewModel.transform(input: input.eraseToAnyPublisher())
         setUp(with: viewModel.getPlace())
     }
 }

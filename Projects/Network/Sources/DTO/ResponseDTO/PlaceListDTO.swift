@@ -14,6 +14,7 @@ public struct PlaceDTO: Decodable {
     public let shopName: String
     public let evaluations: EvaluationDTO?
     public let reviewContent: [ReviewDTO]
+    public let placeId: Int
 }
 
 public struct EvaluationDTO: Decodable {
