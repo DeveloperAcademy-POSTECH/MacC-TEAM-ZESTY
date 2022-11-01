@@ -94,11 +94,8 @@ extension OrganizationListViewController {
     private func configureUI() {
         view.backgroundColor = .white
         
-        title = "대학 선택"
-        navigationController?.navigationBar.tintColor = .black
-        navigationController?.navigationBar.topItem?.title = ""
-        
         titleLabel.text = "참여할 대학교를 알려주세요"
+        // TODO: system font size로 바꾸기
         titleLabel.font = UIFont.boldSystemFont(ofSize: 26)
         
         tableView.dataSource = self
