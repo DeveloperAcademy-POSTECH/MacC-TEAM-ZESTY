@@ -94,7 +94,9 @@ extension OrganizationListViewController {
     private func configureUI() {
         view.backgroundColor = .white
         
-        setNavigationBar()
+        title = "대학 선택"
+        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.topItem?.title = ""
         
         titleLabel.text = "참여할 대학교를 알려주세요"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 26)
@@ -123,14 +125,5 @@ extension OrganizationListViewController {
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
-    }
-    
-    private func setNavigationBar() {
-        navigationItem.title = "대학 선택"
-        self.navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .medium)
-        ]
-        navigationController?.navigationBar.tintColor = .black
-        navigationController?.navigationBar.topItem?.title = ""
     }
 }
