@@ -6,6 +6,7 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
+import AuthenticationServices
 import Combine
 import UIKit
 import KakaoSDKUser
@@ -73,4 +74,31 @@ final class ThirdPartyLoginViewModel {
             }
         }
     }
+    
+    func appleLogin(authorization: ASAuthorization) {
+        switch authorization.credential {
+        case let appleIDCredential as ASAuthorizationAppleIDCredential:
+            
+            // 애플 로그인으로 받아온 appleIDCredential 요소들
+            let userIdentifier = appleIDCredential.user
+            
+            print("userIdentifier: \(userIdentifier)")
+            
+            // 서버에 API 요청 보내기
+//            UserAPI.postAccessToken(accessToken: "someToken")
+//                .sink { error in
+//                    switch error {
+//                    case .failure(let error): print(error.localizedString)
+//                    case .finished: break
+//                    }
+//                } receiveValue: { result in
+//                    print("userToken: \(result.authToken)")
+//                }
+//                .store(in: &cancelBag)
+            
+        default:
+            break
+        }
+    }
+    
 }
