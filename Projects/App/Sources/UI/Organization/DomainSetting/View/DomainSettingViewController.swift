@@ -71,8 +71,8 @@ extension DomainSettingViewController {
                 guard let endFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
                 let endFrameHeight = endFrame.cgRectValue.height
                 
-                self.updateLayout(keyboardHeight: endFrameHeight)
-                print(endFrameHeight)
+                self.remakeConstraintsByKeyboard(keyboardHeight: endFrameHeight)
+                self.view.layoutIfNeeded()
             }
             .store(in: &cancelBag)
     }
@@ -131,11 +131,7 @@ extension DomainSettingViewController {
             make.horizontalEdges.equalToSuperview()
         }
         
-        keyboardSafeArea.snp.makeConstraints { make in
-            make.top.equalTo(mainTitleView.snp.bottom)
-            make.horizontalEdges.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
-        }
+        remakeConstraintsByKeyboard()
         
         emailInputView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
@@ -145,8 +141,8 @@ extension DomainSettingViewController {
         }
         
         emailStackView.snp.makeConstraints { make in
-            make.verticalEdges.equalToSuperview().inset(14)
             make.horizontalEdges.equalToSuperview().inset(20)
+            make.centerY.equalToSuperview()
             make.width.lessThanOrEqualTo(270)
         }
         
@@ -161,7 +157,7 @@ extension DomainSettingViewController {
         }
     }
     
-    private func updateLayout(keyboardHeight: CGFloat? = nil) {
+    private func remakeConstraintsByKeyboard(keyboardHeight: CGFloat? = nil) {
         guard let keyboardHeight = keyboardHeight else { return }
         
         keyboardSafeArea.snp.makeConstraints { make in
