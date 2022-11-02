@@ -15,36 +15,35 @@ protocol NetworkServable {
 }
 
 final class NetworkService: NetworkServable {
-
+    
     private let session: URLSession
-
+    
     init(session: URLSession = .shared) {
         self.session = session
     }
-
+    
 }
 
 extension NetworkService {
-
+    
     func request<E: Requestable>(with endpoint: E)
     -> AnyPublisher<Bool, NetworkError> {
         do {
             let request = try endpoint.urlRequest()
             
             return session.dataTaskPublisher(for: request)
-                .mapError { error in
-                    NetworkError.invalidUrl(error)
-                }
-                .flatMap { (data, response) in
+                .tryMap({ (data, response) in
                     if let error = self.checkError(data: data, response: response) {
-                        return Fail<Bool, NetworkError>(error: error).eraseToAnyPublisher()
+                        throw error
                     }
-                    return Just(true)
-                        .mapError { _ in
-                            NetworkError.unknown("실행되지 않을 에러")
-                        }
-                        .eraseToAnyPublisher()
-                }
+                    return true
+                })
+                .mapError({ error in
+                    if let error = error as? NetworkError {
+                        return error
+                    }
+                    return NetworkError.invalidUrl(error)
+                })
                 .eraseToAnyPublisher()
         } catch {
             return Fail(error: NetworkError.invalidUrlRequest(error)).eraseToAnyPublisher()
@@ -57,20 +56,24 @@ extension NetworkService {
             let request = try endpoint.urlRequest()
             
             return session.dataTaskPublisher(for: request)
-                .mapError { error in
-                    NetworkError.invalidUrl(error)
-                }
-                .flatMap { (data, response) in
+                .tryMap({ (data, response) in
                     if let error = self.checkError(data: data, response: response) {
-                        return Fail<T, NetworkError>(error: error).eraseToAnyPublisher()
+                        throw error
                     }
-                    return Just(data)
-                        .decode(type: T.self, decoder: JSONDecoder())
-                        .mapError { error in
-                            NetworkError.decodingError(error)
-                        }
-                        .eraseToAnyPublisher()
-                }
+                    let decodedData: T
+                    do {
+                        decodedData = try JSONDecoder().decode(T.self, from: data)
+                    } catch {
+                        throw NetworkError.decodingError(error)
+                    }
+                    return decodedData
+                })
+                .mapError({ error in
+                    if let error = error as? NetworkError {
+                        return error
+                    }
+                    return NetworkError.invalidUrl(error)
+                })
                 .eraseToAnyPublisher()
         } catch {
             return Fail(error: NetworkError.invalidUrlRequest(error)).eraseToAnyPublisher()
@@ -95,5 +98,5 @@ extension NetworkService {
         }
         return .unknown("response body -> string 전환 실패")
     }
-
+    
 }
