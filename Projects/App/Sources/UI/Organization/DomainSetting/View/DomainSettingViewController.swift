@@ -103,6 +103,7 @@ extension DomainSettingViewController {
         emailTextField.textColor = .white
         emailTextField.font = .systemFont(ofSize: 17, weight: .medium)
         emailTextField.keyboardType = .emailAddress
+        emailTextField.autocapitalizationType = .none
         
         domainPlaceholder.textColor = .white
         domainPlaceholder.text = "@pos.idserve.net"
