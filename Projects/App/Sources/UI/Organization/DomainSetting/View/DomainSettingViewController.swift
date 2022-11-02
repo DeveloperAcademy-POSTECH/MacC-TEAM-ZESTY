@@ -102,7 +102,7 @@ extension DomainSettingViewController {
         emailTextField.attributedPlaceholder = .init(attributedString: NSAttributedString(string: "이메일", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
         emailTextField.textColor = .white
         emailTextField.font = .systemFont(ofSize: 17, weight: .medium)
-        emailTextField.keyboardType = .asciiCapable
+        emailTextField.keyboardType = .emailAddress
         
         domainPlaceholder.textColor = .white
         domainPlaceholder.text = "@pos.idserve.net"
