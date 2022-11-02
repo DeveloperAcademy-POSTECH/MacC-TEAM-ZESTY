@@ -21,9 +21,23 @@ public struct UserAPI {
         return networkService.request(with: endpoint, responseType: String.self)
     }
     
-    public static func postAccessToken(accessToken: String) -> AnyPublisher<UserOauthDTO, NetworkError> {
+    public static func isAlreadyLogin(userIdentifier: String) -> AnyPublisher<Bool, NetworkError> {
+        let header = ["Content-Type": "application/json"]
+        let endpoint = Endpoint(path: "/login/isAlreadyLogin", method: .post, queryParams: ["userIdentifier": userIdentifier], headers: header)
+        
+        return networkService.request(with: endpoint, responseType: Bool.self)
+    }
+    
+    public static func postKakaoAccessToken(accessToken: String) -> AnyPublisher<UserOauthDTO, NetworkError> {
         let header = ["Content-Type": "application/json"]
         let endpoint = Endpoint(path: "/login/oauth2/code/kakao", method: .get, queryParams: ["authToken": accessToken], headers: header)
+        
+        return networkService.request(with: endpoint, responseType: UserOauthDTO.self)
+    }
+    
+    public static func postAppleUserIdentifier(userIdentifier: String) -> AnyPublisher<UserOauthDTO, NetworkError> {
+        let header = ["Content-Type": "application/json"]
+        let endpoint = Endpoint(path: "/login/oauth2/code/apple", method: .post, queryParams: ["userIdentifier": userIdentifier], headers: header)
         
         return networkService.request(with: endpoint, responseType: UserOauthDTO.self)
     }

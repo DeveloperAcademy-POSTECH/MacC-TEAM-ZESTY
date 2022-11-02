@@ -13,21 +13,57 @@ import KakaoSDKUser
 
 final class ThirdPartyLoginViewModel {
     
+    private enum ThirdPartyProvider {
+        case kakao
+        case apple
+    }
+    
     private let useCase = UserLoginUseCase()
+    private var identifier: String?
+    private var provider: ThirdPartyProvider?
+    private var userName = UserDefaults.standard.userName
+    var isUserAlreadyRegistered = false
     
     // Input
+    private let checkUserRegisteredSubject = PassthroughSubject<String, Never>()
+    private let isUserRegisteredSubject = PassthroughSubject<Bool, Never>()
     private let publishAccessTokenSubject = PassthroughSubject<String, Never>()
     
     // Output
-    let isUserRegisteredSubject = PassthroughSubject<Bool, Never>()
+    let shouldSetNicknameSubject = PassthroughSubject<Bool, Never>()
     
     private var cancelBag = Set<AnyCancellable>()
     
     init() {
+        checkUserRegisteredSubject
+            .sink { [weak self] userIdentifier in
+                guard let self = self else { return }
+                print(userIdentifier)
+                self.useCase.isAlreadyLogin(userIdentifier: userIdentifier)
+            }
+            .store(in: &cancelBag)
+        
         publishAccessTokenSubject
             .sink { [weak self] accessToken in
                 guard let self = self else { return }
-                self.useCase.postAccessTokenUser(accessToken: accessToken)
+                guard let userIdentifier = self.identifier else { return }
+                guard let provider = self.provider else { return }
+                switch provider {
+                case .kakao:
+                    self.useCase.postKakaoAccessToken(accessToken: userIdentifier)
+                case .apple:
+                    self.useCase.postAppleUserIdentifier(userIdentifier: userIdentifier)
+                }
+            }
+            .store(in: &cancelBag)
+        
+        useCase.isUserAlreadyRegisteredSubject
+            .sink { [weak self] isUserAlreadyRegistered in
+                guard let self = self else { return }
+                guard let identifier = self.identifier else { return }
+                print(isUserAlreadyRegistered)
+                self.isUserAlreadyRegistered = isUserAlreadyRegistered
+                self.publishAccessTokenSubject.send(identifier)
             }
             .store(in: &cancelBag)
         
@@ -35,6 +71,24 @@ final class ThirdPartyLoginViewModel {
             .sink { [weak self] isUserRegistered in
                 guard let self = self else { return }
                 self.isUserRegisteredSubject.send(isUserRegistered)
+            }
+            .store(in: &cancelBag)
+        
+        isUserRegisteredSubject
+            .sink { [weak self] isUserRegistered in
+                guard let self = self else { return }
+                if !isUserRegistered {
+                    return
+                }
+                if self.userName == nil {
+                    self.shouldSetNicknameSubject.send(true)
+                    return
+                }
+                if !self.isUserAlreadyRegistered {
+                    self.shouldSetNicknameSubject.send(true)
+                } else if self.isUserAlreadyRegistered {
+                    self.shouldSetNicknameSubject.send(false)
+                }
             }
             .store(in: &cancelBag)
     }
@@ -56,7 +110,9 @@ final class ThirdPartyLoginViewModel {
                 print(error)
             } else {
                 if let accessToken = oauthToken?.accessToken {
-                    self.publishAccessTokenSubject.send(accessToken)
+                    self.identifier = accessToken
+                    self.provider = .kakao
+                    self.checkUserRegisteredSubject.send(accessToken)
                 }
             }
         }
@@ -69,7 +125,9 @@ final class ThirdPartyLoginViewModel {
                 print(error)
             } else {
                 if let accessToken = oauthToken?.accessToken {
-                    self.publishAccessTokenSubject.send(accessToken)
+                    self.identifier = accessToken
+                    self.provider = .kakao
+                    self.checkUserRegisteredSubject.send(accessToken)
                 }
             }
         }
@@ -84,17 +142,9 @@ final class ThirdPartyLoginViewModel {
             
             print("userIdentifier: \(userIdentifier)")
             
-            // 서버에 API 요청 보내기
-//            UserAPI.postAccessToken(accessToken: "someToken")
-//                .sink { error in
-//                    switch error {
-//                    case .failure(let error): print(error.localizedString)
-//                    case .finished: break
-//                    }
-//                } receiveValue: { result in
-//                    print("userToken: \(result.authToken)")
-//                }
-//                .store(in: &cancelBag)
+            self.identifier = userIdentifier
+            self.provider = .apple
+            self.checkUserRegisteredSubject.send(userIdentifier)
             
         default:
             break

@@ -75,12 +75,14 @@ extension ThirdPartyLoginViewController: ASAuthorizationControllerDelegate, ASAu
 extension ThirdPartyLoginViewController {
     
     private func bindUI() {
-        viewModel.isUserRegisteredSubject
+        viewModel.shouldSetNicknameSubject
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] isUserRegistered in
+            .sink { [weak self] shouldSetNickname in
                 guard let self = self else { return }
-                if isUserRegistered {
+                if shouldSetNickname {
                     self.navigationController?.pushViewController(NickNameInputViewController(), animated: true)
+                } else {
+                    self.navigationController?.pushViewController(PlaceListViewController(), animated: true)
                 }
             }
             .store(in: &cancelBag)

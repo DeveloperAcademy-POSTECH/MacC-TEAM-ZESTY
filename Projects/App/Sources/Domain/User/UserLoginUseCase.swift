@@ -14,11 +14,41 @@ final class UserLoginUseCase {
     
     // output
     let isUserRegisteredSubject = PassthroughSubject<Bool, Never>()
+    let isUserAlreadyRegisteredSubject = PassthroughSubject<Bool, Never>()
     
     private var cancelBag = Set<AnyCancellable>()
     
-    func postAccessTokenUser(accessToken: String) {
-        UserAPI.postAccessToken(accessToken: accessToken)
+    func isAlreadyLogin(userIdentifier: String) {
+        UserAPI.isAlreadyLogin(userIdentifier: userIdentifier)
+            .sink { error in
+                switch error {
+                case .failure(let error): print(error.localizedString)
+                case .finished: break
+                }
+            } receiveValue: { [weak self] isUserAlreadyRegistered in
+                guard let self = self else { return }
+                self.isUserAlreadyRegisteredSubject.send(isUserAlreadyRegistered)
+            }
+            .store(in: &cancelBag)
+    }
+    
+    func postKakaoAccessToken(accessToken: String) {
+        UserAPI.postKakaoAccessToken(accessToken: accessToken)
+            .sink { error in
+                switch error {
+                case .failure(let error): print(error.localizedString)
+                case .finished: break
+                }
+            } receiveValue: { [weak self] userOauthDTO in
+                guard let self = self else { return }
+                self.isUserRegisteredSubject.send(true)
+                UserDefaults.standard.authToken = userOauthDTO.authToken
+            }
+            .store(in: &cancelBag)
+    }
+    
+    func postAppleUserIdentifier(userIdentifier: String) {
+        UserAPI.postAppleUserIdentifier(userIdentifier: userIdentifier)
             .sink { error in
                 switch error {
                 case .failure(let error): print(error.localizedString)
