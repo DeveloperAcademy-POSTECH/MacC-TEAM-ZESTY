@@ -113,10 +113,6 @@ extension DomainSettingViewController {
         emailDuplicatedLabel.textColor = .red
         emailDuplicatedLabel.text = "이미 사용된 이메일이에요."
         emailDuplicatedLabel.font = .systemFont(ofSize: 13, weight: .regular)
-        
-        let arrowImageConfiguration = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .default)
-        let arrowImage = UIImage(systemName: "arrow.forward", withConfiguration: arrowImageConfiguration)
-        arrowButton.setImage(arrowImage, for: .normal)
     }
     
     private func createLayout() {
