@@ -6,4 +6,14 @@
 //  Copyright © 2022 com.zesty. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+final class OTPTextField: UITextField {
+    weak var previousTextField: OTPTextField?
+    weak var nextTextField: OTPTextField?
+    
+    override public func deleteBackward() {
+        text = ""
+        previousTextField?.becomeFirstResponder()
+    }
+}
