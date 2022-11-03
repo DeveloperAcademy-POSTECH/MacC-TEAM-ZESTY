@@ -58,7 +58,7 @@ extension SegmentHeaderView {
             }
         } else {
             viewModel.placeType = .whole
-            segmentIndicator.snp.makeConstraints { make in
+            segmentIndicator.snp.remakeConstraints { make in
                 make.top.equalTo(segmentedControl.snp.bottom).offset(3)
                 make.height.equalTo(3)
                 make.width.equalTo(20)
