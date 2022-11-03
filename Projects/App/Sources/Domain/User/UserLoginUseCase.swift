@@ -75,7 +75,6 @@ final class UserLoginUseCase {
                 guard let self = self else { return }
                 UserDefaults.standard.userID = userProfileDTO.id
                 UserDefaults.standard.userNickname = userProfileDTO.nickname
-                UserDefaults.standard.authToken = userProfileDTO.authToken
                 UserDefaults.standard.authIdentifier = userProfileDTO.authIdentifier
                 UserDefaults.standard.userOrganization = userProfileDTO.organization
                 self.isUserProfileReceivedSubject.send(true)
