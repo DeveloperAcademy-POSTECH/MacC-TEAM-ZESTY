@@ -45,6 +45,42 @@ final class VerifingCodeViewController: UIViewController {
     
     // MARK: - Function
     
+    @objc func resendButtonTapped() {
+        print("버튼 눌림")
+        showToastMessage()
+    }
+    
+    private func showToastMessage() {
+        let toastLabel = UILabel()
+        toastLabel.backgroundColor = .black
+        toastLabel.textColor = .white
+        toastLabel.font = .systemFont(ofSize: 16.0, weight: .regular)
+        toastLabel.textAlignment = .center
+        toastLabel.text = "메일을  다시 보냈어요"
+        toastLabel.layer.cornerRadius = 25
+        toastLabel.clipsToBounds  =  true
+        toastLabel.numberOfLines = 0
+        
+        self.view.addSubview(toastLabel)
+        
+        toastLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(view.snp.top).offset(-50)
+            make.width.equalTo(173)
+            make.height.equalTo(50)
+        }
+        
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
+            toastLabel.center.y = 100
+        })
+        
+        UIView.animate(withDuration: 0.3, delay: 3, options: .curveEaseIn, animations: {
+            toastLabel.center.y = 0
+        }, completion: { _ in
+            toastLabel.removeFromSuperview()
+        })
+        
+    }
 }
 
 // MARK: - UI Function
@@ -52,7 +88,9 @@ final class VerifingCodeViewController: UIViewController {
 extension VerifingCodeViewController {
     
     private func configureUI() {
-        warningMessage.text = "잘못된 코드에요."
+        view.backgroundColor = .white
+        
+        warningMessage.text = "잘못된 코드예요."
         warningMessage.isHidden = isCodeValid
         
         timerLabel.text = timer
@@ -69,7 +107,7 @@ extension VerifingCodeViewController {
         resendEamilButton.setTitle("다시 보내기", for: .normal)
         resendEamilButton.setTitleColor(.label, for: .normal)
         resendEamilButton.titleLabel?.font = .systemFont(ofSize: 13, weight: .bold)
-        
+        resendEamilButton.addTarget(self, action: #selector(resendButtonTapped), for: .touchUpInside)
         arrowButton.isHidden = isArrowButtonHidden
         arrowButton.startIndicator()
     }
