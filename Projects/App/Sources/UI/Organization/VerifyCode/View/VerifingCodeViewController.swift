@@ -18,6 +18,8 @@ final class VerifingCodeViewController: UIViewController {
     
     private let isSE: Bool = UIScreen.main.isHeightLessThan670pt
     
+    private var keyboardEndFrameHeight: CGFloat?
+    
     private lazy var titleView = MainTitleView(title: "이메일로 받은 코드를\n알려주세요", subtitle: "\(userEmail)", hasSymbol: true)
     
     private let warningMessage = UILabel()
@@ -94,9 +96,11 @@ extension VerifingCodeViewController {
         NotificationCenter.default.publisher(for: UIApplication.keyboardWillShowNotification)
             .sink { [weak self] notification in
                 guard let self = self else { return }
-                guard let endFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-                let endFrameHeight = endFrame.cgRectValue.height
-                self.remakeConstraintsByKeyboard(keybordHeight: endFrameHeight)
+                if self.keyboardEndFrameHeight == nil {
+                    guard let endFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+                    self.keyboardEndFrameHeight = endFrame.cgRectValue.height
+                }
+                self.remakeConstraintsByKeyboard(.show)
                 self.view.layoutIfNeeded()
             }
             .store(in: &cancelBag)
@@ -175,21 +179,28 @@ extension VerifingCodeViewController {
         }
     }
     
-    private func remakeConstraintsByKeyboard(keybordHeight: CGFloat? = nil) {
-        guard let keybordHeight = keybordHeight else {
+    private func remakeConstraintsByKeyboard(_ state: KeyboardState) {
+        guard let keyboardEndFrameHeight = self.keyboardEndFrameHeight else { return }
+        switch state {
+        case .hide:
             arrowButton.snp.makeConstraints { make in
                 make.right.equalToSuperview().inset(20)
                 make.bottom.equalTo(view.snp.bottom).offset(-20)
             }
-            return
-        }
-        
-        arrowButton.snp.makeConstraints { make in
-            make.right.equalToSuperview().inset(20)
-            make.bottom.equalTo(view.snp.bottom).offset(-keybordHeight-20)
+        case .show:
+            arrowButton.snp.makeConstraints { make in
+                make.right.equalToSuperview().inset(20)
+                make.bottom.equalTo(view.snp.bottom).offset(-keyboardEndFrameHeight-20)
+            }
         }
     }
-    
+}
+
+extension VerifingCodeViewController {
+    private enum KeyboardState {
+        case show
+        case hide
+    }
 }
 
 // MARK: - Previews
