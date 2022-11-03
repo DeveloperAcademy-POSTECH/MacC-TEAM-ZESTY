@@ -49,6 +49,14 @@ final class OTPStackView: UIStackView {
         delegate?.didChangeValidity(isValid: true)
     }
     
+    func resetTextField() {
+        for textField in textFieldArray {
+            textField.text = ""
+            textField.backgroundColor = textBackgroundColor
+        }
+        textFieldArray[0].becomeFirstResponder()
+    }
+    
 }
 
 // MARK: - UI Function
@@ -74,6 +82,7 @@ extension OTPStackView {
         textField.layer.cornerRadius = 20
         textField.layer.masksToBounds = true
         textField.keyboardType = .numberPad
+        textField.tintColor = .clear
         
         textField.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
