@@ -13,6 +13,7 @@ final class SegmentHeaderView: UICollectionReusableView {
     
     // MARK: - Properties
     var viewModel = PlaceListViewModel()
+    weak var addPlaceDelegate: AddPlaceDelegate!
     
     private let segmentIndicator = UIView()
     private let segmentedControl = UISegmentedControl(items: ["전체", "선정맛집"])
@@ -39,7 +40,7 @@ final class SegmentHeaderView: UICollectionReusableView {
 extension SegmentHeaderView {
     
     @objc func addPlaceButtonTapped() {
-        viewModel.addPlaceButtonTapped()
+        addPlaceDelegate.addPlaceButtonTapped()
     }
     
     @objc func indexChanged(_ sender: UISegmentedControl) {

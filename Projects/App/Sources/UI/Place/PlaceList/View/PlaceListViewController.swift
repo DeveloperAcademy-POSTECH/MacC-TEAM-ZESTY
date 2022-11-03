@@ -76,7 +76,15 @@ extension PlaceListViewController: UICollectionViewDataSourcePrefetching, UIColl
 
 // MARK: - UI function
 
-extension PlaceListViewController {
+protocol AddPlaceDelegate: AnyObject {
+    func addPlaceButtonTapped()
+}
+
+extension PlaceListViewController: AddPlaceDelegate {
+    
+    func addPlaceButtonTapped() {
+        navigationController?.pushViewController(AddPlaceSearchViewController(viewModel: AddPlaceSearchViewModel()), animated: true)
+    }
     
     @objc func searchButtonTapped() {
         // TODO: 검색뷰 완성 시 연결
@@ -132,6 +140,7 @@ extension PlaceListViewController {
         let headerRegisteration = SupplymentaryViewRegistration(elementKind: headerType) { [weak self] supplementaryView, _, _ in
             guard let self = self else { return }
             supplementaryView.viewModel = self.viewModel
+            supplementaryView.addPlaceDelegate = self
         }
         
         dataSource = DataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in

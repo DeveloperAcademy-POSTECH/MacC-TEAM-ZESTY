@@ -102,9 +102,5 @@ extension PlaceListViewModel: ErrorMapper {
             }
             .store(in: &self.cancelBag)
     }
-    
-    // TODO: 맛집 등록하기 버튼 눌렀을 때 뷰컨 반응 구현하기
-    func addPlaceButtonTapped() {
-//        navigationController?.pushViewController(AddPlaceSearchViewController(viewModel: AddPlaceSearchViewModel()), animated: true)
-    }
+
 }
