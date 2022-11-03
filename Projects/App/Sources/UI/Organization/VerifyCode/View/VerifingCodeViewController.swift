@@ -90,6 +90,9 @@ extension VerifingCodeViewController {
     private func configureUI() {
         view.backgroundColor = .white
         
+        navigationController?.navigationBar.tintColor = .label
+        navigationController?.navigationBar.topItem?.title = ""
+        
         warningMessage.text = "잘못된 코드예요."
         warningMessage.isHidden = isCodeValid
         
