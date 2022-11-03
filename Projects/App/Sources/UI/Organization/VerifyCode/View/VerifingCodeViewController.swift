@@ -79,8 +79,8 @@ final class VerifingCodeViewController: UIViewController {
         }, completion: { _ in
             toastLabel.removeFromSuperview()
         })
-        
     }
+    
 }
 
 // MARK: - UI Function
