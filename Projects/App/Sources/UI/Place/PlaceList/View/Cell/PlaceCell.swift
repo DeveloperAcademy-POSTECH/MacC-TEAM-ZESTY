@@ -11,7 +11,6 @@ import SnapKit
 import DesignSystem
 
 final class PlaceCell: UICollectionViewCell {
-    // TODO: 리뷰가 없는 상황을 가정한 cell입니다. 변경 예정
     
     // MARK: - Properties
     
