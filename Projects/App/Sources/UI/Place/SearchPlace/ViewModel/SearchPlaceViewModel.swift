@@ -14,25 +14,25 @@ class SearchPlaceViewModel {
     
     enum Input {
         case searchBtnDidTap(placeName: String)
-        case placeResultCellDidTap(kakaoPlace: KakaoPlace)
+        case placeResultCellDidTap(place: Place)
     }
     
     enum Output {
         case searchPlaceFail(error: Error)
-        case searchPlaceDidSucceed(results: [KakaoPlace])
+        case searchPlaceDidSucceed(results: [Place])
         case existingPlace
         case addSelectedPlaceFail(error: Error)
-        case addSelectedPlaceDidSucceed(kakaoPlace: KakaoPlace)
+        case addSelectedPlaceDidSucceed(place: Place)
     }
     
     private var cancelBag = Set<AnyCancellable>()
     
     private let output: PassthroughSubject<Output, Never> = .init()
-    private let useCase: AddPlaceUseCase
+    private let useCase: PlaceSearchUseCase
     
-    private var searchResults: [KakaoPlace] = []
+    private var searchResults: [Place] = []
     
-    init(useCase: AddPlaceUseCase = AddPlaceUseCase()) {
+    init(useCase: PlaceSearchUseCase = PlaceSearchUseCase()) {
         self.useCase = useCase
         
     }
@@ -43,8 +43,8 @@ class SearchPlaceViewModel {
             switch event {
             case .searchBtnDidTap(let placeName):
                 self?.searchPlace(name: placeName)
-            case .placeResultCellDidTap(let kakaoPlace):
-                self?.selectPlaceToAdd(place: kakaoPlace)
+            case .placeResultCellDidTap(let place):
+                self?.selectPlaceToAdd(place: place)
             }
         }.store(in: &cancelBag)
         
@@ -53,32 +53,32 @@ class SearchPlaceViewModel {
     
     // MARK: - functions
     private func searchPlace(name: String) {
-        useCase.searchKakaoPlaces(with: name)
+        useCase.searchPlaces(with: name)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     self?.output.send(.searchPlaceFail(error: error))
                 }
-            } receiveValue: { [weak self] kakaoPlaces in
-                self?.searchResults = kakaoPlaces
-                self?.output.send(.searchPlaceDidSucceed(results: kakaoPlaces))
+            } receiveValue: { [weak self] places in
+                self?.searchResults = places
+                self?.output.send(.searchPlaceDidSucceed(results: places))
             }
             .store(in: &cancelBag)
     }
     
-    private func selectPlaceToAdd(place: KakaoPlace) {
-        
-        useCase.checkRegisterdPlace(with: place.kakaoPlaceId)
-            .sink { [weak self] completion in
-                if case .failure(let error) = completion {
-                    self?.output.send(.addSelectedPlaceFail(error: error))
-                }
-            } receiveValue: { [weak self] result in
-                if result {
-                    self?.output.send(.existingPlace)
-                } else {
-                    self?.output.send(.addSelectedPlaceDidSucceed(kakaoPlace: place))
-                }
-            }
-            .store(in: &cancelBag)
+    private func selectPlaceToAdd(place: Place) {
+        print("선택됨!\(place)")
+//        useCase.checkRegisterdPlace(with: place.kakaoPlaceId)
+//            .sink { [weak self] completion in
+//                if case .failure(let error) = completion {
+//                    self?.output🔥.send(.addSelectedPlaceFail(error: error))
+//                }
+//            } receiveValue: { [weak self] result in
+//                if result {
+//                    self?.output.send(.existingPlace)
+//                } else {
+//                    self?.output.send(.addSelectedPlaceDidSucceed(kakaoPlace: place))
+//                }
+//            }
+//            .store(in: &cancelBag)
     }
 }

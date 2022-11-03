@@ -28,8 +28,8 @@ final class AddPlaceUseCase: AddPlaceUseCaseType {
 
     func addNewPlace(with place: KakaoPlace, category: Int) -> AnyPublisher<PlaceResult, Error> {
         
-        // TODO: TEMP USER -> userdefaults 이용필요
-        let user = 11
+        UserDefaults.standard.userID = 11
+        let user = UserDefaults.standard.userID ?? 11
         let org = 400
         let placeDTO = PlacePostDTO(address: place.address,
                                     name: place.placeName,

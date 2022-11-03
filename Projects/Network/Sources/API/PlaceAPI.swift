@@ -72,7 +72,7 @@ public struct PlaceAPI {
     
     public static func fetchSearchPlaceResults(orgId: Int, placeName: String) -> AnyPublisher<PlaceSearchResultListDTO, NetworkError> {
         let header = ["Content-Type": "application/json"]
-        let query = ["orgNo": "\(placeName)", "searchText": "\(placeName)"]
+        let query = ["orgNo": "\(orgId)", "searchText": "\(placeName)"]
         let endpoint = Endpoint(path: "/api/places/search", queryParams: query, headers: header)
         
         return networkService.request(with: endpoint, responseType: PlaceSearchResultListDTO.self)

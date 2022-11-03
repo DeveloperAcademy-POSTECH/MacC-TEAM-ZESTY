@@ -61,6 +61,20 @@ extension Place {
         reviews = []
     }
     
+    init(placeSearchResultDTO dto: PlaceSearchResultDTO) {
+        id = dto.id
+        kakaoPlaceId = dto.kakaoPlaceID
+        creator = nil
+        organizationId = dto.organization
+        name = dto.name
+        address = dto.address
+        lat = dto.latitude
+        lon = dto.longitude
+        category = [Category(id: dto.category, name: "", imageURL: nil)]
+        evaluationSum = EvaluationSum(good: 0, soso: 0, bad: 0)
+        reviews = []
+    }
+    
 }
 
 extension EvaluationSum {

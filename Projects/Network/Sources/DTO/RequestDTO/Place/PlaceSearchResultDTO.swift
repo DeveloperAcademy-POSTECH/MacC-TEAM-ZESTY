@@ -8,19 +8,19 @@
 
 import Foundation
 
-struct PlaceSearchResultDTO: Codable {
-    let id: Int
-    let address, name, latitude, longitude: String
-    let category, organization, creator: Int
-    let images: [String]
-    let kakaoPlaceID: Int
-    let createdAt, updatedAt: String
+public struct PlaceSearchResultDTO: Codable {
+    public let id: Int
+    public let address, name, latitude, longitude: String
+    public let category, organization, creator: Int
+    public let images: [String]
+    public let kakaoPlaceID: Int
+    public let createdAt, updatedAt: String
 
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case id, address, name, latitude, longitude, category, organization, creator, images
         case kakaoPlaceID = "kakaoPlaceId"
         case createdAt, updatedAt
     }
 }
 
-typealias PlaceSearchResultListDTO = [PlaceSearchResultDTO]
+public typealias PlaceSearchResultListDTO = [PlaceSearchResultDTO]

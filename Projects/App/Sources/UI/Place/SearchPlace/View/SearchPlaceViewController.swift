@@ -18,7 +18,7 @@ final class SearchPlaceViewController: UIViewController {
     private let input: PassthroughSubject<SearchPlaceViewModel.Input, Never> = .init()
     private var cancelBag = Set<AnyCancellable>()
     
-    private var searchResults: [KakaoPlace] = []
+    private var searchResults: [Place] = []
     
     private lazy var searchingTextFieldView = SearchTextField()
     private lazy var tableView = UITableView(frame: CGRect.zero, style: .grouped)
@@ -92,9 +92,10 @@ extension SearchPlaceViewController {
                     self?.present(alert, animated: false)
                 case .addSelectedPlaceFail(let error):
                     print(error.localizedDescription)
-                case .addSelectedPlaceDidSucceed(let kakaoPlace):
-                        let viewModel = AddPlaceViewModel(kakaoPlace: kakaoPlace)
-                        self?.navigationController?.pushViewController(AddCategoryViewController(viewModel: viewModel), animated: true)
+                case .addSelectedPlaceDidSucceed(let place):
+                    print("안녕")
+//                        let viewModel = AddPlaceViewModel(kakaoPlace: kakaoPlace)
+//                        self?.navigationController?.pushViewController(AddCategoryViewController(viewModel: viewModel), animated: true)
                     
                 }
             }.store(in: &cancelBag)
@@ -116,7 +117,7 @@ extension SearchPlaceViewController {
         tableView.dataSource = self
         tableView.showsVerticalScrollIndicator = false
         tableView.estimatedRowHeight = UITableView.automaticDimension
-        tableView.register(SearchResultCell.self, forCellReuseIdentifier: "SearchResultCell")
+        tableView.register(SearchResultsPlaceCell.self, forCellReuseIdentifier: "SearchResultsPlaceCell")
         tableView.separatorStyle = .none
         tableView.keyboardDismissMode = .onDrag
         
@@ -179,7 +180,7 @@ extension SearchPlaceViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
          
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultCell", for: indexPath) as? SearchResultCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultsPlaceCell", for: indexPath) as? SearchResultsPlaceCell else { return UITableViewCell() }
         
         cell.bind(with: searchResults[indexPath.row])
         cell.selectionStyle = .none
@@ -198,7 +199,7 @@ extension SearchPlaceViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let place = searchResults[indexPath.row]
-        self.input.send(.placeResultCellDidTap(kakaoPlace: place))
+        self.input.send(.placeResultCellDidTap(place: place))
         
     }
 
