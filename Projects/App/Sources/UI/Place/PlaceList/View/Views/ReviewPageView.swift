@@ -23,7 +23,6 @@ final class ReviewPageView: UIView {
         super.init(frame: frame)
         configure()
         createLayout()
-        setUp(with: Review.mockData[0])
     }
 
     required init?(coder: NSCoder) {
@@ -66,7 +65,7 @@ extension ReviewPageView {
         gradientView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
-            $0.height.greaterThanOrEqualTo(58)
+            $0.height.equalTo(58)
         }
         
         menuLabel.snp.makeConstraints {

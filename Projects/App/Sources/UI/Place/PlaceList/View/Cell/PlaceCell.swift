@@ -132,15 +132,15 @@ extension PlaceCell {
 
         containerView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(45)
-            $0.top.height.equalToSuperview().inset(15)
+            $0.verticalEdges.equalToSuperview().inset(15)
         }
         
         scrollView.snp.makeConstraints {
             $0.top.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(scrollView.snp.width)
+            $0.height.equalTo(containerView.snp.width)
         }
         pageStackView.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview()
+            $0.edges.equalToSuperview()
             $0.height.equalTo(containerView.snp.width)
         }
         pageControl.snp.makeConstraints {
@@ -149,7 +149,7 @@ extension PlaceCell {
         }
         
         bottomView.snp.makeConstraints { make in
-            make.top.equalTo(scrollView.snp.bottom)
+            make.top.equalTo(scrollView.snp.bottom).priority(.medium)
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalToSuperview()
         }
@@ -160,7 +160,6 @@ extension PlaceCell {
         emojiStackView.snp.makeConstraints { make in
             make.top.equalTo(placeNameLabel.snp.bottom).offset(10)
             make.leading.bottom.equalToSuperview().inset(20)
-            make.height.equalTo(30)
         }
     }
     
