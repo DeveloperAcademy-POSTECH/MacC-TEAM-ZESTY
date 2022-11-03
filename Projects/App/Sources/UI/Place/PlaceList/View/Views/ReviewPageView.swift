@@ -43,6 +43,7 @@ extension ReviewPageView {
     
     func setEmptyView() {
         reviewImageView.image = UIImage(.img_categoryfriends)
+        gradientView.isHidden = true
     }
     
     private func configure() {
