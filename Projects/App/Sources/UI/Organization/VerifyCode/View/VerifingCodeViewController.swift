@@ -14,7 +14,7 @@ import SnapKit
 final class VerifingCodeViewController: UIViewController {
     
     // MARK: - Properties
-    private let cancelBag = Set<AnyCancellable>()
+    private var cancelBag = Set<AnyCancellable>()
     
     private lazy var titleView = MainTitleView(title: "이메일로 받은 코드를\n알려주세요", subtitle: "\(userEmail)", hasSymbol: true)
     
@@ -26,11 +26,11 @@ final class VerifingCodeViewController: UIViewController {
     private let resendLabel = UILabel()
     private let resendEamilButton = UIButton(type: .custom)
     
-    private let arrowButton = ArrowButton(initialDisable: true)
+    private let arrowButton = ArrowButton(initialDisable: false)
     
     // TODO: ViewModel로 옮길 것들입니다
     let userEmail = "mingming@pos.idserve.net"
-    var isArrowButtonHidden: Bool = true
+    var isArrowButtonHidden: Bool = false
     var isCodeValid: Bool = true
     var userInputCode: String = ""
     var timer = "03:00"
@@ -41,6 +41,7 @@ final class VerifingCodeViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         createLayout()
+        bindUI()
     }
     
     // MARK: - Function
@@ -79,6 +80,24 @@ final class VerifingCodeViewController: UIViewController {
         }, completion: { _ in
             toastLabel.removeFromSuperview()
         })
+    }
+    
+}
+
+// MARK: Bind Function
+
+extension VerifingCodeViewController {
+    
+    private func bindUI() {
+        NotificationCenter.default.publisher(for: UIApplication.keyboardWillShowNotification)
+            .sink { [weak self] notification in
+                guard let self = self else { return }
+                guard let endFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+                let endFrameHeight = endFrame.cgRectValue.height
+                self.remakeConstraintsByKeyboard(keybordHeight: endFrameHeight)
+                self.view.layoutIfNeeded()
+            }
+            .store(in: &cancelBag)
     }
     
 }
@@ -149,7 +168,22 @@ extension VerifingCodeViewController {
         
         arrowButton.snp.makeConstraints { make in
             make.right.equalToSuperview().inset(20)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(20)
+            make.bottom.equalTo(view.snp.bottom).offset(-20)
+        }
+    }
+    
+    private func remakeConstraintsByKeyboard(keybordHeight: CGFloat? = nil) {
+        guard let keybordHeight = keybordHeight else {
+            arrowButton.snp.makeConstraints { make in
+                make.right.equalToSuperview().inset(20)
+                make.bottom.equalTo(view.snp.bottom).offset(-20)
+            }
+            return
+        }
+        
+        arrowButton.snp.makeConstraints { make in
+            make.right.equalToSuperview().inset(20)
+            make.bottom.equalTo(view.snp.bottom).offset(-keybordHeight-20)
         }
     }
     
