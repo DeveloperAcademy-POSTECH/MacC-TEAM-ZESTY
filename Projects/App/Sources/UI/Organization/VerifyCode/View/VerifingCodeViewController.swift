@@ -74,7 +74,7 @@ final class VerifingCodeViewController: UIViewController {
             toastLabel.center.y = 100
         })
         
-        UIView.animate(withDuration: 0.3, delay: 3, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 0.3, delay: 2.5, options: .curveEaseIn, animations: {
             toastLabel.center.y = 0
         }, completion: { _ in
             toastLabel.removeFromSuperview()
