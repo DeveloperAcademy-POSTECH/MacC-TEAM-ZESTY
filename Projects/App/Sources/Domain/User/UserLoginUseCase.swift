@@ -13,7 +13,7 @@ import Network
 final class UserLoginUseCase {
     
     // output
-    let isUserRegisteredSubject = PassthroughSubject<Bool, Never>()
+    let userRegisteredSubject = PassthroughSubject<Bool, Never>()
     let isUserAlreadyRegisteredSubject = PassthroughSubject<Bool, Never>()
     let isUserProfileReceivedSubject = PassthroughSubject<Bool, Never>()
     
@@ -43,7 +43,7 @@ final class UserLoginUseCase {
             } receiveValue: { [weak self] userOauthDTO in
                 guard let self = self else { return }
                 UserDefaults.standard.authToken = userOauthDTO.authToken
-                self.isUserRegisteredSubject.send(true)
+                self.userRegisteredSubject.send(true)
             }
             .store(in: &cancelBag)
     }
@@ -58,7 +58,7 @@ final class UserLoginUseCase {
             } receiveValue: { [weak self] userOauthDTO in
                 guard let self = self else { return }
                 UserDefaults.standard.authToken = userOauthDTO.authToken
-                self.isUserRegisteredSubject.send(true)
+                self.userRegisteredSubject.send(true)
             }
             .store(in: &cancelBag)
     }

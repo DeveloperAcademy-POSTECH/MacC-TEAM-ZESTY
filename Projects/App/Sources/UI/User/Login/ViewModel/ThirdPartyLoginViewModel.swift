@@ -68,12 +68,9 @@ final class ThirdPartyLoginViewModel {
             }
             .store(in: &cancelBag)
         
-        useCase.isUserRegisteredSubject
-            .sink { [weak self] isUserRegistered in
+        useCase.userRegisteredSubject
+            .sink { [weak self] _ in
                 guard let self = self else { return }
-                if !isUserRegistered {
-                    return
-                }
                 self.useCase.getUserProfile()
             }
             .store(in: &cancelBag)
