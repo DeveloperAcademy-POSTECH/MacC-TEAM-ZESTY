@@ -21,8 +21,7 @@ class SearchPlaceViewModel {
         case searchPlaceFail(error: Error)
         case searchPlaceDidSucceed(results: [Place])
         case existingPlace
-        case addSelectedPlaceFail(error: Error)
-        case addSelectedPlaceDidSucceed(place: Place)
+        case routeToSelectedPlace(placeId: Int)
     }
     
     private var cancelBag = Set<AnyCancellable>()
@@ -44,7 +43,7 @@ class SearchPlaceViewModel {
             case .searchBtnDidTap(let placeName):
                 self?.searchPlace(name: placeName)
             case .placeResultCellDidTap(let place):
-                self?.selectPlaceToAdd(place: place)
+                self?.selectPlaceToRoute(place: place)
             }
         }.store(in: &cancelBag)
         
@@ -65,20 +64,7 @@ class SearchPlaceViewModel {
             .store(in: &cancelBag)
     }
     
-    private func selectPlaceToAdd(place: Place) {
-        print("선택됨!\(place)")
-//        useCase.checkRegisterdPlace(with: place.kakaoPlaceId)
-//            .sink { [weak self] completion in
-//                if case .failure(let error) = completion {
-//                    self?.output🔥.send(.addSelectedPlaceFail(error: error))
-//                }
-//            } receiveValue: { [weak self] result in
-//                if result {
-//                    self?.output.send(.existingPlace)
-//                } else {
-//                    self?.output.send(.addSelectedPlaceDidSucceed(kakaoPlace: place))
-//                }
-//            }
-//            .store(in: &cancelBag)
+    private func selectPlaceToRoute(place: Place) {
+        output.send(.routeToSelectedPlace(placeId: place.id))
     }
 }

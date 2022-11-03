@@ -90,12 +90,9 @@ extension SearchPlaceViewController {
                     let okAction = UIAlertAction(title: "확인", style: .default)
                     alert.addAction(okAction)
                     self?.present(alert, animated: false)
-                case .addSelectedPlaceFail(let error):
-                    print(error.localizedDescription)
-                case .addSelectedPlaceDidSucceed(let place):
-                    print("안녕")
-//                        let viewModel = AddPlaceViewModel(kakaoPlace: kakaoPlace)
-//                        self?.navigationController?.pushViewController(AddCategoryViewController(viewModel: viewModel), animated: true)
+                case .routeToSelectedPlace(let placeId):
+                    let viewModel = PlaceDetailViewModel(placeId: placeId)
+                        self?.navigationController?.pushViewController(PlaceDetailViewController(viewModel: viewModel), animated: true)
                     
                 }
             }.store(in: &cancelBag)
