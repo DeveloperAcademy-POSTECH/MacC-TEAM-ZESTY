@@ -9,39 +9,36 @@
 import Foundation
 
 public enum Color: String {
+    case white
+    case black
+    
+    case grayF6
+    case grayF2
+    case grayD0
+    case gray99
+    case gray8D
+    case gray54
+    case gray4A
+    case gray42
+    case gray30
+    
+    case bluegray01
+    case bluegray02
+    case bluegray03
+    case bluegray04
+    
+    case shadow01
+    case shadow02
+    
+    case red01
+    
+    // TODO: 뷰에 색상 적용 후 레거시 컬러 제거 예정
     case background
     case disabled
     case dim
     case point
     case grayC5
-    case grayF6
     case gray3C
     case gray3C3C43
-    case gray54
     case whiteEBEBF5
-    
-    var hexString: String {
-        switch self {
-        case .background:
-            return "#FFFFFFFF"
-        case .disabled:
-            return "#999999FF"
-        case .dim:
-            return "#545454FF"
-        case .point:
-            return "#EF4646FF"
-        case .grayC5:
-            return "#C5C5C5FF"
-        case .grayF6:
-            return "#F6F6F6FF"
-        case .gray3C:
-            return "#3C3C3CFF"
-        case .gray54:
-            return "#545454FF"
-        case .gray3C3C43:
-            return "#3C3C43FF"
-        case .whiteEBEBF5:
-            return "#EBEBF5FF"
-        }
-    }
 }
