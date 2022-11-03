@@ -1,9 +1,9 @@
 //
-//  AddPlaceSearchViewController.swift
+//  SearchPlaceViewController.swift
 //  App
 //
-//  Created by Chanhee Jeong on 2022/10/25.
-//  Copyright (c) 2022 zesty. All rights reserved.
+//  Created by Chanhee Jeong on 2022/11/03.
+//  Copyright © 2022 com.zesty. All rights reserved.
 //
 
 import Combine
@@ -11,11 +11,11 @@ import UIKit
 import DesignSystem
 import SnapKit
 
-final class AddPlaceSearchViewController: UIViewController {
+final class SearchPlaceViewController: UIViewController {
     
     // MARK: - Properties
-    private let viewModel: AddPlaceSearchViewModel
-    private let input: PassthroughSubject<AddPlaceSearchViewModel.Input, Never> = .init()
+    private let viewModel: SearchPlaceViewModel
+    private let input: PassthroughSubject<SearchPlaceViewModel.Input, Never> = .init()
     private var cancelBag = Set<AnyCancellable>()
     
     private var searchResults: [KakaoPlace] = []
@@ -36,7 +36,7 @@ final class AddPlaceSearchViewController: UIViewController {
     }(UIButton())
     
     // MARK: - LifeCycle
-    init(viewModel: AddPlaceSearchViewModel) {
+    init(viewModel: SearchPlaceViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -73,7 +73,7 @@ final class AddPlaceSearchViewController: UIViewController {
 
 // MARK: - Binding
 
-extension AddPlaceSearchViewController {
+extension SearchPlaceViewController {
     
     private func bind() {
         let output = viewModel.transform(input: input.eraseToAnyPublisher())
@@ -108,7 +108,7 @@ extension AddPlaceSearchViewController {
 
 // MARK: - UI Function
 
-extension AddPlaceSearchViewController {
+extension SearchPlaceViewController {
     
     private func configureUI() {
         view.backgroundColor = .white
@@ -152,7 +152,7 @@ extension AddPlaceSearchViewController {
     }
     
     private func setNavigationBar() {
-        navigationItem.title = "맛집등록"
+        navigationItem.title = "맛집검색"
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .medium)
         ]
@@ -165,12 +165,12 @@ extension AddPlaceSearchViewController {
 
 // MARK: - UITableViewDataSource
 
-extension AddPlaceSearchViewController: UITableViewDataSource {
+extension SearchPlaceViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchResults.count == 0 {
             if searchingTextFieldView.textField.text == "" {
-                tableView.setEmptyView(message: "등록하려는 맛집을\n검색해주세요.", type: .search)
+                tableView.setEmptyView(message: "등록된 맛집을\n검색해보세요.", type: .search)
             } else {
                 tableView.setEmptyView(message: "검색 결과가 없어요.", type: .noresult)
                 
@@ -194,7 +194,7 @@ extension AddPlaceSearchViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
-extension AddPlaceSearchViewController: UITableViewDelegate {
+extension SearchPlaceViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 82
@@ -210,7 +210,7 @@ extension AddPlaceSearchViewController: UITableViewDelegate {
 
 // MARK: - UITextFieldDelegate
 
-extension AddPlaceSearchViewController: UITextFieldDelegate {
+extension SearchPlaceViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -226,7 +226,7 @@ extension AddPlaceSearchViewController: UITextFieldDelegate {
 extension AddPlaceSearchPreview: PreviewProvider {
     
     static var previews: some View {
-        AddPlaceSearchViewController().toPreview()
+        SearchPlaceViewController().toPreview()
     }
     
 }
