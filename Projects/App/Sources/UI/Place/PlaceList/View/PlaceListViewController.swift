@@ -107,7 +107,6 @@ extension PlaceListViewController {
 
     private func createLayout() -> UICollectionViewLayout {
         let section: NSCollectionLayoutSection
-        let margin: CGFloat = 10
         
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(90))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -120,7 +119,6 @@ extension PlaceListViewController {
                                                                         elementKind: headerType,
                                                                         alignment: .topLeading)
         section.boundarySupplementaryItems = [sectionHeader]
-        section.contentInsets = NSDirectionalEdgeInsets(top: margin, leading: margin, bottom: margin, trailing: margin)
         
         return UICollectionViewCompositionalLayout(section: section)
     }
