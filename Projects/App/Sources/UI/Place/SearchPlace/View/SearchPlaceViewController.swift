@@ -52,10 +52,6 @@ final class SearchPlaceViewController: UIViewController {
         createLayout()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-    }
-    
     // MARK: - Function
     @objc func backButtonDidTap() {
         self.navigationController?.popViewController(animated: true)
@@ -217,6 +213,12 @@ extension SearchPlaceViewController: UITextFieldDelegate {
         input.send(.searchBtnDidTap(placeName: searchingTextFieldView.textField.text ?? "" ))
         return true
     }
+    
+//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        print(#function)
+//        print(string)
+//        return true // 항상 입력은 되도록
+//    }
     
 }
 
