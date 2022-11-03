@@ -120,6 +120,7 @@ extension OTPStackView {
 }
 
 extension OTPStackView: UITextFieldDelegate {
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if showWarningMessage {
             showWarningMessage = false
@@ -150,6 +151,7 @@ extension OTPStackView: UITextFieldDelegate {
             return true
         }
     }
+    
 }
 
 // MARK: - Previews
