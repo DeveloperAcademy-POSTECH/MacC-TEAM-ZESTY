@@ -12,8 +12,8 @@ import SnapKit
 final class SegmentHeaderView: UICollectionReusableView {
     
     // MARK: - Properties
-    var viewModel = PlaceListViewModel()
-    weak var addPlaceDelegate: AddPlaceDelegate!
+    weak var viewModel: PlaceListViewModel?
+    weak var addPlaceDelegate: AddPlaceDelegate?
     
     private let segmentIndicator = UIView()
     private let segmentedControl = UISegmentedControl(items: ["전체", "선정맛집"])
@@ -40,7 +40,7 @@ final class SegmentHeaderView: UICollectionReusableView {
 extension SegmentHeaderView {
     
     @objc func addPlaceButtonTapped() {
-        addPlaceDelegate.addPlaceButtonTapped()
+        addPlaceDelegate?.addPlaceButtonTapped()
     }
     
     @objc func indexChanged(_ sender: UISegmentedControl) {
@@ -49,7 +49,7 @@ extension SegmentHeaderView {
         let titlecount = CGFloat((segmentedControl.titleForSegment(at: sender.selectedSegmentIndex)!.count))
         
         if selectedIndex == 1 {
-            viewModel.placeType = .hot
+            viewModel?.placeType = .hot
             segmentIndicator.snp.remakeConstraints { (make) in
                 make.top.equalTo(segmentedControl.snp.bottom).offset(3)
                 make.height.equalTo(3)
@@ -57,7 +57,7 @@ extension SegmentHeaderView {
                 make.centerX.equalTo(segmentedControl.snp.centerX).dividedBy(numberOfSegments / CGFloat(2.58 + CGFloat(selectedIndex-1.0)*2.0))
             }
         } else {
-            viewModel.placeType = .whole
+            viewModel?.placeType = .whole
             segmentIndicator.snp.remakeConstraints { make in
                 make.top.equalTo(segmentedControl.snp.bottom).offset(3)
                 make.height.equalTo(3)
