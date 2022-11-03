@@ -101,8 +101,11 @@ extension PlaceCell {
     }
 
     private func configureUI() {
+        contentView.addGestureRecognizer(scrollView.panGestureRecognizer)
+        
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.isPagingEnabled = true
+        scrollView.isUserInteractionEnabled = false
         scrollView.delegate = self
         
         pageStackView.axis = .horizontal
