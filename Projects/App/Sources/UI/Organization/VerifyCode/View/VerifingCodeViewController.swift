@@ -30,7 +30,7 @@ final class VerifingCodeViewController: UIViewController {
     
     // TODO: ViewModel로 옮길 것들입니다
     let userEmail = "mingming@pos.idserve.net"
-    var isArrowButtonHidden: Bool = false
+    var isArrowButtonHidden: Bool = true
     var isCodeValid: Bool = true
     var userInputCode: String = ""
     var timer = "03:00"
@@ -114,6 +114,7 @@ extension VerifingCodeViewController {
         
         warningMessage.text = "잘못된 코드예요."
         warningMessage.isHidden = isCodeValid
+        warningMessage.textColor = .zestyColor(.point)
         
         timerLabel.text = timer
         
