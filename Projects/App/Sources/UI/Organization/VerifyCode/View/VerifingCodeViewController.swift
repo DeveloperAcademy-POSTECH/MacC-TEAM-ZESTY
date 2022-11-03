@@ -16,6 +16,8 @@ final class VerifingCodeViewController: UIViewController {
     // MARK: - Properties
     private var cancelBag = Set<AnyCancellable>()
     
+    private let isSE: Bool = UIScreen.main.isHeightLessThan670pt
+    
     private lazy var titleView = MainTitleView(title: "이메일로 받은 코드를\n알려주세요", subtitle: "\(userEmail)", hasSymbol: true)
     
     private let warningMessage = UILabel()
@@ -145,7 +147,7 @@ extension VerifingCodeViewController {
         }
         
         warningMessage.snp.makeConstraints { make in
-            make.top.equalTo(titleView.snp.bottom).offset(82)
+            make.top.equalTo(titleView.snp.bottom).offset(isSE ? 20 : 82)
             make.centerX.equalToSuperview()
         }
         
