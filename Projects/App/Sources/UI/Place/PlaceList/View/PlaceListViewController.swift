@@ -118,6 +118,7 @@ extension PlaceListViewController {
         let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: sectionHeaderSize,
                                                                         elementKind: headerType,
                                                                         alignment: .topLeading)
+        sectionHeader.pinToVisibleBounds = true
         section.boundarySupplementaryItems = [sectionHeader]
         
         return UICollectionViewCompositionalLayout(section: section)
