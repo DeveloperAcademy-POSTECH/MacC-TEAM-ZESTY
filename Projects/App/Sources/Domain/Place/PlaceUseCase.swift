@@ -12,22 +12,26 @@ import Network
 
 final class PlaceListUseCase {
     
-    private var cancelBag = Set<AnyCancellable>()
-    
-    func fetchPlaceList(with page: Int) -> AnyPublisher<[Place], NetworkError> {
-        return PlaceAPI.fetchPlaceList(with: page)
+    func fetchPlaceList(with page: Int, type: PlaceType) -> AnyPublisher<[Place], NetworkError> {
+        let api: AnyPublisher<PlaceListDTO, NetworkError>
+        
+        switch type {
+        case .whole:
+            api = PlaceAPI.fetchPlaceList(with: page)
+        case .hot:
+            api = PlaceAPI.fetchHotPlaceList(with: page)
+        }
+        
+        return api
             .map { placeList in
                 placeList.map { Place(dto: $0) }
             }
             .eraseToAnyPublisher()
     }
     
-    func fetchHotPlaceList(with page: Int) -> AnyPublisher<[Place], NetworkError> {
-        return PlaceAPI.fetchHotPlaceList(with: page)
-            .map { placeList in
-                placeList.map { Place(dto: $0) }
-            }
-            .eraseToAnyPublisher()
-    }
-    
+}
+
+enum PlaceType {
+    case whole
+    case hot
 }

@@ -39,11 +39,10 @@ final class PlaceListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        configureUI()
-//        configureHierarchy()
-//        configureDataSource()
-//        applyInitialSnapShot()
-//        bind()
+        configureUI()
+        configureHierarchy()
+        configureDataSource()
+        bind()
     }
     
     // MARK: - Function
@@ -51,10 +50,9 @@ final class PlaceListViewController: UIViewController {
     private func bind() {
         viewModel.$result
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] places in
+            .sink { [weak self] placeList in
                 guard let self = self else { return }
-                self.snapshot.appendItems(places)
-                self.dataSource.apply(self.snapshot)
+                self.applySnapshot(with: placeList)
             }
             .store(in: &cancelBag)
     }
@@ -101,8 +99,9 @@ extension PlaceListViewController {
     private func configureHierarchy() {
         collectionView = UICollectionView(frame: view.frame, collectionViewLayout: createLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        collectionView.backgroundColor = .clear
+        collectionView.backgroundColor = .systemBackground
         collectionView.delegate = self
+        collectionView.prefetchDataSource = self
         view.addSubview(collectionView)
     }
 
@@ -144,9 +143,10 @@ extension PlaceListViewController {
         }
     }
 
-    private func applyInitialSnapShot() {
+    private func applySnapshot(with items: [Place]) {
+        snapshot.deleteAllItems()
         snapshot.appendSections([1])
-        snapshot.appendItems([], toSection: 1)
+        snapshot.appendItems(items, toSection: 1)
         dataSource.apply(snapshot)
     }
 

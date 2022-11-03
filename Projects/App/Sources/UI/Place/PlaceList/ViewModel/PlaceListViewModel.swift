@@ -13,30 +13,35 @@ import Network
 class PlaceListViewModel {
     
     // MARK: - Properties
-    
-    enum PlaceType {
-        case whole
-        case hot
-    }
-    
+
     private let useCase: PlaceListUseCase
     private var cancelBag = Set<AnyCancellable>()
+    
+    class Section {
+        let type: PlaceType
+        var lastIndex: Int = -1
+        var cursor: Int = 1
+        var placeList: [Place] = []
+        
+        init(type: PlaceType) {
+            self.type = type
+        }
+    }
     
     // Input
     @Published var placeType: PlaceType = .whole
     
     // Output
-    @Published private var wholePage: Int = 1
-    @Published private var hotPage: Int = 1
     @Published var result: [Place] = []
-    private var wholeResult: [Place] = []
-    private var hotResult: [Place] = []
+    private var wholePlace = Section(type: .whole)
+    private var hotPlace = Section(type: .hot)
     let isRegisterFail = PassthroughSubject<String, Never>() // alert 용
     
     // MARK: - LifeCycle
     
     init(useCase: PlaceListUseCase = PlaceListUseCase()) {
         self.useCase = useCase
+        prefetch(at: [1])
         bind()
     }
     
@@ -47,80 +52,52 @@ class PlaceListViewModel {
 extension PlaceListViewModel: ErrorMapper {
     
     func prefetch(at rows: [Int]) {
-        let unit = 10
+        let section: Section
         
         switch placeType {
         case .whole:
-            for row in rows {
-                if (wholePage - 1) * unit <= row && (wholePage * unit) > row {
-                    wholePage += 1
-                    break
-                }
-            }
+            section = wholePlace
         case .hot:
-            for row in rows {
-                if (hotPage - 1) * unit <= row && (hotPage * unit) > row {
-                    hotPage += 1
-                    break
-                }
-            }
+            section = hotPlace
         }
-
+        
+        // fetch 여부는 해당 row가 이미 불려진 row인지로 판단
+        for row in rows where row >= section.lastIndex {
+            useCase.fetchPlaceList(with: section.cursor,
+                                   type: section.type)
+                .sink { [weak self] error in
+                    guard let self = self else { return }
+                    
+                    switch error {
+                    case .failure(let error):
+                        let errorMessage = self.errorMessage(for: error)
+                        self.isRegisterFail.send(errorMessage)
+                    case .finished: break
+                    }
+                } receiveValue: { [weak self] placeList in
+                    guard let self = self, !placeList.isEmpty else { return }
+                    
+                    // fetch된 데이터 업데이트
+                    section.placeList += placeList
+                    section.lastIndex += placeList.count
+                    // 서버에 요청할 인덱스 = 가장 마지막 데이터의 placeID + 1
+                    section.cursor = section.placeList[section.lastIndex].id + 1
+                    self.result = section.placeList
+                }
+                .store(in: &self.cancelBag)
+            break
+        }
     }
     
     private func bind() {
-        $hotPage
-            .sink { [weak self] currentPage in
-                guard let self = self else { return }
-                
-                self.useCase.fetchHotPlaceList(with: currentPage)
-                    .sink { error in
-                        switch error {
-                        case .failure(let error):
-                            print("🐞: \(error)")
-                            let errorMessage = self.errorMessage(for: error)
-                            self.isRegisterFail.send(errorMessage)
-                        case .finished: break
-                        }
-                    } receiveValue: { [weak self] placeList in
-                        guard let self = self else { return }
-                        
-                        self.hotResult += placeList
-                        self.result = self.hotResult
-                    }
-                    .store(in: &self.cancelBag)
-            }
-            .store(in: &cancelBag)
-        
-        $wholePage
-            .sink { [weak self] currentPage in
-                guard let self = self else { return }
-                
-                self.useCase.fetchPlaceList(with: currentPage)
-                    .sink { error in
-                        switch error {
-                        case .failure(let error):
-                            let errorMessage = self.errorMessage(for: error)
-                            self.isRegisterFail.send(errorMessage)
-                        case .finished: break
-                        }
-                    } receiveValue: { [weak self] placeList in
-                        guard let self = self else { return }
-                        self.wholeResult += placeList
-                        self.result = self.wholeResult
-                    }
-                    .store(in: &self.cancelBag)
-            }
-            .store(in: &cancelBag)
-        
         $placeType
             .sink { [weak self] type in
                 guard let self = self else { return }
                 switch type {
                 case .whole:
-                    self.result = self.wholeResult
+                    self.result = self.wholePlace.placeList
                 case .hot:
-                    self.result = self.hotResult
+                    self.result = self.hotPlace.placeList
                 }
             }
             .store(in: &self.cancelBag)
