@@ -10,39 +10,77 @@ import Foundation
 
 extension UserDefaults {
     
+    private enum UserInfoKeys: String, CaseIterable {
+        case authToken
+        case authIdentifier
+        case userNickname
+        case userID
+        case userOrganization
+    }
+    
     var authToken: String? {
         get {
-            guard let authToken = UserDefaults.standard.value(forKey: "authToken") as? String else {
+            guard let authToken = UserDefaults.standard.value(forKey: UserInfoKeys.authToken.rawValue) as? String else {
                 return nil
             }
             return authToken
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: "authToken")
+            UserDefaults.standard.set(newValue, forKey: UserInfoKeys.authToken.rawValue)
         }
     }
     
-    var userName: String? {
+    var authIdentifier: String? {
         get {
-            guard let userName = UserDefaults.standard.value(forKey: "userName") as? String else {
+            guard let authIdentifier = UserDefaults.standard.value(forKey: UserInfoKeys.authIdentifier.rawValue) as? String else {
+                return nil
+            }
+            return authIdentifier
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: UserInfoKeys.authIdentifier.rawValue)
+        }
+    }
+    
+    var userNickname: String? {
+        get {
+            guard let userName = UserDefaults.standard.value(forKey: UserInfoKeys.userNickname.rawValue) as? String else {
                 return nil
             }
             return userName
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: "userName")
+            UserDefaults.standard.set(newValue, forKey: UserInfoKeys.userNickname.rawValue)
         }
     }
     
     var userID: Int? {
         get {
-            guard let userID = UserDefaults.standard.value(forKey: "userID") as? Int else {
+            guard let userID = UserDefaults.standard.value(forKey: UserInfoKeys.userID.rawValue) as? Int else {
                 return nil
             }
             return userID
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: "userID")
+            UserDefaults.standard.set(newValue, forKey: UserInfoKeys.userID.rawValue)
+        }
+    }
+    
+    var userOrganization: Int? {
+        get {
+            guard let userOrganization = UserDefaults.standard.value(forKey: UserInfoKeys.userOrganization.rawValue) as? Int else {
+                return nil
+            }
+            return userOrganization
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: UserInfoKeys.userOrganization.rawValue)
+        }
+    }
+    
+    func resetUserInfo() {
+        UserInfoKeys.allCases.forEach { userInfoKeys in
+            UserDefaults.standard.set(nil, forKey: userInfoKeys.rawValue)
         }
     }
     

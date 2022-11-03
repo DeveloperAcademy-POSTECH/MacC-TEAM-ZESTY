@@ -15,6 +15,7 @@ final class UserLoginUseCase {
     // output
     let isUserRegisteredSubject = PassthroughSubject<Bool, Never>()
     let isUserAlreadyRegisteredSubject = PassthroughSubject<Bool, Never>()
+    let isUserProfileReceivedSubject = PassthroughSubject<Bool, Never>()
     
     private var cancelBag = Set<AnyCancellable>()
     
@@ -41,8 +42,8 @@ final class UserLoginUseCase {
                 }
             } receiveValue: { [weak self] userOauthDTO in
                 guard let self = self else { return }
-                self.isUserRegisteredSubject.send(true)
                 UserDefaults.standard.authToken = userOauthDTO.authToken
+                self.isUserRegisteredSubject.send(true)
             }
             .store(in: &cancelBag)
     }
@@ -56,8 +57,28 @@ final class UserLoginUseCase {
                 }
             } receiveValue: { [weak self] userOauthDTO in
                 guard let self = self else { return }
-                self.isUserRegisteredSubject.send(true)
                 UserDefaults.standard.authToken = userOauthDTO.authToken
+                self.isUserRegisteredSubject.send(true)
+            }
+            .store(in: &cancelBag)
+    }
+    
+    func getUserProfile() {
+        guard let authorization = UserDefaults.standard.authToken else { return }
+        UserAPI.getUserProfile(authorization: authorization)
+            .sink { error in
+                switch error {
+                case .failure(let error): print(error.localizedString)
+                case .finished: break
+                }
+            } receiveValue: { [weak self] userProfileDTO in
+                guard let self = self else { return }
+                UserDefaults.standard.userID = userProfileDTO.id
+                UserDefaults.standard.userNickname = userProfileDTO.nickname
+                UserDefaults.standard.authToken = userProfileDTO.authToken
+                UserDefaults.standard.authIdentifier = userProfileDTO.authIdentifier
+                UserDefaults.standard.userOrganization = userProfileDTO.organization
+                self.isUserProfileReceivedSubject.send(true)
             }
             .store(in: &cancelBag)
     }

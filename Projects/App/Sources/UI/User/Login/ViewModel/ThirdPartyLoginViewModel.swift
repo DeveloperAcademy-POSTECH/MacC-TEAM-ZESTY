@@ -22,12 +22,10 @@ final class ThirdPartyLoginViewModel {
     private var kakaoAccessToken: String?
     private var appleIdentifier: String?
     private var provider: ThirdPartyProvider?
-    private var userName = UserDefaults.standard.userName
     var isUserAlreadyRegistered = false
     
     // Input
     private let checkUserRegisteredSubject = PassthroughSubject<String, Never>()
-    private let isUserRegisteredSubject = PassthroughSubject<Bool, Never>()
     private let publishAccessTokenSubject = PassthroughSubject<Bool, Never>()
     
     // Output
@@ -58,10 +56,13 @@ final class ThirdPartyLoginViewModel {
             }
             .store(in: &cancelBag)
         
+        useCaseBinding()
+    }
+    
+    private func useCaseBinding() {
         useCase.isUserAlreadyRegisteredSubject
             .sink { [weak self] isUserAlreadyRegistered in
                 guard let self = self else { return }
-                print(isUserAlreadyRegistered)
                 self.isUserAlreadyRegistered = isUserAlreadyRegistered
                 self.publishAccessTokenSubject.send(true)
             }
@@ -70,24 +71,24 @@ final class ThirdPartyLoginViewModel {
         useCase.isUserRegisteredSubject
             .sink { [weak self] isUserRegistered in
                 guard let self = self else { return }
-                self.isUserRegisteredSubject.send(isUserRegistered)
-            }
-            .store(in: &cancelBag)
-        
-        isUserRegisteredSubject
-            .sink { [weak self] isUserRegistered in
-                guard let self = self else { return }
                 if !isUserRegistered {
                     return
                 }
-                if self.userName == nil {
+                self.useCase.getUserProfile()
+            }
+            .store(in: &cancelBag)
+        
+        useCase.isUserProfileReceivedSubject
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                if UserDefaults.standard.userNickname == nil {
                     self.shouldSetNicknameSubject.send(true)
                     return
                 }
-                if !self.isUserAlreadyRegistered {
-                    self.shouldSetNicknameSubject.send(true)
-                } else if self.isUserAlreadyRegistered {
+                if self.isUserAlreadyRegistered {
                     self.shouldSetNicknameSubject.send(false)
+                } else if self.isUserAlreadyRegistered {
+                    self.shouldSetNicknameSubject.send(true)
                 }
             }
             .store(in: &cancelBag)
