@@ -78,6 +78,7 @@ extension EvaluationViewController {
     
     private func configureUI() {
         view.backgroundColor = .systemBackground
+        navigationController?.navigationBar.topItem?.title = ""
         
         titleView.titleLabel.text = "\(viewModel.placeName),\n어땠나요?"
         
