@@ -17,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        UINavigationBar.setOpacityAppearance()
+        
         FirebaseApp.configure()
         if let kakaoNativeAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] as? String {
             KakaoSDK.initSDK(appKey: kakaoNativeAppKey)
