@@ -27,7 +27,7 @@ final class ReviewRegisterViewModel {
     
     // Output
     struct Result {
-        var image: String? = ""
+        var image: URL?
         var evaluation: Evaluation = .soso
         var reviewer: String = ""
         var registeredAt: String = ""
@@ -106,11 +106,11 @@ extension ReviewRegisterViewModel: ErrorMapper {
             guard let self = self else { return }
 
             // TODO: ReviewDTO image 배열 -> String으로 바뀌면 수정 예정
-            var image: String?
+            var imageURL: URL?
             if !review.image.isEmpty {
-                image = review.image[0]
+                imageURL = URL(string: review.image[0] ?? "")
             }
-            self.result = Result(image: image,
+            self.result = Result(image: imageURL,
                                  evaluation: Evaluation(review.evaluation),
                                  reviewer: review.reviewer.nickname,
                                  registeredAt: Date.getStringToDate(review.createdAt).getDateToString(format: "yy.MM.dd"),

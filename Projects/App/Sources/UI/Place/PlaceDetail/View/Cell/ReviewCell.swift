@@ -76,7 +76,7 @@ final class ReviewCell: UITableViewCell {
     func setup(with review: Review) {
         DispatchQueue.main.async {
             
-            self.reviewImageView.kf.setImage(with: URL(string: review.imageURL ?? ""))
+            self.reviewImageView.kf.setImage(with: review.imageURL)
             self.menuLabel.text = review.menuName
             self.dateLabel.text = review.createdAt.formatted("yyyy.MM.dd")
 

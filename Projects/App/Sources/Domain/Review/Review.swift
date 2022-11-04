@@ -15,7 +15,7 @@ struct Review: Hashable {
     let reviewer: User?
     let evaluation: Evaluation
     let menuName: String?
-    let imageURL: String?
+    let imageURL: URL?
     let createdAt: Date
 //    let updatedAt: Date
 }
@@ -43,7 +43,7 @@ extension Review {
         reviewer = User.mockData[0]
         evaluation = .good
         menuName = dto.menuName
-        imageURL = dto.image
+        imageURL = URL(string: dto.image ?? "")
         createdAt = Date.getStringToDate(dto.registeredAt)
     }
     
@@ -54,7 +54,7 @@ extension Review {
         evaluation =  Evaluation(dto.evaluation)
         menuName = dto.menuName
         if !dto.image.isEmpty {
-            imageURL = dto.image[0]
+            imageURL = URL(string: dto.image[0] ?? "")
         } else {
             imageURL = nil
         }
@@ -75,7 +75,7 @@ extension Review {
             }
         }()
         menuName = dto.menuName
-        imageURL = dto.image
+        imageURL = URL(string: dto.image)
         createdAt = dto.createdAt.toDate()!
     }
     

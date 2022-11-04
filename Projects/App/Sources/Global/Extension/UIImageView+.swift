@@ -12,15 +12,14 @@ import Kingfisher
 
 extension UIImageView {
     
-    func load(url: String?) {
-        guard let url = URL(string: url ?? "") else {
+    func load(url: URL?) {
+        guard let url = url else {
             self.image = UIImage(.img_errorfriends)
             return
         }
         self.kf.setImage(with: url) { result in
             switch result {
             case .success( _):
-                print("string -> image success")
                 break
             case .failure(let error):
                 print("string -> image fail: \(error)")
@@ -29,8 +28,7 @@ extension UIImageView {
         }
     }
     
-    // TODO: String -> URL 로 파라미터 타입 변경하기
-    static func load(url: String?) -> UIImage? {
+    static func load(url: URL?) -> UIImage? {
         let imageView = UIImageView()
         imageView.load(url: url)
         
