@@ -63,14 +63,17 @@ extension ReviewCardView {
             .sink { [weak self] result in
                 print(result)
                 guard let self = self else { return }
-                self.menuImageView.load(url: result.image)
-                self.evaluationImageView.image = result.evaluation.image
-                self.nicknameLabel.text = result.reviewer
-                self.dateLabel.text = result.registeredAt
-                self.categoryLabel.text = result.category
-                self.categoryLabel.backgroundColor = .red
-                self.placeNameLabel.text = result.placeName
-                self.placeAddressLabel.text = result.placeAddress
+                self.fillUI(with: result)
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.$image
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] image in
+                guard let self = self else { return }
+                let isMenuImageExist = image != nil
+                self.configureTextColor(for: isMenuImageExist)
+                self.remakeLayout(with: isMenuImageExist)
             }
             .store(in: &cancelBag)
     }
@@ -81,9 +84,18 @@ extension ReviewCardView {
 
 extension ReviewCardView {
     
+    private func fillUI(with result: ReviewRegisterViewModel.Result) {
+        menuImageView.load(url: result.image)
+        evaluationImageView.image = result.evaluation.image
+        nicknameLabel.text = result.reviewer
+        dateLabel.text = result.registeredAt
+        categoryLabel.text = result.category
+        categoryLabel.backgroundColor = .red
+        placeNameLabel.text = result.placeName
+        placeAddressLabel.text = result.placeAddress
+    }
+    
     private func configureUI() {
-        let isMenuImageExist = viewModel.image != nil
-        
         clipsToBounds = true
         layer.cornerRadius = 16
         backgroundColor = .white
@@ -106,9 +118,7 @@ extension ReviewCardView {
         
         nicknameStaticLabel.text = "Reviewed by"
         nicknameStaticLabel.font = .preferredFont(forTextStyle: .caption2)
-        nicknameStaticLabel.textColor = isMenuImageExist ? .white : .secondaryLabel
         nicknameLabel.font = .preferredFont(forTextStyle: .callout).bold()
-        nicknameLabel.textColor = isMenuImageExist ? .white : .label
 
         dateStaticLabel.text = "Date"
         dateStaticLabel.font = .preferredFont(forTextStyle: .caption2)
@@ -130,24 +140,16 @@ extension ReviewCardView {
         categoryLabel.textColor = .white
         
         placeNameLabel.font = .preferredFont(forTextStyle: .title2).bold()
-        placeNameLabel.textColor = isMenuImageExist ? .white : .label
         placeNameLabel.numberOfLines = 0
         placeAddressLabel.font = .preferredFont(forTextStyle: .caption1)
-        placeAddressLabel.textColor = isMenuImageExist ? .white : .secondaryLabel
         placeAddressLabel.numberOfLines = 0
-        
-        viewModel.$image
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] image in
-                guard let self = self else { return }
-                let isMenuImageExist = image != nil
-                self.nicknameStaticLabel.textColor = isMenuImageExist ? .white : .secondaryLabel
-                self.nicknameLabel.font = .preferredFont(forTextStyle: .callout).bold()
-                self.nicknameLabel.textColor = isMenuImageExist ? .white : .label
-                self.placeNameLabel.textColor = isMenuImageExist ? .white : .label
-                self.placeAddressLabel.textColor = isMenuImageExist ? .white : .secondaryLabel
-            }
-            .store(in: &cancelBag)
+    }
+    
+    private func configureTextColor(for isDark: Bool) {
+        nicknameStaticLabel.textColor = isDark ? .white : .secondaryLabel
+        nicknameLabel.textColor = isDark ? .white : .label
+        placeNameLabel.textColor = isDark ? .white : .label
+        placeAddressLabel.textColor = isDark ? .white : .secondaryLabel
     }
     
     private func createLayout() {
@@ -174,50 +176,6 @@ extension ReviewCardView {
         nicknameLabel.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
         }
-        
-        viewModel.$image
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] image in
-                guard let self = self else { return }
-                if image != nil {
-                    self.dateStackView.snp.remakeConstraints {
-                        $0.top.equalTo(self.nameStackView.snp.bottom).offset(10)
-                        $0.horizontalEdges.equalToSuperview().inset(30)
-                    }
-                    self.backgroundView.snp.remakeConstraints {
-                        $0.edges.equalToSuperview()
-                    }
-                    self.menuImageView.snp.remakeConstraints {
-                        $0.edges.equalToSuperview()
-                    }
-                    self.dateStaticLabel.snp.remakeConstraints {
-                        $0.horizontalEdges.equalToSuperview()
-                    }
-                    self.dateLabel.snp.remakeConstraints {
-                        $0.horizontalEdges.equalToSuperview()
-                    }
-                    self.evaluationImageView.snp.remakeConstraints {
-                        $0.trailing.bottom.equalToSuperview().inset(30)
-                        $0.width.equalToSuperview().multipliedBy(0.2)
-                        $0.height.equalTo(self.evaluationImageView.snp.width)
-                    }
-                    self.placeStackView.snp.remakeConstraints {
-                        $0.leading.bottom.equalToSuperview().inset(30)
-                        $0.trailing.equalTo(self.evaluationImageView.snp.leading).offset(-10)
-                    }
-                } else {
-                    self.evaluationImageView.snp.remakeConstraints {
-                        $0.centerX.equalToSuperview()
-                        $0.centerY.equalToSuperview().multipliedBy(0.8)
-                        $0.width.equalToSuperview().multipliedBy(0.4)
-                        $0.height.equalTo(self.evaluationImageView.snp.width)
-                    }
-                    self.placeStackView.snp.remakeConstraints {
-                        $0.horizontalEdges.bottom.equalToSuperview().inset(30)
-                    }
-                }
-            }
-            .store(in: &cancelBag)
 
         categoryLabel.snp.makeConstraints {
             $0.leading.equalToSuperview()
@@ -229,6 +187,46 @@ extension ReviewCardView {
         }
         placeAddressLabel.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
+        }
+    }
+    
+    private func remakeLayout(with isImageExist: Bool) {
+        if isImageExist {
+            dateStackView.snp.remakeConstraints {
+                $0.top.equalTo(nameStackView.snp.bottom).offset(10)
+                $0.horizontalEdges.equalToSuperview().inset(30)
+            }
+            backgroundView.snp.remakeConstraints {
+                $0.edges.equalToSuperview()
+            }
+            menuImageView.snp.remakeConstraints {
+                $0.edges.equalToSuperview()
+            }
+            dateStaticLabel.snp.remakeConstraints {
+                $0.horizontalEdges.equalToSuperview()
+            }
+            dateLabel.snp.remakeConstraints {
+                $0.horizontalEdges.equalToSuperview()
+            }
+            evaluationImageView.snp.remakeConstraints {
+                $0.trailing.bottom.equalToSuperview().inset(30)
+                $0.width.equalToSuperview().multipliedBy(0.2)
+                $0.height.equalTo(evaluationImageView.snp.width)
+            }
+            placeStackView.snp.remakeConstraints {
+                $0.leading.bottom.equalToSuperview().inset(30)
+                $0.trailing.equalTo(evaluationImageView.snp.leading).offset(-10)
+            }
+        } else {
+            evaluationImageView.snp.remakeConstraints {
+                $0.centerX.equalToSuperview()
+                $0.centerY.equalToSuperview().multipliedBy(0.8)
+                $0.width.equalToSuperview().multipliedBy(0.4)
+                $0.height.equalTo(evaluationImageView.snp.width)
+            }
+            placeStackView.snp.remakeConstraints {
+                $0.horizontalEdges.bottom.equalToSuperview().inset(30)
+            }
         }
     }
     
