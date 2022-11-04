@@ -70,7 +70,7 @@ final class VerifingCodeViewController: UIViewController {
         
         toastLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(view.snp.top).offset(-50)
+            make.bottom.equalTo(view.snp.top)
             make.width.equalTo(173)
             make.height.equalTo(50)
         }
