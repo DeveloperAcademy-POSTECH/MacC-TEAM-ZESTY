@@ -30,8 +30,7 @@ public enum Color: String {
     case bluegray03
     case bluegray04
     
-    case shadow01
-    case shadow02
+    case shadow
     
     case red01
     
