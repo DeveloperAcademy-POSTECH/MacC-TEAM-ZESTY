@@ -85,6 +85,8 @@ extension SegmentHeaderView {
         
         removeBackgroundAndDivider()
         segmentIndicator.backgroundColor = .black
+        segmentIndicator.layer.cornerRadius = 1
+        segmentIndicator.layer.masksToBounds = true
         
         segmentedControl.backgroundColor = .clear
         segmentedControl.tintColor = .clear
