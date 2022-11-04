@@ -61,7 +61,7 @@ final class VerifingCodeViewController: UIViewController {
         toastLabel.textColor = .white
         toastLabel.font = .systemFont(ofSize: 16.0, weight: .regular)
         toastLabel.textAlignment = .center
-        toastLabel.text = "메일을  다시 보냈어요"
+        toastLabel.text = "메일을 다시 보냈어요"
         toastLabel.layer.cornerRadius = 25
         toastLabel.clipsToBounds  =  true
         toastLabel.numberOfLines = 0
