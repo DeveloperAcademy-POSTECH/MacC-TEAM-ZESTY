@@ -9,6 +9,9 @@
 import Foundation
 
 public enum Color: String {
+    
+    // MARK: Color Palette
+    
     case white
     case black
     
