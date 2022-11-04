@@ -183,12 +183,12 @@ extension VerifingCodeViewController {
         guard let keyboardEndFrameHeight = self.keyboardEndFrameHeight else { return }
         switch state {
         case .hide:
-            arrowButton.snp.makeConstraints { make in
+            arrowButton.snp.remakeConstraints { make in
                 make.right.equalToSuperview().inset(20)
                 make.bottom.equalTo(view.snp.bottom).offset(-20)
             }
         case .show:
-            arrowButton.snp.makeConstraints { make in
+            arrowButton.snp.remakeConstraints { make in
                 make.right.equalToSuperview().inset(20)
                 make.bottom.equalTo(view.snp.bottom).offset(-keyboardEndFrameHeight-20)
             }
