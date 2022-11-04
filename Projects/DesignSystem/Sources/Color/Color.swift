@@ -14,6 +14,7 @@ public enum Color: String {
     
     case white
     case black
+    case clear
     
     case grayF6
     case grayF2
@@ -29,8 +30,6 @@ public enum Color: String {
     case bluegray02
     case bluegray03
     case bluegray04
-    
-    case shadow
     
     case red01
     

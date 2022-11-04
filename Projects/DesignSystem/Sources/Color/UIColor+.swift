@@ -48,7 +48,7 @@ public extension UIColor {
     static let disabled = appearanceColor(light: .gray99, dark: .gray4A)
     static let dim = appearanceColor(light: .gray54, dark: .grayD0)
     static let point = zestyColor(.red01)
-    static let shadow = zestyColor(.shadow)
+    static let shadow = appearanceColor(light: .black, dark: .clear)
     
     // MARK: Component
     
