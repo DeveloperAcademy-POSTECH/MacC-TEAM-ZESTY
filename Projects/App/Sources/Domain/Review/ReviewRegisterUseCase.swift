@@ -34,7 +34,6 @@ extension ReviewRegisterUseCase {
                 }
             } receiveValue: { [weak self] imageString in
                 guard let self = self else { return }
-                print("usecase: image upload success, urlstring: \(imageString)")
                 self.uploadResultSubject.send(imageString)
             }
             .store(in: &cancelBag)
