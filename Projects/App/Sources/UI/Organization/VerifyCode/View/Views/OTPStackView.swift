@@ -13,6 +13,8 @@ protocol OTPDelegate: AnyObject {
     func didChangeValidity(isValid: Bool)
 }
 
+/// 출처 : https://github.com/satyen95/iOS-OTPField/blob/master/OTPField/OTPField/OTPStackView.swift
+
 final class OTPStackView: UIStackView {
     
     // MARK: - Properties
@@ -137,7 +139,9 @@ extension OTPStackView: UITextFieldDelegate {
             autoFillTextField(with: string)
             return false
         } else {
-            if range.length == 0 {
+            if range.length == 0 && string == "" {
+                return false
+            } else if range.length == 0 {
                 if textField.nextTextField == nil {
                     textField.text? = string
                 } else {
@@ -147,7 +151,6 @@ extension OTPStackView: UITextFieldDelegate {
                 textField.backgroundColor = .black
                 return false
             }
-            textField.backgroundColor = .zestyColor(.grayF6)
             return true
         }
     }

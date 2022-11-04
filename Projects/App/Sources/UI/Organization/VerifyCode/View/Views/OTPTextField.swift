@@ -13,7 +13,14 @@ final class OTPTextField: UITextField {
     weak var nextTextField: OTPTextField?
     
     override public func deleteBackward() {
+        if let text = text, text.isEmpty {
+            previousTextField?.text = ""
+            previousTextField?.backgroundColor = .zestyColor(.grayF6)
+            previousTextField?.previousTextField?.becomeFirstResponder()
+        }
+        
         text = ""
+        backgroundColor = .zestyColor(.grayF6)
         previousTextField?.becomeFirstResponder()
     }
 }
