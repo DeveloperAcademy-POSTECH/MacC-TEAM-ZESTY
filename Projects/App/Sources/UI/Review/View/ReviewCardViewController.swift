@@ -59,20 +59,15 @@ extension ReviewCardViewController {
         }
     }
     
-    // TODO: Toast - noti image save completion
     @objc func saveButtonTouched() {
         let reviewCard = cardView.transfromToImage() ?? UIImage()
         saveImage(with: reviewCard)
     }
     
     func saveImage(with image: UIImage) {
-        PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
-            guard status == .authorized else { return }
-            
-            PHPhotoLibrary.shared().performChanges({
-                PHAssetChangeRequest.creationRequestForAsset(from: image)
-            }, completionHandler: nil)
-        }
+        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        self.present(activityViewController, animated: true, completion: nil)
     }
 
 }
