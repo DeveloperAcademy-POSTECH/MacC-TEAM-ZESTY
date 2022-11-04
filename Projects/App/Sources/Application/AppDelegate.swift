@@ -10,8 +10,10 @@ import FirebaseCore
 import KakaoSDKAuth
 import KakaoSDKCommon
 
-@main
+@UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    var window: UIWindow?
 
     func application(
         _ application: UIApplication,

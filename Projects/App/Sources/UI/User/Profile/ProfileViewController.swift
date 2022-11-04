@@ -8,6 +8,7 @@
 
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 
 final class ProfileViewController: UIViewController {
@@ -35,6 +36,7 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         createLayout()
+        Analytics.logEvent("profile_view", parameters: nil)
     }
     
     // MARK: - Function
