@@ -22,8 +22,8 @@ final class ReviewRegisterViewModel {
     private let placeId: Int
     let placeName: String
     var evaluation: Evaluation = .soso
-    @Published var image: String?
     var menu: String?
+    private let imageSubject = PassthroughSubject<String, Error>()
     
     // Output
     struct Result {
@@ -54,61 +54,71 @@ extension ReviewRegisterViewModel: ErrorMapper {
     
     func uploadImage(with image: UIImage?) {
         let imageData = image?.pngData()
+        
         useCase.uploadImage(with: imageData)
+        
         useCase.uploadResultSubject
             .sink { [weak self] completion in
                 guard let self = self else { return }
                 switch completion {
                 case .failure(let error):
                     print(error.localizedString)
+                    self.imageSubject.send(completion: .failure(error))
                     self.isRegisterFail.send(error.localizedString)
                 case .finished: break
                 }
             } receiveValue: { [weak self] imageString in
                 guard let self = self else { return }
-                print("viewmodel: image upload success, urlstring: \(imageString)")
-                self.image = imageString
+                self.imageSubject.send(imageString)
             }
             .store(in: &cancelBag)
 
     }
     
     func registerReview() {
-        $image
-            .sink { [weak self] imageString in
+        imageSubject
+            .sink { [weak self] _ in
                 guard let self = self else { return }
-                self.useCase.registerReview(placeId: self.placeId,
-                                            menuName: self.menu,
-                                            image: imageString,
-                                            grade: self.evaluation)
-                .sink { [weak self] completion in
-                    guard let self = self else { return }
-                    switch completion {
-                    case .failure(let error):
-                        print(error)
-                        let errorMessage = self.errorMessage(for: error)
-                        self.isRegisterFail.send(errorMessage)
-                    case .finished:
-                        break
-                    }
-                } receiveValue: { [weak self] review in
-                    guard let self = self else { return }
-                    var image: String?
-                    if !review.image.isEmpty {
-                        image = review.image[0]
-                    }
-                    self.result = Result(image: image,
-                                         evaluation: Evaluation(review.evaluation),
-                                         reviewer: review.reviewer.nickname,
-                                         registeredAt: Date.getStringToDate(review.createdAt).getDateToString(format: "yy.MM.dd"),
-                                         category: review.place.category.name,
-                                             placeName: review.place.name,
-                                             placeAddress: review.place.address)
-                    }
-                .store(in: &self.cancelBag)
+                self.registerReview(with: nil)
+            } receiveValue: { [weak self] imageString in
+                guard let self = self else { return }
+                self.registerReview(with: imageString)
             }
             .store(in: &cancelBag)
+    }
+    
+    private func registerReview(with imageString: String?) {
+        useCase.registerReview(placeId: placeId,
+                                    menuName: menu,
+                                    image: imageString,
+                                    grade: evaluation)
+        .sink { [weak self] completion in
+            guard let self = self else { return }
+            
+            switch completion {
+            case .failure(let error):
+                let errorMessage = self.errorMessage(for: error)
+                self.isRegisterFail.send(errorMessage)
+            case .finished:
+                break
+            }
+        } receiveValue: { [weak self] review in
+            guard let self = self else { return }
 
+            // TODO: ReviewDTO image 배열 -> String으로 바뀌면 수정 예정
+            var image: String?
+            if !review.image.isEmpty {
+                image = review.image[0]
+            }
+            self.result = Result(image: image,
+                                 evaluation: Evaluation(review.evaluation),
+                                 reviewer: review.reviewer.nickname,
+                                 registeredAt: Date.getStringToDate(review.createdAt).getDateToString(format: "yy.MM.dd"),
+                                 category: review.place.category.name,
+                                     placeName: review.place.name,
+                                     placeAddress: review.place.address)
+            }
+        .store(in: &cancelBag)
     }
     
 }
