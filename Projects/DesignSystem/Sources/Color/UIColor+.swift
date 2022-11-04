@@ -12,9 +12,7 @@ public extension UIColor {
     class func zestyColor(_ color: Color) -> UIColor? {
         return UIColor(named: color.rawValue, in: Bundle.module, compatibleWith: nil)
     }
-}
-
-public extension UIColor {
+    
     class func appearanceColor(light: Color, dark: Color) -> UIColor? {
         UIColor { traitCollection in
             switch traitCollection.userInterfaceStyle {
@@ -22,7 +20,8 @@ public extension UIColor {
                 return zestyColor(light)!
             case .dark:
                 return zestyColor(dark)!
-            @unknown default: fatalError()
+            @unknown default:
+                return zestyColor(light)!
             }
         }
     }
