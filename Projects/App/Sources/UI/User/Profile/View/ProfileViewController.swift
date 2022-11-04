@@ -6,6 +6,7 @@
 //  Copyright (c) 2022 zesty. All rights reserved.
 //
 
+import Combine
 import UIKit
 import DesignSystem
 import SnapKit
@@ -13,6 +14,10 @@ import SnapKit
 final class ProfileViewController: UIViewController {
     
     // MARK: - Properties
+    
+    private let viewModel = ProfileViewModel()
+    
+    private var cancelBag = Set<AnyCancellable>()
     
     private let profileImageView = UIImageView()
     private let profileMenuSuperStackView = UIStackView()
@@ -29,22 +34,20 @@ final class ProfileViewController: UIViewController {
     private var profileLinkButtonView = ProfileLinkButtonView()
     private var profileLinkLabelView = ProfileLinkLabelView()
     
-    private let logoutSheet: UIAlertController = {
+    private lazy var logoutSheet: UIAlertController = {
         $0.addAction(UIAlertAction(title: "네", style: .destructive,
-            handler: { _ in
+            handler: { [weak self] _ in
+            self?.viewModel.userLogout()
         }))
-        $0.addAction(UIAlertAction(title: "아니오", style: .cancel,
-            handler: { _ in
-        }))
+        $0.addAction(UIAlertAction(title: "아니오", style: .cancel))
         return $0
     }(UIAlertController(title: "로그아웃", message: "로그아웃 하시겠습니까?", preferredStyle: .alert))
-    private let withdrawalSheet: UIAlertController = {
+    private lazy var withdrawalSheet: UIAlertController = {
         $0.addAction(UIAlertAction(title: "네", style: .destructive,
-            handler: { _ in
+            handler: { [weak self] _ in
+            self?.viewModel.userWithdrawl()
         }))
-        $0.addAction(UIAlertAction(title: "아니오", style: .cancel,
-            handler: { _ in
-        }))
+        $0.addAction(UIAlertAction(title: "아니오", style: .cancel))
         return $0
     }(UIAlertController(title: "회원탈퇴", message: "회원탈퇴 하시겠습니까?", preferredStyle: .alert))
 
@@ -54,6 +57,7 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         createLayout()
+        bindUI()
     }
     
     // MARK: - Function
@@ -64,6 +68,21 @@ final class ProfileViewController: UIViewController {
     
     @objc private func userWithdrawal() {
         present(withdrawalSheet, animated: true)
+    }
+    
+}
+
+// MARK: - BindUI
+
+extension ProfileViewController {
+    
+    func bindUI() {
+        viewModel.isUserLoggedOutSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.navigationController?.popToRootViewController(animated: true)
+            }
+            .store(in: &cancelBag)
     }
     
 }
