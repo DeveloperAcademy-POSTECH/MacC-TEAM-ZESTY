@@ -14,19 +14,18 @@ import KakaoSDKCommon
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
-
+    
     func application(
         _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-    ) -> Bool {
-        FirebaseApp.configure()
-        if let kakaoNativeAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] as? String {
-            KakaoSDK.initSDK(appKey: kakaoNativeAppKey)
-        } else {
-            print("🚨 Faild to init KakaoSDK 🚨")
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+            FirebaseApp.configure()
+            if let kakaoNativeAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] as? String {
+                KakaoSDK.initSDK(appKey: kakaoNativeAppKey)
+            } else {
+                print("🚨 Faild to init KakaoSDK 🚨")
+            }
+            return true
         }
-        return true
-    }
     
     // MARK: Kakao Login process
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {

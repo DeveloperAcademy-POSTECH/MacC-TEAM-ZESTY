@@ -8,7 +8,6 @@
 
 import UIKit
 import DesignSystem
-import Firebase
 import SnapKit
 
 final class ProfileLinkButtonView: UIView {
