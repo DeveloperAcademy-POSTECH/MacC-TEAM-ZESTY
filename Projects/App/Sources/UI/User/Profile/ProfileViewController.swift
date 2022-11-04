@@ -24,10 +24,29 @@ final class ProfileViewController: UIViewController {
     private var profileMenuView1 = ProfileMenuView(menuText: "공지사항")
     private var profileMenuView2 = ProfileMenuView(menuText: "이용약관")
     private var profileMenuView3 = ProfileMenuView(menuText: "제스티를 만든 사람들")
-    private var profileUserMenuView1 = ProfileUserMenuView(userMenuText: "로그아웃")
-    private var profileUserMenuView2 = ProfileUserMenuView(userMenuText: "회원탈퇴")
+    private var profileUserLogoutView = ProfileUserMenuView(userMenuText: "로그아웃")
+    private var profileUserWithdrawalView = ProfileUserMenuView(userMenuText: "회원탈퇴")
     private var profileLinkButtonView = ProfileLinkButtonView()
     private var profileLinkLabelView = ProfileLinkLabelView()
+    
+    private let logoutSheet: UIAlertController = {
+        $0.addAction(UIAlertAction(title: "네", style: .destructive,
+            handler: { _ in
+        }))
+        $0.addAction(UIAlertAction(title: "아니오", style: .cancel,
+            handler: { _ in
+        }))
+        return $0
+    }(UIAlertController(title: "로그아웃", message: "로그아웃 하시겠습니까?", preferredStyle: .alert))
+    private let withdrawalSheet: UIAlertController = {
+        $0.addAction(UIAlertAction(title: "네", style: .destructive,
+            handler: { _ in
+        }))
+        $0.addAction(UIAlertAction(title: "아니오", style: .cancel,
+            handler: { _ in
+        }))
+        return $0
+    }(UIAlertController(title: "회원탈퇴", message: "회원탈퇴 하시겠습니까?", preferredStyle: .alert))
 
     // MARK: - LifeCycle
     
@@ -38,6 +57,14 @@ final class ProfileViewController: UIViewController {
     }
     
     // MARK: - Function
+    
+    @objc private func userLogout() {
+        present(logoutSheet, animated: true)
+    }
+    
+    @objc private func userWithdrawal() {
+        present(withdrawalSheet, animated: true)
+    }
     
 }
 
@@ -52,7 +79,7 @@ extension ProfileViewController {
         profileImageView.contentMode = .scaleAspectFit
 
         profileMenuSuperStackView.axis = .vertical
-        profileMenuSuperStackView.alignment = .leading
+        profileMenuSuperStackView.alignment = .center
         profileMenuSuperStackView.distribution = .fillProportionally
         profileMenuSuperStackView.spacing = 10
         
@@ -64,6 +91,12 @@ extension ProfileViewController {
         profileUserMenuStackView.distribution = .fillEqually
         profileUserMenuStackView.spacing = 0
         
+        profileUserLogoutView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(userLogout)))
+        profileUserLogoutView.isUserInteractionEnabled = true
+        
+        profileUserWithdrawalView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(userWithdrawal)))
+        profileUserWithdrawalView.isUserInteractionEnabled = true
+        
         dividerView.backgroundColor = .zestyColor(.grayF6)
     }
     
@@ -71,7 +104,7 @@ extension ProfileViewController {
         view.addSubviews([profileImageView, profileNickNameView, profileMenuSuperStackView, profileLinkButtonView, profileLinkLabelView])
         profileMenuSuperStackView.addArrangedSubviews([profileMenuStackView, dividerView, profileUserMenuStackView])
         profileMenuStackView.addArrangedSubviews([profileMenuView1, profileMenuView2, profileMenuView3])
-        profileUserMenuStackView.addArrangedSubviews([profileUserMenuView1, profileUserMenuView2])
+        profileUserMenuStackView.addArrangedSubviews([profileUserLogoutView, profileUserWithdrawalView])
         
         profileImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -94,7 +127,6 @@ extension ProfileViewController {
         }
         
         dividerView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(1)
         }
