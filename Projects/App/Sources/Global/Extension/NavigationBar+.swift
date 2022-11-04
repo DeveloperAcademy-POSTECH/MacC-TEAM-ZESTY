@@ -15,7 +15,6 @@ extension UINavigationBar {
             // 네비게이션바 설정
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
             
             // 네비게이션바 배경색
             appearance.backgroundColor = .white
