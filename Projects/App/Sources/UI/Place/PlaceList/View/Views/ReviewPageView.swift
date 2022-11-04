@@ -23,7 +23,6 @@ final class ReviewPageView: UIView {
         super.init(frame: frame)
         configure()
         createLayout()
-        setUp(with: Review.mockData[0])
     }
 
     required init?(coder: NSCoder) {
@@ -44,6 +43,7 @@ extension ReviewPageView {
     
     func setEmptyView() {
         reviewImageView.image = UIImage(.img_categoryfriends)
+        gradientView.isHidden = true
     }
     
     private func configure() {
@@ -51,6 +51,7 @@ extension ReviewPageView {
         configureGradientView()
         
         reviewImageView.contentMode = .scaleAspectFill
+        menuLabel.numberOfLines = 1
         menuLabel.font = .preferredFont(forTextStyle: .footnote)
         menuLabel.textColor = .zestyColor(.whiteEBEBF5)
         menuLabel.layer.opacity = 0.6
@@ -64,13 +65,13 @@ extension ReviewPageView {
         }
         
         gradientView.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview()
-            $0.bottom.equalToSuperview()
-            $0.height.greaterThanOrEqualTo(58)
+            $0.horizontalEdges.bottom.equalToSuperview()
+            $0.top.equalTo(menuLabel.snp.top).offset(40)
         }
         
         menuLabel.snp.makeConstraints {
-            $0.left.equalToSuperview().inset(20)
+            $0.leading.equalToSuperview().inset(20)
+            $0.trailing.equalToSuperview().inset(80)
             $0.bottom.equalToSuperview()
         }
     }

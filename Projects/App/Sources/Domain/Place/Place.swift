@@ -9,7 +9,8 @@
 import Foundation
 import Network
 
-struct Place {
+struct Place: Hashable {
+    let uuid = UUID()
     let id: Int
     let kakaoPlaceId: Int
     let creator: User?
@@ -23,7 +24,7 @@ struct Place {
     let reviews: [Review] // Preview Image
 }
 
-struct EvaluationSum {
+struct EvaluationSum: Hashable {
     let good: Int
     let soso: Int
     let bad: Int
