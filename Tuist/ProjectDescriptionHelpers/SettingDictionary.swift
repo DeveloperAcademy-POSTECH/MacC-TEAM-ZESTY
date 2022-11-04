@@ -9,5 +9,5 @@ import ProjectDescription
 
 public extension Project {
     static let fireBaseAnalyticsSetting: SettingsDictionary =
-    ["Other Linker Flags": ["-ObjC", "-all_load"]]
+    ["OTHER_LDFLAGS": ["-ObjC", "-all_load"]]
 }
