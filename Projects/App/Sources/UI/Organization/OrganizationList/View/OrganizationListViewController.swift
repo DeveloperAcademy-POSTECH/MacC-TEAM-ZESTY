@@ -70,7 +70,6 @@ extension OrganizationListViewController: UITableViewDataSource {
                 tableView.setEmptyView(message: "참여할 대학교를\n알려주세요", type: .search)
             } else {
                 tableView.setEmptyView(message: "검색 결과가 없어요.", type: .noresult)
-                
             }
         } else {
             tableView.restore()
