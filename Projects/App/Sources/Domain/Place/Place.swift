@@ -68,9 +68,9 @@ extension EvaluationSum {
     
     init(dto: EvaluationDTO?) {
         if let dto = dto {
-            good = dto.one
+            good = dto.three
             soso = dto.two
-            bad = dto.three
+            bad = dto.one
         } else {
             good = 0
             soso = 0
