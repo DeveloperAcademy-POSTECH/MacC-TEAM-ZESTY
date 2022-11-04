@@ -13,7 +13,7 @@ public extension Project {
         resources: ResourceFileElements? = nil,
         infoPlist: InfoPlist = .default
     ) -> Project {
-        let settings: Settings = .settings(
+        let settings: Settings = .settings(base: fireBaseAnalyticsSetting,
             configurations: [
                 .debug(name: .debug, xcconfig: .relativeToRoot("config.xcconfig")),
                 .release(name: .release, xcconfig: .relativeToRoot("config.xcconfig"))
