@@ -72,7 +72,7 @@ extension ReviewCardView {
             .sink { [weak self] image in
                 guard let self = self else { return }
                 let isMenuImageExist = image != nil
-                self.configureTextColor(for: isMenuImageExist)
+                self.reconfigureUI(for: isMenuImageExist)
                 self.remakeLayout(with: isMenuImageExist)
             }
             .store(in: &cancelBag)
@@ -103,6 +103,8 @@ extension ReviewCardView {
         
         menuImageView.clipsToBounds = true
         menuImageView.layer.cornerRadius = 16
+        menuImageView.contentMode = .scaleAspectFill
+        
         backgroundView.backgroundColor = .black
         backgroundView.clipsToBounds = true
         backgroundView.layer.opacity = 0.4
@@ -145,11 +147,15 @@ extension ReviewCardView {
         placeAddressLabel.numberOfLines = 0
     }
     
-    private func configureTextColor(for isDark: Bool) {
-        nicknameStaticLabel.textColor = isDark ? .white : .secondaryLabel
-        nicknameLabel.textColor = isDark ? .white : .label
-        placeNameLabel.textColor = isDark ? .white : .label
-        placeAddressLabel.textColor = isDark ? .white : .secondaryLabel
+    private func reconfigureUI(for isImageExist: Bool) {
+        nicknameStaticLabel.textColor = isImageExist ? .white : .secondaryLabel
+        nicknameLabel.textColor = isImageExist ? .white : .label
+        placeNameLabel.textColor = isImageExist ? .white : .label
+        placeAddressLabel.textColor = isImageExist ? .white : .secondaryLabel
+        
+        backgroundView.isHidden = !isImageExist
+        dateStaticLabel.text = isImageExist ? "Date" : ""
+        
     }
     
     private func createLayout() {
@@ -176,7 +182,22 @@ extension ReviewCardView {
         nicknameLabel.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
         }
+        
+        dateStackView.snp.makeConstraints {
+            $0.top.equalTo(nameStackView.snp.bottom).offset(10)
+            $0.horizontalEdges.equalToSuperview().inset(30)
+        }
 
+        dateStaticLabel.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+        }
+        dateLabel.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+        }
+        
+        placeStackView.snp.makeConstraints {
+            $0.horizontalEdges.bottom.equalToSuperview().inset(30)
+        }
         categoryLabel.snp.makeConstraints {
             $0.leading.equalToSuperview()
             $0.height.equalTo(20)
@@ -188,26 +209,23 @@ extension ReviewCardView {
         placeAddressLabel.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
         }
+        
+        evaluationImageView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.centerY.equalToSuperview().multipliedBy(0.8)
+            $0.width.equalToSuperview().multipliedBy(0.4)
+            $0.height.equalTo(evaluationImageView.snp.width)
+        }
+        backgroundView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        menuImageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
     
     private func remakeLayout(with isImageExist: Bool) {
         if isImageExist {
-            dateStackView.snp.remakeConstraints {
-                $0.top.equalTo(nameStackView.snp.bottom).offset(10)
-                $0.horizontalEdges.equalToSuperview().inset(30)
-            }
-            backgroundView.snp.remakeConstraints {
-                $0.edges.equalToSuperview()
-            }
-            menuImageView.snp.remakeConstraints {
-                $0.edges.equalToSuperview()
-            }
-            dateStaticLabel.snp.remakeConstraints {
-                $0.horizontalEdges.equalToSuperview()
-            }
-            dateLabel.snp.remakeConstraints {
-                $0.horizontalEdges.equalToSuperview()
-            }
             evaluationImageView.snp.remakeConstraints {
                 $0.trailing.bottom.equalToSuperview().inset(30)
                 $0.width.equalToSuperview().multipliedBy(0.2)
