@@ -103,7 +103,10 @@ extension OrganizationListViewController {
     private func configureUI() {
         view.backgroundColor = .white
         
-        setNavigationBar()
+        navigationItem.title = "대학 선택"
+        navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .medium)
+        ]
         
         searchingTextFieldView.placeholder = "대학교 검색"
         
@@ -143,12 +146,4 @@ extension OrganizationListViewController {
         }
     }
     
-    private func setNavigationBar() {
-        navigationItem.title = "대학 선택"
-        self.navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .medium)
-        ]
-        navigationController?.navigationBar.tintColor = .black
-        navigationController?.navigationBar.topItem?.title = ""
-    }
 }
