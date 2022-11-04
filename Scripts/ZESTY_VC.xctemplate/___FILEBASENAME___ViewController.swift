@@ -13,7 +13,7 @@ import SnapKit
 final class ___VARIABLE_sceneName___ViewController: UIViewController {
     
     // MARK: - Properties
-    private let cancelBag = Set<AnyCancellable>()
+    private var cancelBag = Set<AnyCancellable>()
     
     
     // MARK: - LifeCycle
@@ -50,6 +50,9 @@ extension ___VARIABLE_sceneName___Preview: PreviewProvider {
     
     static var previews: some View {
         ___VARIABLE_sceneName___ViewController().toPreview()
+ //            .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
+ //            .previewDevice(PreviewDevice(rawValue: "iPhone 13 Pro Max"))
+ //            .previewDevice(PreviewDevice(rawValue: "iPhone 13"))
     }
     
 }
