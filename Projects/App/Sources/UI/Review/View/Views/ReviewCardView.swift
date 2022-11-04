@@ -126,9 +126,8 @@ extension ReviewCardView {
 
         dateStaticLabel.text = "Date"
         dateStaticLabel.font = .preferredFont(forTextStyle: .caption2)
-        dateStaticLabel.textColor = .white
+        dateStaticLabel.textColor = .clear
         dateLabel.font = .preferredFont(forTextStyle: .callout).bold()
-        dateLabel.textColor = .white
         
         evaluationImageView.image = UIImage(.img_reviewfriends_good)
         evaluationImageView.addShadow(opacity: 0.1, radius: 2)
