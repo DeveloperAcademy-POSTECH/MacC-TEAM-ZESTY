@@ -58,10 +58,9 @@ extension ReviewCardView {
     
     private func bind() {
         viewModel.$result
-            .dropFirst(2)
+            .dropFirst()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
-                print(result)
                 guard let self = self else { return }
                 self.fillUI(with: result)
             }
@@ -154,7 +153,9 @@ extension ReviewCardView {
         placeAddressLabel.textColor = isImageExist ? .white : .secondaryLabel
         
         backgroundView.isHidden = !isImageExist
-        dateStaticLabel.text = isImageExist ? "Date" : ""
+        menuImageView.isHidden = !isImageExist
+        dateStaticLabel.textColor = isImageExist ? .white : .clear
+        dateLabel.textColor = isImageExist ? .white : .clear
         
     }
     
