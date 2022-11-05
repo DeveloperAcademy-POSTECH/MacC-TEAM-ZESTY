@@ -14,17 +14,12 @@ final class OrganizationListUseCase {
     
     private var cancelBag = Set<AnyCancellable>()
     
-    func fetchOrganizationList() {
-        OrganizationAPI.fetchOrgList()
-            .sink { error in
-                switch error {
-                case .failure(let error): print(error.localizedString)
-                case .finished: break
-                }
-            } receiveValue: { orgListDTO in
-                let orgList = orgListDTO.map { Organization(dto: $0) }
+    func fetchOrganizationList() -> AnyPublisher<[Organization], NetworkError> {
+        return OrganizationAPI.fetchOrgList()
+            .map { orgList in
+                orgList.map { Organization(dto: $0) }
             }
-            .store(in: &cancelBag)
+            .eraseToAnyPublisher()
     }
     
 }
