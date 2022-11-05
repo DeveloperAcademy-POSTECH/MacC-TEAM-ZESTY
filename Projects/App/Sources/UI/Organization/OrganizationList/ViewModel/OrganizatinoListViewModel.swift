@@ -33,8 +33,6 @@ final class OrganizationListViewModel {
         self.useCase = useCase
         
         fetchOrganizationList()
-        setInitialSearchedArray()
-        
         bind()
     }
 }
@@ -49,7 +47,6 @@ extension OrganizationListViewModel {
             .store(in: &cancelBag)
     }
 }
-
 
 // MARK: - Functions
 
@@ -73,13 +70,9 @@ extension OrganizationListViewModel: ErrorMapper {
             .store(in: &cancelBag)
     }
     
-//    private func setInitialSearchedArray() {
-//        searchedOrgArray = orgNameArray
-//    }
-    
     private func searchInput(_ input: String) {
         if input.isEmpty {
-//            setInitialSearchedArray()
+            searchedOrgArray = []
             return
         }
         if input.contains(" ") {
