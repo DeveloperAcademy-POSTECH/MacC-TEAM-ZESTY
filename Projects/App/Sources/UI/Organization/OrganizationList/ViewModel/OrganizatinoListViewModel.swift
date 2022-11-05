@@ -11,6 +11,10 @@ import Foundation
 
 final class OrganizationListViewModel {
     
+    // MARK: - Properties
+    
+    private let useCase: OrganizationListUseCase
+    
     private var orgArray: [Organization] = []
     private var orgNameArray: [String] = []
     
@@ -21,25 +25,52 @@ final class OrganizationListViewModel {
     
     // Output
     @Published var searchedOrgArray: [String] = []
+    let isRegisterFail = PassthroughSubject<String, Never>()
     
-    init() {
-        setData()
+    // MARK: - LifeCycle
+    
+    init(useCase: OrganizationListUseCase = OrganizationListUseCase()) {
+        self.useCase = useCase
+        
+        fetchOrganizationList()
         setInitialSearchedArray()
         
+        bind()
+    }
+}
+
+// MARK: - Bind Fucntions
+extension OrganizationListViewModel {
+    private func bind() {
         $userTextInput
             .sink { [weak self] userTextInput in
                 self?.searchInput(userTextInput)
             }
             .store(in: &cancelBag)
     }
-    
 }
 
-extension OrganizationListViewModel {
-    // TODO: useCase로 바꾸기
-    private func setData() {
-        orgArray = Organization.mockData
-        orgNameArray = orgArray.map { $0.name }
+
+// MARK: - Functions
+
+extension OrganizationListViewModel: ErrorMapper {
+    private func fetchOrganizationList() {
+        useCase.fetchOrganizationList()
+            .sink { [weak self] error in
+                guard let self = self else { return }
+                
+                switch error {
+                case .failure(let error):
+                    let errorMessage = self.errorMessage(for: error)
+                    self.isRegisterFail.send(errorMessage)
+                case .finished: break
+                }
+            } receiveValue: { [weak self] orgList in
+                guard let self = self else { return }
+                self.orgArray = orgList
+                self.orgNameArray = orgList.map { $0.name }
+            }
+            .store(in: &cancelBag)
     }
     
     private func setInitialSearchedArray() {
