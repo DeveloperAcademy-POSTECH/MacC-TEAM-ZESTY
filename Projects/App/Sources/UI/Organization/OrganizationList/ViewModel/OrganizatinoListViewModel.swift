@@ -24,7 +24,7 @@ final class OrganizationListViewModel {
     @Published var userTextInput: String = ""
     
     // Output
-    @Published var searchedOrgArray: [String] = []
+    @Published var searchedOrgArray: [Organization] = []
     let isRegisterFail = PassthroughSubject<String, Never>()
     
     // MARK: - LifeCycle
@@ -78,15 +78,15 @@ extension OrganizationListViewModel: ErrorMapper {
         if input.contains(" ") {
             let inputArray = input.components(separatedBy: " ")
 
-            searchedOrgArray = orgNameArray.filter { orgName in
+            searchedOrgArray = orgArray.filter { organization in
                 var haveOrgName = false
-                for input in inputArray where orgName.contains(input) {
+                for input in inputArray where organization.name.contains(input) {
                         haveOrgName = true
                 }
                 return haveOrgName
             }
         } else {
-            self.searchedOrgArray = self.orgNameArray.filter { $0.contains(input) }
+            searchedOrgArray = orgArray.filter { $0.name.contains(input) }
         }
     }
 }

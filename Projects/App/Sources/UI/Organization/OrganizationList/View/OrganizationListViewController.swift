@@ -80,7 +80,8 @@ extension OrganizationListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: OrganizationListCell.identifier, for: indexPath) as? OrganizationListCell
         guard let cell = cell else { return UITableViewCell() }
-        cell.orgNameLabel.text = viewModel.searchedOrgArray[indexPath.row]
+        let organization = viewModel.searchedOrgArray[indexPath.row]
+        cell.bind(with: organization)
         
         return cell
     }
