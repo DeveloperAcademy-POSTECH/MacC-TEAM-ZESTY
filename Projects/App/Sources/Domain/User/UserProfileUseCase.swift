@@ -18,7 +18,7 @@ final class UserProfileUseCase {
     private var cancelBag = Set<AnyCancellable>()
     
     func deleteUser() {
-        guard let authorization = UserDefaults.standard.authToken else { return }
+        guard let authorization = KeyChainManager.read(key: .authToken) else { return }
         UserAPI.deleteUser(authorization: authorization)
             .sink { error in
                 switch error {

@@ -24,6 +24,7 @@ final class ProfileViewModel {
     
     func userWithdrawl() {
         useCase.deleteUser()
+        KeyChainManager.delete(key: .authToken)
     }
     
     init() {

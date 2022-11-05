@@ -11,23 +11,10 @@ import Foundation
 extension UserDefaults {
     
     private enum UserInfoKeys: String, CaseIterable {
-        case authToken
         case authIdentifier
         case userNickname
         case userID
         case userOrganization
-    }
-    
-    var authToken: String? {
-        get {
-            guard let authToken = UserDefaults.standard.value(forKey: UserInfoKeys.authToken.rawValue) as? String else {
-                return nil
-            }
-            return authToken
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: UserInfoKeys.authToken.rawValue)
-        }
     }
     
     var authIdentifier: String? {
