@@ -94,6 +94,8 @@ extension ProfileViewController {
     private func configureUI() {
         view.backgroundColor = .zestyColor(.background)
         
+        navigationController?.navigationBar.topItem?.title = ""
+        
         profileImageView.image = UIImage(.img_signup)
         profileImageView.contentMode = .scaleAspectFit
 
