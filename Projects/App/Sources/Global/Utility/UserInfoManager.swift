@@ -10,6 +10,13 @@ import Foundation
 
 final class UserInfoManager {
     
+    private enum UserInfoKeys: String, CaseIterable {
+        case authIdentifier
+        case userNickname
+        case userID
+        case userOrganization
+    }
+    
     struct UserInfo: Codable {
         
         init(authIdentifier: String? = nil, userNickname: String? = nil, userID: Int? = nil, userOrganization: Int? = nil) {
@@ -63,13 +70,6 @@ final class UserInfoManager {
                 UserDefaults.standard.set(newValue, forKey: UserInfoKeys.userOrganization.rawValue)
             }
         }
-    }
-    
-    private enum UserInfoKeys: String, CaseIterable {
-        case authIdentifier
-        case userNickname
-        case userID
-        case userOrganization
     }
     
     static var userInfo: UserInfo {
