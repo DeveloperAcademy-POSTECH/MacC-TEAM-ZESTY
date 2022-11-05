@@ -212,12 +212,6 @@ extension SearchPlaceViewController: UITextFieldDelegate {
         return true
     }
     
-//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        print(#function)
-//        print(string)
-//        return true // 항상 입력은 되도록
-//    }
-    
 }
 
 /*
