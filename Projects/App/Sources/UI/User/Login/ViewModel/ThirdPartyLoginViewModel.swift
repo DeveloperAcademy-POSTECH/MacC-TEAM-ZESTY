@@ -83,7 +83,7 @@ final class ThirdPartyLoginViewModel {
                 }
                 if self.isUserAlreadyRegistered {
                     self.shouldSetNicknameSubject.send(false)
-                } else if !self.isUserAlreadyRegistered {
+                } else {
                     self.shouldSetNicknameSubject.send(true)
                 }
             }
