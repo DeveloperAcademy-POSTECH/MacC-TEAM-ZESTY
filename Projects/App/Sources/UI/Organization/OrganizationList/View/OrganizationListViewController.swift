@@ -31,7 +31,6 @@ final class OrganizationListViewController: UIViewController {
         configureUI()
         createLayout()
         bindUI()
-        searchingTextField.delegate = self
     }
     
     // MARK: Function
@@ -97,9 +96,18 @@ extension OrganizationListViewController: UITextFieldDelegate {
     
 }
 
-extension OrganizationListViewController {
+extension OrganizationListViewController: UITableViewDelegate {
     
-    // MARK: UI Function
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let organization = viewModel.searchedOrgArray[indexPath.row]
+        navigationController?.pushViewController(DomainSettingViewController(), animated: true)
+    }
+    
+}
+
+// MARK: UI Function
+
+extension OrganizationListViewController {
     
     private func configureUI() {
         view.backgroundColor = .white
@@ -110,6 +118,7 @@ extension OrganizationListViewController {
         ]
         
         searchingTextFieldView.placeholder = "대학교 검색"
+        searchingTextField.delegate = self
         
         let largeConfig = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .default)
         let largeBoldDoc = UIImage(systemName: "magnifyingglass", withConfiguration: largeConfig)
@@ -119,9 +128,10 @@ extension OrganizationListViewController {
         searchButton.layer.cornerRadius = 45/2
         searchButton.clipsToBounds = true
         
-        tableView.dataSource = self
         tableView.register(OrganizationListCell.self, forCellReuseIdentifier: OrganizationListCell.identifier)
         tableView.separatorStyle = .none
+        tableView.dataSource = self
+        tableView.delegate = self
     }
     
     private func createLayout() {
