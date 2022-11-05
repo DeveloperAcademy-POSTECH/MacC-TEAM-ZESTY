@@ -43,8 +43,7 @@ final class ThirdPartyLoginViewModel {
         
         publishAccessTokenSubject
             .sink { [weak self] _ in
-                guard let self = self else { return }
-                guard let provider = self.provider else { return }
+                guard let self = self, let provider = self.provider else { return }
                 switch provider {
                 case .kakao:
                     guard let kakaoAccessToken = self.kakaoAccessToken else { return }
