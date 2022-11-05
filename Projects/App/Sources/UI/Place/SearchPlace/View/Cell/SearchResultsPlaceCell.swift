@@ -1,21 +1,21 @@
 //
-//  SearchResultCell.swift
+//  SearchResultsPlaceCell.swift
 //  App
 //
-//  Created by Chanhee Jeong on 2022/10/25.
-//  Copyright © 2022 zesty. All rights reserved.
+//  Created by Chanhee Jeong on 2022/11/03.
+//  Copyright © 2022 com.zesty. All rights reserved.
 //
 
 import Combine
 import UIKit
 import SnapKit
 
-final class SearchResultCell: UITableViewCell {
+final class SearchResultsPlaceCell: UITableViewCell {
     
     // MARK: - Properties
     
     private var cancelBag = Set<AnyCancellable>()
-    private var kakaoPlace: KakaoPlace?
+    private var place: Place?
     
     private let nameLabel: UILabel = {
         $0.font = .systemFont(ofSize: 16, weight: .medium)
@@ -67,10 +67,10 @@ final class SearchResultCell: UITableViewCell {
     }
     
     // MARK: - Function
-    func bind(with place: KakaoPlace) {
+    func bind(with place: Place) {
         DispatchQueue.main.async {
-            self.kakaoPlace = place
-            self.nameLabel.text = place.placeName
+            self.place = place
+            self.nameLabel.text = place.name
             self.addressLabel.text = place.address
         }
     }
@@ -78,7 +78,7 @@ final class SearchResultCell: UITableViewCell {
 
 // MARK: - UI Function
 
-extension SearchResultCell {
+extension SearchResultsPlaceCell {
     
     private func configureUI() {
         self.backgroundColor = .zestyColor(.background)
