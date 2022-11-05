@@ -77,7 +77,7 @@ final class ThirdPartyLoginViewModel {
         useCase.isUserProfileReceivedSubject
             .sink { [weak self] _ in
                 guard let self = self else { return }
-                if UserDefaults.standard.userNickname == nil {
+                if  UserInfoManager.userInfo.userNickname == nil {
                     self.shouldSetNicknameSubject.send(true)
                     return
                 }

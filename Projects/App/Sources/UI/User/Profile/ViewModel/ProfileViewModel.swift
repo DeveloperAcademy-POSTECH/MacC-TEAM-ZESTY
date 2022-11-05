@@ -18,7 +18,7 @@ final class ProfileViewModel {
     let isUserLoggedOutSubject = PassthroughSubject<Bool, Never>()
     
     func userLogout() {
-        UserDefaults.standard.resetUserInfo()
+        UserInfoManager.resetUserInfo()
         isUserLoggedOutSubject.send(true)
     }
     
