@@ -20,7 +20,7 @@ final class SearchPlaceViewController: UIViewController {
     
     private var searchResults: [Place] = []
     
-    private lazy var searchingTextFieldView = SearchTextField()
+    private lazy var searchingTextFieldView = SearchTextField(placeholder: "장소")
     private lazy var tableView = UITableView(frame: CGRect.zero, style: .grouped)
     
     private lazy var searchButton: UIButton = {
