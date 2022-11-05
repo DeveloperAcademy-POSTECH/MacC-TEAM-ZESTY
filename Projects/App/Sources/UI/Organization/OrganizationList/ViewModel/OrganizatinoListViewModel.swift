@@ -73,13 +73,13 @@ extension OrganizationListViewModel: ErrorMapper {
             .store(in: &cancelBag)
     }
     
-    private func setInitialSearchedArray() {
-        searchedOrgArray = orgNameArray
-    }
+//    private func setInitialSearchedArray() {
+//        searchedOrgArray = orgNameArray
+//    }
     
     private func searchInput(_ input: String) {
         if input.isEmpty {
-            setInitialSearchedArray()
+//            setInitialSearchedArray()
             return
         }
         if input.contains(" ") {

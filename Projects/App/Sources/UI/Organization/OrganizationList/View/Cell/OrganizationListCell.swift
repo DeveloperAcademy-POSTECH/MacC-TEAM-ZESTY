@@ -6,12 +6,15 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
+import Combine
 import UIKit
 import SnapKit
 
 final class OrganizationListCell: UITableViewCell {
     
     // MARK: Properties
+    
+    private var cancelBag = Set<AnyCancellable>()
     
     static let identifier = "OrgListCell"
     
@@ -30,11 +33,16 @@ final class OrganizationListCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cancelBag.removeAll()
+    }
 }
 
+// MARK: UI Function
+
 extension OrganizationListCell {
-    
-    // MARK: UI Function
     
     private func configureUI() {
         addSubviews([orgNameLabel, disclosureIndicator])
@@ -42,7 +50,7 @@ extension OrganizationListCell {
         selectionStyle = .none
         
         disclosureIndicator.image = UIImage(systemName: "chevron.right")
-        disclosureIndicator.tintColor = .black
+        disclosureIndicator.tintColor = .label
         
         orgNameLabel.font = UIFont.systemFont(ofSize: 16)
     }
