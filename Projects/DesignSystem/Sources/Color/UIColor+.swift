@@ -13,7 +13,7 @@ public extension UIColor {
         return UIColor(named: color.rawValue, in: Bundle.module, compatibleWith: nil)
     }
     
-    static func appearanceColor(light: Color, dark: Color) -> UIColor? {
+    static func appearanceColor(light: Color, dark: Color) -> UIColor {
         UIColor { traitCollection in
             switch traitCollection.userInterfaceStyle {
             case .light, .unspecified:
