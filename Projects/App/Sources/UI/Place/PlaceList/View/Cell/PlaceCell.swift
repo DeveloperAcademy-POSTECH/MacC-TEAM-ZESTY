@@ -10,8 +10,7 @@ import UIKit
 import SnapKit
 import DesignSystem
 
-final class PlaceCell: UITableViewCell {
-    // TODO: 리뷰가 없는 상황을 가정한 cell입니다. 변경 예정
+final class PlaceCell: UICollectionViewCell {
     
     // MARK: - Properties
     
@@ -37,8 +36,8 @@ final class PlaceCell: UITableViewCell {
     
     // MARK: - LifeCycle
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         createLayout()
         configureUI()
     }
@@ -101,8 +100,11 @@ extension PlaceCell {
     }
 
     private func configureUI() {
+        contentView.addGestureRecognizer(scrollView.panGestureRecognizer)
+        
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.isPagingEnabled = true
+        scrollView.isUserInteractionEnabled = false
         scrollView.delegate = self
         
         pageStackView.axis = .horizontal
@@ -132,15 +134,15 @@ extension PlaceCell {
 
         containerView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(45)
-            $0.top.height.equalToSuperview().inset(15)
+            $0.verticalEdges.equalToSuperview().inset(15)
         }
         
         scrollView.snp.makeConstraints {
             $0.top.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(scrollView.snp.width)
+            $0.height.equalTo(containerView.snp.width)
         }
         pageStackView.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview()
+            $0.edges.equalToSuperview()
             $0.height.equalTo(containerView.snp.width)
         }
         pageControl.snp.makeConstraints {
@@ -149,7 +151,7 @@ extension PlaceCell {
         }
         
         bottomView.snp.makeConstraints { make in
-            make.top.equalTo(scrollView.snp.bottom)
+            make.top.equalTo(scrollView.snp.bottom).priority(.medium)
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalToSuperview()
         }
@@ -160,7 +162,6 @@ extension PlaceCell {
         emojiStackView.snp.makeConstraints { make in
             make.top.equalTo(placeNameLabel.snp.bottom).offset(10)
             make.leading.bottom.equalToSuperview().inset(20)
-            make.height.equalTo(30)
         }
     }
     

@@ -22,5 +22,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = navigationController
         self.window = window
         window.makeKeyAndVisible()
+        
+        /// remove navigation back button text and change color
+        
+        navigationController.navigationBar.tintColor = .black
+        navigationController.navigationBar.topItem?.title = ""
     }
 }

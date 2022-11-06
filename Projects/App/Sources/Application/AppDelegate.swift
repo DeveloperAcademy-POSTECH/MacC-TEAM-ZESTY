@@ -17,14 +17,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(
         _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-            FirebaseApp.configure()
-            if let kakaoNativeAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] as? String {
-                KakaoSDK.initSDK(appKey: kakaoNativeAppKey)
-            } else {
-                print("🚨 Faild to init KakaoSDK 🚨")
-            }
-            return true
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    ) -> Bool {
+        UINavigationBar.setOpacityAppearance()
+        
+        FirebaseApp.configure()
+        if let kakaoNativeAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] as? String {
+            KakaoSDK.initSDK(appKey: kakaoNativeAppKey)
+        } else {
+            print("🚨 Faild to init KakaoSDK 🚨")
         }
     
     // MARK: Kakao Login process

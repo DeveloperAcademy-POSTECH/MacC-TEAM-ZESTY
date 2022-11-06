@@ -9,7 +9,7 @@
 import Foundation
 import Network
 
-struct Review {
+struct Review: Hashable {
     let id: Int
     let placeId: Int
     let reviewer: User?
@@ -20,7 +20,7 @@ struct Review {
 //    let updatedAt: Date
 }
 
-enum Evaluation: Int {
+enum Evaluation: Int, Hashable {
     case good = 3
     case soso = 2
     case bad = 1

@@ -1,9 +1,9 @@
 //
-//  AddPlaceSearchViewController.swift
+//  SearchPlaceViewController.swift
 //  App
 //
-//  Created by Chanhee Jeong on 2022/10/25.
-//  Copyright (c) 2022 zesty. All rights reserved.
+//  Created by Chanhee Jeong on 2022/11/03.
+//  Copyright © 2022 com.zesty. All rights reserved.
 //
 
 import Combine
@@ -11,16 +11,16 @@ import UIKit
 import DesignSystem
 import SnapKit
 
-final class AddPlaceSearchViewController: UIViewController {
+final class SearchPlaceViewController: UIViewController {
     
     // MARK: - Properties
-    private let viewModel: AddPlaceSearchViewModel
-    private let input: PassthroughSubject<AddPlaceSearchViewModel.Input, Never> = .init()
+    private let viewModel: SearchPlaceViewModel
+    private let input: PassthroughSubject<SearchPlaceViewModel.Input, Never> = .init()
     private var cancelBag = Set<AnyCancellable>()
     
-    private var searchResults: [KakaoPlace] = []
+    private var searchResults: [Place] = []
     
-    private lazy var searchingTextFieldView = SearchTextField(placeholder: "장소")
+    private lazy var searchingTextFieldView = SearchTextField()
     private lazy var tableView = UITableView(frame: CGRect.zero, style: .grouped)
     
     private lazy var searchButton: UIButton = {
@@ -36,7 +36,7 @@ final class AddPlaceSearchViewController: UIViewController {
     }(UIButton())
     
     // MARK: - LifeCycle
-    init(viewModel: AddPlaceSearchViewModel) {
+    init(viewModel: SearchPlaceViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -50,10 +50,6 @@ final class AddPlaceSearchViewController: UIViewController {
         bind()
         configureUI()
         createLayout()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        
     }
     
     // MARK: - Function
@@ -73,7 +69,7 @@ final class AddPlaceSearchViewController: UIViewController {
 
 // MARK: - Binding
 
-extension AddPlaceSearchViewController {
+extension SearchPlaceViewController {
     
     private func bind() {
         let output = viewModel.transform(input: input.eraseToAnyPublisher())
@@ -94,11 +90,9 @@ extension AddPlaceSearchViewController {
                     let okAction = UIAlertAction(title: "확인", style: .default)
                     alert.addAction(okAction)
                     self?.present(alert, animated: false)
-                case .addSelectedPlaceFail(let error):
-                    print(error.localizedDescription)
-                case .addSelectedPlaceDidSucceed(let kakaoPlace):
-                        let viewModel = AddPlaceViewModel(kakaoPlace: kakaoPlace)
-                        self?.navigationController?.pushViewController(AddCategoryViewController(viewModel: viewModel), animated: true)
+                case .routeToSelectedPlace(let placeId):
+                    let viewModel = PlaceDetailViewModel(placeId: placeId)
+                        self?.navigationController?.pushViewController(PlaceDetailViewController(viewModel: viewModel), animated: true)
                     
                 }
             }.store(in: &cancelBag)
@@ -108,7 +102,7 @@ extension AddPlaceSearchViewController {
 
 // MARK: - UI Function
 
-extension AddPlaceSearchViewController {
+extension SearchPlaceViewController {
     
     private func configureUI() {
         view.backgroundColor = .white
@@ -120,7 +114,7 @@ extension AddPlaceSearchViewController {
         tableView.dataSource = self
         tableView.showsVerticalScrollIndicator = false
         tableView.estimatedRowHeight = UITableView.automaticDimension
-        tableView.register(SearchResultCell.self, forCellReuseIdentifier: "SearchResultCell")
+        tableView.register(SearchResultsPlaceCell.self, forCellReuseIdentifier: "SearchResultsPlaceCell")
         tableView.separatorStyle = .none
         tableView.keyboardDismissMode = .onDrag
         
@@ -152,7 +146,7 @@ extension AddPlaceSearchViewController {
     }
     
     private func setNavigationBar() {
-        navigationItem.title = "맛집등록"
+        navigationItem.title = "맛집검색"
         self.navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .medium)
         ]
@@ -165,12 +159,12 @@ extension AddPlaceSearchViewController {
 
 // MARK: - UITableViewDataSource
 
-extension AddPlaceSearchViewController: UITableViewDataSource {
+extension SearchPlaceViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchResults.count == 0 {
             if searchingTextFieldView.textField.text == "" {
-                tableView.setEmptyView(message: "등록하려는 맛집을\n검색해주세요.", type: .search)
+                tableView.setEmptyView(message: "등록된 맛집을\n검색해보세요.", type: .search)
             } else {
                 tableView.setEmptyView(message: "검색 결과가 없어요.", type: .noresult)
                 
@@ -183,7 +177,7 @@ extension AddPlaceSearchViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
          
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultCell", for: indexPath) as? SearchResultCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultsPlaceCell", for: indexPath) as? SearchResultsPlaceCell else { return UITableViewCell() }
         
         cell.bind(with: searchResults[indexPath.row])
         cell.selectionStyle = .none
@@ -194,7 +188,7 @@ extension AddPlaceSearchViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
-extension AddPlaceSearchViewController: UITableViewDelegate {
+extension SearchPlaceViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 82
@@ -202,7 +196,7 @@ extension AddPlaceSearchViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let place = searchResults[indexPath.row]
-        self.input.send(.placeResultCellDidTap(kakaoPlace: place))
+        self.input.send(.placeResultCellDidTap(place: place))
         
     }
 
@@ -210,7 +204,7 @@ extension AddPlaceSearchViewController: UITableViewDelegate {
 
 // MARK: - UITextFieldDelegate
 
-extension AddPlaceSearchViewController: UITextFieldDelegate {
+extension SearchPlaceViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -226,7 +220,7 @@ extension AddPlaceSearchViewController: UITextFieldDelegate {
 extension AddPlaceSearchPreview: PreviewProvider {
     
     static var previews: some View {
-        AddPlaceSearchViewController().toPreview()
+        SearchPlaceViewController().toPreview()
     }
     
 }
