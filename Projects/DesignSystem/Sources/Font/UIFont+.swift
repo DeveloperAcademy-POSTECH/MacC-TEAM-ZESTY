@@ -9,7 +9,7 @@
 import UIKit
 
 public extension UIFont {
-    class func zestyFont(size: Font.Size, weight: Font.Weight) -> UIFont {
+    static func zestyFont(size: Font.Size, weight: Font.Weight) -> UIFont {
         return .systemFont(ofSize: size.rawValue, weight: weight.value)
     }
     

@@ -9,11 +9,11 @@
 import UIKit
 
 public extension UIColor {
-    class func zestyColor(_ color: Color) -> UIColor? {
+    static func zestyColor(_ color: Color) -> UIColor? {
         return UIColor(named: color.rawValue, in: Bundle.module, compatibleWith: nil)
     }
     
-    class func appearanceColor(light: Color, dark: Color) -> UIColor? {
+    static func appearanceColor(light: Color, dark: Color) -> UIColor? {
         UIColor { traitCollection in
             switch traitCollection.userInterfaceStyle {
             case .light, .unspecified:
