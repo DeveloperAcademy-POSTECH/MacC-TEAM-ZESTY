@@ -27,6 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             print("🚨 Faild to init KakaoSDK 🚨")
         }
+        return true
+    }
     
     // MARK: Kakao Login process
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
