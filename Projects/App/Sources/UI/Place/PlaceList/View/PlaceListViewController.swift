@@ -198,6 +198,7 @@ extension PlaceListViewController {
         navigationItem.hidesBackButton = true
         
         navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.isHidden = false
     }
     
     private func removeBackgroundAndDivider() {

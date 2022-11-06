@@ -35,7 +35,7 @@ final class UserSignupUseCase {
     }
     
     func putNicknameUser(nickname: String) {
-        guard let authorization = UserDefaults.standard.authToken else { return }
+        guard let authorization = KeyChainManager.read(key: .authToken) else { return }
         UserAPI.putNickname(authorization: authorization, nickname: nickname)
             .sink { error in
                 switch error {
@@ -44,7 +44,7 @@ final class UserSignupUseCase {
                 }
             } receiveValue: { [weak self] _ in
                 guard let self = self else { return }
-                UserDefaults.standard.userNickname = nickname
+                UserInfoManager.userInfo.userNickname = nickname
                 self.isNickNameChangedSubject.send(true)
             }
             .store(in: &cancelBag)

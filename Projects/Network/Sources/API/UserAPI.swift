@@ -60,5 +60,12 @@ public struct UserAPI {
         let endpoint = Endpoint(path: "/api/users/nickname", method: .put, bodyParams: ["nickname": nickname], headers: header)
         return networkService.request(with: endpoint)
     }
+    
+    public static func deleteUser(authorization: String) -> AnyPublisher<Bool, NetworkError> {
+        let header = ["Content-Type": "application/json", "Authorization": "\(authorization)"]
+        let endpoint = Endpoint(path: "/api/users", method: .delete, headers: header)
+        
+        return networkService.request(with: endpoint)
+    }
 
 }

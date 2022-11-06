@@ -43,8 +43,7 @@ final class ThirdPartyLoginViewModel {
         
         publishAccessTokenSubject
             .sink { [weak self] _ in
-                guard let self = self else { return }
-                guard let provider = self.provider else { return }
+                guard let self = self, let provider = self.provider else { return }
                 switch provider {
                 case .kakao:
                     guard let kakaoAccessToken = self.kakaoAccessToken else { return }
@@ -78,13 +77,13 @@ final class ThirdPartyLoginViewModel {
         useCase.isUserProfileReceivedSubject
             .sink { [weak self] _ in
                 guard let self = self else { return }
-                if UserDefaults.standard.userNickname == nil {
+                if  UserInfoManager.userInfo.userNickname == nil {
                     self.shouldSetNicknameSubject.send(true)
                     return
                 }
                 if self.isUserAlreadyRegistered {
                     self.shouldSetNicknameSubject.send(false)
-                } else if self.isUserAlreadyRegistered {
+                } else {
                     self.shouldSetNicknameSubject.send(true)
                 }
             }
