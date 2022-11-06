@@ -18,6 +18,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
+        // TODO: 로그아웃, 회원 탈퇴 기능 완성 시 주석 해제
+//        let userAuthToken = UserDefaults.standard.authToken
+//        let userNickName = UserDefaults.standard.userNickname
+//        let navigationController: UINavigationController
+//        if userAuthToken == nil && userNickName == nil {
+//            navigationController = UINavigationController(rootViewController: ThirdPartyLoginViewController())
+//        } else {
+//            navigationController = UINavigationController(rootViewController: PlaceListViewController())
+//        }
         let navigationController = UINavigationController(rootViewController: ViewController())
         window.rootViewController = navigationController
         self.window = window

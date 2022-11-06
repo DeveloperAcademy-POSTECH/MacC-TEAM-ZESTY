@@ -6,34 +6,87 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
+import AuthenticationServices
 import Combine
 import UIKit
 import KakaoSDKUser
 
 final class ThirdPartyLoginViewModel {
     
+    private enum ThirdPartyProvider {
+        case kakao
+        case apple
+    }
+    
     private let useCase = UserLoginUseCase()
+    private var kakaoAccessToken: String?
+    private var appleIdentifier: String?
+    private var provider: ThirdPartyProvider?
+    var isUserAlreadyRegistered = false
     
     // Input
-    private let publishAccessTokenSubject = PassthroughSubject<String, Never>()
+    private let checkUserRegisteredSubject = PassthroughSubject<String, Never>()
+    private let publishAccessTokenSubject = PassthroughSubject<Bool, Never>()
     
     // Output
-    let isUserRegisteredSubject = PassthroughSubject<Bool, Never>()
+    let shouldSetNicknameSubject = PassthroughSubject<Bool, Never>()
     
     private var cancelBag = Set<AnyCancellable>()
     
     init() {
-        publishAccessTokenSubject
-            .sink { [weak self] accessToken in
+        checkUserRegisteredSubject
+            .sink { [weak self] userIdentifier in
                 guard let self = self else { return }
-                self.useCase.postAccessTokenUser(accessToken: accessToken)
+                self.useCase.isAlreadyLogin(userIdentifier: userIdentifier)
             }
             .store(in: &cancelBag)
         
-        useCase.isUserRegisteredSubject
-            .sink { [weak self] isUserRegistered in
+        publishAccessTokenSubject
+            .sink { [weak self] _ in
                 guard let self = self else { return }
-                self.isUserRegisteredSubject.send(isUserRegistered)
+                guard let provider = self.provider else { return }
+                switch provider {
+                case .kakao:
+                    guard let kakaoAccessToken = self.kakaoAccessToken else { return }
+                    self.useCase.postKakaoAccessToken(accessToken: kakaoAccessToken)
+                case .apple:
+                    guard let appleIdentifier = self.appleIdentifier else { return }
+                    self.useCase.postAppleUserIdentifier(userIdentifier: appleIdentifier)
+                }
+            }
+            .store(in: &cancelBag)
+        
+        useCaseBinding()
+    }
+    
+    private func useCaseBinding() {
+        useCase.isUserAlreadyRegisteredSubject
+            .sink { [weak self] isUserAlreadyRegistered in
+                guard let self = self else { return }
+                self.isUserAlreadyRegistered = isUserAlreadyRegistered
+                self.publishAccessTokenSubject.send(true)
+            }
+            .store(in: &cancelBag)
+        
+        useCase.userRegisteredSubject
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.useCase.getUserProfile()
+            }
+            .store(in: &cancelBag)
+        
+        useCase.isUserProfileReceivedSubject
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                if UserDefaults.standard.userNickname == nil {
+                    self.shouldSetNicknameSubject.send(true)
+                    return
+                }
+                if self.isUserAlreadyRegistered {
+                    self.shouldSetNicknameSubject.send(false)
+                } else if self.isUserAlreadyRegistered {
+                    self.shouldSetNicknameSubject.send(true)
+                }
             }
             .store(in: &cancelBag)
     }
@@ -54,8 +107,17 @@ final class ThirdPartyLoginViewModel {
             if let error = error {
                 print(error)
             } else {
-                if let accessToken = oauthToken?.accessToken {
-                    self.publishAccessTokenSubject.send(accessToken)
+                UserApi.shared.me {(user, error) in
+                    if let error = error {
+                        print(error)
+                    } else {
+                        if let accessToken = oauthToken?.accessToken, let userId = user?.id {
+                            let userIdentifier = String(userId)
+                            self.kakaoAccessToken = accessToken
+                            self.provider = .kakao
+                            self.checkUserRegisteredSubject.send(userIdentifier)
+                        }
+                    }
                 }
             }
         }
@@ -67,10 +129,35 @@ final class ThirdPartyLoginViewModel {
             if let error = error {
                 print(error)
             } else {
-                if let accessToken = oauthToken?.accessToken {
-                    self.publishAccessTokenSubject.send(accessToken)
+                UserApi.shared.me {(user, error) in
+                    if let error = error {
+                        print(error)
+                    } else {
+                        if let accessToken = oauthToken?.accessToken, let userId = user?.id {
+                            let userIdentifier = String(userId)
+                            self.kakaoAccessToken = accessToken
+                            self.provider = .kakao
+                            self.checkUserRegisteredSubject.send(userIdentifier)
+                        }
+                    }
                 }
             }
         }
     }
+    
+    func appleLogin(authorization: ASAuthorization) {
+        switch authorization.credential {
+        case let appleIDCredential as ASAuthorizationAppleIDCredential:
+            
+            // 애플 로그인으로 받아온 appleIDCredential 요소들
+            let userIdentifier = appleIDCredential.user
+            self.appleIdentifier = userIdentifier
+            self.provider = .apple
+            self.checkUserRegisteredSubject.send(userIdentifier)
+            
+        default:
+            break
+        }
+    }
+    
 }
