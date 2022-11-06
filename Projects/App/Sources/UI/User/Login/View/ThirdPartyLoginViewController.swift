@@ -16,6 +16,15 @@ final class ThirdPartyLoginViewController: UIViewController {
     
     // MARK: - Properties
     
+    private lazy var appleAuthorizationController: ASAuthorizationController = {
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        return authorizationController
+    }()
+    
     private let mainTitleView = MainTitleView(title: "안녕하세요,\n제스티입니다", subtitle: "로그인하여 모든 맛집을 확인하세요.")
     private let backgroundImageView = UIImageView()
     private let viewModel = ThirdPartyLoginViewModel()
@@ -45,7 +54,19 @@ final class ThirdPartyLoginViewController: UIViewController {
     }
     
     @objc func appleLoginButtonClicked() {
-        navigationController?.pushViewController(NickNameInputViewController(), animated: true)
+        appleAuthorizationController.performRequests()
+    }
+    
+}
+
+extension ThirdPartyLoginViewController: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        viewModel.appleLogin(authorization: authorization)
+    }
+    
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
     }
     
 }
@@ -54,12 +75,14 @@ final class ThirdPartyLoginViewController: UIViewController {
 extension ThirdPartyLoginViewController {
     
     private func bindUI() {
-        viewModel.isUserRegisteredSubject
+        viewModel.shouldSetNicknameSubject
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] isUserRegistered in
+            .sink { [weak self] shouldSetNickname in
                 guard let self = self else { return }
-                if isUserRegistered {
+                if shouldSetNickname {
                     self.navigationController?.pushViewController(NickNameInputViewController(), animated: true)
+                } else {
+                    self.navigationController?.pushViewController(PlaceListViewController(), animated: true)
                 }
             }
             .store(in: &cancelBag)
