@@ -8,6 +8,7 @@
 
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 
 final class OrgDetailViewController: UIViewController {
@@ -34,9 +35,16 @@ final class OrgDetailViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         createLayout()
+        analytics()
     }
 
     // MARK: - Function
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("org_detail_viewed", parameters: [
+            AnalyticsParameterScreenName: "org_detail"
+        ])
+    }
 
 }
 

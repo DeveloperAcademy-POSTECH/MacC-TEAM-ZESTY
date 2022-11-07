@@ -9,6 +9,7 @@
 import Combine
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 
 final class VerifingCodeViewController: UIViewController {
@@ -46,6 +47,7 @@ final class VerifingCodeViewController: UIViewController {
         configureUI()
         createLayout()
         bindUI()
+        analytics()
     }
     
     // MARK: - Function
@@ -84,6 +86,12 @@ final class VerifingCodeViewController: UIViewController {
         }, completion: { _ in
             toastLabel.removeFromSuperview()
         })
+    }
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("verifing_code_viewed", parameters: [
+            AnalyticsParameterScreenName: "verifing_code"
+        ])
     }
     
 }
