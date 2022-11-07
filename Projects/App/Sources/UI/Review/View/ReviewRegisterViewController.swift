@@ -57,6 +57,7 @@ final class ReviewRegisterViewController: UIViewController {
         self.imagePickerController.delegate = self
         self.imagePickerController.sourceType = .photoLibrary
         present(self.imagePickerController, animated: true, completion: nil)
+        FirebaseAnalytics.Analytics.logEvent("add_image", parameters: nil)
     }
     
     @objc private func registerButtonTouched() {
