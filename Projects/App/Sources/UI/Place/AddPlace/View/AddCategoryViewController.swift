@@ -60,6 +60,7 @@ final class AddCategoryViewController: UIViewController {
     
     @objc func backButtonDidTap() {
         self.navigationController?.popViewController(animated: true)
+        FirebaseAnalytics.Analytics.logEvent("add_category_exit", parameters: nil)
     }
     
     @objc func addPlaceButtonDidTap() {

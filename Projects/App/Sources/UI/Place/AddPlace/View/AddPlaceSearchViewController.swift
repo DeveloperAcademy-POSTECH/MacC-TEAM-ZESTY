@@ -62,6 +62,7 @@ final class AddPlaceSearchViewController: UIViewController {
     
     @objc func backButtonDidTap() {
         self.navigationController?.popViewController(animated: true)
+        FirebaseAnalytics.Analytics.logEvent("add_place_search_exit", parameters: nil)
     }
     
     @objc func searchButtonDidTap() {
