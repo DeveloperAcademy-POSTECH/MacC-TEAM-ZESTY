@@ -35,8 +35,7 @@ final class OrganizationListViewController: UIViewController {
     
     // MARK: Function
     @objc func searchButtonTapped() {
-        let userInputText = searchingTextField.text ?? ""
-        viewModel.isSearchText.send(userInputText)
+        searchingTextField.resignFirstResponder()
     }
 }
 

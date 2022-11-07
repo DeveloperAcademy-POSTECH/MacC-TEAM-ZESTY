@@ -22,7 +22,6 @@ final class OrganizationListViewModel {
     
     // Input
     @Published var userTextInput: String = ""
-    let isSearchText = PassthroughSubject<String, Never>()
     
     // Output
     @Published var searchedOrgArray: [Organization] = []
@@ -45,13 +44,6 @@ extension OrganizationListViewModel {
         $userTextInput
             .sink { [weak self] userTextInput in
                 self?.searchInput(userTextInput)
-            }
-            .store(in: &cancelBag)
-        isSearchText
-            .sink { _ in
-            } receiveValue: { [weak self] userTextInput in
-                guard let self = self else { return }
-                self.userTextInput = userTextInput
             }
             .store(in: &cancelBag)
     }
