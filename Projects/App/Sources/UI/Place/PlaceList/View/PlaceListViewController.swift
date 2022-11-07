@@ -87,7 +87,7 @@ extension PlaceListViewController: AddPlaceDelegate {
     }
     
     @objc func orgDetailButtonTapped() {
-//        navigationController?.pushViewController(OrgDetailViewController(viewModel: OrgDetailViewModel(orgId: UserDefaults.standard.userOrganization ?? 400)), animated: true)
+        navigationController?.pushViewController(OrgDetailViewController(viewModel: OrgDetailViewModel(orgId: UserDefaults.standard.userOrganization ?? 400)), animated: true)
     }
     
     @objc func searchButtonTapped() {
