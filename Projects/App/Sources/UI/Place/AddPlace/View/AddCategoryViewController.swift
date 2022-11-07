@@ -9,6 +9,7 @@
 import Combine
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 import Kingfisher
 
@@ -52,15 +53,23 @@ final class AddCategoryViewController: UIViewController {
         input.send(.categoryViewDidLoad)
         configureUI()
         createLayout()
+        analytics()
     }
     
     // MARK: - Function
+    
     @objc func backButtonDidTap() {
         self.navigationController?.popViewController(animated: true)
     }
     
     @objc func addPlaceButtonDidTap() {
         input.send(.addPlaceBtnDidTap)
+    }
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("add_category_viewed", parameters: [
+            AnalyticsParameterScreenName: "add_category"
+        ])
     }
     
 }

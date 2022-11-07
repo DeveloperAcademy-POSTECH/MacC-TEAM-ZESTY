@@ -44,6 +44,7 @@ final class PlaceListViewController: UIViewController {
         configureHierarchy()
         configureDataSource()
         bind()
+        analytics()
     }
     
     // MARK: - Function
@@ -56,6 +57,12 @@ final class PlaceListViewController: UIViewController {
                 self.applySnapshot(with: placeList)
             }
             .store(in: &cancelBag)
+    }
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("place_list_viewed", parameters: [
+            AnalyticsParameterScreenName: "place_list"
+        ])
     }
 
 }
