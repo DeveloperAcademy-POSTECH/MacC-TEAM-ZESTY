@@ -26,9 +26,16 @@ final class SignupCompleteViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         createLayout()
+        analytics()
     }
     
     // MARK: - Function
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("signup_complete_viewed", parameters: [
+            AnalyticsParameterScreenName: "signup_complete"
+        ])
+    }
     
 }
 

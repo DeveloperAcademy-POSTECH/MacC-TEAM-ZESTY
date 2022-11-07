@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        } else {
 //            navigationController = UINavigationController(rootViewController: PlaceListViewController())
 //        }
-        let navigationController = UINavigationController(rootViewController: ViewController())
+        let navigationController = UINavigationController(rootViewController: PlaceListViewController())
         window.rootViewController = navigationController
         self.window = window
         window.makeKeyAndVisible()

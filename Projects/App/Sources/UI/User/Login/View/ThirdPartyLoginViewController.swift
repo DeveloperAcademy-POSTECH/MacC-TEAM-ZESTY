@@ -41,6 +41,7 @@ final class ThirdPartyLoginViewController: UIViewController {
         configureUI()
         createLayout()
         bindUI()
+        analytics()
     }
     
     // MARK: - Function
@@ -55,6 +56,12 @@ final class ThirdPartyLoginViewController: UIViewController {
     
     @objc func appleLoginButtonClicked() {
         appleAuthorizationController.performRequests()
+    }
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("thirdparty_login_viewed", parameters: [
+            AnalyticsParameterScreenName: "thirdparty_login"
+        ])
     }
     
 }
