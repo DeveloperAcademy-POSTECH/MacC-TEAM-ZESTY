@@ -53,10 +53,16 @@ final class ThirdPartyLoginViewController: UIViewController {
     
     @objc func kakaoLoginButtonClicked() {
         viewModel.kakaoLogin()
+        FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSignUp, parameters: [
+            AnalyticsParameterMethod: "kakao"
+        ])
     }
     
     @objc func appleLoginButtonClicked() {
         appleAuthorizationController.performRequests()
+        FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSignUp, parameters: [
+            AnalyticsParameterMethod: "apple"
+        ])
     }
     
     private func analytics() {
