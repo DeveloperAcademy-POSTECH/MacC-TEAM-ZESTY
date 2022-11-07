@@ -44,11 +44,11 @@ final class ReviewCardViewController: UIViewController {
  
 extension ReviewCardViewController {
 
-    @objc func backButtonTouched() {
+    @objc private func backButtonTouched() {
         popTo(PlaceDetailViewController.self)
     }
 
-    @objc func completeButtonTouched() {
+    @objc private func completeButtonTouched() {
         popTo(PlaceDetailViewController.self)
     }
     
@@ -59,12 +59,12 @@ extension ReviewCardViewController {
         }
     }
     
-    @objc func saveButtonTouched() {
+    @objc private func saveButtonTouched() {
         let reviewCard = cardView.transfromToImage() ?? UIImage()
         saveImage(with: reviewCard)
     }
     
-    func saveImage(with image: UIImage) {
+    private func saveImage(with image: UIImage) {
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
         self.present(activityViewController, animated: true, completion: nil)

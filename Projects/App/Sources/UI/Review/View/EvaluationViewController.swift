@@ -43,7 +43,7 @@ final class EvaluationViewController: UIViewController {
     
     // MARK: - Function
     
-    @objc func goodButtonTouched() {
+    @objc private func goodButtonTouched() {
         goodButton.isSelected = true
         sosoButton.isSelected = false
         badButton.isSelected = false
@@ -52,7 +52,7 @@ final class EvaluationViewController: UIViewController {
         navigationController?.pushViewController(ReviewRegisterViewController(viewModel: viewModel), animated: true)
     }
     
-    @objc func sosoButtonTouched() {
+    @objc private func sosoButtonTouched() {
         sosoButton.isSelected = true
         badButton.isSelected = false
         goodButton.isSelected = false
@@ -61,7 +61,7 @@ final class EvaluationViewController: UIViewController {
         navigationController?.pushViewController(ReviewRegisterViewController(viewModel: viewModel), animated: true)
     }
     
-    @objc func badButtonTouched() {
+    @objc private func badButtonTouched() {
         badButton.isSelected = true
         goodButton.isSelected = false
         sosoButton.isSelected = false
