@@ -20,7 +20,7 @@ final class DomainSettingViewModel {
     @Published var userInput: String = ""
     
     // output
-    @Published var isInputValid = true
+    @Published var isInputValid = false
     @Published var shouldDisplayWarning = false
     let isEmailOverlapedSubject = PassthroughSubject<Bool, Never>()
     
@@ -66,7 +66,7 @@ final class DomainSettingViewModel {
 extension DomainSettingViewModel {
     
     private func checkInputValid(email: String) -> Bool {
-        return email.isEmpty || email.contains(" ")
+        return !(email.isEmpty || email.contains(" "))
     }
     
 }

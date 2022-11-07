@@ -73,8 +73,8 @@ extension DomainSettingViewController {
             .store(in: &cancelBag)
         
         viewModel.$isInputValid
-            .sink {[weak self] isInputEmpty in
-                self?.arrowButton.setDisabled(isInputEmpty)
+            .sink {[weak self] isInputValid in
+                self?.arrowButton.setDisabled(!isInputValid)
             }
             .store(in: &cancelBag)
         
