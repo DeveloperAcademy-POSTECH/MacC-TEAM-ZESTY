@@ -87,7 +87,7 @@ extension PlaceListViewController: AddPlaceDelegate {
     }
     
     @objc func searchButtonTapped() {
-        // TODO: 검색뷰 완성 시 연결
+        navigationController?.pushViewController(SearchPlaceViewController(viewModel: SearchPlaceViewModel()), animated: true)
     }
     
     @objc func userInfoButtonTapped() {
