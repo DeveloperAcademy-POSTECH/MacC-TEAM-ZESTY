@@ -103,7 +103,9 @@ extension OrganizationListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let organization = viewModel.searchedOrgArray[indexPath.row]
-        navigationController?.pushViewController(DomainSettingViewController(), animated: true)
+        let domainSettingVC = DomainSettingViewController(organization: organization)
+        
+        navigationController?.pushViewController(domainSettingVC, animated: true)
     }
     
 }

@@ -17,7 +17,7 @@ final class DomainSettingViewController: UIViewController {
     
     private var cancelBag = Set<AnyCancellable>()
     
-    private let viewModel = DomainSettingViewModel()
+    private let viewModel: DomainSettingViewModel
     
     private let mainTitleView = MainTitleView(title: "학교 이메일을 알려주세요",
                                               subtitle: "학교 인증에 사용돼요.")
@@ -31,6 +31,15 @@ final class DomainSettingViewController: UIViewController {
     
     // MARK: - LifeCycle
     
+    init(organization: Organization = Organization.mockData[0]) {
+        self.viewModel = DomainSettingViewModel(organization: organization)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         bindUI()
@@ -39,6 +48,12 @@ final class DomainSettingViewController: UIViewController {
     }
     
     // MARK: - Function
+    
+    @objc func arrowButtonTapped() {
+        arrowButton.startIndicator()
+        
+        viewModel.postUserEmail()
+    }
     
 }
 
@@ -49,19 +64,33 @@ extension DomainSettingViewController {
     private func bindUI() {
         emailTextField.textDidChangePublisher
             .compactMap { $0.text }
-            .assign(to: \.userEmail, on: viewModel)
+            .assign(to: \.userInput, on: viewModel)
             .store(in: &cancelBag)
         
-        viewModel.$isEmailEmpty
-            .sink {[weak self] isEmailEmpty in
-                self?.arrowButton.setDisabled(isEmailEmpty)
+        viewModel.$isInputValid
+            .sink {[weak self] isInputEmpty in
+                self?.arrowButton.setDisabled(isInputEmpty)
             }
             .store(in: &cancelBag)
         
-        viewModel.$isDuplicateEmail
-            .sink { [weak self] isDuplicateEmail in
+        viewModel.$shouldDisplayWarning
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] shouldDisplayWarning in
                 guard let self = self else { return }
-                self.emailDuplicatedLabel.isHidden = !isDuplicateEmail
+                self.emailDuplicatedLabel.isHidden = !shouldDisplayWarning
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.isEmailOverlapedSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isEmailOverlaped in
+                guard let self = self else { return }
+                self.arrowButton.stopIndicator()
+                if isEmailOverlaped {
+                    self.arrowButton.setDisabled(true)
+                } else {
+                    self.navigationController?.pushViewController(VerifingCodeViewController(), animated: true)
+                }
             }
             .store(in: &cancelBag)
         
@@ -106,9 +135,11 @@ extension DomainSettingViewController {
         emailTextField.autocapitalizationType = .none
         
         domainPlaceholder.textColor = .white
-        domainPlaceholder.text = "@pos.idserve.net"
+        domainPlaceholder.text = "@\(viewModel.getOrgDomain())"
         domainPlaceholder.font = .systemFont(ofSize: 17, weight: .medium)
         domainPlaceholder.setContentCompressionResistancePriority(.init(1000), for: .horizontal)
+        
+        arrowButton.addTarget(self, action: #selector(arrowButtonTapped), for: .touchUpInside)
         
         emailDuplicatedLabel.textColor = .red
         emailDuplicatedLabel.text = "이미 사용된 이메일이에요."
@@ -172,17 +203,3 @@ extension DomainSettingViewController {
     }
     
 }
-
-// MARK: - Previews
-
-#if DEBUG
-import SwiftUI
-
-struct DomainSettingViewControllerPreview: PreviewProvider {
-    
-    static var previews: some View {
-        DomainSettingViewController().toPreview()
-    }
-    
-}
-#endif
