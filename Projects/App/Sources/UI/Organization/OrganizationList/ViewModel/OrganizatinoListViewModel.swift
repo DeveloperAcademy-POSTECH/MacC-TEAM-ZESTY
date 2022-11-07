@@ -40,6 +40,7 @@ final class OrganizationListViewModel {
 
 // MARK: - Bind Fucntions
 extension OrganizationListViewModel {
+    
     private func bind() {
         $userTextInput
             .sink { [weak self] userTextInput in
@@ -48,14 +49,13 @@ extension OrganizationListViewModel {
             .store(in: &cancelBag)
         isSearchText
             .sink { _ in
-                
             } receiveValue: { [weak self] userTextInput in
                 guard let self = self else { return }
                 self.userTextInput = userTextInput
             }
             .store(in: &cancelBag)
-
     }
+    
 }
 
 // MARK: - Functions
