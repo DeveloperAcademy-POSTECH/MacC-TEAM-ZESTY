@@ -49,6 +49,7 @@ final class ReviewRegisterViewController: UIViewController {
         configureUI()
         createLayout()
         bindKeyboardAction()
+        analytics()
     }
     
     @objc private func openGallery() {
@@ -84,6 +85,12 @@ extension ReviewRegisterViewController: UIImagePickerControllerDelegate, UINavig
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
+    }
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("review_register_viewed", parameters: [
+            AnalyticsParameterScreenName: "review_register"
+        ])
     }
     
 }

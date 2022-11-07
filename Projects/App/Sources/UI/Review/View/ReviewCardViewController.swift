@@ -37,6 +37,7 @@ final class ReviewCardViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         createLayout()
+        analytics()
     }
     
 }
@@ -73,6 +74,12 @@ extension ReviewCardViewController {
                 PHAssetChangeRequest.creationRequestForAsset(from: image)
             }, completionHandler: nil)
         }
+    }
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("review_card_viewed", parameters: [
+            AnalyticsParameterScreenName: "review_card"
+        ])
     }
 
 }
