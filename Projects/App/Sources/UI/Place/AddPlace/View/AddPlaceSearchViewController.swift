@@ -62,6 +62,7 @@ final class AddPlaceSearchViewController: UIViewController {
     
     @objc func backButtonDidTap() {
         self.navigationController?.popViewController(animated: true)
+        // TODO: 스와이프로 뒤로가기 했을 경우에 대한 대비 필요
         FirebaseAnalytics.Analytics.logEvent("add_place_search_exit", parameters: nil)
     }
     
