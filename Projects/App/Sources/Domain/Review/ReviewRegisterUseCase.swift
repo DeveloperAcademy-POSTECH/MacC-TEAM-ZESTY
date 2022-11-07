@@ -9,6 +9,7 @@
 import Combine
 import Foundation
 import Network
+import UIKit.UIImage
 
 final class ReviewRegisterUseCase {
     
@@ -20,8 +21,10 @@ final class ReviewRegisterUseCase {
 
 extension ReviewRegisterUseCase {
     
-    func uploadImage(with data: Data?) {
-        uploadManager.requestUpload(data: data)
+    func uploadImage(with image: UIImage?) {
+        let imageData = image?.jpegData(compressionQuality: 0.2)
+        
+        uploadManager.requestUpload(data: imageData)
         
         uploadManager.uploadResultSubject
             .sink { [weak self] completion in

@@ -53,9 +53,7 @@ final class ReviewRegisterViewModel {
 extension ReviewRegisterViewModel: ErrorMapper {
     
     func uploadImage(with image: UIImage?) {
-        let imageData = image?.pngData()
-        
-        useCase.uploadImage(with: imageData)
+        useCase.uploadImage(with: image)
         
         useCase.uploadResultSubject
             .sink { [weak self] completion in
