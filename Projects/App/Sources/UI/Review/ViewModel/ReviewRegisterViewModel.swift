@@ -36,7 +36,7 @@ final class ReviewRegisterViewModel {
         var placeAddress: String = ""
     }
     
-    @Published var result = Result()
+    let result = PassthroughSubject<Result, Never>()
     private let isRegisterFail = PassthroughSubject<String, Never>() // alert 용
     
     // MARK: - LifeCycle
@@ -108,13 +108,14 @@ extension ReviewRegisterViewModel: ErrorMapper {
             if !review.image.isEmpty {
                 imageURL = URL(string: review.image[0] ?? "")
             }
-            self.result = Result(image: imageURL,
+            let result = Result(image: imageURL,
                                  evaluation: Evaluation(review.evaluation),
                                  reviewer: review.reviewer.nickname,
                                  registeredAt: Date.getStringToDate(review.createdAt).getDateToString(format: "yy.MM.dd"),
                                  category: review.place.category.name,
                                      placeName: review.place.name,
                                      placeAddress: review.place.address)
+            self.result.send(result)
             }
         .store(in: &cancelBag)
     }

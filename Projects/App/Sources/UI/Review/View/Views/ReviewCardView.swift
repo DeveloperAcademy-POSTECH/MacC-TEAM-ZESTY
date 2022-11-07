@@ -57,8 +57,7 @@ final class ReviewCardView: UIView {
 extension ReviewCardView {
     
     private func bind() {
-        viewModel.$result
-            .dropFirst()
+        viewModel.result
             .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
                 guard let self = self else { return }
