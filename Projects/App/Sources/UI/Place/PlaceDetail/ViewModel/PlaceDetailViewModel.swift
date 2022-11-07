@@ -13,7 +13,7 @@ import Network
 class PlaceDetailViewModel {
     
     enum Input {
-        case viewDidLoad
+        case viewWillAppear
     }
     
     enum Output {
@@ -42,7 +42,7 @@ class PlaceDetailViewModel {
         
         input.sink { [weak self] event in
             switch event {
-            case .viewDidLoad:
+            case .viewWillAppear:
                 self?.fetchPlaceInfo(id: self?.placeId ?? -1)
                 self?.fetchReviews(id: self?.placeId ?? -1)
                 
@@ -79,7 +79,6 @@ class PlaceDetailViewModel {
             }
             .store(in: &cancelBag)
     }
-    
     
     func getPlace() -> Place {
         return self.place ?? Place.empty
