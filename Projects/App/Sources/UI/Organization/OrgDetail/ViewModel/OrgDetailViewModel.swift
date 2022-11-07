@@ -12,7 +12,7 @@ import UIKit
 final class OrgDetailViewModel {
     
     // MARK: - Properties
-//    private let useCase: OrgDetailUseCase
+    private let useCase: OrganizationDetailUseCase
     private var cancelBag = Set<AnyCancellable>()
     
     // Input
@@ -29,12 +29,29 @@ final class OrgDetailViewModel {
     
     // MARK: - LifeCycle
     
-    init(orgId: Int) {
+    init(useCase: OrganizationDetailUseCase = OrganizationDetailUseCase(),
+         orgId: Int) {
+        self.useCase = useCase
         self.orgId = orgId
+        fetchDetails()
     }
     
 }
 
 extension OrgDetailViewModel {
-    
+    func fetchDetails() {
+        useCase.fetchOrganizationDetail(with: orgId)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error.localizedDescription)
+                case .finished: break
+                }
+            } receiveValue: { [weak self] organization in
+                self?.orgDetailCounts = OrgDetailCounts(friends: organization.memberCount,
+                                                        places: organization.placeCount,
+                                                        images: organization.imageCount)
+            }
+            .store(in: &cancelBag)
+    }
 }
