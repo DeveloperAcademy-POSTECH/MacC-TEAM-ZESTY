@@ -86,12 +86,15 @@ extension PlaceListViewController: AddPlaceDelegate {
         navigationController?.pushViewController(AddPlaceSearchViewController(viewModel: AddPlaceSearchViewModel()), animated: true)
     }
     
+    @objc func orgDetailButtonTapped() {
+//        navigationController?.pushViewController(OrgDetailViewController(viewModel: OrgDetailViewModel(orgId: UserDefaults.standard.userOrganization ?? 400)), animated: true)
+    }
+    
     @objc func searchButtonTapped() {
         navigationController?.pushViewController(SearchPlaceViewController(viewModel: SearchPlaceViewModel()), animated: true)
     }
     
     @objc func userInfoButtonTapped() {
-        // TODO: 민이 만든 프로필 뷰로 이동
          navigationController?.pushViewController(ProfileViewController(), animated: true)
     }
 
@@ -168,9 +171,12 @@ extension PlaceListViewController {
         let personCropCircle = UIImage(systemName: "person.crop.circle")
         let userInfoItem = UIBarButtonItem(image: personCropCircle, style: .plain, target: self, action: #selector(userInfoButtonTapped))
         let placeTitle = UILabel()
-        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(orgDetailButtonTapped))
+
         placeTitle.text = "애플디벨로퍼아카데미"
         placeTitle.font = .systemFont(ofSize: 17, weight: .bold)
+        placeTitle.isUserInteractionEnabled = true
+        placeTitle.addGestureRecognizer(tapGesture)
         
         navigationItem.rightBarButtonItems = [userInfoItem, searchItem]
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: placeTitle)
