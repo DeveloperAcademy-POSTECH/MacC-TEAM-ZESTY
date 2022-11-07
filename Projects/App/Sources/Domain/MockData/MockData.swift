@@ -35,12 +35,12 @@ extension Organization {
 
 extension User {
     static let mockData: [User] = [
-        User(id: 0, email: "avery@pos.idserve.net", social: .kakao, nickname: "버리", authToken: "dkjds8d2", organizationId: 0),
-        User(id: 1, email: "avo@pos.idserve.net", social: .kakao, nickname: "카도아보", authToken: "fkdis09n", organizationId: 0),
-        User(id: 2, email: "nick@pos.idserve.net", social: .kakao, nickname: "닉", authToken: "d8s82m", organizationId: 1),
-        User(id: 3, email: "lia@pos.idserve.net", social: .kakao, nickname: "리아", authToken: "dkd02j2", organizationId: 2),
-        User(id: 4, email: "goban@pos.idserve.net", social: .kakao, nickname: "고바라바라만", authToken: "l3l9dxm", organizationId: 2),
-        User(id: 5, email: "min@pos.idserve.net", social: .kakao, nickname: "오이는밍밍", authToken: "3o3kkd9", organizationId: 2)
+        User(id: 0, nickname: "버리"),
+        User(id: 1, nickname: "카도아보"),
+        User(id: 2, nickname: "닉"),
+        User(id: 3, nickname: "리아"),
+        User(id: 4, nickname: "고바라바라만"),
+        User(id: 5, nickname: "오이는밍밍")
     ]
 }
 
