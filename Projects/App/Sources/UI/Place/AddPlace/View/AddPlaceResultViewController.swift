@@ -155,6 +155,7 @@ final class AddPlaceResultViewController: UIViewController {
         // ShareSheet
         let reviewCard = placeCard.transfromToImage() ?? UIImage()
         saveImage(with: reviewCard)
+        FirebaseAnalytics.Analytics.logEvent("add_place_card_saved", parameters: nil)
     }
     
     @objc func doneButtonDidTap() {

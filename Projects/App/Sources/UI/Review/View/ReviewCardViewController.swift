@@ -65,6 +65,7 @@ extension ReviewCardViewController {
     @objc func saveButtonTouched() {
         let reviewCard = cardView.transfromToImage() ?? UIImage()
         saveImage(with: reviewCard)
+        FirebaseAnalytics.Analytics.logEvent("review_card_saved", parameters: nil)
     }
     
     func saveImage(with image: UIImage) {
