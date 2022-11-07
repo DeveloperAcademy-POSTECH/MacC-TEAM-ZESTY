@@ -17,10 +17,11 @@ final class VerifingCodeViewController: UIViewController {
     private var cancelBag = Set<AnyCancellable>()
     
     private let isSE: Bool = UIScreen.main.isHeightLessThan670pt
-    
     private var keyboardEndFrameHeight: CGFloat?
     
-    private lazy var titleView = MainTitleView(title: "이메일로 받은 코드를\n알려주세요", subtitle: "\(userEmail)", hasSymbol: true)
+    private let viewModel = VerifingCodeViewModel()
+    
+    private lazy var titleView = MainTitleView(title: "이메일로 받은 코드를\n알려주세요", subtitle: "\(viewModel.userEmail)", hasSymbol: true)
     
     private let warningMessage = UILabel()
     private let otpStackView = OTPStackView()
@@ -32,12 +33,6 @@ final class VerifingCodeViewController: UIViewController {
     
     private let arrowButton = ArrowButton(initialDisable: false)
     
-    // TODO: ViewModel로 옮길 것들입니다
-    let userEmail = "mingming@pos.idserve.net"
-    var isArrowButtonHidden: Bool = true
-    var isCodeValid: Bool = true
-    var userInputCode: String = ""
-    var timer = "03:00"
     
     // MARK: - LifeCycle
     
@@ -119,10 +114,10 @@ extension VerifingCodeViewController {
         navigationController?.navigationBar.topItem?.title = ""
         
         warningMessage.text = "잘못된 코드예요."
-        warningMessage.isHidden = isCodeValid
+        warningMessage.isHidden = viewModel.isCodeValid
         warningMessage.textColor = .zestyColor(.point)
         
-        timerLabel.text = timer
+        timerLabel.text = viewModel.timer
         
         resendStackView.spacing = 10
         resendStackView.axis = .horizontal
@@ -137,7 +132,7 @@ extension VerifingCodeViewController {
         resendEamilButton.setTitleColor(.label, for: .normal)
         resendEamilButton.titleLabel?.font = .systemFont(ofSize: 13, weight: .bold)
         resendEamilButton.addTarget(self, action: #selector(resendButtonTapped), for: .touchUpInside)
-        arrowButton.isHidden = isArrowButtonHidden
+        arrowButton.isHidden = viewModel.isArrowButtonHidden
         arrowButton.startIndicator()
     }
     
