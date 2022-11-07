@@ -19,5 +19,13 @@ public struct OrganizationAPI {
         
         return networkService.request(with: endpoint, responseType: OrganizationListDTO.self)
     }
+    
+    public static func fetchOrgDetail(orgId: Int) -> AnyPublisher<OrgDetailDTO, NetworkError> {
+        let header = ["Content-Type": "application/json"]
+        let query = ["orgNo": "\(orgId)"]
+        let endpoint = Endpoint(path: "/api/organizations/static", queryParams: query, headers: header)
+        
+        return networkService.request(with: endpoint, responseType: OrgDetailDTO.self)
+    }
 
 }
