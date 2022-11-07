@@ -121,6 +121,7 @@ extension OrganizationListViewController {
         
         searchingTextFieldView.placeholder = "대학교 검색"
         searchingTextField.delegate = self
+        searchingTextField.becomeFirstResponder()
         
         let largeConfig = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .default)
         let largeBoldDoc = UIImage(systemName: "magnifyingglass", withConfiguration: largeConfig)
