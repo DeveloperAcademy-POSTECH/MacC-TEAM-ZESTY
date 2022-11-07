@@ -21,11 +21,24 @@ public final class MainTitleView: UIView {
     public var subtitleLabel = UILabel()
     private let titleStackView = UIStackView()
     
-    public init(title: String = "", subtitle: String = "") {
+    public init(title: String = "", subtitle: String = "", hasSymbol: Bool = false) {
         super.init(frame: .zero)
         
         titleLabel.text = title
-        subtitleLabel.text = subtitle
+        
+        /// 출처 : https://stackoverflow.com/questions/58341042/is-it-possible-to-use-sf-symbols-outside-of-uiimage
+        if hasSymbol {
+            let symbolConfiguration = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 15, weight: .regular))
+            let symbolImage = UIImage(systemName: "envelope", withConfiguration: symbolConfiguration)?.withRenderingMode(.alwaysTemplate)
+            let symbolTextAttachment = NSTextAttachment()
+            symbolTextAttachment.image = symbolImage
+            let attributedText = NSMutableAttributedString()
+            attributedText.append(NSAttributedString(attachment: symbolTextAttachment))
+            attributedText.append(NSAttributedString(string: " " + subtitle))
+            subtitleLabel.attributedText = attributedText
+        } else {
+            subtitleLabel.text = subtitle
+        }
         
         configureUI(subTitle: subtitle)
         createLayout(subtitle: subtitle)

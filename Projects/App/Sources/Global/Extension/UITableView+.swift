@@ -51,6 +51,13 @@ extension UITableView {
         self.addSubview(emptyView)
         
         emptyView.addSubviews([iconView, messageLabel])
+        
+        emptyView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.width.equalToSuperview()
+        }
+        
         NSLayoutConstraint.activate([
             iconView.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor, constant: -180),
             iconView.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor),

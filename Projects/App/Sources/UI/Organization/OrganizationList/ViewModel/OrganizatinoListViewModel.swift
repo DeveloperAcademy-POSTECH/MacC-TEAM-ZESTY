@@ -6,8 +6,8 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 final class OrganizationListViewModel {
     
@@ -24,7 +24,7 @@ final class OrganizationListViewModel {
     
     init() {
         setData()
-        setInitialSearchedArray()
+//        setInitialSearchedArray()
         
         $userTextInput
             .sink { [weak self] userTextInput in
@@ -42,13 +42,13 @@ extension OrganizationListViewModel {
         orgNameArray = orgArray.map { $0.name }
     }
     
-    private func setInitialSearchedArray() {
-        searchedOrgArray = orgNameArray
-    }
+//    private func setInitialSearchedArray() {
+//        searchedOrgArray = orgNameArray
+//    }
     
     private func searchInput(_ input: String) {
         if input.isEmpty {
-            setInitialSearchedArray()
+//            setInitialSearchedArray()
             return
         }
         if input.contains(" ") {
