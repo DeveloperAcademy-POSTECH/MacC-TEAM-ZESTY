@@ -136,18 +136,18 @@ extension OrgDetailViewController {
         orgInfoImageView1.contentMode = .scaleAspectFit
         orgInfoImageView1.layer.applyFigmaShadow(color: .black, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
         orgDetailInformationView1.informationLabel.text = "함께하는 친구들"
-        orgDetailInformationView1.numberLabel.text = "13,966명"
+        orgDetailInformationView1.numberLabel.text = "0명"
         
         orgInfoImageView2.image = UIImage(.img_categoryfriends_western)
         orgInfoImageView2.contentMode = .scaleAspectFit
         orgDetailInformationView2.informationLabel.text = "등록된 맛집"
-        orgDetailInformationView2.numberLabel.text = "1,425곳"
+        orgDetailInformationView2.numberLabel.text = "0곳"
         
         orgInfoImageView3.image = UIImage(.img_reviewfriends_photo)
         orgInfoImageView3.contentMode = .scaleAspectFit
         orgInfoImageView3.layer.applyFigmaShadow(color: .black, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
         orgDetailInformationView3.informationLabel.text = "업로드된 사진"
-        orgDetailInformationView3.numberLabel.text = "124,513개"
+        orgDetailInformationView3.numberLabel.text = "0개"
         
         orgInviteButton.setTitle("우리학교 사람들 초대하기", for: .normal)
         orgInviteButton.addTarget(self, action: #selector(shareAppStoreLink), for: .touchUpInside)
