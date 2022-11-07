@@ -8,6 +8,7 @@
 
 import Combine
 import UIKit
+import Firebase
 import SnapKit
 import DesignSystem
 
@@ -110,12 +111,18 @@ final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
         kakaoButton.showAnimation {
             UrlUtils.openExternalLink(urlStr: self.kakaoUrl)
         }
+        FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+            AnalyticsParameterItemListName: "kakao_map"
+        ])
     }
     
     @objc func openNaverMap() {
         naverButton.showAnimation {
             UrlUtils.openExternalLink(urlStr: self.naverUrl)
         }
+        FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+            AnalyticsParameterItemListName: "naver_map"
+        ])
     }
       
     @objc func addReviewButtonDidTap() {
