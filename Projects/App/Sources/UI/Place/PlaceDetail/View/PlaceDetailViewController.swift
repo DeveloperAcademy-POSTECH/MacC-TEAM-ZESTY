@@ -41,12 +41,16 @@ final class PlaceDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bind()
-        input.send(.viewDidLoad)
         createObservers()
         setNavigationBar()
         configureUI()
         createLayout()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        bind()
+        input.send(.viewWillAppear)
     }
     
     // MARK: - Function

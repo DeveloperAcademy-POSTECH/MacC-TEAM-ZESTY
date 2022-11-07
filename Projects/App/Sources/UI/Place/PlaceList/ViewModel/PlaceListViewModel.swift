@@ -29,7 +29,7 @@ class PlaceListViewModel {
     }
     
     // Input
-    @Published var placeType: PlaceType = .whole
+    @Published var placeType: PlaceType
     
     // Output
     @Published var result: [Place] = []
@@ -39,10 +39,11 @@ class PlaceListViewModel {
     
     // MARK: - LifeCycle
     
-    init(useCase: PlaceListUseCase = PlaceListUseCase()) {
+    init(useCase: PlaceListUseCase = PlaceListUseCase(), placeType: PlaceType = .whole) {
         self.useCase = useCase
-        prefetch(at: [1])
+        self.placeType = placeType
         bind()
+        initialFetch()
     }
     
 }
@@ -51,7 +52,14 @@ class PlaceListViewModel {
 
 extension PlaceListViewModel: ErrorMapper {
     
-    func prefetch(at rows: [Int]) {
+    private func initialFetch() {
+        placeType = .hot
+        prefetch(at: [1], willUpdate: false)
+        placeType = .whole
+        prefetch(at: [1])
+    }
+    
+    func prefetch(at rows: [Int], willUpdate: Bool = true) {
         let section: Section
         
         switch placeType {
@@ -82,7 +90,9 @@ extension PlaceListViewModel: ErrorMapper {
                     section.lastIndex += placeList.count
                     // 서버에 요청할 인덱스 = 가장 마지막 데이터의 placeID + 1
                     section.cursor = section.placeList[section.lastIndex].id + 1
-                    self.result = section.placeList
+                    if willUpdate {
+                        self.result = section.placeList
+                    }
                 }
                 .store(in: &self.cancelBag)
             break
@@ -93,6 +103,7 @@ extension PlaceListViewModel: ErrorMapper {
         $placeType
             .sink { [weak self] type in
                 guard let self = self else { return }
+                
                 switch type {
                 case .whole:
                     self.result = self.wholePlace.placeList
