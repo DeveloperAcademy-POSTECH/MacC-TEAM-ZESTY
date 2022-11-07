@@ -23,7 +23,7 @@ final class VerifingCodeViewModel {
     // output 
     @Published var timerText = "03:00"
     
-    private var timerNumber: Int = 10
+    private var timerNumber: Int = 180
     private let oneMinuteToSecond: Int = 60
 }
 
