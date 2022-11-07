@@ -34,7 +34,10 @@ final class OrganizationListViewController: UIViewController {
     }
     
     // MARK: Function
-    
+    @objc func searchButtonTapped() {
+        let userInputText = searchingTextField.text ?? ""
+        viewModel.isSearchText.send(userInputText)
+    }
 }
 
 // MARK: Bind UI
@@ -127,6 +130,7 @@ extension OrganizationListViewController {
         searchButton.tintColor = .white
         searchButton.layer.cornerRadius = 45/2
         searchButton.clipsToBounds = true
+        searchButton.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
         
         tableView.register(OrganizationListCell.self, forCellReuseIdentifier: OrganizationListCell.identifier)
         tableView.separatorStyle = .none
