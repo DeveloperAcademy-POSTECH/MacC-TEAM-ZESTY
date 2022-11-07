@@ -20,7 +20,7 @@ final class AddPlaceSearchViewController: UIViewController {
     
     private var searchResults: [KakaoPlace] = []
     
-    private lazy var searchingTextFieldView = SearchTextField()
+    private lazy var searchingTextFieldView = SearchTextField(placeholder: "장소")
     private lazy var tableView = UITableView(frame: CGRect.zero, style: .grouped)
     
     private lazy var searchButton: UIButton = {
@@ -205,14 +205,6 @@ extension AddPlaceSearchViewController: UITableViewDelegate {
         self.input.send(.placeResultCellDidTap(kakaoPlace: place))
         
     }
-    
-//
-//    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-//        if indexPath.row == 0 {
-//            return nil
-//        }
-//        return indexPath
-//    }
 
 }
 

@@ -15,8 +15,6 @@ final class SearchResultCell: UITableViewCell {
     // MARK: - Properties
     
     private var cancelBag = Set<AnyCancellable>()
-    
-    private let input: PassthroughSubject<AddPlaceSearchViewModel.Input, Never> = .init()
     private var kakaoPlace: KakaoPlace?
     
     private let nameLabel: UILabel = {

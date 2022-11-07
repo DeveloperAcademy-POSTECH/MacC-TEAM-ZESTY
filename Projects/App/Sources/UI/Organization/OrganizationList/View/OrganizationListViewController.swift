@@ -19,8 +19,8 @@ final class OrganizationListViewController: UIViewController {
     
     private var cancelBag = Set<AnyCancellable>()
     
-    private let titleLabel = UILabel()
-    private let searchingTextFieldView = ShadowTextFieldView()
+    private lazy var searchingTextFieldView = SearchTextField(placeholder: "대학교 검색")
+    private let searchButton = UIButton(type: .custom)
     private lazy var searchingTextField = searchingTextFieldView.textField
     private let tableView = UITableView()
     
@@ -65,6 +65,15 @@ extension OrganizationListViewController {
 extension OrganizationListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if viewModel.searchedOrgArray.count == 0 {
+            if searchingTextFieldView.textField.text == "" {
+                tableView.setEmptyView(message: "참여할 대학교를\n알려주세요", type: .search)
+            } else {
+                tableView.setEmptyView(message: "검색 결과가 없어요.", type: .noresult)
+            }
+        } else {
+            tableView.restore()
+        }
         return viewModel.searchedOrgArray.count
     }
     
@@ -94,9 +103,20 @@ extension OrganizationListViewController {
     private func configureUI() {
         view.backgroundColor = .white
         
-        titleLabel.text = "참여할 대학교를 알려주세요"
-        // TODO: system font size로 바꾸기
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 26)
+        navigationItem.title = "대학 선택"
+        navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .medium)
+        ]
+        
+        searchingTextFieldView.placeholder = "대학교 검색"
+        
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .default)
+        let largeBoldDoc = UIImage(systemName: "magnifyingglass", withConfiguration: largeConfig)
+        searchButton.setImage(largeBoldDoc, for: .normal)
+        searchButton.backgroundColor = .black
+        searchButton.tintColor = .white
+        searchButton.layer.cornerRadius = 45/2
+        searchButton.clipsToBounds = true
         
         tableView.dataSource = self
         tableView.register(OrganizationListCell.self, forCellReuseIdentifier: OrganizationListCell.identifier)
@@ -104,17 +124,19 @@ extension OrganizationListViewController {
     }
     
     private func createLayout() {
-        view.addSubviews([titleLabel, searchingTextFieldView, tableView])
-        
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
-            make.left.equalTo(view.snp.left).offset(20)
-        }
+        view.addSubviews([searchingTextFieldView, searchButton, tableView])
         
         searchingTextFieldView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(16)
-            make.horizontalEdges.equalToSuperview().inset(20)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            make.leading.equalToSuperview().inset(20)
             make.height.equalTo(45)
+        }
+        
+        searchButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            make.leading.equalTo(searchingTextFieldView.snp.trailing).offset(10)
+            make.trailing.equalToSuperview().inset(20)
+            make.width.height.equalTo(45)
         }
         
         tableView.snp.makeConstraints { make in
@@ -123,4 +145,5 @@ extension OrganizationListViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
     }
+    
 }

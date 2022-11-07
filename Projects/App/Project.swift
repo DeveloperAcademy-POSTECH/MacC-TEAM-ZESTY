@@ -21,5 +21,6 @@ let project = Project.makeAppModule(
         .external(name: "FirebaseAnalytics")
     ],
     resources: ["Resources/**"],
-    infoPlist: .file(path: "Sources/Application/Info.plist")
+    infoPlist: .file(path: "Sources/Application/Info.plist"),
+    entitlements: .relativeToCurrentFile("App.entitlements")
 )
