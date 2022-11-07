@@ -47,6 +47,11 @@ final class DomainSettingViewController: UIViewController {
         createLayout()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        emailTextField.becomeFirstResponder()
+    }
+    
     // MARK: - Function
     
     @objc func arrowButtonTapped() {
