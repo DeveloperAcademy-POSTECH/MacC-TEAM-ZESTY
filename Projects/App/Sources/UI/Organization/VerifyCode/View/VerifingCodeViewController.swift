@@ -33,7 +33,6 @@ final class VerifingCodeViewController: UIViewController {
     
     private let arrowButton = ArrowButton(initialDisable: false)
     
-    
     // MARK: - LifeCycle
     
     override func viewDidLoad() {
@@ -41,6 +40,7 @@ final class VerifingCodeViewController: UIViewController {
         configureUI()
         createLayout()
         bindUI()
+        viewModel.startTimer()
     }
     
     // MARK: - Function
@@ -99,6 +99,15 @@ extension VerifingCodeViewController {
                 self.view.layoutIfNeeded()
             }
             .store(in: &cancelBag)
+        
+        viewModel.$timerText
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] timerText in
+                guard let self = self else { return }
+                self.timerLabel.text = timerText
+                self.timerLabel.textColor = timerText.count > 5 ? .zestyColor(.point) : .label
+            }
+            .store(in: &cancelBag)
     }
     
 }
@@ -117,7 +126,7 @@ extension VerifingCodeViewController {
         warningMessage.isHidden = viewModel.isCodeValid
         warningMessage.textColor = .zestyColor(.point)
         
-        timerLabel.text = viewModel.timer
+        timerLabel.text = viewModel.timerText
         
         resendStackView.spacing = 10
         resendStackView.axis = .horizontal
