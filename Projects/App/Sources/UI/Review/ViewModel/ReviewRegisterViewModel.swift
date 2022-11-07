@@ -77,7 +77,7 @@ extension ReviewRegisterViewModel: ErrorMapper {
         imageSubject
             .sink { [weak self] _ in
                 guard let self = self else { return }
-                self.registerReview(with: nil)
+                self.registerReview()
             } receiveValue: { [weak self] imageString in
                 guard let self = self else { return }
                 self.registerReview(with: imageString)
@@ -85,7 +85,7 @@ extension ReviewRegisterViewModel: ErrorMapper {
             .store(in: &cancelBag)
     }
     
-    private func registerReview(with imageString: String?) {
+    private func registerReview(with imageString: String? = nil) {
         useCase.registerReview(placeId: placeId,
                                     menuName: menu,
                                     image: imageString,
