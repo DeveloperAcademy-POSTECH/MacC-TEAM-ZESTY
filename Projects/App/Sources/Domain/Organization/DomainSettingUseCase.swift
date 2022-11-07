@@ -32,7 +32,6 @@ final class DomainSettingUseCase {
                 case .finished: break
                 }
             } receiveValue: { [weak self] _ in
-                print()
                 guard let self = self else { return }
                 self.isEmailOverlapedSubject.send(false)
             }
