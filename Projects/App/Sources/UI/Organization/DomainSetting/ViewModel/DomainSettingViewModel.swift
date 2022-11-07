@@ -10,23 +10,54 @@ import Combine
 import Foundation
 
 final class DomainSettingViewModel {
+    
+    // MARK: - Properties
+    
+    let organization: Organization
+    private let useCase = DomainSettingUseCase()
+    
     // input
-    @Published var userEmail: String = ""
+    @Published var userInput: String = ""
     
     // output
-    @Published var isEmailEmpty = true
-    @Published var isDuplicateEmail = false
-    @Published var isButtonValid = false
-    
-    var orgDomain: String = ""
+    @Published var isInputValid = false
+    @Published var shouldDisplayWarning = false
+    let isEmailOverlapedSubject = PassthroughSubject<Bool, Never>()
     
     private var cancelBag = Set<AnyCancellable>()
     
-    init() {
-        $userEmail
-            .map(checkEmailValid)
-            .assign(to: \.isEmailEmpty, on: self)
+    init(organization: Organization) {
+        self.organization = organization
+        
+        $userInput
+            .map(checkInputValid)
+            .assign(to: \.isInputValid, on: self)
             .store(in: &cancelBag)
+        
+        $userInput
+            .sink { [weak self] _ in
+                if let self = self, self.shouldDisplayWarning {
+                    self.shouldDisplayWarning = false
+                }
+            }
+            .store(in: &cancelBag)
+        
+        useCase.isEmailOverlapedSubject
+            .sink { [weak self] isEmailOverlaped in
+                guard let self = self else { return }
+                print(#function)
+                if isEmailOverlaped {
+                    self.shouldDisplayWarning = true
+                }
+                self.isEmailOverlapedSubject.send(isEmailOverlaped)
+                
+            }
+            .store(in: &cancelBag)
+    }
+    
+    func postUserEmail() {
+        let userEmail: String = userInput + "@" + organization.domain
+        useCase.postUserEmail(email: userEmail, orgnization: organization)
     }
 }
 
@@ -34,8 +65,8 @@ final class DomainSettingViewModel {
 
 extension DomainSettingViewModel {
     
-    private func checkEmailValid(email: String) -> Bool {
-        return email.isEmpty
+    private func checkInputValid(email: String) -> Bool {
+        return !(email.isEmpty || email.contains(" "))
     }
     
 }
