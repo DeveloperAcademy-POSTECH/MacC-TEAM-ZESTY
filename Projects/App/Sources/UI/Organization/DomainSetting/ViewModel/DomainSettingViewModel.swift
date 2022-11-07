@@ -13,7 +13,7 @@ final class DomainSettingViewModel {
     
     // MARK: - Properties
     
-    private let organization: Organization
+    let organization: Organization
     private let useCase = DomainSettingUseCase()
     
     // input
@@ -53,10 +53,6 @@ final class DomainSettingViewModel {
                 
             }
             .store(in: &cancelBag)
-    }
-    
-    func getOrgDomain() -> String {
-        return organization.domain
     }
     
     func postUserEmail() {

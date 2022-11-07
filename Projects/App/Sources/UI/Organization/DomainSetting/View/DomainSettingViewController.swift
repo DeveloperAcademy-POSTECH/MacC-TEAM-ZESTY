@@ -135,7 +135,7 @@ extension DomainSettingViewController {
         emailTextField.autocapitalizationType = .none
         
         domainPlaceholder.textColor = .white
-        domainPlaceholder.text = "@\(viewModel.getOrgDomain())"
+        domainPlaceholder.text = "@\(viewModel.organization.domain)"
         domainPlaceholder.font = .systemFont(ofSize: 17, weight: .medium)
         domainPlaceholder.setContentCompressionResistancePriority(.init(1000), for: .horizontal)
         
