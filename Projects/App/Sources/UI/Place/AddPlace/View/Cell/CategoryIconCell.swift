@@ -51,7 +51,7 @@ final class CategoryIconCell: UICollectionViewCell {
             }
             FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
                 AnalyticsParameterItemID: categoryId,
-                AnalyticsParameterContentType: self.nameLabel.text!
+                AnalyticsParameterContentType: self.nameLabel.text ?? ""
             ])
         }
     }

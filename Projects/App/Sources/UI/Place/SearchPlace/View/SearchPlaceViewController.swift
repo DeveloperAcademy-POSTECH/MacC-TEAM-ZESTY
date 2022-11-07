@@ -62,6 +62,9 @@ final class SearchPlaceViewController: UIViewController {
     
     @objc func searchButtonDidTap() {
         input.send(.searchBtnDidTap(placeName: searchingTextFieldView.textField.text ?? "" ))
+        FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSearch, parameters: [
+            AnalyticsParameterSearchTerm: searchingTextFieldView.textField.text ?? ""
+        ])
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
