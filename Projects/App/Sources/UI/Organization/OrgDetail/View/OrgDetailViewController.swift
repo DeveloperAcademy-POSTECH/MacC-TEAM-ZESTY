@@ -54,7 +54,28 @@ final class OrgDetailViewController: UIViewController {
     }
 
     // MARK: - Function
+    @objc func shareAppStoreLink() {
+        
+        let appId = 6443997570
+        let url = "itms-apps://itunes.apple.com/app/\(appId)"
+        
+        let msg = """
+        🍽 ZESTY에서 우리학교 맛집리스트를 함께 만들어가세요 🍽
+        
+        AppStore에서 ZESTY 다운받고
+        우리학교의 \(viewModel.orgDetailCounts.friends + 1)번째 제스티언이 되어보세요!
+        \(url)
+        """
+        
+        var shareItems = [String]()
+        shareItems.append(msg)
 
+        DispatchQueue.main.async {
+            let activityViewController = UIActivityViewController(activityItems: shareItems, applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = self.view
+            self.present(activityViewController, animated: true, completion: nil)
+        }
+    }
 }
 
 // MARK: - Binding
@@ -129,6 +150,7 @@ extension OrgDetailViewController {
         orgDetailInformationView3.numberLabel.text = "124,513개"
         
         orgInviteButton.setTitle("우리학교 사람들 초대하기", for: .normal)
+        orgInviteButton.addTarget(self, action: #selector(shareAppStoreLink), for: .touchUpInside)
     }
 
     private func createLayout() {
