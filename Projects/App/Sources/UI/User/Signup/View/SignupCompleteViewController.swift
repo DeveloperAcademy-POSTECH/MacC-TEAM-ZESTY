@@ -8,6 +8,7 @@
 
 import UIKit
 import DesignSystem
+import Firebase
 
 final class SignupCompleteViewController: UIViewController {
     

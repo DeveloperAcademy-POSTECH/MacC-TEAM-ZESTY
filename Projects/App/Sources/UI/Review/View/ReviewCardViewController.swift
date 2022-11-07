@@ -10,6 +10,7 @@ import Combine
 import Photos
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 
 final class ReviewCardViewController: UIViewController {

@@ -9,6 +9,7 @@
 import Combine
 import UIKit
 import DesignSystem
+import Firebase
 
 final class NickNameInputViewController: UIViewController {
     
