@@ -6,6 +6,7 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
+import Combine
 import UIKit
 import DesignSystem
 import SnapKit
@@ -13,6 +14,8 @@ import SnapKit
 final class OrgDetailViewController: UIViewController {
 
     // MARK: - Properties
+    private var cancelBag = Set<AnyCancellable>()
+    private let viewModel: OrgDetailViewModel
 
     private let orgNameLabel = UILabel()
     private let orgInformationSuperStackView = UIStackView()
@@ -29,15 +32,46 @@ final class OrgDetailViewController: UIViewController {
     private var orgDetailInformationView3 = OrgDetailInformationView()
 
     // MARK: - LifeCycle
+    
+    init(viewModel: OrgDetailViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         createLayout()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        bind()
+    }
 
     // MARK: - Function
 
+}
+
+// MARK: - Binding
+extension OrgDetailViewController {
+    
+    private func bind() {
+        viewModel.$orgDetailCounts
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] orgDetailCounts in
+                guard let self = self else { return }
+                self.orgDetailInformationView1.numberLabel.text = "\(orgDetailCounts.friends)명"
+                self.orgDetailInformationView2.numberLabel.text = "\(orgDetailCounts.places)곳"
+                self.orgDetailInformationView3.numberLabel.text = "\(orgDetailCounts.images)개"
+            }
+            .store(in: &cancelBag)
+    }
+    
 }
 
 // MARK: - UI Function
