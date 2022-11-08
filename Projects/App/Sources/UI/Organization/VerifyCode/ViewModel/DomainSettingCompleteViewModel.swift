@@ -11,6 +11,6 @@ import Foundation
 final class DomainSettingCompleteViewModel {
     
     let userName = UserInfoManager.userInfo?.userNickname
-    let orgName = UserInfoManager.userInfo?.userOrgName
+    let orgName = UserInfoManager.userInfo?.userOrgName ?? "Unknown"
     
 }

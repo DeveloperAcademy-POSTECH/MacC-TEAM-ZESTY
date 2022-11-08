@@ -38,8 +38,7 @@ final class DomainSettingCompleteViewController: UIViewController {
     // MARK: - Function
     
     @objc func startButtonTapped() {
-        // TODO: MainListView랑 연결하기
-//        navigationController?.pushViewController(<#T##viewController: UIViewController##UIViewController#>, animated: true)
+        navigationController?.pushViewController(PlaceListViewController(), animated: true)
     }
     
 }
@@ -72,6 +71,7 @@ extension DomainSettingCompleteViewController {
         cardUserNameLabel.textColor = .zestyColor(.gray3C3C43)
         
         startButton.setTitle("완료", for: .normal)
+        startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
     }
     
     private func createLayout() {
@@ -79,7 +79,7 @@ extension DomainSettingCompleteViewController {
         cardView.addSubviews([signupImageView, cardOrgLabel, cardUserNameLabel])
         
         titleView.snp.makeConstraints { make in
-            make.leading.equalTo(view.snp.leading)
+            make.horizontalEdges.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
         

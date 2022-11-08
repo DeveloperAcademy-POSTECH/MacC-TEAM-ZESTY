@@ -16,6 +16,7 @@ final class VerifingCodeViewModel {
     let userEmail: String
     
     private let useCase = VerifingCodeUseCase()
+    private let domainSettingUseCase = DomainSettingUseCase()
     private var timer: Timer?
     private var timerNumber: Int = 180
     private let oneMinuteToSecond: Int = 60
@@ -98,7 +99,6 @@ extension VerifingCodeViewModel {
     }
     
     func resendEamil() {
-        let domainSettingUseCase = DomainSettingUseCase()
         domainSettingUseCase.postUserEmail(email: self.userEmail, orgnization: self.organization)
     }
 }

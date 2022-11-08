@@ -144,7 +144,7 @@ extension VerifingCodeViewController {
                 guard let self = self else { return }
                 self.arrowButton.isHidden = true
                 if isCodeValid {
-                    print("유효한 코드입니다")
+                    self.navigationController?.pushViewController(DomainSettingCompleteViewController(), animated: true)
                 } else {
                     self.otpStackView.resetOTP()
                 }
