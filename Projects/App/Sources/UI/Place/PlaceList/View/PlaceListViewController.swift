@@ -42,7 +42,13 @@ final class PlaceListViewController: UIViewController {
         configureUI()
         configureHierarchy()
         configureDataSource()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.reset()
         bind()
+        viewModel.initialFetch()
     }
     
     // MARK: - Function
@@ -86,8 +92,12 @@ extension PlaceListViewController: AddPlaceDelegate {
         navigationController?.pushViewController(AddPlaceSearchViewController(viewModel: AddPlaceSearchViewModel()), animated: true)
     }
     
+    @objc func orgDetailButtonTapped() {
+        navigationController?.pushViewController(OrgDetailViewController(viewModel: OrgDetailViewModel(orgId: UserDefaults.standard.userOrganization ?? 400)), animated: true)
+    }
+    
     @objc func searchButtonTapped() {
-        // TODO: 검색뷰 완성 시 연결
+        navigationController?.pushViewController(SearchPlaceViewController(viewModel: SearchPlaceViewModel()), animated: true)
     }
     
     @objc func userInfoButtonTapped() {
@@ -167,9 +177,12 @@ extension PlaceListViewController {
         let personCropCircle = UIImage(systemName: "person.crop.circle")
         let userInfoItem = UIBarButtonItem(image: personCropCircle, style: .plain, target: self, action: #selector(userInfoButtonTapped))
         let placeTitle = UILabel()
-        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(orgDetailButtonTapped))
+
         placeTitle.text = "애플디벨로퍼아카데미"
         placeTitle.font = .systemFont(ofSize: 17, weight: .bold)
+        placeTitle.isUserInteractionEnabled = true
+        placeTitle.addGestureRecognizer(tapGesture)
         
         navigationItem.rightBarButtonItems = [userInfoItem, searchItem]
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: placeTitle)
