@@ -13,20 +13,19 @@ import UIKit.UIImage
 
 final class ReviewRegisterUseCase {
     
-    private let uploadManager = AWSS3ImageManager()
     private var cancelBag = Set<AnyCancellable>()
     let uploadResultSubject = PassthroughSubject<String, ImageUploadError>()
+    
+    init() {
+        bind()
+    }
     
 }
 
 extension ReviewRegisterUseCase {
-    
-    func uploadImage(with image: UIImage?) {
-        let imageData = image?.jpegData(compressionQuality: 0.2)
-        
-        uploadManager.requestUpload(data: imageData)
-        
-        uploadManager.uploadResultSubject
+
+    private func bind() {
+        AWSS3ImageManager.shared.uploadResultSubject
             .sink { [weak self] completion in
                 guard let self = self else { return }
                 switch completion {
@@ -40,7 +39,12 @@ extension ReviewRegisterUseCase {
                 self.uploadResultSubject.send(imageString)
             }
             .store(in: &cancelBag)
-
+    }
+    
+    func uploadImage(with image: UIImage?) {
+        let imageData = image?.jpegData(compressionQuality: 0.2)
+        
+        AWSS3ImageManager.shared.requestUpload(data: imageData)
     }
     
     func registerReview(placeId: Int,

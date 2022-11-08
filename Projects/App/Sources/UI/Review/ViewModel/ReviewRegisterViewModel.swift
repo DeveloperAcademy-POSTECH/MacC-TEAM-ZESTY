@@ -46,18 +46,18 @@ final class ReviewRegisterViewModel {
         self.useCase = useCase
         self.placeId = placeId
         self.placeName = placeName
+        bind()
     }
     
 }
 
 extension ReviewRegisterViewModel: ErrorMapper {
     
-    func uploadImage(with image: UIImage?) {
-        useCase.uploadImage(with: image)
-        
+    private func bind() {
         useCase.uploadResultSubject
             .sink { [weak self] completion in
                 guard let self = self else { return }
+                
                 switch completion {
                 case .failure(let error):
                     print(error.localizedString)
@@ -70,9 +70,12 @@ extension ReviewRegisterViewModel: ErrorMapper {
                 self.imageSubject.send(imageString)
             }
             .store(in: &cancelBag)
-
     }
     
+    func uploadImage(with image: UIImage?) {
+        useCase.uploadImage(with: image)
+    }
+
     func registerReview() {
         imageSubject
             .sink { [weak self] _ in
