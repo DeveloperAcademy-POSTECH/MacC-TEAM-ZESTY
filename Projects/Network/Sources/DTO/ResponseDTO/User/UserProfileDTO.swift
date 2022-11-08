@@ -13,7 +13,7 @@ public struct UserProfileDTO: Decodable {
     public let nickname: String?
     public let email: String?
     public let authToken: String?
-    public let social: String
+    public let social: String?
     public let organization: Int?
     public let authIdentifier: String
     public let deletedAt: String?
