@@ -57,10 +57,17 @@ final class VerifingCodeViewController: UIViewController {
     // MARK: - Function
     
     @objc func resendButtonTapped() {
+        viewModel.resetTimer()
         showToastMessage()
         viewModel.shouldDisplayWarning = false
         viewModel.resendEamil()
         viewModel.startTimer()
+        
+        resendEamilButton.isEnabled = false
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.1) {
+            self.resendEamilButton.isEnabled = true
+        }
     }
     
     private func showToastMessage() {
