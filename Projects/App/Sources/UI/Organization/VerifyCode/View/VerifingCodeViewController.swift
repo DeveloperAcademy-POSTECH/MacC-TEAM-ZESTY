@@ -19,7 +19,7 @@ final class VerifingCodeViewController: UIViewController {
     private let isSE: Bool = UIScreen.main.isHeightLessThan670pt
     private var keyboardEndFrameHeight: CGFloat?
     
-    private let viewModel = VerifingCodeViewModel()
+    private let viewModel: VerifingCodeViewModel
     
     private lazy var titleView = MainTitleView(title: "이메일로 받은 코드를\n알려주세요", subtitle: "\(viewModel.userEmail)", hasSymbol: true)
     
@@ -35,6 +35,15 @@ final class VerifingCodeViewController: UIViewController {
     
     // MARK: - LifeCycle
     
+    init(organization: Organization, userEmail: String) {
+        self.viewModel = VerifingCodeViewModel(organization: organization, userEmail: userEmail)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -46,7 +55,6 @@ final class VerifingCodeViewController: UIViewController {
     // MARK: - Function
     
     @objc func resendButtonTapped() {
-        print("버튼 눌림")
         showToastMessage()
     }
     
@@ -123,7 +131,7 @@ extension VerifingCodeViewController {
         navigationController?.navigationBar.topItem?.title = ""
         
         warningMessage.text = "잘못된 코드예요."
-        warningMessage.isHidden = viewModel.isCodeValid
+        warningMessage.isHidden = viewModel.shouldDisplayWarning
         warningMessage.textColor = .zestyColor(.point)
         
         timerLabel.text = viewModel.timerText
@@ -215,7 +223,7 @@ import SwiftUI
 struct VerifingCodePreview: PreviewProvider {
     
     static var previews: some View {
-        VerifingCodeViewController().toPreview()
+        VerifingCodeViewController(organization: Organization.mockData[0], userEmail: "mingming@gmail.com").toPreview()
     }
     
 }

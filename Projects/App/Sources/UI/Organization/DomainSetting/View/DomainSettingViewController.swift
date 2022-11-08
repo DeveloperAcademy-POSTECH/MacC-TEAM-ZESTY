@@ -94,7 +94,9 @@ extension DomainSettingViewController {
                 if isEmailOverlaped {
                     self.arrowButton.setDisabled(true)
                 } else {
-                    self.navigationController?.pushViewController(VerifingCodeViewController(), animated: true)
+                    let userEmail = self.viewModel.getUserEmail()
+                    let verifingCodeVC = VerifingCodeViewController(organization: self.viewModel.organization, userEmail: userEmail)
+                    self.navigationController?.pushViewController(verifingCodeVC, animated: true)
                 }
             }
             .store(in: &cancelBag)

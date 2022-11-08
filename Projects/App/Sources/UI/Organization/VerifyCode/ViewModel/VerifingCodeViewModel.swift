@@ -12,20 +12,42 @@ import Foundation
 final class VerifingCodeViewModel {
     
     // MARK: - Properties
+    let organization: Organization
+    let userEmail: String
     
     private var timer: Timer?
-    
-    let userEmail = "mingming@pos.idserve.net"
-    var isArrowButtonHidden: Bool = true
-    var isCodeValid: Bool = true
-    var userInputCode: String = ""
-    
-    // output 
-    @Published var timerText = "03:00"
-    
     private var timerNumber: Int = 180
     private let oneMinuteToSecond: Int = 60
+    
+    var isArrowButtonHidden: Bool = true
+    
+    // input
+    @Published var userInputCode: String = ""
+    
+    // output
+    @Published var timerText = "03:00"
+    @Published var shouldDisplayWarning: Bool = true
+    
+    // MARK: - LifeCycle
+    
+    init(organization: Organization, userEmail: String) {
+        self.organization = organization
+        self.userEmail = userEmail
+    }
+    
 }
+
+// MARK: - Bind Fucntions
+
+extension VerifingCodeViewModel {
+    
+    private func bind() {
+        
+    }
+    
+}
+
+// MARK: - Functions
 
 extension VerifingCodeViewModel {
     
