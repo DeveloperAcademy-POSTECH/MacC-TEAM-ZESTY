@@ -63,7 +63,7 @@ final class OrgDetailViewController: UIViewController {
         🍽 ZESTY에서 우리학교 맛집리스트를 함께 만들어가세요 🍽
         
         AppStore에서 ZESTY 다운받고
-        우리학교의 \(viewModel.orgDetailCounts.friends + 1)번째 제스티언이 되어보세요!
+        우리학교의 \(viewModel.orgDetailCounts.friends + 1)번째 사용자가 되어보세요!
         \(url)
         """
         
