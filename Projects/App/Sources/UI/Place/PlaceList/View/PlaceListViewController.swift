@@ -172,7 +172,7 @@ extension PlaceListViewController {
         snapshot.deleteAllItems()
         snapshot.appendSections([1])
         snapshot.appendItems(items, toSection: 1)
-        dataSource.apply(snapshot)
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
 
 }
