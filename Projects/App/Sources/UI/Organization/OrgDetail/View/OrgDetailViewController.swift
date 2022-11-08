@@ -84,7 +84,13 @@ final class OrgDetailViewController: UIViewController {
             activityViewController.popoverPresentationController?.sourceView = self.view
             self.present(activityViewController, animated: true, completion: nil)
         }
+        
+        FirebaseAnalytics.Analytics.logEvent(AnalyticsEventShare, parameters: [
+            AnalyticsParameterContentType: "app_invite_share",
+            AnalyticsParameterItemID: appId
+        ])
     }
+    
 }
 
 // MARK: - Binding
