@@ -15,10 +15,11 @@ final class OrganizationListCell: UITableViewCell {
     // MARK: Properties
     
     private var cancelBag = Set<AnyCancellable>()
+    private var organization: Organization?
     
     static let identifier = "OrgListCell"
     
-    let orgNameLabel = UILabel()
+    private let orgNameLabel = UILabel()
     private let disclosureIndicator = UIImageView()
     
     // MARK: LifeCycle
@@ -37,6 +38,10 @@ final class OrganizationListCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         cancelBag.removeAll()
+    }
+    
+    func bind(with organization: Organization) {
+        orgNameLabel.text = organization.name
     }
 }
 

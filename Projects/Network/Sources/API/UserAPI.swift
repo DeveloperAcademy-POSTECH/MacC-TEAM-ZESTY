@@ -13,12 +13,12 @@ public struct UserAPI {
     
     static let networkService = NetworkService()
 
-    public static func postSignUp(userDTO: SignUpUserDTO) -> AnyPublisher<String, NetworkError> {
-        let header = ["Content-Type": "application/json"]
-        let user = userDTO
+    public static func postSignUp(authorization: String, userDTO: SignUpUserDTO) -> AnyPublisher<Bool, NetworkError> {
+        let header = ["Content-Type": "application/json", "Authorization": "\(authorization)"]
+        let user = ["email": userDTO.email, "organizationName": userDTO.organizationName]
         let endpoint = Endpoint(path: "/api/users", method: .post, bodyParams: user, headers: header)
         
-        return networkService.request(with: endpoint, responseType: String.self)
+        return networkService.request(with: endpoint)
     }
     
     public static func isAlreadyLogin(userIdentifier: String) -> AnyPublisher<Bool, NetworkError> {
