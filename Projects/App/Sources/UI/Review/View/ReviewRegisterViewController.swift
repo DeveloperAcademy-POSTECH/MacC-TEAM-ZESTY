@@ -49,6 +49,12 @@ final class ReviewRegisterViewController: UIViewController {
         configureUI()
         createLayout()
         bindKeyboardAction()
+        bind()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.imageString = ""
     }
     
     @objc private func openGallery() {
