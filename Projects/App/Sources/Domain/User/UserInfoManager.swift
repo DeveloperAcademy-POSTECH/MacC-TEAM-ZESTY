@@ -93,4 +93,11 @@ final class UserInfoManager {
         UserInfoManager.userInfo = UserInfo()
     }
     
+    static func initialUserInfo(userNickname: String?, userID: Int?, userOrganization: Int?, userOrgName: String?) {
+        UserInfoManager.userInfo = UserInfo()
+        UserInfoManager.userInfo?.userNickname = userNickname
+        UserInfoManager.userInfo?.userID = userID
+        UserInfoManager.userInfo?.userOrganization = userOrganization
+        UserInfoManager.userInfo?.userOrgName = userOrgName
+    }
 }
