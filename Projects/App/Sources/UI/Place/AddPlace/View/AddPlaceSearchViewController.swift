@@ -114,6 +114,7 @@ extension AddPlaceSearchViewController {
                     let okAction = UIAlertAction(title: "확인", style: .default)
                     alert.addAction(okAction)
                     self?.present(alert, animated: false)
+                    FirebaseAnalytics.Analytics.logEvent("already_exist_alert", parameters: nil)
                 case .addSelectedPlaceFail(let error):
                     print(error.localizedDescription)
                 case .addSelectedPlaceDidSucceed(let kakaoPlace):
