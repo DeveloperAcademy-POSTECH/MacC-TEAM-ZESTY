@@ -7,7 +7,6 @@
 
 import UIKit
 import FirebaseCore
-import KakaoSDKAuth
 import KakaoSDKCommon
 
 @UIApplicationMain
@@ -30,15 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    // MARK: Kakao Login process
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-            if (AuthApi.isKakaoTalkLoginUrl(url)) {
-                return AuthController.handleOpenUrl(url: url)
-            }
-
-            return false
-        }
-
     // MARK: UISceneSession Lifecycle
 
     func application(
