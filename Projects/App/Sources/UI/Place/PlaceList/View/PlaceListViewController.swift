@@ -101,7 +101,7 @@ extension PlaceListViewController: AddPlaceDelegate {
     }
     
     @objc func orgDetailButtonTapped() {
-        navigationController?.pushViewController(OrgDetailViewController(viewModel: OrgDetailViewModel(orgId: UserDefaults.standard.userOrganization ?? 400)), animated: true)
+        navigationController?.pushViewController(OrgDetailViewController(viewModel: OrgDetailViewModel(orgId: UserInfoManager.userInfo?.userOrganization ?? 400)), animated: true)
         FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
             AnalyticsParameterItemListName: "org_detail_button"
         ])

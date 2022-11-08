@@ -52,7 +52,7 @@ extension ReviewRegisterUseCase {
                         image: String? = nil,
                         grade: Evaluation) -> AnyPublisher<ReviewDetailDTO, NetworkError> {
         // TODO: userDefaults 에 유저 아이디 꼭!! 저장해야함
-        UserInfoManager.userInfo?.userID = 11
+//        UserInfoManager.userInfo?.userID = 11
         let user = UserInfoManager.userInfo?.userID ?? 11
         let reviewDTO = RegisterReviewDTO(placeId: placeId,
                                    menuName: menuName,

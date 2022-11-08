@@ -202,6 +202,7 @@ extension AddPlaceResultViewController {
     
     private func configureUI() {
         view.backgroundColor = .white // zestyColor(.backgroundColor)
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     
     private func createLayout() {

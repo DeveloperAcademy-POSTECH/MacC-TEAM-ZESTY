@@ -27,7 +27,6 @@ final class SignupCompleteViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         createLayout()
-        analytics()
     }
     
     // MARK: - Function
