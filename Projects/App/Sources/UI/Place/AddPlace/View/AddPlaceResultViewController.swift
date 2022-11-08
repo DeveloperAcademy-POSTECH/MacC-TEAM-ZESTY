@@ -159,7 +159,9 @@ final class AddPlaceResultViewController: UIViewController {
     }
     
     @objc func doneButtonDidTap() {
-        self.navigationController?.popToRootViewController(animated: true)
+        if let viewController = navigationController?.viewControllers.first(where: {$0 is PlaceListViewController}) {
+              navigationController?.popToViewController(viewController, animated: true)
+        }
     }
     
     func saveImage(with image: UIImage) {

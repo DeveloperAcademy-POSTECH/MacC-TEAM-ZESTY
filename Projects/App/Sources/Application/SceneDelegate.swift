@@ -22,19 +22,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let userNickName = UserInfoManager.userInfo?.userNickname
         let organizationID = UserInfoManager.userInfo?.userOrganization
         let navigationController = UINavigationController(rootViewController: ThirdPartyLoginViewController())
-        if organizationID == nil {
+        // 로그인 했는데 닉네임 설정 안한경우
+        if userAuthToken != nil && userNickName == nil {
+            navigationController.pushViewController(NickNameInputViewController(state: .signup), animated: false)
+        }
+        // 로그인과 닉네임 설정 했는데 이메일 인증을 안한경우
+        if userAuthToken != nil && userNickName != nil && organizationID == nil {
             navigationController.pushViewController(OrganizationListViewController(), animated: false)
-        } else if userAuthToken != nil && userNickName != nil {
+        }
+        // 정상적으로 가입을 한경우
+        if userAuthToken != nil && userNickName != nil && organizationID != nil {
             navigationController.pushViewController(PlaceListViewController(), animated: false)
         }
-         
-        
         window.rootViewController = navigationController
         self.window = window
         window.makeKeyAndVisible()
         
         /// remove navigation back button text and change color
-        
         navigationController.navigationBar.tintColor = .black
         navigationController.navigationBar.topItem?.title = ""
     }
