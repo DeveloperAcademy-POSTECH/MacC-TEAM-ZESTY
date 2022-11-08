@@ -48,7 +48,9 @@ final class ThirdPartyLoginViewController: UIViewController {
     // MARK: - Function
     
     @objc private func termsOfServiceLabelClicked() {
-        
+        termsOfServiceLabel.showAnimation {
+            UrlUtils.openExternalLink(urlStr: "https://avery-in-ada.notion.site/bc452553120c48e986541111425ebb7d")
+        }
     }
     
     @objc func kakaoLoginButtonClicked() {
