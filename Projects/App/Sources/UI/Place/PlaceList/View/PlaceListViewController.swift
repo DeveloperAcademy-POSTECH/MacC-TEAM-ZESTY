@@ -9,6 +9,7 @@
 
 import Combine
 import UIKit
+import Firebase
 import SnapKit
 
 final class PlaceListViewController: UIViewController {
@@ -42,6 +43,7 @@ final class PlaceListViewController: UIViewController {
         configureUI()
         configureHierarchy()
         configureDataSource()
+        analytics()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,6 +63,12 @@ final class PlaceListViewController: UIViewController {
                 self.applySnapshot(with: placeList)
             }
             .store(in: &cancelBag)
+    }
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("place_list_viewed", parameters: [
+            AnalyticsParameterScreenName: "place_list"
+        ])
     }
 
 }
@@ -94,6 +102,9 @@ extension PlaceListViewController: AddPlaceDelegate {
     
     @objc func orgDetailButtonTapped() {
         navigationController?.pushViewController(OrgDetailViewController(viewModel: OrgDetailViewModel(orgId: UserDefaults.standard.userOrganization ?? 400)), animated: true)
+        FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+            AnalyticsParameterItemListName: "org_detail_button"
+        ])
     }
     
     @objc func searchButtonTapped() {

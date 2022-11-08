@@ -9,6 +9,7 @@
 import Combine
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 
 final class OrganizationListViewController: UIViewController {
@@ -31,10 +32,17 @@ final class OrganizationListViewController: UIViewController {
         configureUI()
         createLayout()
         bindUI()
+        analytics()
         searchingTextField.delegate = self
     }
     
     // MARK: Function
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("organization_list_viewed", parameters: [
+            AnalyticsParameterScreenName: "organization_list"
+        ])
+    }
     
 }
 

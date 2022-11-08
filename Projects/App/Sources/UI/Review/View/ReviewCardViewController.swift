@@ -10,6 +10,7 @@ import Combine
 import Photos
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 
 final class ReviewCardViewController: UIViewController {
@@ -39,6 +40,7 @@ final class ReviewCardViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         createLayout()
+        analytics()
         bind()
     }
     
@@ -80,12 +82,19 @@ extension ReviewCardViewController {
     @objc private func saveButtonTouched() {
         let reviewCard = cardView.transfromToImage() ?? UIImage()
         saveImage(with: reviewCard)
+        FirebaseAnalytics.Analytics.logEvent("review_card_saved", parameters: nil)
     }
     
     private func saveImage(with image: UIImage) {
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
         self.present(activityViewController, animated: true, completion: nil)
+    }
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("review_card_viewed", parameters: [
+            AnalyticsParameterScreenName: "review_card"
+        ])
     }
 
 }

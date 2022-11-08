@@ -9,6 +9,7 @@
 import Combine
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 
 final class SearchPlaceViewController: UIViewController {
@@ -50,19 +51,30 @@ final class SearchPlaceViewController: UIViewController {
         bind()
         configureUI()
         createLayout()
+        analytics()
     }
     
     // MARK: - Function
+    
     @objc func backButtonDidTap() {
         self.navigationController?.popViewController(animated: true)
     }
     
     @objc func searchButtonDidTap() {
         input.send(.searchBtnDidTap(placeName: searchingTextFieldView.textField.text ?? "" ))
+        FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSearch, parameters: [
+            AnalyticsParameterSearchTerm: searchingTextFieldView.textField.text ?? ""
+        ])
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         searchingTextFieldView.textField.resignFirstResponder()
+    }
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("search_place_viewed", parameters: [
+            AnalyticsParameterScreenName: "search_place"
+        ])
     }
     
 }

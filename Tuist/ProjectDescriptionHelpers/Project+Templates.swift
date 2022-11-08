@@ -14,7 +14,7 @@ public extension Project {
         infoPlist: InfoPlist = .default,
         entitlements: Path? = nil
     ) -> Project {
-        let settings: Settings = .settings(
+        let settings: Settings = .settings(base: fireBaseAnalyticsSetting,
             configurations: [
                 .debug(name: .debug, xcconfig: .relativeToRoot("config.xcconfig")),
                 .release(name: .release, xcconfig: .relativeToRoot("config.xcconfig"))

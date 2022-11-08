@@ -8,6 +8,7 @@
 
 import Combine
 import UIKit
+import Firebase
 import SnapKit
 import SwiftUI
 
@@ -45,6 +46,7 @@ final class PlaceDetailViewController: UIViewController {
         setNavigationBar()
         configureUI()
         createLayout()
+        analytics()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,6 +56,7 @@ final class PlaceDetailViewController: UIViewController {
     }
     
     // MARK: - Function
+    
     @objc func backButtonDidTap() {
         self.navigationController?.popViewController(animated: true)
     }
@@ -64,6 +67,12 @@ final class PlaceDetailViewController: UIViewController {
     @objc func routeToAddReview(notification: NSNotification) {
         let viewModel = ReviewRegisterViewModel(placeId: viewModel.place!.id, placeName: viewModel.place!.name)
         self.navigationController?.pushViewController(EvaluationViewController(viewModel: viewModel), animated: true)
+    }
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("place_detail_viewed", parameters: [
+            AnalyticsParameterScreenName: "place_detail"
+        ])
     }
     
 }

@@ -10,6 +10,7 @@ import AuthenticationServices
 import Combine
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 
 final class ThirdPartyLoginViewController: UIViewController {
@@ -41,6 +42,7 @@ final class ThirdPartyLoginViewController: UIViewController {
         configureUI()
         createLayout()
         bindUI()
+        analytics()
     }
     
     // MARK: - Function
@@ -51,10 +53,22 @@ final class ThirdPartyLoginViewController: UIViewController {
     
     @objc func kakaoLoginButtonClicked() {
         viewModel.kakaoLogin()
+        FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSignUp, parameters: [
+            AnalyticsParameterMethod: "kakao"
+        ])
     }
     
     @objc func appleLoginButtonClicked() {
         appleAuthorizationController.performRequests()
+        FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSignUp, parameters: [
+            AnalyticsParameterMethod: "apple"
+        ])
+    }
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("thirdparty_login_viewed", parameters: [
+            AnalyticsParameterScreenName: "thirdparty_login"
+        ])
     }
     
 }

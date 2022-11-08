@@ -9,6 +9,7 @@
 import Combine
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 
 final class OrgDetailViewController: UIViewController {
@@ -46,6 +47,7 @@ final class OrgDetailViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         createLayout()
+        analytics()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,6 +56,13 @@ final class OrgDetailViewController: UIViewController {
     }
 
     // MARK: - Function
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("org_detail_viewed", parameters: [
+            AnalyticsParameterScreenName: "org_detail"
+        ])
+    }
+
     @objc func shareAppStoreLink() {
         
         let appId = 6443997570
@@ -75,7 +84,13 @@ final class OrgDetailViewController: UIViewController {
             activityViewController.popoverPresentationController?.sourceView = self.view
             self.present(activityViewController, animated: true, completion: nil)
         }
+        
+        FirebaseAnalytics.Analytics.logEvent(AnalyticsEventShare, parameters: [
+            AnalyticsParameterContentType: "app_invite_share",
+            AnalyticsParameterItemID: appId
+        ])
     }
+    
 }
 
 // MARK: - Binding

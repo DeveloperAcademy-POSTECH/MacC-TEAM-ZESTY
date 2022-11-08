@@ -9,6 +9,7 @@
 import Combine
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 
 final class EvaluationViewController: UIViewController {
@@ -39,6 +40,7 @@ final class EvaluationViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         createLayout()
+        analytics()
     }
     
     // MARK: - Function
@@ -68,6 +70,12 @@ final class EvaluationViewController: UIViewController {
         
         viewModel.evaluation = .bad
         navigationController?.pushViewController(ReviewRegisterViewController(viewModel: viewModel), animated: true)
+    }
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("evaluation_viewed", parameters: [
+            AnalyticsParameterScreenName: "evaluation"
+        ])
     }
     
 }

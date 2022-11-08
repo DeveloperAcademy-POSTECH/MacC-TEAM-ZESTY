@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 import SnapKit
 
 final class SegmentHeaderView: UICollectionReusableView {
@@ -74,6 +75,11 @@ extension SegmentHeaderView {
                 self.segmentIndicator.transform = CGAffineTransform.identity
             })
         }
+        
+        FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+            AnalyticsParameterItemListName: "선정맛집"
+        ])
+        
     }
 
 }

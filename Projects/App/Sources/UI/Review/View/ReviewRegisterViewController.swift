@@ -9,6 +9,7 @@
 import Combine
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 
 final class ReviewRegisterViewController: UIViewController {
@@ -45,11 +46,11 @@ final class ReviewRegisterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureUI()
         createLayout()
         bindKeyboardAction()
         bind()
+        analytics()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -117,6 +118,12 @@ extension ReviewRegisterViewController: UIImagePickerControllerDelegate, UINavig
             .store(in: &cancelBag)
     }
     
+}
+
+private func analytics() {
+    FirebaseAnalytics.Analytics.logEvent("review_register_viewed", parameters: [
+        AnalyticsParameterScreenName: "review_register"
+    ])
 }
 
 // MARK: - UI Function
