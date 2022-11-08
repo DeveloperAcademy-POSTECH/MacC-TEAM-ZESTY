@@ -70,11 +70,14 @@ extension ProfileNickNameView {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(changeNickNameImageViewClicked))
         changeNickNameImageView.addGestureRecognizer(tapGesture)
+        changeNickNameImageView.isUserInteractionEnabled = true
 
         nickNameLabel.backgroundColor = .zestyColor(.background)
         nickNameLabel.textColor = .black
         nickNameLabel.font = UIFont.systemFont(ofSize: CGFloat(22), weight: .bold)
         nickNameLabel.text = viewModel?.userNickname
+        nickNameLabel.addGestureRecognizer(tapGesture)
+        nickNameLabel.isUserInteractionEnabled = true
     }
 
     private func createLayout() {
