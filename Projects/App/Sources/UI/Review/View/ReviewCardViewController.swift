@@ -46,11 +46,11 @@ final class ReviewCardViewController: UIViewController {
  
 extension ReviewCardViewController {
 
-    @objc func backButtonTouched() {
+    @objc private func backButtonTouched() {
         popTo(PlaceDetailViewController.self)
     }
 
-    @objc func completeButtonTouched() {
+    @objc private func completeButtonTouched() {
         popTo(PlaceDetailViewController.self)
     }
     
@@ -61,21 +61,16 @@ extension ReviewCardViewController {
         }
     }
     
-    // TODO: Toast - noti image save completion
-    @objc func saveButtonTouched() {
+    @objc private func saveButtonTouched() {
         let reviewCard = cardView.transfromToImage() ?? UIImage()
         saveImage(with: reviewCard)
         FirebaseAnalytics.Analytics.logEvent("review_card_saved", parameters: nil)
     }
     
-    func saveImage(with image: UIImage) {
-        PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
-            guard status == .authorized else { return }
-            
-            PHPhotoLibrary.shared().performChanges({
-                PHAssetChangeRequest.creationRequestForAsset(from: image)
-            }, completionHandler: nil)
-        }
+    private func saveImage(with image: UIImage) {
+        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        self.present(activityViewController, animated: true, completion: nil)
     }
     
     private func analytics() {
@@ -93,6 +88,7 @@ extension ReviewCardViewController {
     private func configureUI() {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.topItem?.title = ""
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         
         let xmarkConfig = UIImage.SymbolConfiguration(weight: .bold)
         let backImage = UIImage(systemName: "xmark", withConfiguration: xmarkConfig)

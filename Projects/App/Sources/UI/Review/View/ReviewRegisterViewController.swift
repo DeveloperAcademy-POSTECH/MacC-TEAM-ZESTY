@@ -51,6 +51,12 @@ final class ReviewRegisterViewController: UIViewController {
         createLayout()
         bindKeyboardAction()
         analytics()
+        bind()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.imageString = ""
     }
     
     @objc private func openGallery() {
@@ -61,9 +67,9 @@ final class ReviewRegisterViewController: UIViewController {
     }
     
     @objc private func registerButtonTouched() {
-        viewModel.uploadImage(with: menuImageView.image)
         viewModel.menu = menuTextField.text
         viewModel.registerReview()
+
         navigationController?.pushViewController(ReviewCardViewController(viewModel: viewModel), animated: true)
     }
     
@@ -80,6 +86,8 @@ extension ReviewRegisterViewController: UIImagePickerControllerDelegate, UINavig
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             menuImageView.image = image
+            viewModel.uploadImage(with: image)
+            viewModel.isRegisterPossible = false
             registerButton.setTitle("리뷰 등록", for: .normal)
         }
         picker.dismiss(animated: true, completion: nil)
@@ -93,6 +101,29 @@ extension ReviewRegisterViewController: UIImagePickerControllerDelegate, UINavig
         FirebaseAnalytics.Analytics.logEvent("review_register_viewed", parameters: [
             AnalyticsParameterScreenName: "review_register"
         ])
+
+    private func bind() {
+        viewModel.isRegisterFail
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errorMessage in
+                print(errorMessage)
+                let alert = UIAlertController(title: "이미지 업로드 실패",
+                                              message: errorMessage,
+                                              preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "확인", style: .default)
+                alert.addAction(okAction)
+                self?.present(alert, animated: false)
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.$isRegisterPossible
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isUploaded in
+                guard let self = self else { return }
+                self.registerButton.isEnabled = isUploaded
+            }
+            .store(in: &cancelBag)
+
     }
     
 }

@@ -162,13 +162,17 @@ extension PlaceInfoHeaderView {
 
         contentView.addSubviews([placeView, addReviewButton])
         
+        contentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
         addReviewButton.snp.makeConstraints {
             $0.top.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(1)
             $0.height.equalTo(65)
         }
         
-        placeView.addSubviews([categoryTagLabel, placeNameLabel, categoryTagLabel, goodView, sosoView, badView, addressView, lineView, reviewTitleLabel, lineView])
+        placeView.addSubviews([categoryTagLabel, placeNameLabel, goodView, sosoView, badView, addressView, reviewTitleLabel, lineView])
         
         placeView.snp.makeConstraints {
             $0.top.equalToSuperview()
@@ -221,14 +225,14 @@ extension PlaceInfoHeaderView {
         
         naverButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(20)
-            $0.width.equalTo(36)
-            $0.top.bottom.equalToSuperview().inset(16)
+            $0.size.equalTo(36)
+            $0.centerY.equalToSuperview()
         }
         
         kakaoButton.snp.makeConstraints {
             $0.trailing.equalTo(naverButton.snp.leading).offset(-8)
-            $0.width.equalTo(36)
-            $0.top.bottom.equalToSuperview().inset(16)
+            $0.size.equalTo(36)
+            $0.centerY.equalToSuperview()
         }
 
         reviewTitleLabel.snp.makeConstraints {
