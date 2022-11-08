@@ -35,12 +35,12 @@ extension Organization {
 
 extension User {
     static let mockData: [User] = [
-        User(id: 0, email: "avery@pos.idserve.net", social: .kakao, nickname: "버리", authToken: "dkjds8d2", organizationId: 0),
-        User(id: 1, email: "avo@pos.idserve.net", social: .kakao, nickname: "카도아보", authToken: "fkdis09n", organizationId: 0),
-        User(id: 2, email: "nick@pos.idserve.net", social: .kakao, nickname: "닉", authToken: "d8s82m", organizationId: 1),
-        User(id: 3, email: "lia@pos.idserve.net", social: .kakao, nickname: "리아", authToken: "dkd02j2", organizationId: 2),
-        User(id: 4, email: "goban@pos.idserve.net", social: .kakao, nickname: "고바라바라만", authToken: "l3l9dxm", organizationId: 2),
-        User(id: 5, email: "min@pos.idserve.net", social: .kakao, nickname: "오이는밍밍", authToken: "3o3kkd9", organizationId: 2)
+        User(id: 0, nickname: "버리"),
+        User(id: 1, nickname: "카도아보"),
+        User(id: 2, nickname: "닉"),
+        User(id: 3, nickname: "리아"),
+        User(id: 4, nickname: "고바라바라만"),
+        User(id: 5, nickname: "오이는밍밍")
     ]
 }
 
@@ -109,28 +109,28 @@ extension Review {
                reviewer: User.mockData[1],
                evaluation: .soso,
                menuName: "스테이크",
-               imageURL: "https://images.unsplash.com/photo-1546964124-0cce460f38ef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+               imageURL: URL(string: "https://images.unsplash.com/photo-1546964124-0cce460f38ef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"),
                createdAt: Date()),
         Review(id: 1,
                placeId: 2,
                reviewer: User.mockData[2],
                evaluation: .bad,
                menuName: "피자",
-               imageURL: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+               imageURL: URL(string: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"),
                createdAt: Date()),
         Review(id: 2,
                placeId: 2,
                reviewer: User.mockData[3],
                evaluation: .good,
                menuName: "샐러드",
-               imageURL: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+               imageURL: URL(string: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"),
                createdAt: Date()),
         Review(id: 3,
                placeId: 1,
                reviewer: User.mockData[4],
                evaluation: .soso,
                menuName: "토스트",
-               imageURL: "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGZvb2R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
+               imageURL: URL(string: "https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGZvb2R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"),
                createdAt: Date())
     ]
 }
