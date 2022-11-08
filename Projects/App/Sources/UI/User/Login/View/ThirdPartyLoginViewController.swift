@@ -102,6 +102,14 @@ extension ThirdPartyLoginViewController {
                 }
             }
             .store(in: &cancelBag)
+        
+        viewModel.shouldSetOrganizationSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.navigationController?.pushViewController(OrganizationListViewController(), animated: true)
+            }
+            .store(in: &cancelBag)
     }
     
 }

@@ -50,6 +50,7 @@ final class NickNameInputViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        setNavigationBar()
         createLayout()
         bindUI()
         analytics()
@@ -72,6 +73,10 @@ final class NickNameInputViewController: UIViewController {
         FirebaseAnalytics.Analytics.logEvent("nickname_input_viewed", parameters: [
             AnalyticsParameterScreenName: "nickname_input"
         ])
+    }
+
+    @objc private func backButtonDidTap() {
+        navigationController?.popViewController(animated: true)
     }
     
 }
@@ -137,11 +142,11 @@ extension NickNameInputViewController {
                 guard let self = self else { return }
                 if isNickNameChanged {
                     switch self.state {
-                        case .signup:
-                            self.navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
-                        case .profile:
-                            self.profileViewModel?.isNickNameChangedSubject.send(true)
-                            self.navigationController?.popViewController(animated: true)
+                    case .signup:
+                        self.navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
+                    case .profile:
+                        self.profileViewModel?.isNickNameChangedSubject.send(true)
+                        self.navigationController?.popViewController(animated: true)
                     }
                 }
             }
@@ -185,15 +190,6 @@ extension NickNameInputViewController {
     private func configureUI() {
         view.backgroundColor = .white
         
-        switch state {
-        case .profile:
-            navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-            navigationItem.backBarButtonItem?.tintColor = .black
-        case .signup:
-            navigationItem.setHidesBackButton(true, animated: false)
-            navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-        }
-        
         nickNameTextField.becomeFirstResponder()
         nickNameTextField.attributedPlaceholder = .init(attributedString: NSAttributedString(string: "닉네임", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]))
         nickNameTextField.font = .preferredFont(forTextStyle: .body)
@@ -208,6 +204,12 @@ extension NickNameInputViewController {
         warningLabel.textColor = .red
         warningLabel.font = .preferredFont(forTextStyle: .footnote)
         warningLabel.isHidden = true
+    }
+    
+    private func setNavigationBar() {
+        let rightBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonDidTap))
+        rightBarButton.tintColor = .label
+        navigationItem.leftBarButtonItem = rightBarButton
     }
     
     private func createLayout() {

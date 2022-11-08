@@ -30,6 +30,7 @@ final class OrganizationListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        setNavigationBar()
         createLayout()
         bindUI()
     }
@@ -46,6 +47,12 @@ final class OrganizationListViewController: UIViewController {
         FirebaseAnalytics.Analytics.logEvent("organization_list_viewed", parameters: [
             AnalyticsParameterScreenName: "organization_list"
         ])
+    }
+    
+    @objc private func backButtonDidTap() {
+        if let viewController = navigationController?.viewControllers.first(where: {$0 is ThirdPartyLoginViewController}) {
+              navigationController?.popToViewController(viewController, animated: true)
+        }
     }
     
 }
@@ -127,12 +134,10 @@ extension OrganizationListViewController {
     private func configureUI() {
         view.backgroundColor = .white
         
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         navigationItem.title = "대학 선택"
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .medium)
         ]
-        navigationItem.setHidesBackButton(true, animated: false)
         
         searchingTextFieldView.placeholder = "대학교 검색"
         searchingTextField.delegate = self
@@ -151,6 +156,12 @@ extension OrganizationListViewController {
         tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
+    }
+    
+    private func setNavigationBar() {
+        let rightBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonDidTap))
+        rightBarButton.tintColor = .label
+        navigationItem.leftBarButtonItem = rightBarButton
     }
     
     private func createLayout() {

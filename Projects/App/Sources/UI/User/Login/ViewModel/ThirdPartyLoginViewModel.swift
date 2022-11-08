@@ -30,6 +30,7 @@ final class ThirdPartyLoginViewModel {
     
     // Output
     let shouldSetNicknameSubject = PassthroughSubject<Bool, Never>()
+    let shouldSetOrganizationSubject = PassthroughSubject<Bool, Never>()
     
     private var cancelBag = Set<AnyCancellable>()
     
@@ -77,11 +78,15 @@ final class ThirdPartyLoginViewModel {
         useCase.isUserProfileReceivedSubject
             .sink { [weak self] _ in
                 guard let self = self else { return }
-                if  UserInfoManager.userInfo?.userNickname == nil {
-                    self.shouldSetNicknameSubject.send(true)
-                    return
-                }
                 if self.isUserAlreadyRegistered {
+                    if  UserInfoManager.userInfo?.userNickname == nil {
+                        self.shouldSetNicknameSubject.send(true)
+                        return
+                    }
+                    if UserInfoManager.userInfo?.userOrganization == nil {
+                        self.shouldSetOrganizationSubject.send(true)
+                        return
+                    }
                     self.shouldSetNicknameSubject.send(false)
                 } else {
                     self.shouldSetNicknameSubject.send(true)
