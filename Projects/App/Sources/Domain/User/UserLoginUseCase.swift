@@ -42,7 +42,7 @@ final class UserLoginUseCase {
                 }
             } receiveValue: { [weak self] userOauthDTO in
                 guard let self = self else { return }
-                UserDefaults.standard.authToken = userOauthDTO.authToken
+                KeyChainManager.create(key: .authToken, token: userOauthDTO.authToken)
                 self.userRegisteredSubject.send(true)
             }
             .store(in: &cancelBag)
@@ -57,14 +57,14 @@ final class UserLoginUseCase {
                 }
             } receiveValue: { [weak self] userOauthDTO in
                 guard let self = self else { return }
-                UserDefaults.standard.authToken = userOauthDTO.authToken
+                KeyChainManager.create(key: .authToken, token: userOauthDTO.authToken)
                 self.userRegisteredSubject.send(true)
             }
             .store(in: &cancelBag)
     }
     
     func getUserProfile() {
-        guard let authorization = UserDefaults.standard.authToken else { return }
+        guard let authorization = KeyChainManager.read(key: .authToken) else { return }
         UserAPI.getUserProfile(authorization: authorization)
             .sink { error in
                 switch error {
@@ -73,10 +73,7 @@ final class UserLoginUseCase {
                 }
             } receiveValue: { [weak self] userProfileDTO in
                 guard let self = self else { return }
-                UserDefaults.standard.userID = userProfileDTO.id
-                UserDefaults.standard.userNickname = userProfileDTO.nickname
-                UserDefaults.standard.authIdentifier = userProfileDTO.authIdentifier
-                UserDefaults.standard.userOrganization = userProfileDTO.organization
+                UserInfoManager.userInfo = UserInfoManager.UserInfo(userNickname: userProfileDTO.nickname, userID: userProfileDTO.id, userOrganization: userProfileDTO.organization)
                 self.isUserProfileReceivedSubject.send(true)
             }
             .store(in: &cancelBag)

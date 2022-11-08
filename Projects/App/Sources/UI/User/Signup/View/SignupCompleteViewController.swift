@@ -32,10 +32,8 @@ final class SignupCompleteViewController: UIViewController {
     
     // MARK: - Function
     
-    private func analytics() {
-        FirebaseAnalytics.Analytics.logEvent("signup_complete_viewed", parameters: [
-            AnalyticsParameterScreenName: "signup_complete"
-        ])
+    @objc private func startButtonClicked() {
+        navigationController?.pushViewController(PlaceListViewController(), animated: true)
     }
     
 }
@@ -56,6 +54,7 @@ extension SignupCompleteViewController {
         nickNameLabel.font = .systemFont(ofSize: 17, weight: .bold)
         
         startButton.setTitle("우리 대학 맛집여정에 함께하기", for: .normal)
+        startButton.addTarget(self, action: #selector(startButtonClicked), for: .touchUpInside)
     }
     
     private func createLayout() {
