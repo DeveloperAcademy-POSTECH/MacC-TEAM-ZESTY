@@ -32,11 +32,15 @@ final class OrganizationListViewController: UIViewController {
         configureUI()
         createLayout()
         bindUI()
-        analytics()
-        searchingTextField.delegate = self
     }
     
     // MARK: Function
+    
+    @objc func searchButtonTapped() {
+        searchingTextField.resignFirstResponder()
+        analytics()
+        searchingTextField.delegate = self
+    }
     
     private func analytics() {
         FirebaseAnalytics.Analytics.logEvent("organization_list_viewed", parameters: [
@@ -88,7 +92,8 @@ extension OrganizationListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: OrganizationListCell.identifier, for: indexPath) as? OrganizationListCell
         guard let cell = cell else { return UITableViewCell() }
-        cell.orgNameLabel.text = viewModel.searchedOrgArray[indexPath.row]
+        let organization = viewModel.searchedOrgArray[indexPath.row]
+        cell.bind(with: organization)
         
         return cell
     }
@@ -104,9 +109,20 @@ extension OrganizationListViewController: UITextFieldDelegate {
     
 }
 
-extension OrganizationListViewController {
+extension OrganizationListViewController: UITableViewDelegate {
     
-    // MARK: UI Function
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let organization = viewModel.searchedOrgArray[indexPath.row]
+        let domainSettingVC = DomainSettingViewController(organization: organization)
+        
+        navigationController?.pushViewController(domainSettingVC, animated: true)
+    }
+    
+}
+
+// MARK: UI Function
+
+extension OrganizationListViewController {
     
     private func configureUI() {
         view.backgroundColor = .white
@@ -117,6 +133,8 @@ extension OrganizationListViewController {
         ]
         
         searchingTextFieldView.placeholder = "대학교 검색"
+        searchingTextField.delegate = self
+        searchingTextField.becomeFirstResponder()
         
         let largeConfig = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .default)
         let largeBoldDoc = UIImage(systemName: "magnifyingglass", withConfiguration: largeConfig)
@@ -125,10 +143,12 @@ extension OrganizationListViewController {
         searchButton.tintColor = .white
         searchButton.layer.cornerRadius = 45/2
         searchButton.clipsToBounds = true
+        searchButton.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
         
-        tableView.dataSource = self
         tableView.register(OrganizationListCell.self, forCellReuseIdentifier: OrganizationListCell.identifier)
         tableView.separatorStyle = .none
+        tableView.dataSource = self
+        tableView.delegate = self
     }
     
     private func createLayout() {

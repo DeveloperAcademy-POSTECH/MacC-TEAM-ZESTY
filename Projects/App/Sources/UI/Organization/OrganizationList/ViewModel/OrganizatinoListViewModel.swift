@@ -11,6 +11,10 @@ import Foundation
 
 final class OrganizationListViewModel {
     
+    // MARK: - Properties
+    
+    private let useCase: OrganizationListUseCase
+    
     private var orgArray: [Organization] = []
     private var orgNameArray: [String] = []
     
@@ -20,12 +24,23 @@ final class OrganizationListViewModel {
     @Published var userTextInput: String = ""
     
     // Output
-    @Published var searchedOrgArray: [String] = []
+    @Published var searchedOrgArray: [Organization] = []
+    let isRegisterFail = PassthroughSubject<String, Never>()
     
-    init() {
-        setData()
-//        setInitialSearchedArray()
+    // MARK: - LifeCycle
+    
+    init(useCase: OrganizationListUseCase = OrganizationListUseCase()) {
+        self.useCase = useCase
         
+        fetchOrganizationList()
+        bind()
+    }
+}
+
+// MARK: - Bind Fucntions
+extension OrganizationListViewModel {
+    
+    private func bind() {
         $userTextInput
             .sink { [weak self] userTextInput in
                 self?.searchInput(userTextInput)
@@ -35,34 +50,45 @@ final class OrganizationListViewModel {
     
 }
 
-extension OrganizationListViewModel {
-    // TODO: useCase로 바꾸기
-    private func setData() {
-        orgArray = Organization.mockData
-        orgNameArray = orgArray.map { $0.name }
+// MARK: - Functions
+
+extension OrganizationListViewModel: ErrorMapper {
+    private func fetchOrganizationList() {
+        useCase.fetchOrganizationList()
+            .sink { [weak self] error in
+                guard let self = self else { return }
+                
+                switch error {
+                case .failure(let error):
+                    let errorMessage = self.errorMessage(for: error)
+                    self.isRegisterFail.send(errorMessage)
+                case .finished: break
+                }
+            } receiveValue: { [weak self] orgList in
+                guard let self = self else { return }
+                self.orgArray = orgList
+                self.orgNameArray = orgList.map { $0.name }
+            }
+            .store(in: &cancelBag)
     }
-    
-//    private func setInitialSearchedArray() {
-//        searchedOrgArray = orgNameArray
-//    }
     
     private func searchInput(_ input: String) {
         if input.isEmpty {
-//            setInitialSearchedArray()
+            searchedOrgArray = []
             return
         }
         if input.contains(" ") {
             let inputArray = input.components(separatedBy: " ")
 
-            searchedOrgArray = orgNameArray.filter { orgName in
+            searchedOrgArray = orgArray.filter { organization in
                 var haveOrgName = false
-                for input in inputArray where orgName.contains(input) {
+                for input in inputArray where organization.name.contains(input) {
                         haveOrgName = true
                 }
                 return haveOrgName
             }
         } else {
-            self.searchedOrgArray = self.orgNameArray.filter { $0.contains(input) }
+            searchedOrgArray = orgArray.filter { $0.name.contains(input) }
         }
     }
 }
