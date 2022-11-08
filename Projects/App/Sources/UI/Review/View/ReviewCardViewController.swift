@@ -16,7 +16,8 @@ import SnapKit
 final class ReviewCardViewController: UIViewController {
     
     // MARK: - Properties
-    private let cancelBag = Set<AnyCancellable>()
+    private var cancelBag = Set<AnyCancellable>()
+    private let viewModel: ReviewRegisterViewModel!
     
     private let titleView = MainTitleView()
     private var cardView: ReviewCardView!
@@ -27,6 +28,7 @@ final class ReviewCardViewController: UIViewController {
     
     init(viewModel: ReviewRegisterViewModel) {
         cardView = ReviewCardView(viewModel: viewModel)
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -39,12 +41,28 @@ final class ReviewCardViewController: UIViewController {
         configureUI()
         createLayout()
         analytics()
+        bind()
     }
     
 }
     // MARK: - Function
  
 extension ReviewCardViewController {
+    
+    private func bind() {
+        viewModel.isRegisterFail
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errorMessage in
+                print(errorMessage)
+                let alert = UIAlertController(title: "리뷰 등록 실패",
+                                              message: errorMessage,
+                                              preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "확인", style: .default)
+                alert.addAction(okAction)
+                self?.present(alert, animated: false)
+            }
+            .store(in: &cancelBag)
+    }
 
     @objc private func backButtonTouched() {
         popTo(PlaceDetailViewController.self)

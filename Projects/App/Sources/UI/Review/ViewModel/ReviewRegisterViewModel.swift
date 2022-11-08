@@ -38,7 +38,9 @@ final class ReviewRegisterViewModel {
     }
     
     let result = PassthroughSubject<Result, Never>()
-    let isRegisterFail = PassthroughSubject<String, Never>() // alert 용
+    // alert 용
+    let isUploadFail = PassthroughSubject<String, Never>()
+    let isRegisterFail = PassthroughSubject<String, Never>()
     
     // MARK: - LifeCycle
     
@@ -63,7 +65,7 @@ extension ReviewRegisterViewModel: ErrorMapper {
                 case .failure(let error):
                     print(error.localizedString)
                     let errorMessage = self.uploadErrorMessage(for: error)
-                    self.isRegisterFail.send(errorMessage)
+                    self.isUploadFail.send(errorMessage)
                 case .finished: break
                 }
             } receiveValue: { [weak self] imageString in
@@ -89,6 +91,7 @@ extension ReviewRegisterViewModel: ErrorMapper {
             
             switch completion {
             case .failure(let error):
+                print(error.localizedString)
                 let errorMessage = self.errorMessage(for: error)
                 self.isRegisterFail.send(errorMessage)
             case .finished:

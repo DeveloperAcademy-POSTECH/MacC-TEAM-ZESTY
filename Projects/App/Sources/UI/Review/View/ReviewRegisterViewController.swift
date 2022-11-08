@@ -96,7 +96,7 @@ extension ReviewRegisterViewController: UIImagePickerControllerDelegate, UINavig
     }
     
     private func bind() {
-        viewModel.isRegisterFail
+        viewModel.isUploadFail
             .receive(on: DispatchQueue.main)
             .sink { [weak self] errorMessage in
                 print(errorMessage)
