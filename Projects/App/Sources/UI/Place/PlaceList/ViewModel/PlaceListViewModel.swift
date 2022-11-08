@@ -43,7 +43,6 @@ class PlaceListViewModel {
         self.useCase = useCase
         self.placeType = placeType
         bind()
-        initialFetch()
     }
     
 }
@@ -52,7 +51,22 @@ class PlaceListViewModel {
 
 extension PlaceListViewModel: ErrorMapper {
     
-    private func initialFetch() {
+    private func bind() {
+        $placeType
+            .sink { [weak self] type in
+                guard let self = self else { return }
+                
+                switch type {
+                case .whole:
+                    self.result = self.wholePlace.placeList
+                case .hot:
+                    self.result = self.hotPlace.placeList
+                }
+            }
+            .store(in: &self.cancelBag)
+    }
+    
+    func initialFetch() {
         placeType = .hot
         prefetch(at: [1], willUpdate: false)
         placeType = .whole
@@ -98,20 +112,11 @@ extension PlaceListViewModel: ErrorMapper {
             break
         }
     }
-    
-    private func bind() {
-        $placeType
-            .sink { [weak self] type in
-                guard let self = self else { return }
-                
-                switch type {
-                case .whole:
-                    self.result = self.wholePlace.placeList
-                case .hot:
-                    self.result = self.hotPlace.placeList
-                }
-            }
-            .store(in: &self.cancelBag)
-    }
 
+    func reset() {
+        result = []
+        wholePlace = Section(type: .whole)
+        hotPlace = Section(type: .hot)
+    }
+    
 }
