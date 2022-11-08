@@ -46,11 +46,11 @@ final class ReviewRegisterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureUI()
         createLayout()
         bindKeyboardAction()
         bind()
+        analytics()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -62,7 +62,6 @@ final class ReviewRegisterViewController: UIViewController {
         self.imagePickerController.delegate = self
         self.imagePickerController.sourceType = .photoLibrary
         present(self.imagePickerController, animated: true, completion: nil)
-        FirebaseAnalytics.Analytics.logEvent("add_image", parameters: nil)
     }
     
     @objc private func registerButtonTouched() {
@@ -96,11 +95,6 @@ extension ReviewRegisterViewController: UIImagePickerControllerDelegate, UINavig
         picker.dismiss(animated: true, completion: nil)
     }
     
-    private func analytics() {
-        FirebaseAnalytics.Analytics.logEvent("review_register_viewed", parameters: [
-            AnalyticsParameterScreenName: "review_register"
-        ])
-
     private func bind() {
         viewModel.isRegisterFail
             .receive(on: DispatchQueue.main)
@@ -122,9 +116,14 @@ extension ReviewRegisterViewController: UIImagePickerControllerDelegate, UINavig
                 self.registerButton.isEnabled = isUploaded
             }
             .store(in: &cancelBag)
-
     }
     
+}
+
+private func analytics() {
+    FirebaseAnalytics.Analytics.logEvent("review_register_viewed", parameters: [
+        AnalyticsParameterScreenName: "review_register"
+    ])
 }
 
 // MARK: - UI Function
