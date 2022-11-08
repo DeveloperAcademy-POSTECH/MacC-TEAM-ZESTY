@@ -44,7 +44,7 @@ final class UserSignupUseCase {
                 }
             } receiveValue: { [weak self] _ in
                 guard let self = self else { return }
-                UserInfoManager.userInfo.userNickname = nickname
+                UserInfoManager.userInfo?.userNickname = nickname
                 self.isNickNameChangedSubject.send(true)
             }
             .store(in: &cancelBag)

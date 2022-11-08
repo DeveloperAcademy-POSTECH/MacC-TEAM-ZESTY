@@ -18,9 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
-        
         let userAuthToken = KeyChainManager.read(key: .authToken)
-        let userNickName = UserInfoManager.userInfo.userNickname
+        let userNickName = UserInfoManager.userInfo?.userNickname
         let navigationController = UINavigationController(rootViewController: ThirdPartyLoginViewController())
         if userAuthToken != nil && userNickName != nil {
             navigationController.pushViewController(PlaceListViewController(), animated: false)

@@ -19,9 +19,9 @@ final class UserInfoManager {
     struct UserInfo: Codable {
         
         init(userNickname: String? = nil, userID: Int? = nil, userOrganization: Int? = nil) {
-            UserInfoManager.userInfo.userNickname = userNickname
-            UserInfoManager.userInfo.userID = userID
-            UserInfoManager.userInfo.userOrganization = userOrganization
+            UserInfoManager.userInfo?.userNickname = userNickname
+            UserInfoManager.userInfo?.userID = userID
+            UserInfoManager.userInfo?.userOrganization = userOrganization
         }
         
         var userNickname: String? {
@@ -59,7 +59,7 @@ final class UserInfoManager {
         }
     }
     
-    static var userInfo: UserInfo {
+    static var userInfo: UserInfo? {
         get {
             if let userInfoData = UserDefaults.standard.value(forKey: "userInfo") as? Data {
                 let decoder = JSONDecoder()
@@ -67,7 +67,7 @@ final class UserInfoManager {
                     return userInfo
                 }
             }
-            return UserInfo()
+            return nil
         }
         set {
             if let encoded = try? JSONEncoder().encode(newValue) {
