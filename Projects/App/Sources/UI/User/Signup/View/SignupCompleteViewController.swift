@@ -32,7 +32,7 @@ final class SignupCompleteViewController: UIViewController {
     // MARK: - Function
     
     @objc private func startButtonClicked() {
-        navigationController?.pushViewController(PlaceListViewController(), animated: true)
+        navigationController?.pushViewController(OrganizationListViewController(), animated: true)
     }
     
 }
@@ -44,8 +44,8 @@ extension SignupCompleteViewController {
     private func configureUI() {
         view.backgroundColor = .white
         
-        navigationController?.navigationBar.isHidden = true
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        navigationItem.setHidesBackButton(true, animated: false)
 
         backgroundImageView.image = UIImage(.img_signup)
         
