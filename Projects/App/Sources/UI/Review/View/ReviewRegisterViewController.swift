@@ -86,6 +86,29 @@ extension ReviewRegisterViewController: UIImagePickerControllerDelegate, UINavig
         picker.dismiss(animated: true, completion: nil)
     }
     
+    private func bind() {
+        viewModel.isRegisterFail
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errorMessage in
+                print(errorMessage)
+                let alert = UIAlertController(title: "이미지 업로드 실패",
+                                              message: errorMessage,
+                                              preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "확인", style: .default)
+                alert.addAction(okAction)
+                self?.present(alert, animated: false)
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.$isRegisterPossible
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isUploaded in
+                guard let self = self else { return }
+                self.registerButton.isEnabled = isUploaded
+            }
+            .store(in: &cancelBag)
+    }
+    
 }
 
 // MARK: - UI Function
