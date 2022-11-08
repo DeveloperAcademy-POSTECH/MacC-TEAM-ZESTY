@@ -26,14 +26,21 @@ final class DomainSettingViewModel {
     
     private var cancelBag = Set<AnyCancellable>()
     
+    // MARK: - LifeCycle
+    
     init(organization: Organization) {
         self.organization = organization
         bind()
     }
     
     func postUserEmail() {
-        let userEmail: String = userInput + "@" + organization.domain
+        let userEmail = getUserEmail()
         useCase.postUserEmail(email: userEmail, orgnization: organization)
+    }
+    
+    func getUserEmail() -> String {
+        let userEamil: String = userInput + "@" + organization.domain
+        return userEamil
     }
 }
 
