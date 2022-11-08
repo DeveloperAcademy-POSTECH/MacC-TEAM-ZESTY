@@ -18,7 +18,7 @@ final class ProfileNickNameView: UIView {
     
     private var cancelBag = Set<AnyCancellable>()
     
-    private let changeNickNameButton = UIButton()
+    private let changeNickNameImageView = UIImageView()
     let nickNameLabel = UILabel()
 
     // MARK: - LifeCycle
@@ -37,8 +37,8 @@ final class ProfileNickNameView: UIView {
 
     // MARK: - Function
     
-    @objc private func changeNickNameButtonClicked() {
-        viewModel?.changeNickNameButtonClicked.send(true)
+    @objc private func changeNickNameImageViewClicked() {
+        viewModel?.changeNickNameImageViewClicked.send(true)
     }
     
 }
@@ -63,10 +63,14 @@ extension ProfileNickNameView {
     private func configureUI() {
         backgroundColor = .zestyColor(.background)
         
-        changeNickNameButton.setImage(UIImage(systemName: "pencil"), for: .normal)
-        changeNickNameButton.tintColor = .black
-        changeNickNameButton.backgroundColor = .zestyColor(.background)
-        changeNickNameButton.addTarget(self, action: #selector(changeNickNameButtonClicked), for: .touchUpInside)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(changeNickNameImageViewClicked))
+        self.addGestureRecognizer(tapGesture)
+        self.isUserInteractionEnabled = true
+        
+        changeNickNameImageView.image = UIImage(systemName: "pencil")
+        changeNickNameImageView.contentMode = .scaleAspectFit
+        changeNickNameImageView.tintColor = .black
+        changeNickNameImageView.backgroundColor = .zestyColor(.background)
 
         nickNameLabel.backgroundColor = .zestyColor(.background)
         nickNameLabel.textColor = .black
@@ -75,13 +79,13 @@ extension ProfileNickNameView {
     }
 
     private func createLayout() {
-        addSubviews([changeNickNameButton, nickNameLabel])
+        addSubviews([changeNickNameImageView, nickNameLabel])
 
         snp.makeConstraints { make in
             make.height.equalTo(28)
         }
 
-        changeNickNameButton.snp.makeConstraints { make in
+        changeNickNameImageView.snp.makeConstraints { make in
             make.leading.equalTo(nickNameLabel.snp.trailing).offset(10)
             make.trailing.equalToSuperview()
             make.centerY.equalToSuperview()

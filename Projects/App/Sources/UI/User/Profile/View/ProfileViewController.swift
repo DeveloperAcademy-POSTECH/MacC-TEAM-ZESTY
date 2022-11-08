@@ -28,7 +28,7 @@ final class ProfileViewController: UIViewController {
     
     private lazy var profileNickNameView = ProfileNickNameView(viewModel: viewModel)
     private var profileMenuView1 = ProfileMenuView(menuText: "공지사항")
-    private var profileMenuView2 = ProfileMenuView(menuText: "이용약관")
+    private var profileMenuView2 = ProfileMenuView(menuText: "약관 및 정책")
     private var profileMenuView3 = ProfileMenuView(menuText: "제스티를 만든 사람들")
     private var profileUserLogoutView = ProfileUserMenuView(userMenuText: "로그아웃")
     private var profileUserWithdrawalView = ProfileUserMenuView(userMenuText: "회원탈퇴")
@@ -43,6 +43,7 @@ final class ProfileViewController: UIViewController {
         $0.addAction(UIAlertAction(title: "아니오", style: .cancel))
         return $0
     }(UIAlertController(title: "로그아웃", message: "로그아웃 하시겠습니까?", preferredStyle: .alert))
+    
     private lazy var withdrawalSheet: UIAlertController = {
         $0.addAction(UIAlertAction(title: "네", style: .destructive,
             handler: { [weak self] _ in
@@ -58,8 +59,8 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         createLayout()
-        analytics()
         bindUI()
+        analytics()
     }
     
     // MARK: - Function
@@ -69,15 +70,31 @@ final class ProfileViewController: UIViewController {
             AnalyticsParameterScreenName: "profile"
         ])
     }
-    
-    // MARK: - Function
-    
+        
     @objc private func userLogout() {
         present(logoutSheet, animated: true)
     }
     
     @objc private func userWithdrawal() {
         present(withdrawalSheet, animated: true)
+    }
+    
+    @objc func profileMenuTap1(sender: UITapGestureRecognizer) {
+        profileMenuView1.showAnimation {
+            UrlUtils.openExternalLink(urlStr: "https://avery-in-ada.notion.site/5bf82d07f7ff4f3aa2d5d86a826baf7e")
+        }
+    }
+    
+    @objc func profileMenuTap2(sender: UITapGestureRecognizer) {
+        profileMenuView2.showAnimation {
+            UrlUtils.openExternalLink(urlStr: "https://avery-in-ada.notion.site/bc452553120c48e986541111425ebb7d")
+        }
+    }
+    
+    @objc func profileMenuTap3(sender: UITapGestureRecognizer) {
+        profileMenuView3.showAnimation {
+            UrlUtils.openExternalLink(urlStr: "https://avery-in-ada.notion.site/323bf511fcb3473a961a8735f8dd2c57")
+        }
     }
     
 }
@@ -94,10 +111,13 @@ extension ProfileViewController {
             }
             .store(in: &cancelBag)
         
-        viewModel.changeNickNameButtonClicked
+        viewModel.changeNickNameImageViewClicked
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.navigationController?.pushViewController(NickNameInputViewController(state: .profile, profileViewModel: self?.viewModel), animated: true)
+                FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+                    AnalyticsParameterItemListName: "nickname_change"
+                ])
             }
             .store(in: &cancelBag)
     }
@@ -111,19 +131,30 @@ extension ProfileViewController {
     private func configureUI() {
         view.backgroundColor = .zestyColor(.background)
         
-        navigationController?.navigationBar.topItem?.title = ""
+        navigationItem.title = "프로필"
+        navigationController?.navigationBar.topItem?.backButtonTitle = ""
+        navigationController?.navigationBar.tintColor = .black
         
         profileImageView.image = UIImage(.img_signup)
         profileImageView.contentMode = .scaleAspectFit
 
         profileMenuSuperStackView.axis = .vertical
-        profileMenuSuperStackView.alignment = .center
+        profileMenuSuperStackView.alignment = .leading
         profileMenuSuperStackView.distribution = .fillProportionally
         profileMenuSuperStackView.spacing = 10
         
         profileMenuStackView.axis = .vertical
         profileMenuStackView.distribution = .fillEqually
         profileMenuStackView.spacing = 0
+        
+        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(profileMenuTap1(sender:)))
+        profileMenuView1.addGestureRecognizer(tapGesture1)
+        
+        let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(profileMenuTap2(sender:)))
+        profileMenuView2.addGestureRecognizer(tapGesture2)
+        
+        let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(profileMenuTap3(sender:)))
+        profileMenuView3.addGestureRecognizer(tapGesture3)
 
         profileUserMenuStackView.axis = .vertical
         profileUserMenuStackView.distribution = .fillEqually
