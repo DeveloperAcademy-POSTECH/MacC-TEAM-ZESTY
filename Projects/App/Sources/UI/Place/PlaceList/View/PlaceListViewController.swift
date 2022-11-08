@@ -9,6 +9,7 @@
 
 import Combine
 import UIKit
+import Firebase
 import SnapKit
 
 final class PlaceListViewController: UIViewController {
@@ -42,7 +43,14 @@ final class PlaceListViewController: UIViewController {
         configureUI()
         configureHierarchy()
         configureDataSource()
+        analytics()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.reset()
         bind()
+        viewModel.initialFetch()
     }
     
     // MARK: - Function
@@ -55,6 +63,12 @@ final class PlaceListViewController: UIViewController {
                 self.applySnapshot(with: placeList)
             }
             .store(in: &cancelBag)
+    }
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("place_list_viewed", parameters: [
+            AnalyticsParameterScreenName: "place_list"
+        ])
     }
 
 }
@@ -86,12 +100,18 @@ extension PlaceListViewController: AddPlaceDelegate {
         navigationController?.pushViewController(AddPlaceSearchViewController(viewModel: AddPlaceSearchViewModel()), animated: true)
     }
     
+    @objc func orgDetailButtonTapped() {
+        navigationController?.pushViewController(OrgDetailViewController(viewModel: OrgDetailViewModel(orgId: UserInfoManager.userInfo?.userOrganization ?? 400)), animated: true)
+        FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+            AnalyticsParameterItemListName: "org_detail_button"
+        ])
+    }
+    
     @objc func searchButtonTapped() {
-        // TODO: 검색뷰 완성 시 연결
+        navigationController?.pushViewController(SearchPlaceViewController(viewModel: SearchPlaceViewModel()), animated: true)
     }
     
     @objc func userInfoButtonTapped() {
-        // TODO: 민이 만든 프로필 뷰로 이동
          navigationController?.pushViewController(ProfileViewController(), animated: true)
     }
 
@@ -152,7 +172,7 @@ extension PlaceListViewController {
         snapshot.deleteAllItems()
         snapshot.appendSections([1])
         snapshot.appendItems(items, toSection: 1)
-        dataSource.apply(snapshot)
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
 
 }
@@ -168,15 +188,19 @@ extension PlaceListViewController {
         let personCropCircle = UIImage(systemName: "person.crop.circle")
         let userInfoItem = UIBarButtonItem(image: personCropCircle, style: .plain, target: self, action: #selector(userInfoButtonTapped))
         let placeTitle = UILabel()
-        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(orgDetailButtonTapped))
+
         placeTitle.text = "애플디벨로퍼아카데미"
         placeTitle.font = .systemFont(ofSize: 17, weight: .bold)
+        placeTitle.isUserInteractionEnabled = true
+        placeTitle.addGestureRecognizer(tapGesture)
         
         navigationItem.rightBarButtonItems = [userInfoItem, searchItem]
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: placeTitle)
         navigationItem.hidesBackButton = true
         
         navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.isHidden = false
     }
     
 }

@@ -9,6 +9,7 @@
 import Combine
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 
 final class EvaluationViewController: UIViewController {
@@ -39,11 +40,12 @@ final class EvaluationViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         createLayout()
+        analytics()
     }
     
     // MARK: - Function
     
-    @objc func goodButtonTouched() {
+    @objc private func goodButtonTouched() {
         goodButton.isSelected = true
         sosoButton.isSelected = false
         badButton.isSelected = false
@@ -52,7 +54,7 @@ final class EvaluationViewController: UIViewController {
         navigationController?.pushViewController(ReviewRegisterViewController(viewModel: viewModel), animated: true)
     }
     
-    @objc func sosoButtonTouched() {
+    @objc private func sosoButtonTouched() {
         sosoButton.isSelected = true
         badButton.isSelected = false
         goodButton.isSelected = false
@@ -61,13 +63,19 @@ final class EvaluationViewController: UIViewController {
         navigationController?.pushViewController(ReviewRegisterViewController(viewModel: viewModel), animated: true)
     }
     
-    @objc func badButtonTouched() {
+    @objc private func badButtonTouched() {
         badButton.isSelected = true
         goodButton.isSelected = false
         sosoButton.isSelected = false
         
         viewModel.evaluation = .bad
         navigationController?.pushViewController(ReviewRegisterViewController(viewModel: viewModel), animated: true)
+    }
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("evaluation_viewed", parameters: [
+            AnalyticsParameterScreenName: "evaluation"
+        ])
     }
     
 }
@@ -78,6 +86,7 @@ extension EvaluationViewController {
     
     private func configureUI() {
         view.backgroundColor = .systemBackground
+        navigationController?.navigationBar.topItem?.title = ""
         
         titleView.titleLabel.text = "\(viewModel.placeName),\n어땠나요?"
         
@@ -113,14 +122,11 @@ import SwiftUI
 
 struct EvaluationPreview: PreviewProvider {
     
-    // TODO: previewDevice ZESTY_TEMPLATE에 추가하기
-    
     static var previews: some View {
         UINavigationController(rootViewController: EvaluationViewController(viewModel: ReviewRegisterViewModel(placeId: 1, placeName: "요기쿠시동"))).toPreview()
 //            .previewDevice(PreviewDevice(rawValue: "iPhone SE (3rd generation)"))
 //            .previewDevice(PreviewDevice(rawValue: "iPhone 13 Pro Max"))
 //            .previewDevice(PreviewDevice(rawValue: "iPhone 13"))
-//            .previewDevice(PreviewDevice(rawValue: "iPad mini (6th generation)"))
     }
     
 }

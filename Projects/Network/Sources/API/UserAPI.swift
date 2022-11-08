@@ -21,11 +21,32 @@ public struct UserAPI {
         return networkService.request(with: endpoint)
     }
     
-    public static func postAccessToken(accessToken: String) -> AnyPublisher<UserOauthDTO, NetworkError> {
+    public static func isAlreadyLogin(userIdentifier: String) -> AnyPublisher<Bool, NetworkError> {
+        let header = ["Content-Type": "application/json"]
+        let endpoint = Endpoint(path: "/login/isAlreadyLogin", method: .post, queryParams: ["userIdentifier": userIdentifier], headers: header)
+        
+        return networkService.request(with: endpoint, responseType: Bool.self)
+    }
+    
+    public static func postKakaoAccessToken(accessToken: String) -> AnyPublisher<UserOauthDTO, NetworkError> {
         let header = ["Content-Type": "application/json"]
         let endpoint = Endpoint(path: "/login/oauth2/code/kakao", method: .get, queryParams: ["authToken": accessToken], headers: header)
         
         return networkService.request(with: endpoint, responseType: UserOauthDTO.self)
+    }
+    
+    public static func postAppleUserIdentifier(userIdentifier: String) -> AnyPublisher<UserOauthDTO, NetworkError> {
+        let header = ["Content-Type": "application/json"]
+        let endpoint = Endpoint(path: "/login/oauth2/code/apple", method: .post, queryParams: ["userIdentifier": userIdentifier], headers: header)
+        
+        return networkService.request(with: endpoint, responseType: UserOauthDTO.self)
+    }
+    
+    public static func getUserProfile(authorization: String) -> AnyPublisher<UserProfileDTO, NetworkError> {
+        let header = ["Content-Type": "application/json", "Authorization": "\(authorization)"]
+        let endpoint = Endpoint(path: "/api/users/profile", method: .get, headers: header)
+        
+        return networkService.request(with: endpoint, responseType: UserProfileDTO.self)
     }
     
     public static func getNicknameValidation(nickname: String) -> AnyPublisher<Bool, NetworkError> {
@@ -44,8 +65,12 @@ public struct UserAPI {
         let header = ["Content-Type": "application/json"]
         let code = ["email": codeDTO.email, "code": codeDTO.code]
         let endpoint = Endpoint(path: "/api/users/verify", method: .post, bodyParams: code, headers: header)
-        
         return networkService.request(with: endpoint)
     }
 
+    public static func deleteUser(authorization: String) -> AnyPublisher<Bool, NetworkError> {
+        let header = ["Content-Type": "application/json", "Authorization": "\(authorization)"]
+        let endpoint = Endpoint(path: "/api/users", method: .delete, headers: header)
+        return networkService.request(with: endpoint)
+    }
 }

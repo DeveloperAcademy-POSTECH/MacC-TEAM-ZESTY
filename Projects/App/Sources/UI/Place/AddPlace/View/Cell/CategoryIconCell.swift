@@ -8,6 +8,7 @@
 
 import Combine
 import UIKit
+import Firebase
 import SnapKit
 import DesignSystem
 
@@ -48,6 +49,10 @@ final class CategoryIconCell: UICollectionViewCell {
                     self.nameLabel.textColor = .black
                 }
             }
+            FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+                AnalyticsParameterItemID: categoryId,
+                AnalyticsParameterContentType: self.nameLabel.text ?? ""
+            ])
         }
     }
 

@@ -9,6 +9,7 @@
 import Combine
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 import Kingfisher
 
@@ -52,15 +53,34 @@ final class AddCategoryViewController: UIViewController {
         input.send(.categoryViewDidLoad)
         configureUI()
         createLayout()
+        analytics()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewExitAnalytics()
     }
     
     // MARK: - Function
+    
     @objc func backButtonDidTap() {
         self.navigationController?.popViewController(animated: true)
     }
     
     @objc func addPlaceButtonDidTap() {
         input.send(.addPlaceBtnDidTap)
+    }
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("add_category_viewed", parameters: [
+            AnalyticsParameterScreenName: "add_category"
+        ])
+    }
+    
+    private func viewExitAnalytics() {
+        FirebaseAnalytics.Analytics.logEvent("add_category_view_exit", parameters: [
+            AnalyticsParameterScreenName: "add_category"
+        ])
     }
     
 }
@@ -88,6 +108,9 @@ extension AddCategoryViewController {
                 case .addPlaceDidSucceed(let place):
                     let viewModel = AddPlaceResultViewModel(place: place)
                     self?.navigationController?.pushViewController(AddPlaceResultViewController(viewModel: viewModel), animated: true)
+                    FirebaseAnalytics.Analytics.logEvent("add_category_view_move", parameters: [
+                        AnalyticsParameterScreenName: "add_place_result"
+                    ])
                 }
             }.store(in: &cancelBag)
     }

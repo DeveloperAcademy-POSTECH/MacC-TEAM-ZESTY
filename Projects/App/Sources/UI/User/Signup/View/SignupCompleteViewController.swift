@@ -8,6 +8,7 @@
 
 import UIKit
 import DesignSystem
+import Firebase
 
 final class SignupCompleteViewController: UIViewController {
     
@@ -30,6 +31,10 @@ final class SignupCompleteViewController: UIViewController {
     
     // MARK: - Function
     
+    @objc private func startButtonClicked() {
+        navigationController?.pushViewController(PlaceListViewController(), animated: true)
+    }
+    
 }
 
 // MARK: - UI Function
@@ -48,6 +53,7 @@ extension SignupCompleteViewController {
         nickNameLabel.font = .systemFont(ofSize: 17, weight: .bold)
         
         startButton.setTitle("우리 대학 맛집여정에 함께하기", for: .normal)
+        startButton.addTarget(self, action: #selector(startButtonClicked), for: .touchUpInside)
     }
     
     private func createLayout() {

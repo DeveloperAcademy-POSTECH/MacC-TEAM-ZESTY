@@ -8,9 +8,9 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+    
     var window: UIWindow?
-
+    
     func scene(
         _ scene: UIScene,
         willConnectTo session: UISceneSession,
@@ -18,7 +18,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
-        let navigationController = UINavigationController(rootViewController: ViewController())
+        let userAuthToken = KeyChainManager.read(key: .authToken)
+        let userNickName = UserInfoManager.userInfo?.userNickname
+        let navigationController = UINavigationController(rootViewController: ThirdPartyLoginViewController())
+        if userAuthToken != nil && userNickName != nil {
+            navigationController.pushViewController(PlaceListViewController(), animated: false)
+        }
+        
         window.rootViewController = navigationController
         self.window = window
         window.makeKeyAndVisible()

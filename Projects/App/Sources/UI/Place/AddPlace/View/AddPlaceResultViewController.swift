@@ -9,6 +9,7 @@
 import Combine
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 import Kingfisher
 
@@ -141,9 +142,11 @@ final class AddPlaceResultViewController: UIViewController {
         configureUI()
         createLayout()
         setNavigationBar()
+        analytics()
     }
     
     // MARK: - Function
+    
     @objc func backButtonDidTap() {
         self.navigationController?.popToRootViewController(animated: true)
     }
@@ -152,6 +155,7 @@ final class AddPlaceResultViewController: UIViewController {
         // ShareSheet
         let reviewCard = placeCard.transfromToImage() ?? UIImage()
         saveImage(with: reviewCard)
+        FirebaseAnalytics.Analytics.logEvent("add_place_card_saved", parameters: nil)
     }
     
     @objc func doneButtonDidTap() {
@@ -164,9 +168,16 @@ final class AddPlaceResultViewController: UIViewController {
         self.present(activityViewController, animated: true, completion: nil)
     }
     
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("add_place_list_viewed", parameters: [
+            AnalyticsParameterScreenName: "add_place_list"
+        ])
+    }
+    
 }
 
 // MARK: - Binding
+
 extension AddPlaceResultViewController {
     
     private func bind() {
@@ -183,7 +194,6 @@ extension AddPlaceResultViewController {
             .store(in: &cancelBag)
     }
     
-
 }
 
 // MARK: - UI Function
@@ -192,6 +202,7 @@ extension AddPlaceResultViewController {
     
     private func configureUI() {
         view.backgroundColor = .white // zestyColor(.backgroundColor)
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     
     private func createLayout() {

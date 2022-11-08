@@ -11,27 +11,14 @@ import Network
 
 struct User: Hashable {
     let id: Int
-    let email: String
-    let social: SocialProvider
     let nickname: String
-    let authToken: String
-    let organizationId: Int // [Int]
-}
-
-enum SocialProvider: String {
-    case apple = "APPLE"
-    case kakao = "KAKAO"
 }
 
 extension User {
     
     init(_ dto: ReviewUserDTO) {
         id = 0
-        email = ""
-        social = .apple
         nickname = dto.nickname
-        authToken = ""
-        organizationId = 0
     }
     
 }
