@@ -11,11 +11,17 @@ import UIKit
 
 final class ProfileViewModel {
     
-    private let useCase = UserProfileUseCase()
+    private let profileUseCase = UserProfileUseCase()
+    private let changeNicknameUseCase = UserNicknameUseCase()
     
     private var cancelBag = Set<AnyCancellable>()
     
+    // output
     let isUserLoggedOutSubject = PassthroughSubject<Bool, Never>()
+    let isNickNameChangedSubject = PassthroughSubject<Bool, Never>()
+    let changeNickNameButtonClicked = PassthroughSubject<Bool, Never>()
+    
+    let userNickname = UserInfoManager.userInfo?.userNickname ?? "unknown"
     
     func userLogout() {
         UserInfoManager.resetUserInfo()
@@ -23,14 +29,20 @@ final class ProfileViewModel {
     }
     
     func userWithdrawl() {
-        useCase.deleteUser()
+        profileUseCase.deleteUser()
         KeyChainManager.delete(key: .authToken)
     }
     
     init() {
-        useCase.isUserDeletedSubject
+        profileUseCase.isUserDeletedSubject
             .sink { [weak self] _ in
                 self?.userLogout()
+            }
+            .store(in: &cancelBag)
+        
+        changeNicknameUseCase.isNickNameChangedSubject
+            .sink { [weak self] _ in
+                self?.isNickNameChangedSubject.send(true)
             }
             .store(in: &cancelBag)
     }

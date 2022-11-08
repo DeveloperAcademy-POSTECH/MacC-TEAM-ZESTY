@@ -11,7 +11,7 @@ import Foundation
 
 final class NickNameInputViewModel {
     
-    private let useCase = UserSignupUseCase()
+    private let useCase = UserNicknameUseCase()
     
     // Input
     @Published var nickNameText = ""

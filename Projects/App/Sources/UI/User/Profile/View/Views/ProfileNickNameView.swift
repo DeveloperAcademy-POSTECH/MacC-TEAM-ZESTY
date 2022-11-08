@@ -8,20 +8,27 @@
 
 import UIKit
 import SnapKit
+import Combine
 
 final class ProfileNickNameView: UIView {
 
     // MARK: - Properties
     
+    weak var viewModel: ProfileViewModel?
+    
+    private var cancelBag = Set<AnyCancellable>()
+    
     private let changeNickNameButton = UIButton()
-    private let nickNameLabel = UILabel()
+    let nickNameLabel = UILabel()
 
     // MARK: - LifeCycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(viewModel: ProfileViewModel = ProfileViewModel()) {
+        super.init(frame: .zero)
+        self.viewModel = viewModel
         configureUI()
         createLayout()
+        bindUI()
     }
 
     required init?(coder: NSCoder) {
@@ -29,7 +36,25 @@ final class ProfileNickNameView: UIView {
     }
 
     // MARK: - Function
+    
+    @objc private func changeNickNameButtonClicked() {
+        viewModel?.changeNickNameButtonClicked.send(true)
+    }
+    
+}
 
+// MARK: - Bind UI
+extension ProfileNickNameView {
+    
+    private func bindUI() {
+        viewModel?.isNickNameChangedSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.nickNameLabel.text = UserInfoManager.userInfo?.userNickname
+            }
+            .store(in: &cancelBag)
+    }
+    
 }
 
 // MARK: - UI Function
@@ -41,11 +66,12 @@ extension ProfileNickNameView {
         changeNickNameButton.setImage(UIImage(systemName: "pencil"), for: .normal)
         changeNickNameButton.tintColor = .black
         changeNickNameButton.backgroundColor = .zestyColor(.background)
+        changeNickNameButton.addTarget(self, action: #selector(changeNickNameButtonClicked), for: .touchUpInside)
 
-        nickNameLabel.text = "6글자제한O"
         nickNameLabel.backgroundColor = .zestyColor(.background)
         nickNameLabel.textColor = .black
         nickNameLabel.font = UIFont.systemFont(ofSize: CGFloat(22), weight: .bold)
+        nickNameLabel.text = viewModel?.userNickname
     }
 
     private func createLayout() {
@@ -66,7 +92,7 @@ extension ProfileNickNameView {
             make.centerY.equalToSuperview()
         }
     }
-
+    
 }
 
 // MARK: - Previews
