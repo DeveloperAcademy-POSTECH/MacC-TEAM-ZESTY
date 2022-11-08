@@ -26,7 +26,7 @@ final class ProfileViewController: UIViewController {
     private let dividerView = UIView()
     private let profileUserMenuStackView = UIStackView()
     
-    private var profileNickNameView = ProfileNickNameView()
+    private lazy var profileNickNameView = ProfileNickNameView(viewModel: viewModel)
     private var profileMenuView1 = ProfileMenuView(menuText: "공지사항")
     private var profileMenuView2 = ProfileMenuView(menuText: "이용약관")
     private var profileMenuView3 = ProfileMenuView(menuText: "제스티를 만든 사람들")
@@ -86,11 +86,18 @@ final class ProfileViewController: UIViewController {
 
 extension ProfileViewController {
     
-    func bindUI() {
+    private func bindUI() {
         viewModel.isUserLoggedOutSubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.navigationController?.popToRootViewController(animated: true)
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.changeNickNameButtonClicked
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.navigationController?.pushViewController(NickNameInputViewController(state: .profile, profileViewModel: self?.viewModel), animated: true)
             }
             .store(in: &cancelBag)
     }

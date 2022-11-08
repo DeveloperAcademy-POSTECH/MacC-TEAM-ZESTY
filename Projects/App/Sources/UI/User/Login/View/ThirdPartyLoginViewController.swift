@@ -94,7 +94,7 @@ extension ThirdPartyLoginViewController {
             .sink { [weak self] shouldSetNickname in
                 guard let self = self else { return }
                 if shouldSetNickname {
-                    self.navigationController?.pushViewController(NickNameInputViewController(), animated: true)
+                    self.navigationController?.pushViewController(NickNameInputViewController(state: .signup), animated: true)
                 } else {
                     self.navigationController?.pushViewController(PlaceListViewController(), animated: true)
                 }

@@ -11,11 +11,19 @@ import UIKit
 import DesignSystem
 import Firebase
 
+enum NicknameInutViewState {
+    case signup
+    case profile
+}
+
 final class NickNameInputViewController: UIViewController {
     
     // MARK: - Properties
     
+    private let state: NicknameInutViewState
+    
     private let viewModel = NickNameInputViewModel()
+    private weak var profileViewModel: ProfileViewModel?
     
     private let mainTitleView = MainTitleView(title: "닉네임을 알려주세요", subtitle: "언제든지 변경할 수 있어요.")
     private let nickNameTextFieldUIView = UIView()
@@ -28,6 +36,16 @@ final class NickNameInputViewController: UIViewController {
     private var cancelBag = Set<AnyCancellable>()
     
     // MARK: - LifeCycle
+    
+    init(state: NicknameInutViewState, profileViewModel: ProfileViewModel? = nil) {
+        self.state = state
+        self.profileViewModel = profileViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,7 +136,13 @@ extension NickNameInputViewController {
             .sink { [weak self] isNickNameChanged in
                 guard let self = self else { return }
                 if isNickNameChanged {
-                    self.navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
+                    switch self.state {
+                    case .signup:
+                        self.navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
+                    case .profile:
+                        self.profileViewModel?.isNickNameChangedSubject.send(true)
+                        self.navigationController?.popViewController(animated: true)
+                    }
                 }
             }
             .store(in: &cancelBag)
@@ -254,7 +278,7 @@ import SwiftUI
 struct NickNameInputViewTemplatePreview: PreviewProvider {
     
     static var previews: some View {
-        NickNameInputViewController().toPreview()
+        NickNameInputViewController(state: .profile).toPreview()
     }
 
 }
