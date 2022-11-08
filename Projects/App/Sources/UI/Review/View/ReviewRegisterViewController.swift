@@ -46,7 +46,6 @@ final class ReviewRegisterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
         createLayout()
         bindKeyboardAction()
         bind()
@@ -55,6 +54,7 @@ final class ReviewRegisterViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        configureUI()
         viewModel.imageString = ""
     }
     
@@ -116,6 +116,14 @@ extension ReviewRegisterViewController: UIImagePickerControllerDelegate, UINavig
                 self.registerButton.isEnabled = isUploaded
             }
             .store(in: &cancelBag)
+        
+        menuTextField.textDidChangePublisher
+            .compactMap { $0.text }
+            .sink { [weak self] text in
+                let isMenuExist = !text.isEmpty
+                self?.registerButton.setButtonState(isMenuExist)
+            }
+            .store(in: &cancelBag)
     }
     
 }
@@ -165,6 +173,7 @@ extension ReviewRegisterViewController {
         underline.backgroundColor = .black
         
         registerButton.setTitle("사진 없이 리뷰 등록", for: .normal)
+        registerButton.setButtonState(false)
         registerButton.addTarget(self, action: #selector(registerButtonTouched), for: .touchUpInside)
     }
     
