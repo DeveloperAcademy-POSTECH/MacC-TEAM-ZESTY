@@ -9,7 +9,8 @@
 import Foundation
 
 final class DomainSettingCompleteViewModel {
-    // TODO: UserInfoManager로 변경하기
-    let userName = UserDefaults.standard.userName ?? "김한국"
-    let orgName = UserDefaults.standard.value(forKey: "orgName") as? String ?? "한국외국어대학교\n캠퍼스"
+    
+    let userName = UserInfoManager.userInfo?.userNickname
+    let orgName = UserInfoManager.userInfo?.userOrgName
+    
 }

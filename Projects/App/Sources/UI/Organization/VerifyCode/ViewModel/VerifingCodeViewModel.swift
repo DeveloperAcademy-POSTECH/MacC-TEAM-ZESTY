@@ -52,11 +52,10 @@ extension VerifingCodeViewModel {
                 if !isCodeValid {
                     self.shouldDisplayWarning = true
                 } else {
-                    // TODO: UserInfoManager로 변경하기
-                    let orgID = String(self.organization.id)
+                    let orgID = self.organization.id
                     let orgName = self.organization.name
-                    UserDefaults.standard.set("orgID", forKey: orgID)
-                    UserDefaults.standard.set("orgName", forKey: orgName)
+                    UserInfoManager.userInfo?.userOrgName = orgName
+                    UserInfoManager.userInfo?.userOrganization = orgID
                 }
                 self.isCodeValidSubject.send(isCodeValid)
             }
