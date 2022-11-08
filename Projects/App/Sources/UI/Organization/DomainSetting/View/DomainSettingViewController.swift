@@ -9,6 +9,7 @@
 import Combine
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 
 final class DomainSettingViewController: UIViewController {
@@ -45,6 +46,7 @@ final class DomainSettingViewController: UIViewController {
         bindUI()
         configureUI()
         createLayout()
+        analytics()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,6 +60,12 @@ final class DomainSettingViewController: UIViewController {
         arrowButton.startIndicator()
         
         viewModel.postUserEmail()
+
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("domain_setting_viewed", parameters: [
+            AnalyticsParameterScreenName: "domain_setting"
+        ])
+
     }
     
 }

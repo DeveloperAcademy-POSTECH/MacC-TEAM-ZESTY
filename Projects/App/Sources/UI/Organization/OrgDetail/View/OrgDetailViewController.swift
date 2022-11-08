@@ -6,13 +6,17 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
+import Combine
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 
 final class OrgDetailViewController: UIViewController {
 
     // MARK: - Properties
+    private var cancelBag = Set<AnyCancellable>()
+    private let viewModel: OrgDetailViewModel
 
     private let orgNameLabel = UILabel()
     private let orgInformationSuperStackView = UIStackView()
@@ -29,15 +33,81 @@ final class OrgDetailViewController: UIViewController {
     private var orgDetailInformationView3 = OrgDetailInformationView()
 
     // MARK: - LifeCycle
+    
+    init(viewModel: OrgDetailViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         createLayout()
+        analytics()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        bind()
     }
 
     // MARK: - Function
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("org_detail_viewed", parameters: [
+            AnalyticsParameterScreenName: "org_detail"
+        ])
+    }
 
+    @objc func shareAppStoreLink() {
+        
+        let appId = 6443997570
+        let url = "itms-apps://itunes.apple.com/app/\(appId)"
+        
+        let msg = """
+        🍽 ZESTY에서 우리학교 맛집리스트를 함께 만들어가세요 🍽
+        
+        AppStore에서 ZESTY 다운받고
+        우리학교의 \(viewModel.orgDetailCounts.friends + 1)번째 사용자가 되어보세요!
+        \(url)
+        """
+        
+        var shareItems = [String]()
+        shareItems.append(msg)
+
+        DispatchQueue.main.async {
+            let activityViewController = UIActivityViewController(activityItems: shareItems, applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = self.view
+            self.present(activityViewController, animated: true, completion: nil)
+        }
+        
+        FirebaseAnalytics.Analytics.logEvent(AnalyticsEventShare, parameters: [
+            AnalyticsParameterContentType: "app_invite_share",
+            AnalyticsParameterItemID: appId
+        ])
+    }
+    
+}
+
+// MARK: - Binding
+extension OrgDetailViewController {
+    
+    private func bind() {
+        viewModel.$orgDetailCounts
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] orgDetailCounts in
+                guard let self = self else { return }
+                self.orgDetailInformationView1.numberLabel.text = "\(orgDetailCounts.friends)명"
+                self.orgDetailInformationView2.numberLabel.text = "\(orgDetailCounts.places)곳"
+                self.orgDetailInformationView3.numberLabel.text = "\(orgDetailCounts.images)개"
+            }
+            .store(in: &cancelBag)
+    }
+    
 }
 
 // MARK: - UI Function
@@ -81,20 +151,21 @@ extension OrgDetailViewController {
         orgInfoImageView1.contentMode = .scaleAspectFit
         orgInfoImageView1.layer.applyFigmaShadow(color: .black, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
         orgDetailInformationView1.informationLabel.text = "함께하는 친구들"
-        orgDetailInformationView1.numberLabel.text = "13,966명"
+        orgDetailInformationView1.numberLabel.text = "0명"
         
         orgInfoImageView2.image = UIImage(.img_categoryfriends_western)
         orgInfoImageView2.contentMode = .scaleAspectFit
         orgDetailInformationView2.informationLabel.text = "등록된 맛집"
-        orgDetailInformationView2.numberLabel.text = "1,425곳"
+        orgDetailInformationView2.numberLabel.text = "0곳"
         
         orgInfoImageView3.image = UIImage(.img_reviewfriends_photo)
         orgInfoImageView3.contentMode = .scaleAspectFit
         orgInfoImageView3.layer.applyFigmaShadow(color: .black, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
         orgDetailInformationView3.informationLabel.text = "업로드된 사진"
-        orgDetailInformationView3.numberLabel.text = "124,513개"
+        orgDetailInformationView3.numberLabel.text = "0개"
         
         orgInviteButton.setTitle("우리학교 사람들 초대하기", for: .normal)
+        orgInviteButton.addTarget(self, action: #selector(shareAppStoreLink), for: .touchUpInside)
     }
 
     private func createLayout() {

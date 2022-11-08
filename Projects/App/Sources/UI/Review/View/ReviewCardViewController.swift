@@ -10,12 +10,14 @@ import Combine
 import Photos
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 
 final class ReviewCardViewController: UIViewController {
     
     // MARK: - Properties
-    private let cancelBag = Set<AnyCancellable>()
+    private var cancelBag = Set<AnyCancellable>()
+    private let viewModel: ReviewRegisterViewModel!
     
     private let titleView = MainTitleView()
     private var cardView: ReviewCardView!
@@ -26,6 +28,7 @@ final class ReviewCardViewController: UIViewController {
     
     init(viewModel: ReviewRegisterViewModel) {
         cardView = ReviewCardView(viewModel: viewModel)
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -37,18 +40,35 @@ final class ReviewCardViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         createLayout()
+        analytics()
+        bind()
     }
     
 }
     // MARK: - Function
  
 extension ReviewCardViewController {
+    
+    private func bind() {
+        viewModel.isRegisterFail
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errorMessage in
+                print(errorMessage)
+                let alert = UIAlertController(title: "리뷰 등록 실패",
+                                              message: errorMessage,
+                                              preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "확인", style: .default)
+                alert.addAction(okAction)
+                self?.present(alert, animated: false)
+            }
+            .store(in: &cancelBag)
+    }
 
-    @objc func backButtonTouched() {
+    @objc private func backButtonTouched() {
         popTo(PlaceDetailViewController.self)
     }
 
-    @objc func completeButtonTouched() {
+    @objc private func completeButtonTouched() {
         popTo(PlaceDetailViewController.self)
     }
     
@@ -59,20 +79,22 @@ extension ReviewCardViewController {
         }
     }
     
-    // TODO: Toast - noti image save completion
-    @objc func saveButtonTouched() {
+    @objc private func saveButtonTouched() {
         let reviewCard = cardView.transfromToImage() ?? UIImage()
         saveImage(with: reviewCard)
+        FirebaseAnalytics.Analytics.logEvent("review_card_saved", parameters: nil)
     }
     
-    func saveImage(with image: UIImage) {
-        PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
-            guard status == .authorized else { return }
-            
-            PHPhotoLibrary.shared().performChanges({
-                PHAssetChangeRequest.creationRequestForAsset(from: image)
-            }, completionHandler: nil)
-        }
+    private func saveImage(with image: UIImage) {
+        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        self.present(activityViewController, animated: true, completion: nil)
+    }
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("review_card_viewed", parameters: [
+            AnalyticsParameterScreenName: "review_card"
+        ])
     }
 
 }
@@ -84,6 +106,7 @@ extension ReviewCardViewController {
     private func configureUI() {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.topItem?.title = ""
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         
         let xmarkConfig = UIImage.SymbolConfiguration(weight: .bold)
         let backImage = UIImage(systemName: "xmark", withConfiguration: xmarkConfig)

@@ -9,6 +9,7 @@
 import Combine
 import UIKit
 import DesignSystem
+import Firebase
 
 final class NickNameInputViewController: UIViewController {
     
@@ -33,6 +34,7 @@ final class NickNameInputViewController: UIViewController {
         configureUI()
         createLayout()
         bindUI()
+        analytics()
         nickNameTextField.delegate = self
     }
     
@@ -46,6 +48,12 @@ final class NickNameInputViewController: UIViewController {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         nickNameTextField.resignFirstResponder()
+    }
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("nickname_input_viewed", parameters: [
+            AnalyticsParameterScreenName: "nickname_input"
+        ])
     }
     
 }

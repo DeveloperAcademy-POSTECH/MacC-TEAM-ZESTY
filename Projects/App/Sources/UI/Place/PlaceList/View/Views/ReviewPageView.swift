@@ -37,7 +37,8 @@ extension ReviewPageView {
     
     func setUp(with review: Review) {
         reviewImageView.load(url: review.imageURL)
-        gradientView.isHidden = review.menuName?.isEmpty ?? true ? true : false
+        let isMenuEmpty = review.menuName?.isEmpty ?? true
+        gradientView.isHidden = isMenuEmpty
         menuLabel.text = review.menuName
     }
     
@@ -66,7 +67,7 @@ extension ReviewPageView {
         
         gradientView.snp.makeConstraints {
             $0.horizontalEdges.bottom.equalToSuperview()
-            $0.top.equalTo(menuLabel.snp.top).offset(40)
+            $0.top.equalTo(menuLabel.snp.top).offset(-40)
         }
         
         menuLabel.snp.makeConstraints {

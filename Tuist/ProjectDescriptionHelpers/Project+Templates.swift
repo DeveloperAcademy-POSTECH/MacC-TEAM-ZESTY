@@ -11,9 +11,10 @@ public extension Project {
         dependencies: [TargetDependency] = [],
         sources: SourceFilesList = ["Sources/**"],
         resources: ResourceFileElements? = nil,
-        infoPlist: InfoPlist = .default
+        infoPlist: InfoPlist = .default,
+        entitlements: Path? = nil
     ) -> Project {
-        let settings: Settings = .settings(
+        let settings: Settings = .settings(base: fireBaseAnalyticsSetting,
             configurations: [
                 .debug(name: .debug, xcconfig: .relativeToRoot("config.xcconfig")),
                 .release(name: .release, xcconfig: .relativeToRoot("config.xcconfig"))
@@ -28,6 +29,7 @@ public extension Project {
             infoPlist: infoPlist,
             sources: sources,
             resources: resources,
+            entitlements: entitlements,
             scripts: [.SwiftLintString],
             dependencies: dependencies
         )
@@ -40,6 +42,7 @@ public extension Project {
             deploymentTarget: deploymentTarget,
             infoPlist: .default,
             sources: ["Tests/**"],
+            entitlements: entitlements,
             dependencies: [.target(name: name)]
         )
         
