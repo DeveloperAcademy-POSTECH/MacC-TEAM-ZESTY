@@ -39,5 +39,13 @@ public struct UserAPI {
         let endpoint = Endpoint(path: "/api/users/nickname", method: .put, bodyParams: ["nickname": nickname], headers: header)
         return networkService.request(with: endpoint)
     }
+    
+    public static func postVerifyCode(codeDTO: VerifyCodeDTO) -> AnyPublisher<Bool, NetworkError> {
+        let header = ["Content-Type": "application/json"]
+        let code = ["email": codeDTO.email, "code": codeDTO.code]
+        let endpoint = Endpoint(path: "/api/users/verify", method: .post, bodyParams: code, headers: header)
+        
+        return networkService.request(with: endpoint)
+    }
 
 }

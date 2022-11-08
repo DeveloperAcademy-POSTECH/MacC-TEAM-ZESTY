@@ -21,7 +21,9 @@ final class VerifingCodeViewController: UIViewController {
     
     private let viewModel: VerifingCodeViewModel
     
-    private lazy var titleView = MainTitleView(title: "이메일로 받은 코드를\n알려주세요", subtitle: "\(viewModel.userEmail)", hasSymbol: true)
+    private lazy var titleView = MainTitleView(title: "이메일로 받은 코드를\n알려주세요",
+                                               subtitle: "\(viewModel.userEmail)",
+                                               hasSymbol: true)
     
     private let warningMessage = UILabel()
     private let otpStackView = OTPStackView()
@@ -56,6 +58,9 @@ final class VerifingCodeViewController: UIViewController {
     
     @objc func resendButtonTapped() {
         showToastMessage()
+        viewModel.shouldDisplayWarning = false
+        viewModel.resendEamil()
+        viewModel.startTimer()
     }
     
     private func showToastMessage() {
@@ -116,6 +121,43 @@ extension VerifingCodeViewController {
                 self.timerLabel.textColor = timerText.count > 5 ? .zestyColor(.point) : .label
             }
             .store(in: &cancelBag)
+        
+        viewModel.isCodeValidSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isCodeValid in
+                guard let self = self else { return }
+                self.arrowButton.isHidden = true
+                if isCodeValid {
+                    print("유효한 코드입니다")
+                } else {
+                    self.otpStackView.resetOTP()
+                }
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.$shouldDisplayWarning
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] shouldDisplayWarning in
+                guard let self = self else { return }
+                self.warningMessage.isHidden = !shouldDisplayWarning
+            }
+            .store(in: &cancelBag)
+        
+        otpStackView.otpText
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] otpText in
+                guard let self = self else { return }
+                
+                if self.viewModel.shouldDisplayWarning {
+                    self.viewModel.shouldDisplayWarning = false
+                }
+                if otpText.count == 4 {
+                    self.arrowButton.isHidden = false
+                    self.viewModel.postOTPCode(code: otpText)
+                }
+            }
+            .store(in: &cancelBag)
+        
     }
     
 }
@@ -131,7 +173,7 @@ extension VerifingCodeViewController {
         navigationController?.navigationBar.topItem?.title = ""
         
         warningMessage.text = "잘못된 코드예요."
-        warningMessage.isHidden = viewModel.shouldDisplayWarning
+        warningMessage.isHidden = !viewModel.shouldDisplayWarning
         warningMessage.textColor = .zestyColor(.point)
         
         timerLabel.text = viewModel.timerText
@@ -149,7 +191,7 @@ extension VerifingCodeViewController {
         resendEamilButton.setTitleColor(.label, for: .normal)
         resendEamilButton.titleLabel?.font = .systemFont(ofSize: 13, weight: .bold)
         resendEamilButton.addTarget(self, action: #selector(resendButtonTapped), for: .touchUpInside)
-        arrowButton.isHidden = viewModel.isArrowButtonHidden
+        arrowButton.isHidden = true
         arrowButton.startIndicator()
     }
     

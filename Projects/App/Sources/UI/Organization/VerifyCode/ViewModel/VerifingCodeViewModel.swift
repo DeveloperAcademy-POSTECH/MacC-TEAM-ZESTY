@@ -15,24 +15,28 @@ final class VerifingCodeViewModel {
     let organization: Organization
     let userEmail: String
     
+    private let useCase = VerifingCodeUseCase()
     private var timer: Timer?
     private var timerNumber: Int = 180
     private let oneMinuteToSecond: Int = 60
-    
-    var isArrowButtonHidden: Bool = true
     
     // input
     @Published var userInputCode: String = ""
     
     // output
     @Published var timerText = "03:00"
-    @Published var shouldDisplayWarning: Bool = true
+    @Published var shouldDisplayWarning: Bool = false
+    let isCodeValidSubject = PassthroughSubject<Bool, Never>()
+    
+    private var cancelBag = Set<AnyCancellable>()
     
     // MARK: - LifeCycle
     
     init(organization: Organization, userEmail: String) {
         self.organization = organization
         self.userEmail = userEmail
+        
+        bind()
     }
     
 }
@@ -42,7 +46,15 @@ final class VerifingCodeViewModel {
 extension VerifingCodeViewModel {
     
     private func bind() {
-        
+        useCase.isCodeValidSubject
+            .sink { [weak self] isCodeValid in
+                guard let self = self else { return }
+                if !isCodeValid {
+                    self.shouldDisplayWarning = true
+                }
+                self.isCodeValidSubject.send(isCodeValid)
+            }
+            .store(in: &cancelBag)
     }
     
 }
@@ -76,4 +88,12 @@ extension VerifingCodeViewModel {
         }
     }
     
+    func postOTPCode(code: String) {
+        useCase.postOTPCode(email: userEmail, code: code, organization: organization)
+    }
+    
+    func resendEamil() {
+        let domainSettingUseCase = DomainSettingUseCase()
+        domainSettingUseCase.postUserEmail(email: self.userEmail, orgnization: self.organization)
+    }
 }

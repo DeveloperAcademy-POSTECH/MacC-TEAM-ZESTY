@@ -95,7 +95,8 @@ extension DomainSettingViewController {
                     self.arrowButton.setDisabled(true)
                 } else {
                     let userEmail = self.viewModel.getUserEmail()
-                    let verifingCodeVC = VerifingCodeViewController(organization: self.viewModel.organization, userEmail: userEmail)
+                    let verifingCodeVC = VerifingCodeViewController(organization: self.viewModel.organization,
+                                                                    userEmail: userEmail)
                     self.navigationController?.pushViewController(verifingCodeVC, animated: true)
                 }
             }
