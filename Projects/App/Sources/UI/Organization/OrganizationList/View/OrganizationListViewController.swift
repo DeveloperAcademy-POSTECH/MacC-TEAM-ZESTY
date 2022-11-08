@@ -127,6 +127,7 @@ extension OrganizationListViewController {
     private func configureUI() {
         view.backgroundColor = .white
         
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         navigationItem.title = "대학 선택"
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .medium)
