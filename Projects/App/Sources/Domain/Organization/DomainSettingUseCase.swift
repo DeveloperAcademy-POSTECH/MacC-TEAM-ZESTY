@@ -18,9 +18,8 @@ final class DomainSettingUseCase {
     private var cancelBag = Set<AnyCancellable>()
     
     func postUserEmail(email: String, orgnization: Organization) {
-        // TODO: 키체인으로 변경하기
-//        guard let authorization = UserDefaults.standard.authToken else { return }
-        let authorization = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ6ZXN0eSIsImlhdCI6MTY2NzE4MDc5MiwiZXhwIjoxNjY4MzkwMzkyLCJzdWIiOiIzNyJ9.jZ35GteW1sM9oz_QQ0cjdxk4p0CSf81Gzv7Kjs_W-zA"
+        guard let authorization = KeyChainManager.read(key: .authToken) else { return }
+        
         let userDTO = SignUpUserDTO(id: orgnization.id, email: email, organizationName: orgnization.name)
 
         UserAPI.postSignUp(authorization: authorization, userDTO: userDTO)

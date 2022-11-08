@@ -20,10 +20,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         let userAuthToken = KeyChainManager.read(key: .authToken)
         let userNickName = UserInfoManager.userInfo?.userNickname
+        let organizationID = UserInfoManager.userInfo?.userOrganization
         let navigationController = UINavigationController(rootViewController: ThirdPartyLoginViewController())
-        if userAuthToken != nil && userNickName != nil {
+        if organizationID == nil {
+            navigationController.pushViewController(OrganizationListViewController(), animated: false)
+        } else if userAuthToken != nil && userNickName != nil {
             navigationController.pushViewController(PlaceListViewController(), animated: false)
         }
+         
         
         window.rootViewController = navigationController
         self.window = window

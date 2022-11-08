@@ -40,7 +40,7 @@ public final class FullWidthBlackButton: UIButton {
     }
     
     public func setButtonState(_ state: Bool) {
-        isEnabled = state
+        isUserInteractionEnabled = state
         backgroundColor = state ? .black : .zestyColor(.disabled)
     }
     

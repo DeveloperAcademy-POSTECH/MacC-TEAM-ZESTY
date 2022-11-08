@@ -18,10 +18,13 @@ final class VerifingCodeViewController: UIViewController {
     private var cancelBag = Set<AnyCancellable>()
     
     private let isSE: Bool = UIScreen.main.isHeightLessThan670pt
-    
     private var keyboardEndFrameHeight: CGFloat?
     
-    private lazy var titleView = MainTitleView(title: "이메일로 받은 코드를\n알려주세요", subtitle: "\(userEmail)", hasSymbol: true)
+    private let viewModel: VerifingCodeViewModel
+    
+    private lazy var titleView = MainTitleView(title: "이메일로 받은 코드를\n알려주세요",
+                                               subtitle: "\(viewModel.userEmail)",
+                                               hasSymbol: true)
     
     private let warningMessage = UILabel()
     private let otpStackView = OTPStackView()
@@ -33,28 +36,40 @@ final class VerifingCodeViewController: UIViewController {
     
     private let arrowButton = ArrowButton(initialDisable: false)
     
-    // TODO: ViewModel로 옮길 것들입니다
-    let userEmail = "mingming@pos.idserve.net"
-    var isArrowButtonHidden: Bool = true
-    var isCodeValid: Bool = true
-    var userInputCode: String = ""
-    var timer = "03:00"
-    
     // MARK: - LifeCycle
+    
+    init(organization: Organization, userEmail: String) {
+        self.viewModel = VerifingCodeViewModel(organization: organization, userEmail: userEmail)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         createLayout()
         bindUI()
+        viewModel.startTimer()
         analytics()
     }
     
     // MARK: - Function
     
     @objc func resendButtonTapped() {
-        print("버튼 눌림")
+        viewModel.resetTimer()
         showToastMessage()
+        viewModel.shouldDisplayWarning = false
+        viewModel.resendEamil()
+        viewModel.startTimer()
+        
+        resendEamilButton.isEnabled = false
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.1) {
+            self.resendEamilButton.isEnabled = true
+        }
     }
     
     private func showToastMessage() {
@@ -67,8 +82,9 @@ final class VerifingCodeViewController: UIViewController {
         toastLabel.layer.cornerRadius = 25
         toastLabel.clipsToBounds  =  true
         toastLabel.numberOfLines = 0
+        toastLabel.layer.zPosition = 999
         
-        self.view.addSubview(toastLabel)
+        self.navigationController?.view.addSubview(toastLabel)
         
         toastLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -112,6 +128,52 @@ extension VerifingCodeViewController {
                 self.view.layoutIfNeeded()
             }
             .store(in: &cancelBag)
+        
+        viewModel.$timerText
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] timerText in
+                guard let self = self else { return }
+                self.timerLabel.text = timerText
+                self.timerLabel.textColor = timerText.count > 5 ? .zestyColor(.point) : .label
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.isCodeValidSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isCodeValid in
+                guard let self = self else { return }
+                self.arrowButton.isHidden = true
+                if isCodeValid {
+                    self.navigationController?.pushViewController(DomainSettingCompleteViewController(), animated: true)
+                } else {
+                    self.otpStackView.resetOTP()
+                }
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.$shouldDisplayWarning
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] shouldDisplayWarning in
+                guard let self = self else { return }
+                self.warningMessage.isHidden = !shouldDisplayWarning
+            }
+            .store(in: &cancelBag)
+        
+        otpStackView.otpText
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] otpText in
+                guard let self = self else { return }
+                
+                if self.viewModel.shouldDisplayWarning {
+                    self.viewModel.shouldDisplayWarning = false
+                }
+                if otpText.count == 4 {
+                    self.arrowButton.isHidden = false
+                    self.viewModel.postOTPCode(code: otpText)
+                }
+            }
+            .store(in: &cancelBag)
+        
     }
     
 }
@@ -127,10 +189,10 @@ extension VerifingCodeViewController {
         navigationController?.navigationBar.topItem?.title = ""
         
         warningMessage.text = "잘못된 코드예요."
-        warningMessage.isHidden = isCodeValid
+        warningMessage.isHidden = !viewModel.shouldDisplayWarning
         warningMessage.textColor = .zestyColor(.point)
         
-        timerLabel.text = timer
+        timerLabel.text = viewModel.timerText
         
         resendStackView.spacing = 10
         resendStackView.axis = .horizontal
@@ -145,7 +207,8 @@ extension VerifingCodeViewController {
         resendEamilButton.setTitleColor(.label, for: .normal)
         resendEamilButton.titleLabel?.font = .systemFont(ofSize: 13, weight: .bold)
         resendEamilButton.addTarget(self, action: #selector(resendButtonTapped), for: .touchUpInside)
-        arrowButton.isHidden = isArrowButtonHidden
+        
+        arrowButton.isHidden = true
         arrowButton.startIndicator()
     }
     
@@ -219,7 +282,7 @@ import SwiftUI
 struct VerifingCodePreview: PreviewProvider {
     
     static var previews: some View {
-        VerifingCodeViewController().toPreview()
+        VerifingCodeViewController(organization: Organization.mockData[0], userEmail: "mingming@gmail.com").toPreview()
     }
     
 }
