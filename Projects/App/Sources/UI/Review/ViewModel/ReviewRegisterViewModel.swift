@@ -23,7 +23,8 @@ final class ReviewRegisterViewModel {
     let placeName: String
     var evaluation: Evaluation = .soso
     var menu: String?
-    let imageSubject = PassthroughSubject<String, Error>()
+    @Published var imageString = ""
+    @Published var isRegisterPossible = true
     
     // Output
     struct Result {
@@ -67,7 +68,9 @@ extension ReviewRegisterViewModel: ErrorMapper {
                 }
             } receiveValue: { [weak self] imageString in
                 guard let self = self else { return }
-                self.imageSubject.send(imageString)
+                
+                self.imageString = imageString
+                self.isRegisterPossible = true
             }
             .store(in: &cancelBag)
     }
@@ -77,22 +80,10 @@ extension ReviewRegisterViewModel: ErrorMapper {
     }
 
     func registerReview() {
-        imageSubject
-            .sink { [weak self] _ in
-                guard let self = self else { return }
-                self.registerReview()
-            } receiveValue: { [weak self] imageString in
-                guard let self = self else { return }
-                self.registerReview(with: imageString)
-            }
-            .store(in: &cancelBag)
-    }
-    
-    private func registerReview(with imageString: String? = nil) {
         useCase.registerReview(placeId: placeId,
-                                    menuName: menu,
-                                    image: imageString,
-                                    grade: evaluation)
+                               menuName: menu,
+                               image: imageString,
+                               grade: evaluation)
         .sink { [weak self] completion in
             guard let self = self else { return }
             

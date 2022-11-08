@@ -65,9 +65,9 @@ extension ReviewCardView {
             }
             .store(in: &cancelBag)
         
-        viewModel.imageSubject
+        viewModel.$imageString
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] _ in
+            .sink { [weak self] image in
                 guard let self = self else { return }
                 self.reconfigureUI(for: false)
                 self.remakeLayout(with: false)

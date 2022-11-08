@@ -58,9 +58,9 @@ final class ReviewRegisterViewController: UIViewController {
     }
     
     @objc private func registerButtonTouched() {
-        viewModel.uploadImage(with: menuImageView.image)
         viewModel.menu = menuTextField.text
         viewModel.registerReview()
+
         navigationController?.pushViewController(ReviewCardViewController(viewModel: viewModel), animated: true)
     }
     
@@ -77,6 +77,8 @@ extension ReviewRegisterViewController: UIImagePickerControllerDelegate, UINavig
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             menuImageView.image = image
+            viewModel.uploadImage(with: image)
+            viewModel.isRegisterPossible = false
             registerButton.setTitle("리뷰 등록", for: .normal)
         }
         picker.dismiss(animated: true, completion: nil)
