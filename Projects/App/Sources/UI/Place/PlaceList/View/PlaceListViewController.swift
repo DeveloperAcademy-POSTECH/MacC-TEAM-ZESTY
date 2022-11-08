@@ -27,6 +27,10 @@ final class PlaceListViewController: UIViewController {
     private var snapshot = Snapshot()
     private let headerType = "section-header-element-kind"
     
+    private var emptyView = UIView()
+    private var emptyImageView = UIImageView()
+    private var emptyLabel = UILabel()
+    
     // MARK: - LifeCycle
     
     init(viewModel: PlaceListViewModel = PlaceListViewModel()) {
@@ -40,9 +44,10 @@ final class PlaceListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
         configureHierarchy()
         configureDataSource()
+        createLayout()
+        configureUI()
         analytics()
     }
     
@@ -61,6 +66,7 @@ final class PlaceListViewController: UIViewController {
             .sink { [weak self] placeList in
                 guard let self = self else { return }
                 self.applySnapshot(with: placeList)
+                self.setEmptyView(placeList)
             }
             .store(in: &cancelBag)
     }
@@ -122,7 +128,7 @@ extension PlaceListViewController: AddPlaceDelegate {
 extension PlaceListViewController {
 
     private func configureHierarchy() {
-        collectionView = UICollectionView(frame: view.frame, collectionViewLayout: createLayout())
+        collectionView = UICollectionView(frame: view.frame, collectionViewLayout: createCollectionViewLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = .systemBackground
         collectionView.delegate = self
@@ -130,7 +136,7 @@ extension PlaceListViewController {
         view.addSubview(collectionView)
     }
 
-    private func createLayout() -> UICollectionViewLayout {
+    private func createCollectionViewLayout() -> UICollectionViewLayout {
         let section: NSCollectionLayoutSection
         
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(90))
@@ -181,6 +187,15 @@ extension PlaceListViewController {
     
     private func configureUI() {
         configureNaviBar()
+        emptyImageView.image = UIImage(.img_emptyfriends_noresult)
+        emptyImageView.contentMode = .scaleAspectFit
+        emptyLabel.text = "아직 등록된 맛집이 없어요"
+        emptyLabel.font = .zestyFont(size: .body, weight: .medium)
+        emptyLabel.textColor = .dim
+    }
+    
+    private func setEmptyView(_ result: [Place]) {
+        emptyView.isHidden = !result.isEmpty
     }
     
     private func configureNaviBar() {
@@ -201,6 +216,24 @@ extension PlaceListViewController {
         
         navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.isHidden = false
+    }
+    
+    private func createLayout() {
+        view.addSubview(emptyView)
+        emptyView.addSubviews([emptyLabel, emptyImageView])
+        
+        emptyView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        emptyImageView.snp.makeConstraints {
+            $0.size.equalTo(50)
+            $0.top.centerX.equalToSuperview()
+        }
+        emptyLabel.snp.makeConstraints {
+            $0.top.equalTo(emptyImageView.snp.bottom).offset(20)
+            $0.horizontalEdges.bottom.equalToSuperview()
+        }
+        
     }
     
 }
