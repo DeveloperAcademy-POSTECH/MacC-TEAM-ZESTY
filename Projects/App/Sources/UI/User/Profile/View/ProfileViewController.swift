@@ -115,6 +115,9 @@ extension ProfileViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.navigationController?.pushViewController(NickNameInputViewController(state: .profile, profileViewModel: self?.viewModel), animated: true)
+                FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+                    AnalyticsParameterItemListName: "nickname_change"
+                ])
             }
             .store(in: &cancelBag)
     }

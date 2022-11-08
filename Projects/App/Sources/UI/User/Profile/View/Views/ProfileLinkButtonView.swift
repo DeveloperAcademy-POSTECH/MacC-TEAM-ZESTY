@@ -8,6 +8,7 @@
 
 import UIKit
 import DesignSystem
+import Firebase
 import SnapKit
 
 final class ProfileLinkButtonView: UIView {
@@ -35,12 +36,18 @@ final class ProfileLinkButtonView: UIView {
         instaButton.showAnimation {
             UrlUtils.openExternalLink(urlStr: "https://www.instagram.com/kingbob_ne/")
         }
+        FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+            AnalyticsParameterItemListName: "instagram_move"
+        ])
     }
     
     @objc func mailButtonDidTap() {
         mailButton.showAnimation {
             UrlUtils.openExternalLink(urlStr: "https://docs.google.com/forms/d/e/1FAIpQLScONEq4_4S1A7upkeyf_mlW8dLY0OSPErUDpkJfahM83IfNBA/viewform")
         }
+        FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
+            AnalyticsParameterItemListName: "google_forms_move"
+        ])
     }
     
 }

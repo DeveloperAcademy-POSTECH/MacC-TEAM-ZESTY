@@ -190,7 +190,7 @@ extension NickNameInputViewController {
             navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
             navigationItem.backBarButtonItem?.tintColor = .black
         case .signup:
-            navigationController?.navigationBar.isHidden = true
+            navigationItem.setHidesBackButton(true, animated: false)
             navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         }
         
