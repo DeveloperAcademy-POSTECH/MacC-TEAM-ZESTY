@@ -56,14 +56,13 @@ final class OrgDetailViewController: UIViewController {
     }
 
     // MARK: - Function
-<<<<<<< HEAD:Projects/App/Sources/UI/Organization/OrgDetail/OrgDetailViewController.swift
     
     private func analytics() {
         FirebaseAnalytics.Analytics.logEvent("org_detail_viewed", parameters: [
             AnalyticsParameterScreenName: "org_detail"
         ])
     }
-=======
+
     @objc func shareAppStoreLink() {
         
         let appId = 6443997570
@@ -79,7 +78,6 @@ final class OrgDetailViewController: UIViewController {
         
         var shareItems = [String]()
         shareItems.append(msg)
->>>>>>> dev:Projects/App/Sources/UI/Organization/OrgDetail/View/OrgDetailViewController.swift
 
         DispatchQueue.main.async {
             let activityViewController = UIActivityViewController(activityItems: shareItems, applicationActivities: nil)

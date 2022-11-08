@@ -50,7 +50,6 @@ final class ReviewRegisterViewController: UIViewController {
         configureUI()
         createLayout()
         bindKeyboardAction()
-        analytics()
         bind()
     }
     
