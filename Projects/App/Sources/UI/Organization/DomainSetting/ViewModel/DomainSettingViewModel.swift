@@ -28,7 +28,20 @@ final class DomainSettingViewModel {
     
     init(organization: Organization) {
         self.organization = organization
-        
+        bind()
+    }
+    
+    func postUserEmail() {
+        let userEmail: String = userInput + "@" + organization.domain
+        useCase.postUserEmail(email: userEmail, orgnization: organization)
+    }
+}
+
+// MARK: - Bind Fucntions
+
+extension DomainSettingViewModel {
+    
+    private func bind() {
         $userInput
             .map(checkInputValid)
             .assign(to: \.isInputValid, on: self)
@@ -55,11 +68,8 @@ final class DomainSettingViewModel {
             .store(in: &cancelBag)
     }
     
-    func postUserEmail() {
-        let userEmail: String = userInput + "@" + organization.domain
-        useCase.postUserEmail(email: userEmail, orgnization: organization)
-    }
 }
+
 
 // MARK: - Logic
 
