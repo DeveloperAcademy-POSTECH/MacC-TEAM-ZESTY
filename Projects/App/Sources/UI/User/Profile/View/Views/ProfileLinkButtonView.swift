@@ -29,6 +29,20 @@ final class ProfileLinkButtonView: UIView {
         super.init(coder: coder)
     }
     
+    // MARK: - Function
+
+    @objc func instaButtonDidTap() {
+        instaButton.showAnimation {
+            UrlUtils.openExternalLink(urlStr: "https://www.instagram.com/kingbob_ne/")
+        }
+    }
+    
+    @objc func mailButtonDidTap() {
+        mailButton.showAnimation {
+            UrlUtils.openExternalLink(urlStr: "https://docs.google.com/forms/d/e/1FAIpQLScONEq4_4S1A7upkeyf_mlW8dLY0OSPErUDpkJfahM83IfNBA/viewform")
+        }
+    }
+    
 }
 
 extension ProfileLinkButtonView {
@@ -39,8 +53,10 @@ extension ProfileLinkButtonView {
         backgroundColor = .zestyColor(.background)
 
         instaButton.setImage(UIImage(.btn_link_instargram), for: .normal)
+        instaButton.addTarget(self, action: #selector(instaButtonDidTap), for: .touchUpInside)
 
-        mailButton.setImage(UIImage(.btn_link_mail), for: .normal)
+        mailButton.setImage(UIImage(.btn_link), for: .normal)
+        mailButton.addTarget(self, action: #selector(mailButtonDidTap), for: .touchUpInside)
     }
     
     private func createLayout() {
