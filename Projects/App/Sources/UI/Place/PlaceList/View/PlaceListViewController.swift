@@ -56,7 +56,6 @@ final class PlaceListViewController: UIViewController {
         viewModel.reset()
         bind()
         viewModel.initialFetch()
-        print(UserInfoManager.userInfo?.userNickname)
     }
     
     // MARK: - Function

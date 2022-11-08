@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KakaoSDKAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
@@ -22,14 +23,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let userNickName = UserInfoManager.userInfo?.userNickname
         let organizationID = UserInfoManager.userInfo?.userOrganization
         let navigationController = UINavigationController(rootViewController: ThirdPartyLoginViewController())
-        // 로그인 했는데 닉네임 설정 안한경우
-        if userAuthToken != nil && userNickName == nil {
-            navigationController.pushViewController(NickNameInputViewController(state: .signup), animated: false)
-        }
-        // 로그인과 닉네임 설정 했는데 이메일 인증을 안한경우
-        if userAuthToken != nil && userNickName != nil && organizationID == nil {
-            navigationController.pushViewController(OrganizationListViewController(), animated: false)
-        }
         // 정상적으로 가입을 한경우
         if userAuthToken != nil && userNickName != nil && organizationID != nil {
             navigationController.pushViewController(PlaceListViewController(), animated: false)
@@ -42,4 +35,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         navigationController.navigationBar.tintColor = .black
         navigationController.navigationBar.topItem?.title = ""
     }
+    
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                _ = AuthController.handleOpenUrl(url: url)
+            }
+        }
+    }
+    
 }
