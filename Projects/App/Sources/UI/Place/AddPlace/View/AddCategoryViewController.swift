@@ -56,12 +56,15 @@ final class AddCategoryViewController: UIViewController {
         analytics()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewExitAnalytics()
+    }
+    
     // MARK: - Function
     
     @objc func backButtonDidTap() {
         self.navigationController?.popViewController(animated: true)
-        // TODO: 스와이프로 뒤로가기 했을 경우에 대한 대비 필요
-        FirebaseAnalytics.Analytics.logEvent("add_category_exit", parameters: nil)
     }
     
     @objc func addPlaceButtonDidTap() {
@@ -70,6 +73,12 @@ final class AddCategoryViewController: UIViewController {
     
     private func analytics() {
         FirebaseAnalytics.Analytics.logEvent("add_category_viewed", parameters: [
+            AnalyticsParameterScreenName: "add_category"
+        ])
+    }
+    
+    private func viewExitAnalytics() {
+        FirebaseAnalytics.Analytics.logEvent("add_category_view_exit", parameters: [
             AnalyticsParameterScreenName: "add_category"
         ])
     }
@@ -99,6 +108,9 @@ extension AddCategoryViewController {
                 case .addPlaceDidSucceed(let place):
                     let viewModel = AddPlaceResultViewModel(place: place)
                     self?.navigationController?.pushViewController(AddPlaceResultViewController(viewModel: viewModel), animated: true)
+                    FirebaseAnalytics.Analytics.logEvent("add_category_view_move", parameters: [
+                        AnalyticsParameterScreenName: "add_place_result"
+                    ])
                 }
             }.store(in: &cancelBag)
     }

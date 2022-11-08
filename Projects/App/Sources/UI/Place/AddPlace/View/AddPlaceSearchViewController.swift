@@ -58,12 +58,15 @@ final class AddPlaceSearchViewController: UIViewController {
         
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewExitAnalytics()
+    }
+    
     // MARK: - Function
     
     @objc func backButtonDidTap() {
         self.navigationController?.popViewController(animated: true)
-        // TODO: 스와이프로 뒤로가기 했을 경우에 대한 대비 필요
-        FirebaseAnalytics.Analytics.logEvent("add_place_search_exit", parameters: nil)
     }
     
     @objc func searchButtonDidTap() {
@@ -76,6 +79,12 @@ final class AddPlaceSearchViewController: UIViewController {
     
     private func analytics() {
         FirebaseAnalytics.Analytics.logEvent("add_place_search_viewed", parameters: [
+            AnalyticsParameterScreenName: "add_place_search"
+        ])
+    }
+    
+    private func viewExitAnalytics() {
+        FirebaseAnalytics.Analytics.logEvent("add_place_search_exit", parameters: [
             AnalyticsParameterScreenName: "add_place_search"
         ])
     }
@@ -110,7 +119,9 @@ extension AddPlaceSearchViewController {
                 case .addSelectedPlaceDidSucceed(let kakaoPlace):
                         let viewModel = AddPlaceViewModel(kakaoPlace: kakaoPlace)
                         self?.navigationController?.pushViewController(AddCategoryViewController(viewModel: viewModel), animated: true)
-                    
+                        FirebaseAnalytics.Analytics.logEvent("add_place_search_move", parameters: [
+                            AnalyticsParameterScreenName: "add_category"
+                        ])
                 }
             }.store(in: &cancelBag)
         
