@@ -23,8 +23,6 @@ final class PlaceCell: UICollectionViewCell {
     private lazy var pageControl = UIPageControl()
     private lazy var reviewViews = [ReviewPageView(), ReviewPageView(), ReviewPageView()]
     
-    private lazy var middelView = UIView()
-    private lazy var gradientStackView = UIStackView()
     private lazy var bottomView = UIView()
     
     private lazy var placeNameLabel = UILabel()
@@ -51,6 +49,13 @@ final class PlaceCell: UICollectionViewCell {
         scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
         pageControl.currentPage = 0
         pageControl.numberOfPages = 0
+        
+        reviewViews
+            .filter { $0.superview != nil }
+            .forEach {
+                $0.snp.removeConstraints()
+                $0.removeFromSuperview()
+            }
     }
     
 }
