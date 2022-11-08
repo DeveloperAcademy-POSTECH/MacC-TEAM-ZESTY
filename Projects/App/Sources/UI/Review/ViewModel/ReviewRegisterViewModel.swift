@@ -102,21 +102,21 @@ extension ReviewRegisterViewModel: ErrorMapper {
             }
         } receiveValue: { [weak self] review in
             guard let self = self else { return }
-
+            
             // TODO: ReviewDTO image 배열 -> String으로 바뀌면 수정 예정
             var imageURL: URL?
             if !review.image.isEmpty {
                 imageURL = URL(string: review.image[0] ?? "")
             }
             let result = Result(image: imageURL,
-                                 evaluation: Evaluation(review.evaluation),
-                                 reviewer: review.reviewer.nickname,
-                                 registeredAt: Date.getStringToDate(review.createdAt).getDateToString(format: "yy.MM.dd"),
-                                 category: review.place.category.name,
-                                     placeName: review.place.name,
-                                     placeAddress: review.place.address)
+                                evaluation: Evaluation(review.evaluation),
+                                reviewer: review.reviewer.nickname,
+                                registeredAt: Date.getStringToDate(review.createdAt).getDateToString(format: "yy.MM.dd"),
+                                category: review.place.category.name,
+                                placeName: review.place.name,
+                                placeAddress: review.place.address)
             self.result.send(result)
-            }
+        }
         .store(in: &cancelBag)
     }
     
