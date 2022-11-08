@@ -60,12 +60,12 @@ final class DomainSettingViewController: UIViewController {
         arrowButton.startIndicator()
         
         viewModel.postUserEmail()
-
+    }
+    
     private func analytics() {
         FirebaseAnalytics.Analytics.logEvent("domain_setting_viewed", parameters: [
             AnalyticsParameterScreenName: "domain_setting"
         ])
-
     }
     
 }
