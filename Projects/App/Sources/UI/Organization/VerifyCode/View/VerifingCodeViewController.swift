@@ -73,8 +73,9 @@ final class VerifingCodeViewController: UIViewController {
         toastLabel.layer.cornerRadius = 25
         toastLabel.clipsToBounds  =  true
         toastLabel.numberOfLines = 0
+        toastLabel.layer.zPosition = 999
         
-        self.view.addSubview(toastLabel)
+        self.navigationController?.view.addSubview(toastLabel)
         
         toastLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -191,6 +192,7 @@ extension VerifingCodeViewController {
         resendEamilButton.setTitleColor(.label, for: .normal)
         resendEamilButton.titleLabel?.font = .systemFont(ofSize: 13, weight: .bold)
         resendEamilButton.addTarget(self, action: #selector(resendButtonTapped), for: .touchUpInside)
+        
         arrowButton.isHidden = true
         arrowButton.startIndicator()
     }
