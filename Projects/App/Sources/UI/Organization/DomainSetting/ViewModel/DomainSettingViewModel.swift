@@ -26,9 +26,29 @@ final class DomainSettingViewModel {
     
     private var cancelBag = Set<AnyCancellable>()
     
+    // MARK: - LifeCycle
+    
     init(organization: Organization) {
         self.organization = organization
-        
+        bind()
+    }
+    
+    func postUserEmail() {
+        let userEmail = getUserEmail()
+        useCase.postUserEmail(email: userEmail, orgnization: organization)
+    }
+    
+    func getUserEmail() -> String {
+        let userEamil: String = userInput + "@" + organization.domain
+        return userEamil
+    }
+}
+
+// MARK: - Bind Fucntions
+
+extension DomainSettingViewModel {
+    
+    private func bind() {
         $userInput
             .map(checkInputValid)
             .assign(to: \.isInputValid, on: self)
@@ -45,7 +65,6 @@ final class DomainSettingViewModel {
         useCase.isEmailOverlapedSubject
             .sink { [weak self] isEmailOverlaped in
                 guard let self = self else { return }
-                print(#function)
                 if isEmailOverlaped {
                     self.shouldDisplayWarning = true
                 }
@@ -55,10 +74,6 @@ final class DomainSettingViewModel {
             .store(in: &cancelBag)
     }
     
-    func postUserEmail() {
-        let userEmail: String = userInput + "@" + organization.domain
-        useCase.postUserEmail(email: userEmail, orgnization: organization)
-    }
 }
 
 // MARK: - Logic

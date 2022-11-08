@@ -61,11 +61,16 @@ public struct UserAPI {
         return networkService.request(with: endpoint)
     }
     
-    public static func deleteUser(authorization: String) -> AnyPublisher<Bool, NetworkError> {
-        let header = ["Content-Type": "application/json", "Authorization": "\(authorization)"]
-        let endpoint = Endpoint(path: "/api/users", method: .delete, headers: header)
-        
+    public static func postVerifyCode(codeDTO: VerifyCodeDTO) -> AnyPublisher<Bool, NetworkError> {
+        let header = ["Content-Type": "application/json"]
+        let code = ["email": codeDTO.email, "code": codeDTO.code]
+        let endpoint = Endpoint(path: "/api/users/verify", method: .post, bodyParams: code, headers: header)
         return networkService.request(with: endpoint)
     }
 
+    public static func deleteUser(authorization: String) -> AnyPublisher<Bool, NetworkError> {
+        let header = ["Content-Type": "application/json", "Authorization": "\(authorization)"]
+        let endpoint = Endpoint(path: "/api/users", method: .delete, headers: header)
+        return networkService.request(with: endpoint)
+    }
 }

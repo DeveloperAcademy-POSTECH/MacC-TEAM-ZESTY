@@ -185,8 +185,8 @@ extension NickNameInputViewController {
     private func configureUI() {
         view.backgroundColor = .white
         
-        navigationController?.navigationBar.isHidden = true
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        navigationItem.setHidesBackButton(true, animated: false)
         
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = .black

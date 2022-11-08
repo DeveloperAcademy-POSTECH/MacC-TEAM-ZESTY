@@ -14,14 +14,16 @@ final class UserInfoManager {
         case userNickname
         case userID
         case userOrganization
+        case userOrgName
     }
     
     struct UserInfo: Codable {
         
-        init(userNickname: String? = nil, userID: Int? = nil, userOrganization: Int? = nil) {
+        init(userNickname: String? = nil, userID: Int? = nil, userOrganization: Int? = nil, userOrgName: String? = nil ) {
             UserInfoManager.userInfo?.userNickname = userNickname
             UserInfoManager.userInfo?.userID = userID
             UserInfoManager.userInfo?.userOrganization = userOrganization
+            UserInfoManager.userInfo?.userOrgName = userOrgName
         }
         
         var userNickname: String? {
@@ -55,6 +57,17 @@ final class UserInfoManager {
             }
             set {
                 UserDefaults.standard.set(newValue, forKey: UserInfoKeys.userOrganization.rawValue)
+            }
+        }
+        var userOrgName: String? {
+            get {
+                guard let userOrgName = UserDefaults.standard.value(forKey: UserInfoKeys.userOrgName.rawValue) as? String else {
+                    return nil
+                }
+                return userOrgName
+            }
+            set {
+                UserDefaults.standard.set(newValue, forKey: UserInfoKeys.userOrgName.rawValue)
             }
         }
     }
