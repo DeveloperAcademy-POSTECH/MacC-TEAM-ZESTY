@@ -65,7 +65,6 @@ extension DomainSettingViewModel {
         useCase.isEmailOverlapedSubject
             .sink { [weak self] isEmailOverlaped in
                 guard let self = self else { return }
-                print(#function)
                 if isEmailOverlaped {
                     self.shouldDisplayWarning = true
                 }
@@ -76,7 +75,6 @@ extension DomainSettingViewModel {
     }
     
 }
-
 
 // MARK: - Logic
 
