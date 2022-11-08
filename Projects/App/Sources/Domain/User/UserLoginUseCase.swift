@@ -73,7 +73,7 @@ final class UserLoginUseCase {
                 }
             } receiveValue: { [weak self] userProfileDTO in
                 guard let self = self else { return }
-                UserInfoManager.userInfo = UserInfoManager.UserInfo(authIdentifier: userProfileDTO.authIdentifier, userNickname: userProfileDTO.nickname, userID: userProfileDTO.id, userOrganization: userProfileDTO.organization)
+                UserInfoManager.userInfo = UserInfoManager.UserInfo(userNickname: userProfileDTO.nickname, userID: userProfileDTO.id, userOrganization: userProfileDTO.organization)
                 self.isUserProfileReceivedSubject.send(true)
             }
             .store(in: &cancelBag)

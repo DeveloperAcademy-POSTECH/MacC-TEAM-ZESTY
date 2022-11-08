@@ -11,7 +11,6 @@ import Foundation
 final class UserInfoManager {
     
     private enum UserInfoKeys: String, CaseIterable {
-        case authIdentifier
         case userNickname
         case userID
         case userOrganization
@@ -19,24 +18,12 @@ final class UserInfoManager {
     
     struct UserInfo: Codable {
         
-        init(authIdentifier: String? = nil, userNickname: String? = nil, userID: Int? = nil, userOrganization: Int? = nil) {
-            UserInfoManager.userInfo.authIdentifier = authIdentifier
+        init(userNickname: String? = nil, userID: Int? = nil, userOrganization: Int? = nil) {
             UserInfoManager.userInfo.userNickname = userNickname
             UserInfoManager.userInfo.userID = userID
             UserInfoManager.userInfo.userOrganization = userOrganization
         }
         
-        var authIdentifier: String? {
-            get {
-                guard let authIdentifier = UserDefaults.standard.value(forKey: UserInfoKeys.authIdentifier.rawValue) as? String else {
-                    return nil
-                }
-                return authIdentifier
-            }
-            set {
-                UserDefaults.standard.set(newValue, forKey: UserInfoKeys.authIdentifier.rawValue)
-            }
-        }
         var userNickname: String? {
             get {
                 guard let userNickname = UserDefaults.standard.value(forKey: UserInfoKeys.userNickname.rawValue) as? String else {
