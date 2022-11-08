@@ -58,7 +58,6 @@ final class DomainSettingViewController: UIViewController {
     
     @objc func arrowButtonTapped() {
         arrowButton.startIndicator()
-        
         viewModel.postUserEmail()
     }
     
