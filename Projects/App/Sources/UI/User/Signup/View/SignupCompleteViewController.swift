@@ -27,12 +27,19 @@ final class SignupCompleteViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
         createLayout()
+        analytics()
     }
     
     // MARK: - Function
     
     @objc private func startButtonClicked() {
         navigationController?.pushViewController(PlaceListViewController(), animated: true)
+    }
+    
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("signup_complete_viewed", parameters: [
+            AnalyticsParameterScreenName: "signup_complete"
+        ])
     }
     
 }
