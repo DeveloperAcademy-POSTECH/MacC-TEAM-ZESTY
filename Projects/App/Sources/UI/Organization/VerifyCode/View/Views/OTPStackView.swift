@@ -6,28 +6,24 @@
 //  Copyright © 2022 com.zesty. All rights reserved.
 //
 
+import Combine
 import UIKit
 import DesignSystem
-
-protocol OTPDelegate: AnyObject {
-    func didChangeValidity(isValid: Bool)
-}
 
 /// 출처 : https://github.com/satyen95/iOS-OTPField/blob/master/OTPField/OTPField/OTPStackView.swift
 
 final class OTPStackView: UIStackView {
     
     // MARK: - Properties
-    
-    weak var delegate: OTPDelegate?
-    
     private let numberOfFields: Int = 4
     private lazy var textFieldArray: [OTPTextField] = []
     private var showWarningMessage: Bool = false
     
     private let textBackgroundColor = UIColor.zestyColor(.grayF6)
     private var remainingStrStack: [String] = []
-    private var userTextInput: String = ""
+    
+    // output
+    let otpText = PassthroughSubject<String, Never>()
     
     // MARK: - LifeCycle
     
@@ -43,15 +39,7 @@ final class OTPStackView: UIStackView {
     
     // MARK: - Function
     
-    private func checkForValidity() {
-        for fields in textFieldArray where fields.text == "" {
-            delegate?.didChangeValidity(isValid: false)
-            return
-        }
-        delegate?.didChangeValidity(isValid: true)
-    }
-    
-    func resetTextField() {
+    func resetOTP() {
         for textField in textFieldArray {
             textField.text = ""
             textField.backgroundColor = textBackgroundColor
@@ -59,8 +47,21 @@ final class OTPStackView: UIStackView {
         textFieldArray[0].becomeFirstResponder()
     }
     
+    func getOTP() -> String {
+        var OTP: String = ""
+        for textField in textFieldArray {
+            OTP += textField.text ?? ""
+        }
+        return OTP
+    }
+    
+    func sendOTP() {
+        let OTP = getOTP()
+        otpText.send(OTP)
+    }
+    
 }
-
+  
 // MARK: - UI Function
 
 extension OTPStackView {
@@ -116,7 +117,6 @@ extension OTPStackView {
                 break
             }
         }
-        checkForValidity()
     }
     
 }
@@ -129,17 +129,15 @@ extension OTPStackView: UITextFieldDelegate {
         }
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        checkForValidity()
-    }
-    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let textField = textField as? OTPTextField else { return true }
         if string.count > 1 {
             autoFillTextField(with: string)
+            sendOTP()
             return false
         } else {
             if range.length == 0 && string == "" {
+                sendOTP()
                 return false
             } else if range.length == 0 {
                 if textField.nextTextField == nil {
@@ -149,6 +147,7 @@ extension OTPStackView: UITextFieldDelegate {
                     textField.nextTextField?.becomeFirstResponder()
                 }
                 textField.backgroundColor = .black
+                sendOTP()
                 return false
             }
             return true
