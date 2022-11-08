@@ -42,7 +42,13 @@ final class PlaceListViewController: UIViewController {
         configureUI()
         configureHierarchy()
         configureDataSource()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.reset()
         bind()
+        viewModel.initialFetch()
     }
     
     // MARK: - Function
