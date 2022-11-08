@@ -19,7 +19,7 @@ final class ProfileViewModel {
     // output
     let isUserLoggedOutSubject = PassthroughSubject<Bool, Never>()
     let isNickNameChangedSubject = PassthroughSubject<Bool, Never>()
-    let changeNickNameButtonClicked = PassthroughSubject<Bool, Never>()
+    let changeNickNameImageViewClicked = PassthroughSubject<Bool, Never>()
     
     let userNickname = UserInfoManager.userInfo?.userNickname ?? "unknown"
     

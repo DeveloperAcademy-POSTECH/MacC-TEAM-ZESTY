@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         let userAuthToken = KeyChainManager.read(key: .authToken)
         let userNickName = UserInfoManager.userInfo?.userNickname
-        let navigationController = UINavigationController(rootViewController: ThirdPartyLoginViewController())
+        let navigationController = UINavigationController(rootViewController: ProfileViewController())
         if userAuthToken != nil && userNickName != nil {
             navigationController.pushViewController(PlaceListViewController(), animated: false)
         }
