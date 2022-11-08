@@ -144,8 +144,6 @@ extension ProfileViewController {
         profileMenuStackView.distribution = .fillEqually
         profileMenuStackView.spacing = 0
         
-        ProfileMenuView.setAnimationsEnabled(false)
-        
         let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(profileMenuTap1(sender:)))
         profileMenuView1.addGestureRecognizer(tapGesture1)
         

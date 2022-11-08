@@ -137,11 +137,11 @@ extension NickNameInputViewController {
                 guard let self = self else { return }
                 if isNickNameChanged {
                     switch self.state {
-                    case .signup:
-                        self.navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
-                    case .profile:
-                        self.profileViewModel?.isNickNameChangedSubject.send(true)
-                        self.navigationController?.popViewController(animated: true)
+                        case .signup:
+                            self.navigationController?.pushViewController(SignupCompleteViewController(), animated: true)
+                        case .profile:
+                            self.profileViewModel?.isNickNameChangedSubject.send(true)
+                            self.navigationController?.popViewController(animated: true)
                     }
                 }
             }
@@ -185,12 +185,15 @@ extension NickNameInputViewController {
     private func configureUI() {
         view.backgroundColor = .white
         
-        navigationController?.navigationBar.isHidden = true
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        switch state {
+        case .profile:
+            navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+            navigationItem.backBarButtonItem?.tintColor = .black
+        case .signup:
+            navigationController?.navigationBar.isHidden = true
+            navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        }
         
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem?.tintColor = .black
-    
         nickNameTextField.becomeFirstResponder()
         nickNameTextField.attributedPlaceholder = .init(attributedString: NSAttributedString(string: "닉네임", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]))
         nickNameTextField.font = .preferredFont(forTextStyle: .body)
@@ -280,6 +283,6 @@ struct NickNameInputViewTemplatePreview: PreviewProvider {
     static var previews: some View {
         NickNameInputViewController(state: .profile).toPreview()
     }
-
+    
 }
 #endif
