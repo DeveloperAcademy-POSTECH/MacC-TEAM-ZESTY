@@ -13,6 +13,8 @@ import Combine
 
 final public class AWSS3ImageManager {
     
+    public static let shared = AWSS3ImageManager()
+    
     // AWSS3keys
     private let accessKey = Bundle.main.infoDictionary?["AWSS3_ACCESS_KEY"] as? String ?? ""
     private let secretKey = Bundle.main.infoDictionary?["AWSS3_SECRET_KEY"] as? String ?? ""
@@ -38,7 +40,7 @@ final public class AWSS3ImageManager {
         return $0
     }(AWSS3TransferUtilityUploadExpression())
     
-    public init() {
+    private init() {
         AWSServiceManager.default().defaultServiceConfiguration = serviceConfiguration
         if let serviceConfiguration = serviceConfiguration {
             AWSS3TransferUtility.register(with: serviceConfiguration, forKey: utilityKey)
@@ -61,14 +63,14 @@ final public class AWSS3ImageManager {
             }
         }
         
-        guard let pngData = data else {
+        guard let imageData = data else {
             uploadResultSubject.send(completion: .failure(ImageUploadError.dataError))
             return
         }
         
         let fileName = UUID().uuidString
         
-        transferUtility.uploadData(pngData, bucket: bucketName, key: filePath + fileName, contentType: "image/png", expression: expression,
+        transferUtility.uploadData(imageData, bucket: bucketName, key: filePath + fileName, contentType: "image/jpeg", expression: expression,
                                    completionHandler: completionHandler).continueWith { [weak self] task in
             if let error = task.error {
                 self?.uploadResultSubject.send(completion: .failure(ImageUploadError.uploadError(error)))

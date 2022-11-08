@@ -91,7 +91,6 @@ extension PlaceListViewController: AddPlaceDelegate {
     }
     
     @objc func userInfoButtonTapped() {
-        // TODO: 민이 만든 프로필 뷰로 이동
          navigationController?.pushViewController(ProfileViewController(), animated: true)
     }
 

@@ -17,7 +17,7 @@ final class ReviewCell: UITableViewCell {
     private let cardView = UIView()
     
     private let reviewImageView: UIImageView = {
-        $0.contentMode = .scaleToFill
+        $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 16
         $0.layer.masksToBounds = true
         return $0
@@ -76,7 +76,7 @@ final class ReviewCell: UITableViewCell {
     func setup(with review: Review) {
         DispatchQueue.main.async {
             
-            self.reviewImageView.kf.setImage(with: URL(string: review.imageURL ?? ""))
+            self.reviewImageView.kf.setImage(with: review.imageURL)
             self.menuLabel.text = review.menuName
             self.dateLabel.text = review.createdAt.formatted("yyyy.MM.dd")
 
