@@ -86,6 +86,10 @@ extension ReviewRegisterViewController: UIImagePickerControllerDelegate, UINavig
             menuImageView.image = image
             viewModel.uploadImage(with: image)
             viewModel.isRegisterPossible = false
+
+            menuTextField.isHidden = false
+            underline.isHidden = false
+            registerButton.setButtonState(false)
             registerButton.setTitle("리뷰 등록", for: .normal)
         }
         picker.dismiss(animated: true, completion: nil)
@@ -120,8 +124,8 @@ extension ReviewRegisterViewController: UIImagePickerControllerDelegate, UINavig
         menuTextField.textDidChangePublisher
             .compactMap { $0.text }
             .sink { [weak self] text in
-                let isMenuExist = !text.isEmpty
-                self?.registerButton.setButtonState(isMenuExist)
+                let isTextExist = !text.isEmpty
+                self?.registerButton.setButtonState(isTextExist)
             }
             .store(in: &cancelBag)
     }
@@ -164,6 +168,7 @@ extension ReviewRegisterViewController {
         menuTextField.placeholder = "음식 이름"
         menuTextField.textAlignment = .center
         menuTextField.layer.masksToBounds = true
+        menuTextField.isHidden = true
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
@@ -171,9 +176,10 @@ extension ReviewRegisterViewController {
         underline.clipsToBounds = true
         underline.layer.cornerRadius = 1
         underline.backgroundColor = .black
+        underline.isHidden = true
         
         registerButton.setTitle("사진 없이 리뷰 등록", for: .normal)
-        registerButton.setButtonState(false)
+        registerButton.setButtonState(true)
         registerButton.addTarget(self, action: #selector(registerButtonTouched), for: .touchUpInside)
     }
     
@@ -304,6 +310,7 @@ struct ReviewRegisterPreview: PreviewProvider {
     
     static var previews: some View {
         UINavigationController(rootViewController: ReviewRegisterViewController(viewModel: ReviewRegisterViewModel(placeId: 0, placeName: "요기쿠시동"))).toPreview()
+            .previewDevice(PreviewDevice(rawValue: "iPhone 13"))
     }
     
 }

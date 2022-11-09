@@ -27,6 +27,8 @@ final class PlaceListViewController: UIViewController {
     private var snapshot = Snapshot()
     private let headerType = "section-header-element-kind"
     
+    private let refreshControl = UIRefreshControl()
+    
     private var emptyView = UIView()
     private var emptyImageView = UIImageView()
     private var emptyLabel = UILabel()
@@ -53,9 +55,7 @@ final class PlaceListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.reset()
         bind()
-        viewModel.initialFetch()
     }
     
     // MARK: - Function
@@ -90,6 +90,14 @@ extension PlaceListViewController: UICollectionViewDataSourcePrefetching, UIColl
         let placeId = viewModel.result[indexPath.row].id
         let placeDetailViewModel = PlaceDetailViewModel(placeId: placeId)
         show(PlaceDetailViewController(viewModel: placeDetailViewModel), sender: nil)
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if refreshControl.isRefreshing {
+            self.refreshControl.endRefreshing()
+            viewModel.reset()
+            viewModel.initialFetch()
+        }
     }
     
 }
@@ -133,6 +141,7 @@ extension PlaceListViewController {
         collectionView.backgroundColor = .systemBackground
         collectionView.delegate = self
         collectionView.prefetchDataSource = self
+        collectionView.refreshControl = refreshControl
         view.addSubview(collectionView)
     }
 
