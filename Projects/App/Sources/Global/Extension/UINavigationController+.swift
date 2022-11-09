@@ -16,6 +16,17 @@ extension UINavigationController: ObservableObject, UIGestureRecognizerDelegate 
     }
 
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if viewControllers.last is SwipeForbidden {
+            return false
+        }
         return viewControllers.count > 1
     }
 }
+
+protocol SwipeForbidden {}
+
+extension PlaceListViewController: SwipeForbidden {}
+extension DomainSettingViewController: SwipeForbidden {}
+extension AddPlaceResultViewController: SwipeForbidden {}
+extension ReviewCardViewController: SwipeForbidden {}
+extension SignupCompleteViewController: SwipeForbidden {}

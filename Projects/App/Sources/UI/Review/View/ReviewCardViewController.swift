@@ -106,7 +106,6 @@ extension ReviewCardViewController {
     private func configureUI() {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.topItem?.title = ""
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         
         let xmarkConfig = UIImage.SymbolConfiguration(weight: .bold)
         let backImage = UIImage(systemName: "xmark", withConfiguration: xmarkConfig)
