@@ -51,7 +51,6 @@ extension DomainSettingCompleteViewController {
         view.backgroundColor = .white
         
         navigationItem.setHidesBackButton(true, animated: true)
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         
         cardView.clipsToBounds = true
         cardView.layer.cornerRadius = 16

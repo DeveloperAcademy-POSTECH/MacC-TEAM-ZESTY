@@ -216,7 +216,6 @@ extension PlaceListViewController {
         
         navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.isHidden = false
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     
     private func createLayout() {
