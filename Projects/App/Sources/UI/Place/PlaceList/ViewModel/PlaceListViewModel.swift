@@ -43,6 +43,7 @@ class PlaceListViewModel {
         self.useCase = useCase
         self.placeType = placeType
         bind()
+        initialFetch()
     }
     
 }
