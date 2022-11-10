@@ -112,7 +112,7 @@ final class AddPlaceResultViewController: UIViewController {
         let config = UIImage.SymbolConfiguration(paletteColors: [.zestyColor(.point) ?? .red])
         let downloadImage = UIImage(systemName: "square.and.arrow.down", withConfiguration: config)
         $0.setImage(downloadImage, for: .normal)
-        $0.setTitle(" 리뷰 카드 저장하기", for: .normal)
+        $0.setTitle(" 맛집 카드 저장하기", for: .normal)
         $0.setTitleColor(.zestyColor(.point), for: .normal)
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .medium)
         $0.addTarget(self, action: #selector(saveButtonDidTap), for: .touchUpInside)

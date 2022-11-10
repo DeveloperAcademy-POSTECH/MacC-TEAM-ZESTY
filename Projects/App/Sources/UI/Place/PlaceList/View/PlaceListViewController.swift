@@ -104,12 +104,37 @@ extension PlaceListViewController: UICollectionViewDataSourcePrefetching, UIColl
 
 // MARK: - UI function
 
+protocol QuestionButtonTapDelegate: AnyObject {
+    func questionButtonTapped(sourceView: UIView)
+}
+
 protocol AddPlaceDelegate: AnyObject {
     func addPlaceButtonTapped()
 }
 
-extension PlaceListViewController: AddPlaceDelegate {
+extension PlaceListViewController: QuestionButtonTapDelegate, UIAdaptivePresentationControllerDelegate,
+                                   UIPopoverPresentationControllerDelegate,
+                                   AddPlaceDelegate {
+
+    func questionButtonTapped(sourceView: UIView) {
+        let questionPopover = ExplanationPopOverViewController()
+        
+        questionPopover.modalPresentationStyle = .popover
+        questionPopover.preferredContentSize.height = 70
+        questionPopover.popoverPresentationController?.popoverLayoutMargins = UIEdgeInsets(top: 100, left: 200, bottom: 0, right: 20)
+        questionPopover.popoverPresentationController?.permittedArrowDirections = []
+        questionPopover.popoverPresentationController?.delegate = self
+
+        questionPopover.popoverPresentationController?.sourceRect = sourceView.bounds
+        questionPopover.popoverPresentationController?.sourceView = sourceView
+
+        present(questionPopover, animated: true)
+    }
     
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+
     func addPlaceButtonTapped() {
         navigationController?.pushViewController(AddPlaceSearchViewController(viewModel: AddPlaceSearchViewModel()), animated: true)
     }
@@ -173,6 +198,7 @@ extension PlaceListViewController {
             guard let self = self else { return }
             supplementaryView.viewModel = self.viewModel
             supplementaryView.addPlaceDelegate = self
+            supplementaryView.questionButtonDelegate = self
         }
         
         dataSource = DataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
@@ -196,6 +222,7 @@ extension PlaceListViewController {
     
     private func configureUI() {
         configureNaviBar()
+
         emptyImageView.image = UIImage(.img_emptyfriends_noresult)
         emptyImageView.contentMode = .scaleAspectFit
         emptyLabel.text = "아직 등록된 맛집이 없어요"
