@@ -14,7 +14,9 @@ final class SegmentHeaderView: UICollectionReusableView {
     
     // MARK: - Properties
     weak var viewModel: PlaceListViewModel?
+    
     weak var addPlaceDelegate: AddPlaceDelegate?
+    weak var questionButtonDelegate: QuestionButtonTapDelegate?
     
     private let segmentIndicator = UIView()
     private let segmentedControl = UISegmentedControl(items: ["전체", "선정맛집"])
@@ -40,6 +42,10 @@ final class SegmentHeaderView: UICollectionReusableView {
 
 extension SegmentHeaderView {
     
+    @objc func buttonTap() {
+        questionButtonDelegate?.questionButtonTapped(sourceView: questionButton)
+    }
+
     @objc func addPlaceButtonTapped() {
         addPlaceDelegate?.addPlaceButtonTapped()
     }
@@ -110,6 +116,7 @@ extension SegmentHeaderView {
         let questionMarkImage = UIImage(systemName: "questionmark.circle", withConfiguration: imageConfiguration)
         questionButton.setImage(questionMarkImage, for: .normal)
         questionButton.tintColor = .zestyColor(.gray54)
+        questionButton.addTarget(self, action: #selector(buttonTap), for: .touchUpInside)
         
         let sidePlusImage = UIImage(.btn_side_plus)
         addPlaceButton.setImage(sidePlusImage, for: .normal)
