@@ -62,7 +62,7 @@ extension ProfileLinkButtonView {
         instaButton.setImage(UIImage(.btn_link_instargram), for: .normal)
         instaButton.addTarget(self, action: #selector(instaButtonDidTap), for: .touchUpInside)
 
-        mailButton.setImage(UIImage(.btn_link), for: .normal)
+        mailButton.setImage(UIImage(.btn_link_mail), for: .normal)
         mailButton.addTarget(self, action: #selector(mailButtonDidTap), for: .touchUpInside)
     }
     
