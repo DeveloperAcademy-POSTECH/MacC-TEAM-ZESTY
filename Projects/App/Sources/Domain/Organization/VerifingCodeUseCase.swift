@@ -14,12 +14,14 @@ final class VerifingCodeUseCase {
     
     // output
     let isCodeValidSubject = PassthroughSubject<Bool, Never>()
+    let isEmailOverlapedSubject = PassthroughSubject<Bool, Never>()
     
     private var cancelBag = Set<AnyCancellable>()
     
     func postOTPCode(email: String, code: String, organization: Organization) {
         let codeDTO = VerifyCodeDTO(id: organization.id, email: email, code: code)
         
+        print("codeDTO: \(codeDTO)")
         UserAPI.postVerifyCode(codeDTO: codeDTO)
             .sink { [weak self] error in
                 guard let self = self else { return }
@@ -32,6 +34,27 @@ final class VerifingCodeUseCase {
             } receiveValue: {[weak self] _ in
                 guard let self = self else { return }
                 self.isCodeValidSubject.send(true)
+            }
+            .store(in: &cancelBag)
+    }
+    
+    func postSignUp(email: String, orgnization: Organization) {
+        guard let authorization = KeyChainManager.read(key: .authToken) else { return }
+        
+        let userDTO = SignUpUserDTO(id: orgnization.id, email: email, organizationName: orgnization.name)
+
+        UserAPI.postSignUp(authorization: authorization, userDTO: userDTO)
+            .sink { [weak self] error in
+                guard let self = self else { return }
+                switch error {
+                case .failure(let error):
+                    print(error.localizedString)
+                    self.isEmailOverlapedSubject.send(true)
+                case .finished: break
+                }
+            } receiveValue: { [weak self] _ in
+                guard let self = self else { return }
+                self.isEmailOverlapedSubject.send(false)
             }
             .store(in: &cancelBag)
     }

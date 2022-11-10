@@ -67,6 +67,14 @@ public struct UserAPI {
         let endpoint = Endpoint(path: "/api/users/verify", method: .post, bodyParams: code, headers: header)
         return networkService.request(with: endpoint)
     }
+    
+    public static func postSendCode(email: String) -> AnyPublisher<Bool, NetworkError> {
+        let header = ["Content-Type": "application/json"]
+        let endpoint = Endpoint(path: "/api/users/send/verifyCode", method: .post, bodyParams: ["email": email], headers: header)
+        
+        return networkService.request(with: endpoint)
+    }
+    
 
     public static func deleteUser(authorization: String) -> AnyPublisher<Bool, NetworkError> {
         let header = ["Content-Type": "application/json", "Authorization": "\(authorization)"]

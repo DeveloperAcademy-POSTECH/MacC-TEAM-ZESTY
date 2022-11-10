@@ -144,9 +144,21 @@ extension VerifingCodeViewController {
                 guard let self = self else { return }
                 self.arrowButton.isHidden = true
                 if isCodeValid {
-                    self.navigationController?.pushViewController(DomainSettingCompleteViewController(), animated: true)
+                    self.viewModel.postSignUp()
                 } else {
                     self.otpStackView.resetOTP()
+                }
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.isEmailOverlapedSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isEmailOverlaped in
+                guard let self = self else { return }
+                if isEmailOverlaped {
+                    self.otpStackView.resetOTP()
+                } else {
+                    self.navigationController?.pushViewController(DomainSettingCompleteViewController(), animated: true)
                 }
             }
             .store(in: &cancelBag)
@@ -169,7 +181,9 @@ extension VerifingCodeViewController {
                 }
                 if otpText.count == 4 {
                     self.arrowButton.isHidden = false
-                    self.viewModel.postOTPCode(code: otpText)
+                    // TODO: 현재는 pos.idserve.net으로 고정하고 나중에 API가 수정되면 변경할 부분입니다
+//                    self.viewModel.postOTPCode(code: otpText)
+                    self.viewModel.postSignUp()
                 }
             }
             .store(in: &cancelBag)
