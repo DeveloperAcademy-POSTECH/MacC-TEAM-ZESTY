@@ -74,8 +74,9 @@ class PlaceDetailViewModel {
                     self?.output.send(.fetchReviewListFail(error: error))
                 }
             } receiveValue: { [weak self] reviews in
-                self?.reviews = reviews
-                self?.output.send(.fetchReviewListSucceed(list: reviews))
+                let filtered = reviews.filter { $0.imageURL != nil }
+                self?.reviews = filtered
+                self?.output.send(.fetchReviewListSucceed(list: filtered))
             }
             .store(in: &cancelBag)
     }

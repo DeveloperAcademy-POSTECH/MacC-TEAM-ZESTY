@@ -122,7 +122,7 @@ extension PlaceListViewController: QuestionButtonTapDelegate, UIAdaptivePresenta
         questionPopover.modalPresentationStyle = .popover
         questionPopover.preferredContentSize.height = 70
         questionPopover.popoverPresentationController?.popoverLayoutMargins = UIEdgeInsets(top: 100, left: 200, bottom: 0, right: 20)
-        questionPopover.popoverPresentationController?.permittedArrowDirections = []
+        questionPopover.popoverPresentationController?.permittedArrowDirections = [.up]
         questionPopover.popoverPresentationController?.delegate = self
 
         questionPopover.popoverPresentationController?.sourceRect = sourceView.bounds
