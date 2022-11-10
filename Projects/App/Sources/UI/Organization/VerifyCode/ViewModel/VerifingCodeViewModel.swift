@@ -18,7 +18,7 @@ final class VerifingCodeViewModel {
     private let useCase = VerifingCodeUseCase()
     private let domainSettingUseCase = DomainSettingUseCase()
     private var timer: Timer?
-    private var timerNumber: Int = 10
+    private var timerNumber: Int = 180
     private let oneMinuteToSecond: Int = 60
     
     // input
