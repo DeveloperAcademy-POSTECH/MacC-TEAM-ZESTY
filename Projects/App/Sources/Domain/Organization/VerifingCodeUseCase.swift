@@ -21,7 +21,6 @@ final class VerifingCodeUseCase {
     func postOTPCode(email: String, code: String, organization: Organization) {
         let codeDTO = VerifyCodeDTO(id: organization.id, email: email, code: code)
         
-        print("codeDTO: \(codeDTO)")
         UserAPI.postVerifyCode(codeDTO: codeDTO)
             .sink { [weak self] error in
                 guard let self = self else { return }

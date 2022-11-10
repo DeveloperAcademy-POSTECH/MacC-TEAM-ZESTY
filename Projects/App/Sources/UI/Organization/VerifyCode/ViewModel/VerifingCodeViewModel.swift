@@ -18,7 +18,7 @@ final class VerifingCodeViewModel {
     private let useCase = VerifingCodeUseCase()
     private let domainSettingUseCase = DomainSettingUseCase()
     private var timer: Timer?
-    private var timerNumber: Int = 180
+    private var timerNumber: Int = 10
     private let oneMinuteToSecond: Int = 60
     
     // input
@@ -77,9 +77,15 @@ extension VerifingCodeViewModel {
             .sink { [weak self] timeInterval in
                 guard let self = self else { return }
                 self.timerNumber -= timeInterval
-                let minutes = self.timerNumber/60
-                let seconds = self.timerNumber % 60
-                self.timerText = String(format: "%02d:%02d", minutes, seconds)
+                if self.timerNumber < 0 {
+                    self.timerNumber = 0
+                    self.timerText = "인증시간 초과"
+                    self.timer?.invalidate()
+                } else {
+                    let minutes = self.timerNumber/60
+                    let seconds = self.timerNumber % 60
+                    self.timerText = String(format: "%02d:%02d", minutes, seconds)
+                }
             }
             .store(in: &cancelBag)
     }
