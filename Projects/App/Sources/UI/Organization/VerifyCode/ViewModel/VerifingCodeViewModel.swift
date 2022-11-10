@@ -72,6 +72,16 @@ extension VerifingCodeViewModel {
                 self.isEmailOverlapedSubject.send(isEmailOverlaped)
             }
             .store(in: &cancelBag)
+        
+        SceneDelegate.timeIntervalSubject
+            .sink { [weak self] timeInterval in
+                guard let self = self else { return }
+                self.timerNumber -= timeInterval
+                let minutes = self.timerNumber/60
+                let seconds = self.timerNumber % 60
+                self.timerText = String(format: "%02d:%02d", minutes, seconds)
+            }
+            .store(in: &cancelBag)
     }
     
 }
