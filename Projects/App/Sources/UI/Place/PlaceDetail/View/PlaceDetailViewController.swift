@@ -61,6 +61,17 @@ final class PlaceDetailViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    @objc func reportButtonDidTap() {
+        let alert = UIAlertController(title: "컨텐츠 신고하기",
+                                      message: "부적합한 정보가 포함된 경우 신고할 수 있으며, 프로필페이지의 문의하기 버튼을 통해서도 제보 가능합니다",
+                                      preferredStyle: .alert)
+        let reportAction = UIAlertAction(title: "신고하기", style: .destructive, handler: nil)
+        let cancel = UIAlertAction(title: "취소하기", style: .cancel, handler: nil)
+        alert.addAction(cancel)
+        alert.addAction(reportAction)
+        self.present(alert, animated: false)
+    }
+    
     func createObservers() {
        NotificationCenter.default.addObserver(self, selector: #selector(routeToAddReview), name: notification, object: nil)
     }
@@ -139,8 +150,11 @@ extension PlaceDetailViewController {
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .bold)
         ]
         let leftBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonDidTap))
-        leftBarButton.tintColor = .label
+        let rightBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "exclamationmark.bubble"), style: .plain, target: self, action: #selector(reportButtonDidTap))
+        leftBarButton.tintColor = .black
+        rightBarButton.tintColor = .black
         navigationItem.leftBarButtonItem = leftBarButton
+        navigationItem.rightBarButtonItem = rightBarButton
     }
     
 }
