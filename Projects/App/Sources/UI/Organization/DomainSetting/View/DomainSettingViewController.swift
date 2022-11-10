@@ -58,7 +58,8 @@ final class DomainSettingViewController: UIViewController {
     
     @objc func arrowButtonTapped() {
         arrowButton.startIndicator()
-        viewModel.postUserEmail()
+        // TODO: 서버 API가 나오면 로직이 바뀔 부분입니다
+        viewModel.sendCode()
     }
     
     private func analytics() {
@@ -93,18 +94,18 @@ extension DomainSettingViewController {
             }
             .store(in: &cancelBag)
         
-        viewModel.isEmailOverlapedSubject
+        viewModel.isCodeSendSubject
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] isEmailOverlaped in
+            .sink { [weak self] isCodeSend in
                 guard let self = self else { return }
                 self.arrowButton.stopIndicator()
-                if isEmailOverlaped {
-                    self.arrowButton.setDisabled(true)
-                } else {
+                if isCodeSend {
                     let userEmail = self.viewModel.getUserEmail()
                     let verifingCodeVC = VerifingCodeViewController(organization: self.viewModel.organization,
                                                                     userEmail: userEmail)
                     self.navigationController?.pushViewController(verifingCodeVC, animated: true)
+                } else {
+                    self.arrowButton.setDisabled(true)
                 }
             }
             .store(in: &cancelBag)
@@ -150,7 +151,9 @@ extension DomainSettingViewController {
         emailTextField.autocapitalizationType = .none
         
         domainPlaceholder.textColor = .white
-        domainPlaceholder.text = "@\(viewModel.organization.domain)"
+        // TODO: 현재는 pos.idserve.net으로 고정하고 나중에 API가 수정되면 변경할 부분입니다
+//        domainPlaceholder.text = "@\(viewModel.organization.domain)"
+        domainPlaceholder.text = "@pos.idserve.net"
         domainPlaceholder.font = .systemFont(ofSize: 17, weight: .medium)
         domainPlaceholder.setContentCompressionResistancePriority(.init(1000), for: .horizontal)
         

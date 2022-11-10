@@ -5,12 +5,15 @@
 //  Created by Lee Myeonghwan on 2022/10/05.
 //
 
+import Combine
 import UIKit
 import KakaoSDKAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
+    private var now: Date?
+    static let timeIntervalSubject = PassthroughSubject <Int, Never>()
     
     func scene(
         _ scene: UIScene,
@@ -42,6 +45,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 _ = AuthController.handleOpenUrl(url: url)
             }
         }
+    }
+    
+    func sceneWillResignActive(_ scene: UIScene) {
+        now = Date()
+    }
+
+    func sceneWillEnterForeground(_ scene: UIScene) {
+        guard let now = self.now else { return }
+        let timeInterval = Date().timeIntervalSince(now)
+        SceneDelegate.timeIntervalSubject.send(Int(timeInterval))
     }
     
 }

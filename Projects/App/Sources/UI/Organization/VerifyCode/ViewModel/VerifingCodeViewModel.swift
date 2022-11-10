@@ -28,6 +28,7 @@ final class VerifingCodeViewModel {
     @Published var timerText = "03:00"
     @Published var shouldDisplayWarning: Bool = false
     let isCodeValidSubject = PassthroughSubject<Bool, Never>()
+    let isEmailOverlapedSubject = PassthroughSubject<Bool, Never>()
     
     private var cancelBag = Set<AnyCancellable>()
     
@@ -52,13 +53,39 @@ extension VerifingCodeViewModel {
                 guard let self = self else { return }
                 if !isCodeValid {
                     self.shouldDisplayWarning = true
+                }
+                self.isCodeValidSubject.send(isCodeValid)
+            }
+            .store(in: &cancelBag)
+        
+        useCase.isEmailOverlapedSubject
+            .sink { [weak self] isEmailOverlaped in
+                guard let self = self else { return }
+                if isEmailOverlaped {
+                    self.shouldDisplayWarning = true
                 } else {
                     let orgID = self.organization.id
                     let orgName = self.organization.name
                     UserInfoManager.userInfo?.userOrgName = orgName
                     UserInfoManager.userInfo?.userOrganization = orgID
                 }
-                self.isCodeValidSubject.send(isCodeValid)
+                self.isEmailOverlapedSubject.send(isEmailOverlaped)
+            }
+            .store(in: &cancelBag)
+        
+        SceneDelegate.timeIntervalSubject
+            .sink { [weak self] timeInterval in
+                guard let self = self else { return }
+                self.timerNumber -= timeInterval
+                if self.timerNumber < 0 {
+                    self.timerNumber = 0
+                    self.timerText = "인증시간 초과"
+                    self.timer?.invalidate()
+                } else {
+                    let minutes = self.timerNumber/60
+                    let seconds = self.timerNumber % 60
+                    self.timerText = String(format: "%02d:%02d", minutes, seconds)
+                }
             }
             .store(in: &cancelBag)
     }
@@ -95,10 +122,15 @@ extension VerifingCodeViewModel {
     }
     
     func postOTPCode(code: String) {
+        print("viewmodel userEmail: \(userEmail)")
         useCase.postOTPCode(email: userEmail, code: code, organization: organization)
     }
     
+    func postSignUp() {
+        useCase.postSignUp(email: userEmail, orgnization: organization)
+    }
+    
     func resendEamil() {
-        domainSettingUseCase.postUserEmail(email: self.userEmail, orgnization: self.organization)
+        domainSettingUseCase.sendCode(email: self.userEmail)
     }
 }
