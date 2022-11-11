@@ -14,6 +14,7 @@ final class VerifingCodeViewModel {
     // MARK: - Properties
     let organization: Organization
     let userEmail: String
+    private let appleReviewCode = "9999"
     
     private let useCase = VerifingCodeUseCase()
     private let domainSettingUseCase = DomainSettingUseCase()
@@ -122,7 +123,11 @@ extension VerifingCodeViewModel {
     }
     
     func postOTPCode(code: String) {
-        print("viewmodel userEmail: \(userEmail)")
+        // TODO: apple 심사를 위한 코드
+        if code == appleReviewCode {
+            self.isCodeValidSubject.send(true)
+            return
+        }
         useCase.postOTPCode(email: userEmail, code: code, organization: organization)
     }
     
