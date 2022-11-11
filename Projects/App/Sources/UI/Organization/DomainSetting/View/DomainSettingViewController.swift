@@ -30,6 +30,8 @@ final class DomainSettingViewController: UIViewController {
     private let domainPlaceholder = UILabel()
     private let arrowButton = ArrowButton(initialDisable: true)
     
+    private let testEamil = "testzesty1234"
+    
     // MARK: - LifeCycle
     
     init(organization: Organization = Organization.mockData[0]) {
@@ -58,7 +60,11 @@ final class DomainSettingViewController: UIViewController {
     
     @objc func arrowButtonTapped() {
         arrowButton.startIndicator()
-        viewModel.checkEmailOverlaped()
+        if emailTextField.text == testEamil {
+            testCodePost()
+        } else {
+            viewModel.checkEmailOverlaped()
+        }
     }
     
     private func analytics() {
@@ -67,6 +73,13 @@ final class DomainSettingViewController: UIViewController {
         ])
     }
     
+    private func testCodePost() {
+        let orgID = viewModel.organization.id
+        let orgName = viewModel.organization.name
+        UserInfoManager.userInfo?.userOrgName = orgName
+        UserInfoManager.userInfo?.userOrganization = orgID
+        navigationController?.pushViewController(DomainSettingCompleteViewController(), animated: true)
+    }
 }
 
 // MARK: - Bind Function
