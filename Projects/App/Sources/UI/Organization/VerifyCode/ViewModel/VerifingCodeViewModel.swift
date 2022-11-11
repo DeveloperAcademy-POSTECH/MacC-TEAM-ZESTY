@@ -26,7 +26,7 @@ final class VerifingCodeViewModel {
     
     // output
     @Published var timerText = "03:00"
-    @Published var shouldDisplayWarning: Bool = false
+    let displayWarningSubject = PassthroughSubject<WarningMessageType, Never>()
     let isCodeValidSubject = PassthroughSubject<Bool, Never>()
     let isEmailOverlapedSubject = PassthroughSubject<Bool, Never>()
     
@@ -52,7 +52,7 @@ extension VerifingCodeViewModel {
             .sink { [weak self] isCodeValid in
                 guard let self = self else { return }
                 if !isCodeValid {
-                    self.shouldDisplayWarning = true
+                    self.displayWarningSubject.send(.codeWarning)
                 }
                 self.isCodeValidSubject.send(isCodeValid)
             }
@@ -62,7 +62,7 @@ extension VerifingCodeViewModel {
             .sink { [weak self] isEmailOverlaped in
                 guard let self = self else { return }
                 if isEmailOverlaped {
-                    self.shouldDisplayWarning = true
+                    self.displayWarningSubject.send(.emailWarning)
                 } else {
                     let orgID = self.organization.id
                     let orgName = self.organization.name
@@ -133,4 +133,13 @@ extension VerifingCodeViewModel {
     func resendEamil() {
         domainSettingUseCase.sendCode(email: self.userEmail)
     }
+}
+
+extension VerifingCodeViewModel {
+    
+    enum WarningMessageType {
+        case codeWarning
+        case emailWarning
+    }
+    
 }
