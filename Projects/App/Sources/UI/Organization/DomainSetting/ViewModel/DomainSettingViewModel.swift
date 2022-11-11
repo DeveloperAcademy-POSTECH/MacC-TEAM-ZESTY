@@ -40,9 +40,7 @@ final class DomainSettingViewModel {
     }
     
     func getUserEmail() -> String {
-//        let userEmail: String = userInput + "@" + organization.domain
-        // TODO: 현재는 pos.idserve.net으로 고정하고 나중에 API가 수정되면 변경할 부분입니다
-        let userEmail: String = userInput + "@pos.idserve.net"
+        let userEmail: String = userInput + "@" + organization.domain
         return userEmail
     }
 }

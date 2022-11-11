@@ -181,9 +181,7 @@ extension VerifingCodeViewController {
                 }
                 if otpText.count == 4 {
                     self.arrowButton.isHidden = false
-                    // TODO: 현재는 pos.idserve.net으로 고정하고 나중에 API가 수정되면 변경할 부분입니다
-//                    self.viewModel.postOTPCode(code: otpText)
-                    self.viewModel.postSignUp()
+                    self.viewModel.postOTPCode(code: otpText)
                 }
             }
             .store(in: &cancelBag)

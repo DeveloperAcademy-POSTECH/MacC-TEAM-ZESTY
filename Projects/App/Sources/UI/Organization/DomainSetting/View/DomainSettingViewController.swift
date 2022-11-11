@@ -151,9 +151,7 @@ extension DomainSettingViewController {
         emailTextField.autocapitalizationType = .none
         
         domainPlaceholder.textColor = .white
-        // TODO: 현재는 pos.idserve.net으로 고정하고 나중에 API가 수정되면 변경할 부분입니다
-//        domainPlaceholder.text = "@\(viewModel.organization.domain)"
-        domainPlaceholder.text = "@pos.idserve.net"
+        domainPlaceholder.text = "@\(viewModel.organization.domain)"
         domainPlaceholder.font = .systemFont(ofSize: 17, weight: .medium)
         domainPlaceholder.setContentCompressionResistancePriority(.init(1000), for: .horizontal)
         
