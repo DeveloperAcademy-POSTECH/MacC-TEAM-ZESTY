@@ -25,7 +25,6 @@ final class VerifingCodeViewController: UIViewController {
     private lazy var titleView = MainTitleView(title: "이메일로 받은 코드를\n알려주세요",
                                                subtitle: "\(viewModel.userEmail)",
                                                hasSymbol: true)
-    
     private let warningMessage = UILabel()
     private let otpStackView = OTPStackView()
     private let timerLabel = UILabel()
@@ -66,6 +65,10 @@ final class VerifingCodeViewController: UIViewController {
         viewModel.startTimer()
         
         resendEamilButton.isEnabled = false
+        
+        DispatchQueue.main.async {
+            self.warningMessage.isHidden = true
+        }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.1) {
             self.resendEamilButton.isEnabled = true
@@ -176,14 +179,12 @@ extension VerifingCodeViewController {
             .sink { [weak self] otpText in
                 guard let self = self else { return }
                 
-                if self.viewModel.shouldDisplayWarning {
-                    self.viewModel.shouldDisplayWarning = false
+                if self.warningMessage.isHidden == false {
+                    self.warningMessage.isHidden = true
                 }
                 if otpText.count == 4 {
                     self.arrowButton.isHidden = false
-                    // TODO: 현재는 pos.idserve.net으로 고정하고 나중에 API가 수정되면 변경할 부분입니다
-//                    self.viewModel.postOTPCode(code: otpText)
-                    self.viewModel.postSignUp()
+                    self.viewModel.postOTPCode(code: otpText)
                 }
             }
             .store(in: &cancelBag)
@@ -203,7 +204,7 @@ extension VerifingCodeViewController {
         navigationController?.navigationBar.topItem?.title = ""
         
         warningMessage.text = "잘못된 코드예요."
-        warningMessage.isHidden = !viewModel.shouldDisplayWarning
+        warningMessage.isHidden = true
         warningMessage.textColor = .zestyColor(.point)
         
         timerLabel.text = viewModel.timerText

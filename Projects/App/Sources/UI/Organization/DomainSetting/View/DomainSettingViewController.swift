@@ -30,6 +30,8 @@ final class DomainSettingViewController: UIViewController {
     private let domainPlaceholder = UILabel()
     private let arrowButton = ArrowButton(initialDisable: true)
     
+    private let testEamil = "testzesty1234"
+    
     // MARK: - LifeCycle
     
     init(organization: Organization = Organization.mockData[0]) {
@@ -58,8 +60,11 @@ final class DomainSettingViewController: UIViewController {
     
     @objc func arrowButtonTapped() {
         arrowButton.startIndicator()
-        // TODO: 서버 API가 나오면 로직이 바뀔 부분입니다
-        viewModel.sendCode()
+        if emailTextField.text == testEamil {
+            testCodePost()
+        } else {
+            viewModel.checkEmailOverlaped()
+        }
     }
     
     private func analytics() {
@@ -68,6 +73,13 @@ final class DomainSettingViewController: UIViewController {
         ])
     }
     
+    private func testCodePost() {
+        let orgID = viewModel.organization.id
+        let orgName = viewModel.organization.name
+        UserInfoManager.userInfo?.userOrgName = orgName
+        UserInfoManager.userInfo?.userOrganization = orgID
+        navigationController?.pushViewController(DomainSettingCompleteViewController(), animated: true)
+    }
 }
 
 // MARK: - Bind Function
@@ -91,6 +103,20 @@ extension DomainSettingViewController {
             .sink { [weak self] shouldDisplayWarning in
                 guard let self = self else { return }
                 self.emailDuplicatedLabel.isHidden = !shouldDisplayWarning
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.isEmailOverlapedSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isEmailOverlaped in
+                guard let self = self else { return }
+                self.arrowButton.stopIndicator()
+                if isEmailOverlaped {
+                    self.viewModel.shouldDisplayWarning = true
+                    self.arrowButton.setDisabled(true)
+                } else {
+                    self.viewModel.sendCode()
+                }
             }
             .store(in: &cancelBag)
         
@@ -151,9 +177,7 @@ extension DomainSettingViewController {
         emailTextField.autocapitalizationType = .none
         
         domainPlaceholder.textColor = .white
-        // TODO: 현재는 pos.idserve.net으로 고정하고 나중에 API가 수정되면 변경할 부분입니다
-//        domainPlaceholder.text = "@\(viewModel.organization.domain)"
-        domainPlaceholder.text = "@pos.idserve.net"
+        domainPlaceholder.text = "@\(viewModel.organization.domain)"
         domainPlaceholder.font = .systemFont(ofSize: 17, weight: .medium)
         domainPlaceholder.setContentCompressionResistancePriority(.init(1000), for: .horizontal)
         

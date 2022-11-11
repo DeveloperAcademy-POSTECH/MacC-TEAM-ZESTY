@@ -55,6 +55,12 @@ public struct UserAPI {
         return networkService.request(with: endpoint)
     }
     
+    public static func getEamilValidation(email: String) -> AnyPublisher<Bool, NetworkError> {
+        let header = ["Content-Type": "application/json"]
+        let endpoint = Endpoint(path: "/api/users/validate/email", method: .get, queryParams: ["email": email], headers: header)
+        return networkService.request(with: endpoint)
+    }
+    
     public static func putNickname(authorization: String, nickname: String) -> AnyPublisher<Bool, NetworkError> {
         let header = ["Content-Type": "application/json", "Authorization": "\(authorization)"]
         let endpoint = Endpoint(path: "/api/users/nickname", method: .put, bodyParams: ["nickname": nickname], headers: header)
@@ -75,7 +81,6 @@ public struct UserAPI {
         return networkService.request(with: endpoint)
     }
     
-
     public static func deleteUser(authorization: String) -> AnyPublisher<Bool, NetworkError> {
         let header = ["Content-Type": "application/json", "Authorization": "\(authorization)"]
         let endpoint = Endpoint(path: "/api/users", method: .delete, headers: header)

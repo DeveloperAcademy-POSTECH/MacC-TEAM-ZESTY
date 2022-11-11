@@ -23,10 +23,10 @@ final class VerifingCodeViewModel {
     
     // input
     @Published var userInputCode: String = ""
+    @Published var shouldDisplayWarning: Bool = false
     
     // output
     @Published var timerText = "03:00"
-    @Published var shouldDisplayWarning: Bool = false
     let isCodeValidSubject = PassthroughSubject<Bool, Never>()
     let isEmailOverlapedSubject = PassthroughSubject<Bool, Never>()
     
