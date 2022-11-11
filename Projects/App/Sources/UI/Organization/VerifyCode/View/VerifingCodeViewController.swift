@@ -60,6 +60,7 @@ final class VerifingCodeViewController: UIViewController {
     @objc func resendButtonTapped() {
         viewModel.resetTimer()
         showToastMessage()
+        viewModel.shouldDisplayWarning = false
         viewModel.resendEamil()
         viewModel.startTimer()
         
@@ -165,17 +166,11 @@ extension VerifingCodeViewController {
             }
             .store(in: &cancelBag)
         
-        viewModel.displayWarningSubject
+        viewModel.$shouldDisplayWarning
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] displayWarningType in
+            .sink { [weak self] shouldDisplayWarning in
                 guard let self = self else { return }
-                switch displayWarningType {
-                case .codeWarning:
-                    self.warningMessage.text = "잘못된 코드예요."
-                case .emailWarning:
-                    self.warningMessage.text = "이미 사용된 이메일이에요."
-                }
-                self.warningMessage.isHidden = false
+                self.warningMessage.isHidden = !shouldDisplayWarning
             }
             .store(in: &cancelBag)
         

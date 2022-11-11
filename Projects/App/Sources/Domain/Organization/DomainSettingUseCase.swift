@@ -36,4 +36,20 @@ final class DomainSettingUseCase {
 
     }
     
+    func getEamilValidation(email: String) {
+        UserAPI.getEamilValidation(email: email)
+            .sink { [weak self] error in
+                guard let self = self else { return }
+                switch error {
+                case .failure(let error):
+                    print(error.localizedString)
+                    self.isEmailOverlapedSubject.send(true)
+                case .finished: break
+                }
+            } receiveValue: { _ in
+                self.isEmailOverlapedSubject.send(false)
+            }
+            .store(in: &cancelBag)
+    }
+    
 }

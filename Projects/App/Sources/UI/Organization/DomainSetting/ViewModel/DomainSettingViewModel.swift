@@ -39,6 +39,11 @@ final class DomainSettingViewModel {
         useCase.sendCode(email: userEmail)
     }
     
+    func checkEmailOverlaped() {
+        let userEmail = getUserEmail()
+        useCase.getEamilValidation(email: userEmail)
+    }
+    
     func getUserEmail() -> String {
         let userEmail: String = userInput + "@" + organization.domain
         return userEmail
@@ -63,7 +68,6 @@ extension DomainSettingViewModel {
             }
             .store(in: &cancelBag)
         
-        // TODO: 서버의 API가 정리되어 있지 않아서 남겨둡니다. 추후에 이메일 중복 API가 만들어진다면 사용할 예정입니다
         useCase.isEmailOverlapedSubject
             .sink { [weak self] isEmailOverlaped in
                 guard let self = self else { return }
@@ -80,11 +84,7 @@ extension DomainSettingViewModel {
                 guard let self = self else { return }
                 if isCodeSend {
                     self.isCodeSendSubject.send(isCodeSend)
-                } else {
-                    // TODO: 나중에 API가 수정되면 변경할 부분입니다
-                    self.shouldDisplayWarning = true
                 }
-                
             }
             .store(in: &cancelBag)
 

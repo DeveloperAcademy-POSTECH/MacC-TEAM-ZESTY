@@ -58,8 +58,7 @@ final class DomainSettingViewController: UIViewController {
     
     @objc func arrowButtonTapped() {
         arrowButton.startIndicator()
-        // TODO: 서버 API가 나오면 로직이 바뀔 부분입니다
-        viewModel.sendCode()
+        viewModel.checkEmailOverlaped()
     }
     
     private func analytics() {
@@ -91,6 +90,20 @@ extension DomainSettingViewController {
             .sink { [weak self] shouldDisplayWarning in
                 guard let self = self else { return }
                 self.emailDuplicatedLabel.isHidden = !shouldDisplayWarning
+            }
+            .store(in: &cancelBag)
+        
+        viewModel.isEmailOverlapedSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isEmailOverlaped in
+                guard let self = self else { return }
+                self.arrowButton.stopIndicator()
+                if isEmailOverlaped {
+                    self.viewModel.shouldDisplayWarning = true
+                    self.arrowButton.setDisabled(true)
+                } else {
+                    self.viewModel.sendCode()
+                }
             }
             .store(in: &cancelBag)
         
