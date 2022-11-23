@@ -13,16 +13,16 @@ public struct PlaceAPI {
     
     static let networkService = NetworkService()
 
-    public static func fetchPlaceList(with page: Int, token: String) -> AnyPublisher<PlaceListDTO, NetworkError> {
-        let header = ["Content-Type": "application/json", "Authorization":"\(token)"]
+    public static func fetchPlaceList(with page: Int, authorization: String) -> AnyPublisher<PlaceListDTO, NetworkError> {
+        let header = ["Content-Type": "application/json", "Authorization": "\(authorization)"]
         let query = ["cursor": "\(page)"]
         let endpoint = Endpoint(path: "/api/places", queryParams: query, headers: header)
         
         return networkService.request(with: endpoint, responseType: PlaceListDTO.self)
     }
     
-    public static func fetchHotPlaceList(with page: Int) -> AnyPublisher<PlaceListDTO, NetworkError> {
-        let header = ["Content-Type": "application/json"]
+    public static func fetchHotPlaceList(with page: Int, authorization: String) -> AnyPublisher<PlaceListDTO, NetworkError> {
+        let header = ["Content-Type": "application/json", "Authorization": "\(authorization)"]
         let query = ["cursor": "\(page)"]
         let endpoint = Endpoint(path: "/api/places/goods", queryParams: query, headers: header)
         
@@ -37,10 +37,11 @@ public struct PlaceAPI {
         return networkService.request(with: endpoint, responseType: KakaoPlaceListDTO.self)
     }
     
-    public static func checkRegisterdPlace(kakaoPlaceId: Int) -> AnyPublisher<Bool, NetworkError> {
+    public static func checkRegisterdPlace(kakaoPlaceId: Int, orgId: Int) -> AnyPublisher<Bool, NetworkError> {
         
         let header = ["Content-Type": "application/json"]
-        let endpoint = Endpoint(path: "/api/places/kakaoPlace/\(kakaoPlaceId)/registered", headers: header)
+        let query = ["organizationId": "\(orgId)"]
+        let endpoint = Endpoint(path: "/api/places/kakaoPlace/\(kakaoPlaceId)/registered", queryParams: query, headers: header)
         
         return networkService.request(with: endpoint, responseType: Bool.self)
     }
