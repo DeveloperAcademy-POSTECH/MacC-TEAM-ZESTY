@@ -93,7 +93,7 @@ final class AddPlaceUseCase: AddPlaceUseCaseType {
     func checkRegisterdPlace(with kakaoPlaceId: Int) -> AnyPublisher<Bool, AddPlaceError> {
         guard let orgId = UserInfoManager.userInfo?.userOrganization else { return Fail(error: AddPlaceError.none).eraseToAnyPublisher() }
         
-        return PlaceAPI.checkRegisterdPlace(kakaoPlaceId: kakaoPlaceId, orgId: UserInfoManager.userInfo?.userOrganization[0] ?? 400)
+        return PlaceAPI.checkRegisterdPlace(kakaoPlaceId: kakaoPlaceId, orgId: orgId[0])
             .mapError { _ -> AddPlaceError in
                 return .none
             }.eraseToAnyPublisher()

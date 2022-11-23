@@ -42,7 +42,6 @@ final class VerifingCodeUseCase {
         
         let userDTO = SignUpUserDTO(email: email, organizationName: orgnization.name)
 
-        // ✅
         UserAPI.postSignUp(authorization: authorization, userDTO: userDTO)
             .sink { [weak self] error in
                 guard let self = self else { return }
@@ -52,7 +51,7 @@ final class VerifingCodeUseCase {
                     self.isEmailOverlapedSubject.send(true)
                 case .finished: break
                 }
-            } receiveValue: { [weak self] value in
+            } receiveValue: { [weak self] _ in
                 guard let self = self else { return }
                 self.isEmailOverlapedSubject.send(false)
             }
