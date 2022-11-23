@@ -53,7 +53,6 @@ final class VerifingCodeUseCase {
                 case .finished: break
                 }
             } receiveValue: { [weak self] value in
-                print("✅받은값\(value)")
                 guard let self = self else { return }
                 self.isEmailOverlapedSubject.send(false)
             }

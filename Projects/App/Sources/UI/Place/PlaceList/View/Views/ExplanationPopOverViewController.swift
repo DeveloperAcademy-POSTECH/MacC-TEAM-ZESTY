@@ -15,7 +15,6 @@ final class ExplanationPopOverViewController: UIViewController {
     // MARK: - Properties
     private var explanationLabel = UILabel()
     
-    
     // MARK: - LifeCycle
     
     override func viewDidLoad() {

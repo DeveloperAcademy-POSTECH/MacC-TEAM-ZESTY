@@ -54,21 +54,9 @@ extension NetworkService {
     -> AnyPublisher<T, NetworkError> {
         do {
             let request = try endpoint.urlRequest()
-            
-            print("✨✨REQUEST✨✨")
-            print(request)
-            print("✨✨✨✨✨✨")
-            
+
             return session.dataTaskPublisher(for: request)
                 .tryMap({ (data, response) in
-                    print("""
-                          📨📨📨RESPONSE📨📨📨
-                          \(response)
-                          """)
-                    print("""
-                          📦📦📦BODY📦📦📦
-                          \(String(data: data, encoding: .utf8) ?? "")
-                          """)
                     if let error = self.checkError(data: data, response: response) {
                         throw error
                     }
