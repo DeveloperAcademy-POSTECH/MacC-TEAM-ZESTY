@@ -158,6 +158,7 @@ extension OrgDetailViewController {
         orgDetailInformationView2.informationLabel.text = "등록된 맛집"
         orgDetailInformationView2.numberLabel.text = "0곳"
         
+        // TODO: - 백엔드 작업 완료 후 복구
 //        orgInfoImageView3.image = UIImage(.img_reviewfriends_photo)
 //        orgInfoImageView3.contentMode = .scaleAspectFit
 //        orgInfoImageView3.layer.applyFigmaShadow(color: .black, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)

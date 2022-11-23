@@ -12,7 +12,6 @@ import Network
 
 protocol AddPlaceUseCaseType {
     func searchKakaoPlaces(with name: String) -> AnyPublisher<[KakaoPlace], Error>
-//    func checkRegisterdPlace(with kakaoPlaceId: Int) -> AnyPublisher<Bool, Error>
     func checkRegisterdPlace(with kakaoPlaceId: Int) -> AnyPublisher<Bool, AddPlaceError>
     func fetchCategories() -> AnyPublisher<[Category], Error>
     func addNewPlace(with place: KakaoPlace, category: Int) -> AnyPublisher<PlaceResult, Error>
