@@ -17,7 +17,14 @@ final class PlaceListUseCase {
         
         switch type {
         case .whole:
-            api = PlaceAPI.fetchPlaceList(with: page)
+            api = PlaceAPI.fetchPlaceList(with: page, token: KeyChainManager.read(key: .authToken) ?? "")
+            print("➡️➡️➡️➡️➡️")
+            print(KeyChainManager.read(key: .authToken))
+            print(UserInfoManager.userInfo?.userID)
+            print(UserInfoManager.userInfo?.userNickname)
+            print(UserInfoManager.userInfo?.userOrgName)
+            print(UserInfoManager.userInfo?.userOrganization)
+            print("➡️➡️➡️➡️➡️")
         case .hot:
             api = PlaceAPI.fetchHotPlaceList(with: page)
         }

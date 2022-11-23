@@ -17,7 +17,7 @@ public struct UserAPI {
         let header = ["Content-Type": "application/json", "Authorization": "\(authorization)"]
         let user = ["email": userDTO.email, "organizationName": userDTO.organizationName]
         let endpoint = Endpoint(path: "/api/users", method: .post, bodyParams: user, headers: header)
-        
+        print("✅✅✅✅postSignUp", userDTO)
         return networkService.request(with: endpoint)
     }
     
@@ -71,13 +71,14 @@ public struct UserAPI {
         let header = ["Content-Type": "application/json"]
         let code = ["email": codeDTO.email, "code": codeDTO.code]
         let endpoint = Endpoint(path: "/api/users/verify", method: .post, bodyParams: code, headers: header)
+        print("📨📨📨📨📨code",codeDTO)
         return networkService.request(with: endpoint)
     }
     
     public static func postSendCode(email: String) -> AnyPublisher<Bool, NetworkError> {
         let header = ["Content-Type": "application/json"]
         let endpoint = Endpoint(path: "/api/users/send/verifyCode", method: .post, bodyParams: ["email": email], headers: header)
-        
+        print("📨📨📨📨📨",email)
         return networkService.request(with: endpoint)
     }
     

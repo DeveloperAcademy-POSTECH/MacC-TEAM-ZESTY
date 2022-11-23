@@ -29,7 +29,7 @@ final class AddPlaceUseCase: AddPlaceUseCaseType {
     func addNewPlace(with place: KakaoPlace, category: Int) -> AnyPublisher<PlaceResult, Error> {
         
         let user = UserInfoManager.userInfo?.userID ?? 64
-        let org = UserInfoManager.userInfo?.userOrganization ?? 400
+        let org = UserInfoManager.userInfo?.userOrganization[0] ?? 400
         let placeDTO = PlacePostDTO(address: place.address,
                                     name: place.placeName,
                                     latitude: place.lat,

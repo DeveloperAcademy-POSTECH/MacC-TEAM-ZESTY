@@ -9,12 +9,12 @@
 import Foundation
 
 public struct SignUpUserDTO: Encodable {
-    public let id: Int
+//    public let id: Int
     public let email: String
     public let organizationName: String
     
-    public init(id: Int, email: String, organizationName: String) {
-        self.id = id
+    public init(email: String, organizationName: String) {
+//        self.id = id
         self.email = email
         self.organizationName = organizationName
     }

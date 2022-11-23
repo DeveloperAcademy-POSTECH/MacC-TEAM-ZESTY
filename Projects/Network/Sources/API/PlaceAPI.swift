@@ -13,8 +13,8 @@ public struct PlaceAPI {
     
     static let networkService = NetworkService()
 
-    public static func fetchPlaceList(with page: Int) -> AnyPublisher<PlaceListDTO, NetworkError> {
-        let header = ["Content-Type": "application/json"]
+    public static func fetchPlaceList(with page: Int, token: String) -> AnyPublisher<PlaceListDTO, NetworkError> {
+        let header = ["Content-Type": "application/json", "Authorization":"\(token)"]
         let query = ["cursor": "\(page)"]
         let endpoint = Endpoint(path: "/api/places", queryParams: query, headers: header)
         
