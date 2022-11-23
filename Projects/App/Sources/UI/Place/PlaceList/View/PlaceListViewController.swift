@@ -241,7 +241,7 @@ extension PlaceListViewController {
         let placeTitle = UILabel()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(orgDetailButtonTapped))
 
-        placeTitle.text = "애플디벨로퍼아카데미"
+        placeTitle.text = UserInfoManager.userInfo?.userOrgName ?? "(인증대학없음)"
         placeTitle.font = .systemFont(ofSize: 17, weight: .bold)
         placeTitle.isUserInteractionEnabled = true
         placeTitle.addGestureRecognizer(tapGesture)
