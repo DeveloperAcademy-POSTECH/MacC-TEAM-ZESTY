@@ -19,7 +19,7 @@ final class UserInfoManager {
     
     struct UserInfo: Codable {
         
-        init(userNickname: String? = nil, userID: Int? = nil, userOrganization: Int? = nil, userOrgName: String? = nil ) {
+        init(userNickname: String? = nil, userID: Int? = nil, userOrganization: [Int] = [], userOrgName: String? = nil ) {
             UserInfoManager.userInfo?.userNickname = userNickname
             UserInfoManager.userInfo?.userID = userID
             UserInfoManager.userInfo?.userOrganization = userOrganization
@@ -48,10 +48,10 @@ final class UserInfoManager {
                 UserDefaults.standard.set(newValue, forKey: UserInfoKeys.userID.rawValue)
             }
         }
-        var userOrganization: Int? {
+        var userOrganization: [Int] {
             get {
-                guard let userOrganization = UserDefaults.standard.value(forKey: UserInfoKeys.userOrganization.rawValue) as? Int else {
-                    return nil
+                guard let userOrganization = UserDefaults.standard.value(forKey: UserInfoKeys.userOrganization.rawValue) as? [Int] else {
+                    return []
                 }
                 return userOrganization
             }
@@ -93,7 +93,7 @@ final class UserInfoManager {
         UserInfoManager.userInfo = UserInfo()
     }
     
-    static func initialUserInfo(userNickname: String?, userID: Int?, userOrganization: Int?, userOrgName: String?) {
+    static func initialUserInfo(userNickname: String?, userID: Int?, userOrganization: [Int], userOrgName: String?) {
         UserInfoManager.userInfo = UserInfo()
         UserInfoManager.userInfo?.userNickname = userNickname
         UserInfoManager.userInfo?.userID = userID

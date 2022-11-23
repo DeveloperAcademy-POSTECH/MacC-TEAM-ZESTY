@@ -25,7 +25,7 @@ final class OrgDetailViewController: UIViewController {
     private let orgInformationStackView3 = UIStackView()
     private let orgInfoImageView1 = UIImageView()
     private let orgInfoImageView2 = UIImageView()
-    private let orgInfoImageView3 = UIImageView()
+//    private let orgInfoImageView3 = UIImageView()
     private let orgInviteButton = FullWidthBlackButton()
 
     private var orgDetailInformationView1 = OrgDetailInformationView()
@@ -121,7 +121,7 @@ extension OrgDetailViewController {
         orgDetailInformationView2 = OrgDetailInformationView()
         orgDetailInformationView3 = OrgDetailInformationView()
         
-        orgNameLabel.text = "애플 디벨로퍼 아카데미"
+        orgNameLabel.text = UserInfoManager.userInfo?.userOrgName ?? "(인증대학없음)"
         orgNameLabel.textColor = .black
         orgNameLabel.font = UIFont.systemFont(ofSize: CGFloat(26), weight: .bold)
         orgNameLabel.textAlignment = .center
@@ -158,11 +158,12 @@ extension OrgDetailViewController {
         orgDetailInformationView2.informationLabel.text = "등록된 맛집"
         orgDetailInformationView2.numberLabel.text = "0곳"
         
-        orgInfoImageView3.image = UIImage(.img_reviewfriends_photo)
-        orgInfoImageView3.contentMode = .scaleAspectFit
-        orgInfoImageView3.layer.applyFigmaShadow(color: .black, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
-        orgDetailInformationView3.informationLabel.text = "업로드된 사진"
-        orgDetailInformationView3.numberLabel.text = "0개"
+        // TODO: - 백엔드 작업 완료 후 복구
+//        orgInfoImageView3.image = UIImage(.img_reviewfriends_photo)
+//        orgInfoImageView3.contentMode = .scaleAspectFit
+//        orgInfoImageView3.layer.applyFigmaShadow(color: .black, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
+//        orgDetailInformationView3.informationLabel.text = "업로드된 사진"
+//        orgDetailInformationView3.numberLabel.text = "0개"
         
         orgInviteButton.setTitle("우리학교 사람들 초대하기", for: .normal)
         orgInviteButton.addTarget(self, action: #selector(shareAppStoreLink), for: .touchUpInside)
@@ -173,7 +174,7 @@ extension OrgDetailViewController {
         orgInformationSuperStackView.addArrangedSubviews([orgInformationStackView1, orgInformationStackView2, orgInformationStackView3])
         orgInformationStackView1.addArrangedSubviews([orgInfoImageView1, orgDetailInformationView1])
         orgInformationStackView2.addArrangedSubviews([orgInfoImageView2, orgDetailInformationView2])
-        orgInformationStackView3.addArrangedSubviews([orgInfoImageView3, orgDetailInformationView3])
+//        orgInformationStackView3.addArrangedSubviews([orgInfoImageView3, orgDetailInformationView3])
 
         orgNameLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(30)
@@ -206,9 +207,9 @@ extension OrgDetailViewController {
             make.width.height.equalTo(60)
         }
         
-        orgInfoImageView3.snp.makeConstraints { make in
-            make.width.height.equalTo(60)
-        }
+//        orgInfoImageView3.snp.makeConstraints { make in
+//            make.width.height.equalTo(60)
+//        }
 
         orgInviteButton.snp.makeConstraints { make in
             make.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)

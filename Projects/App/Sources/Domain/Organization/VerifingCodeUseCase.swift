@@ -40,7 +40,7 @@ final class VerifingCodeUseCase {
     func postSignUp(email: String, orgnization: Organization) {
         guard let authorization = KeyChainManager.read(key: .authToken) else { return }
         
-        let userDTO = SignUpUserDTO(id: orgnization.id, email: email, organizationName: orgnization.name)
+        let userDTO = SignUpUserDTO(email: email, organizationName: orgnization.name)
 
         UserAPI.postSignUp(authorization: authorization, userDTO: userDTO)
             .sink { [weak self] error in

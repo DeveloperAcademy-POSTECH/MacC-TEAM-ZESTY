@@ -68,7 +68,7 @@ extension VerifingCodeViewModel {
                     let orgID = self.organization.id
                     let orgName = self.organization.name
                     UserInfoManager.userInfo?.userOrgName = orgName
-                    UserInfoManager.userInfo?.userOrganization = orgID
+                    UserInfoManager.userInfo?.userOrganization = (UserInfoManager.userInfo?.userOrganization ?? []) + [orgID]
                 }
                 self.isEmailOverlapedSubject.send(isEmailOverlaped)
             }

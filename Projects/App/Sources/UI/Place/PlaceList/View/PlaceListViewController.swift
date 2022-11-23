@@ -138,9 +138,21 @@ extension PlaceListViewController: QuestionButtonTapDelegate, UIAdaptivePresenta
     func addPlaceButtonTapped() {
         navigationController?.pushViewController(AddPlaceSearchViewController(viewModel: AddPlaceSearchViewModel()), animated: true)
     }
-    
-    @objc func orgDetailButtonTapped() {
-        navigationController?.pushViewController(OrgDetailViewController(viewModel: OrgDetailViewModel(orgId: UserInfoManager.userInfo?.userOrganization ?? 400)), animated: true)
+      
+    @objc func orgDetailButtonTapped() throws {
+        
+        if let orgId = UserInfoManager.userInfo?.userOrganization.first {
+            navigationController?.pushViewController(OrgDetailViewController(viewModel: OrgDetailViewModel(orgId: orgId)),
+                                                     animated: true)
+        } else {
+            let alert = UIAlertController(title: "인증대학없음",
+                                          message: "등록되어 있는 대학 정보가 없습니다",
+                                          preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "닫기", style: .default)
+            alert.addAction(okAction)
+            self.present(alert, animated: false)
+        }
+        
         FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
             AnalyticsParameterItemListName: "org_detail_button"
         ])
@@ -241,7 +253,7 @@ extension PlaceListViewController {
         let placeTitle = UILabel()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(orgDetailButtonTapped))
 
-        placeTitle.text = "애플디벨로퍼아카데미"
+        placeTitle.text = UserInfoManager.userInfo?.userOrgName ?? "(인증대학없음)"
         placeTitle.font = .systemFont(ofSize: 17, weight: .bold)
         placeTitle.isUserInteractionEnabled = true
         placeTitle.addGestureRecognizer(tapGesture)

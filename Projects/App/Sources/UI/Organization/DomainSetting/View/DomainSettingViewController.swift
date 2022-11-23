@@ -77,7 +77,7 @@ final class DomainSettingViewController: UIViewController {
         let orgID = viewModel.organization.id
         let orgName = viewModel.organization.name
         UserInfoManager.userInfo?.userOrgName = orgName
-        UserInfoManager.userInfo?.userOrganization = orgID
+        UserInfoManager.userInfo?.userOrganization = [orgID]
         navigationController?.pushViewController(DomainSettingCompleteViewController(), animated: true)
     }
 }

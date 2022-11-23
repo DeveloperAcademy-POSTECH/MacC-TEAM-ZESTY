@@ -12,7 +12,6 @@ import Network
 
 protocol AddPlaceUseCaseType {
     func searchKakaoPlaces(with name: String) -> AnyPublisher<[KakaoPlace], Error>
-//    func checkRegisterdPlace(with kakaoPlaceId: Int) -> AnyPublisher<Bool, Error>
     func checkRegisterdPlace(with kakaoPlaceId: Int) -> AnyPublisher<Bool, AddPlaceError>
     func fetchCategories() -> AnyPublisher<[Category], Error>
     func addNewPlace(with place: KakaoPlace, category: Int) -> AnyPublisher<PlaceResult, Error>
@@ -29,7 +28,7 @@ final class AddPlaceUseCase: AddPlaceUseCaseType {
     func addNewPlace(with place: KakaoPlace, category: Int) -> AnyPublisher<PlaceResult, Error> {
         
         let user = UserInfoManager.userInfo?.userID ?? 64
-        let org = UserInfoManager.userInfo?.userOrganization ?? 400
+        let org = UserInfoManager.userInfo?.userOrganization[0] ?? 400
         let placeDTO = PlacePostDTO(address: place.address,
                                     name: place.placeName,
                                     latitude: place.lat,
@@ -91,7 +90,9 @@ final class AddPlaceUseCase: AddPlaceUseCaseType {
      */
     
     func checkRegisterdPlace(with kakaoPlaceId: Int) -> AnyPublisher<Bool, AddPlaceError> {
-        PlaceAPI.checkRegisterdPlace(kakaoPlaceId: kakaoPlaceId)
+        guard let orgId = UserInfoManager.userInfo?.userOrganization else { return Fail(error: AddPlaceError.none).eraseToAnyPublisher() }
+        
+        return PlaceAPI.checkRegisterdPlace(kakaoPlaceId: kakaoPlaceId, orgId: orgId[0])
             .mapError { _ -> AddPlaceError in
                 return .none
             }.eraseToAnyPublisher()

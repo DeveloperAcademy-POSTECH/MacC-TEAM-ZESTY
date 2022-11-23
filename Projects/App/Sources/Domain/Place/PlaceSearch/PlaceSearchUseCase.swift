@@ -21,8 +21,7 @@ final class PlaceSearchUseCase: PlaceSearchUseCaseType {
     
     func searchPlaces(with placeName: String) -> AnyPublisher<[Place], Error> {
         
-//        TODO: ORG-ID 넣고 교체 필요
-        let orgId = UserInfoManager.userInfo?.userOrganization ?? 400
+        let orgId = UserInfoManager.userInfo?.userOrganization[0] ?? 400
         
         PlaceAPI.fetchSearchPlaceResults(orgId: orgId, placeName: placeName)
             .sink { error in
