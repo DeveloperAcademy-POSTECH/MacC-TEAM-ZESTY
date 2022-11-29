@@ -82,13 +82,13 @@ extension OrganizationListViewModel: ErrorMapper {
 
             searchedOrgArray = orgArray.filter { organization in
                 var haveOrgName = false
-                for input in inputArray where organization.name.contains(input) {
+                for input in inputArray where organization.name.localizedStandardContains(input) {
                         haveOrgName = true
                 }
                 return haveOrgName
             }
         } else {
-            searchedOrgArray = orgArray.filter { $0.name.contains(input) }
+            searchedOrgArray = orgArray.filter { $0.name.localizedStandardContains(input) }
         }
     }
 }
