@@ -77,21 +77,18 @@ extension OrganizationListViewModel: ErrorMapper {
             searchedOrgArray = []
             return
         }
-        
-        let inputUppercase = input.uppercased()
-        
-        if inputUppercase.contains(" ") {
+        if input.contains(" ") {
             let inputArray = input.components(separatedBy: " ")
 
             searchedOrgArray = orgArray.filter { organization in
                 var haveOrgName = false
-                for input in inputArray where organization.name.contains(input.uppercased()) {
+                for input in inputArray where organization.name.localizedStandardContains(input) {
                         haveOrgName = true
                 }
                 return haveOrgName
             }
         } else {
-            searchedOrgArray = orgArray.filter { $0.name.contains(input.uppercased()) }
+            searchedOrgArray = orgArray.filter { $0.name.localizedStandardContains(input) }
         }
     }
 }
