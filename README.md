@@ -87,7 +87,7 @@ tuist generate
 
 - MVVM (w/ Clean Architecture Concepts)
 - Tuist(Modulization)
-- combine
+- Combine
 - SnapKit
 - Kingfisher
 - URLSession
