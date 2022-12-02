@@ -101,6 +101,7 @@ extension ReviewRegisterViewModel: ErrorMapper {
             guard let self = self else { return }
             
             // TODO: ReviewDTO image 배열 -> String으로 바뀌면 수정 예정
+            // 나중에 유저가 여러 이미지를 한번에 등록할 수 있게 되나요? 이러면 투두 삭제 예정
             var imageURL: URL?
             if !review.image.isEmpty {
                 imageURL = URL(string: review.image[0] ?? "")
