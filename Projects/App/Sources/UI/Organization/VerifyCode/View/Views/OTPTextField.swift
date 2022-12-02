@@ -15,12 +15,12 @@ final class OTPTextField: UITextField {
     override public func deleteBackward() {
         if let text = text, text.isEmpty {
             previousTextField?.text = ""
-            previousTextField?.backgroundColor = .zestyColor(.grayF6)
+            previousTextField?.backgroundColor = .codeInputEmpty
             previousTextField?.previousTextField?.becomeFirstResponder()
         }
         
         text = ""
-        backgroundColor = .zestyColor(.grayF6)
+        backgroundColor = .codeInputEmpty
         previousTextField?.becomeFirstResponder()
     }
 }
