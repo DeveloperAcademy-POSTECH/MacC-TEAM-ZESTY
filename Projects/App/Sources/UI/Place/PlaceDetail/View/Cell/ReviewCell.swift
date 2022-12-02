@@ -6,6 +6,7 @@
 //  Copyright © 2022 zesty. All rights reserved.
 //
 
+import DesignSystem
 import UIKit
 import SnapKit
 import Kingfisher
@@ -31,7 +32,7 @@ final class ReviewCell: UITableViewCell {
     
     private let menuLabel: UILabel = {
         $0.font = .systemFont(ofSize: 20, weight: .black)
-        $0.textColor = .white
+        $0.textColor = .staticLabel
         $0.textAlignment = .left
         $0.numberOfLines = 2
         return $0
@@ -39,7 +40,7 @@ final class ReviewCell: UITableViewCell {
     
     private let dateLabel: UILabel = {
         $0.font = .systemFont(ofSize: 13, weight: .regular)
-        $0.textColor = .zestyColor(.whiteEBEBF5)?.withAlphaComponent(0.6)
+        $0.textColor = .staticSecondaryLabel
         $0.textAlignment = .left
         return $0
     }(UILabel())
@@ -98,7 +99,7 @@ final class ReviewCell: UITableViewCell {
 extension ReviewCell {
     
     private func configureUI() {
-        self.backgroundColor = .zestyColor(.background)
+        self.backgroundColor = .background
         self.cardView.layer.applyFigmaShadow()
     }
     
@@ -147,8 +148,8 @@ extension ReviewCell {
         let gradient: CAGradientLayer = CAGradientLayer()
         gradient.locations = [0.0, 1.0]
         let colors: [CGColor] = [
-           .init(red: 0, green: 0, blue: 0, alpha: 0),
-           .init(red: 0, green: 0, blue: 0, alpha: 1)
+            UIColor.clear.cgColor,
+            UIColor.mainListDescription.cgColor
         ]
         gradient.colors = colors
         gradient.startPoint = CGPoint(x: 0.0, y: 0.71)

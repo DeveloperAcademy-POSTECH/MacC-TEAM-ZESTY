@@ -16,14 +16,14 @@ final class EmptyReviewCell: UITableViewCell {
     // MARK: - Properties
 
     private let bgView: UIView = {
-        $0.backgroundColor = .zestyColor(.grayF6)
+        $0.backgroundColor = .grayComponent
         $0.layer.cornerRadius = 16
         $0.layer.masksToBounds = true
         return $0
     }(UIView())
     
     private let emojiView: UIImageView = {
-        $0.contentMode = .scaleToFill
+        $0.contentMode = .scaleAspectFit
         $0.image = UIImage(.img_reviewfriends_together)
         return $0
     }(UIImageView(frame: .zero))
@@ -31,7 +31,7 @@ final class EmptyReviewCell: UITableViewCell {
     private let descriptionLabel: UILabel = {
         $0.text = "아직 사진리뷰가 없어요"
         $0.font = .systemFont(ofSize: 13, weight: .regular)
-        $0.textColor = .zestyColor(.dim)
+        $0.textColor = .dim
         $0.textAlignment = .center
         return $0
     }(UILabel())
@@ -69,7 +69,7 @@ final class EmptyReviewCell: UITableViewCell {
 extension EmptyReviewCell {
     
     private func configureUI() {
-        self.backgroundColor = .zestyColor(.background)
+        self.backgroundColor = .background
     }
     
     private func createLayout() {

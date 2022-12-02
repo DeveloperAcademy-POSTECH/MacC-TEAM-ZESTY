@@ -21,7 +21,7 @@ class EvaluationItemView: UIView {
     
     private let imageView: UIImageView = {
         $0.contentMode = .scaleAspectFit
-        $0.layer.applyFigmaShadow(color: .black, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
+        $0.layer.applyFigmaShadow(color: .shadow, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
         return $0
     }(UIImageView())
     
