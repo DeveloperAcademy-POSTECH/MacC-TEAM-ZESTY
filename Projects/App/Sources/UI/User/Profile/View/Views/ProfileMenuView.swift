@@ -41,16 +41,16 @@ extension ProfileMenuView {
     // MARK: UI Function
     
     private func configureUI() {
-        backgroundColor = .zestyColor(.background)
+        backgroundColor = .clear
 
         menuLabel.font = .systemFont(ofSize: 16, weight: .medium)
-        menuLabel.textColor = .black
+        menuLabel.textColor = .label
         menuLabel.textAlignment = .left
         menuLabel.numberOfLines = 1
         
         chevronImageView.image = UIImage(systemName: "chevron.right")
         chevronImageView.contentMode = .scaleAspectFit
-        chevronImageView.tintColor = .black
+        chevronImageView.tintColor = .label
     }
     
     private func createLayout() {

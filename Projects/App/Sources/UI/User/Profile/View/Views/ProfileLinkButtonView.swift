@@ -57,7 +57,7 @@ extension ProfileLinkButtonView {
     // MARK: UI Function
     
     private func configureUI() {
-        backgroundColor = .zestyColor(.background)
+        backgroundColor = .clear
 
         instaButton.setImage(UIImage(.btn_link_instargram), for: .normal)
         instaButton.addTarget(self, action: #selector(instaButtonDidTap), for: .touchUpInside)
