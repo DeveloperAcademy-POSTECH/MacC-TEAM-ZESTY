@@ -33,10 +33,11 @@ extension SearchTextField {
         textField.placeholder = placeholder
         textField.clearButtonMode = .always
         textField.returnKeyType = .search
-        textField.textColor = .black
+        textField.textColor = .label
         textField.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         backgroundView.layer.borderWidth = 2
         backgroundView.layer.cornerRadius = cornerRadius
+        backgroundView.layer.borderColor = UIColor.blackComponent.cgColor
         backgroundView.clipsToBounds = true
     }
     
