@@ -23,7 +23,7 @@ final class ReviewRegisterViewModel {
     let placeName: String
     var evaluation: Evaluation = .soso
     var menu: String?
-    @Published var imageString = ""
+    @Published var imageString: String?
     @Published var isRegisterPossible = true
     
     // Output
