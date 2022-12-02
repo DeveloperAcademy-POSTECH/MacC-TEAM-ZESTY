@@ -118,10 +118,10 @@ extension ThirdPartyLoginViewController {
 extension ThirdPartyLoginViewController {
     
     private func configureUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .background
         
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem?.tintColor = .black
+//        navigationItem.backBarButtonItem?.tintColor = .tintColor
         
         backgroundImageView.image = UIImage(.img_login)
         backgroundImageView.contentMode = .scaleAspectFit
@@ -140,7 +140,7 @@ extension ThirdPartyLoginViewController {
         termsOfServiceLabel.numberOfLines = 2
         termsOfServiceLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(termsOfServiceLabelClicked)))
         termsOfServiceLabel.isUserInteractionEnabled = true
-        termsOfServiceLabel.textColor = UIColor.zestyColor(.gray3C3C43)
+        termsOfServiceLabel.textColor = .secondaryLabel
         
         kakaoLoginButton.addTarget(self, action: #selector(kakaoLoginButtonClicked), for: .touchUpInside)
         kakaoLoginButton.setImage(UIImage(.btn_kakaologin), for: .normal)
