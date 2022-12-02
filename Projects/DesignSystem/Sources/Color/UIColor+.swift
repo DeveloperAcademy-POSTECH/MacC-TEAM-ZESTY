@@ -49,6 +49,7 @@ public extension UIColor {
     static let dim = appearanceColor(light: .gray54, dark: .grayD0)
     static let point = zestyColor(.red01)
     static let shadow = appearanceColor(light: .black, dark: .clear)
+    static let accent = appearanceColor(light: .black, dark: .white)
     
     // MARK: Component
     
