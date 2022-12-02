@@ -115,14 +115,14 @@ extension OrgDetailViewController {
 extension OrgDetailViewController {
     
     private func configureUI() {
-        view.backgroundColor = .zestyColor(.background)
+        view.backgroundColor = .background
         
         orgDetailInformationView1 = OrgDetailInformationView()
         orgDetailInformationView2 = OrgDetailInformationView()
         orgDetailInformationView3 = OrgDetailInformationView()
         
         orgNameLabel.text = UserInfoManager.userInfo?.userOrgName ?? "(인증대학없음)"
-        orgNameLabel.textColor = .black
+        orgNameLabel.textColor = .label
         orgNameLabel.font = UIFont.systemFont(ofSize: CGFloat(26), weight: .bold)
         orgNameLabel.textAlignment = .center
         orgNameLabel.numberOfLines = 2
@@ -149,7 +149,7 @@ extension OrgDetailViewController {
 
         orgInfoImageView1.image = UIImage(.img_reviewfriends_together)
         orgInfoImageView1.contentMode = .scaleAspectFit
-        orgInfoImageView1.layer.applyFigmaShadow(color: .black, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
+        orgInfoImageView1.layer.applyFigmaShadow(color: .shadow, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
         orgDetailInformationView1.informationLabel.text = "함께하는 친구들"
         orgDetailInformationView1.numberLabel.text = "0명"
         
@@ -161,7 +161,7 @@ extension OrgDetailViewController {
         // TODO: - 백엔드 작업 완료 후 복구
 //        orgInfoImageView3.image = UIImage(.img_reviewfriends_photo)
 //        orgInfoImageView3.contentMode = .scaleAspectFit
-//        orgInfoImageView3.layer.applyFigmaShadow(color: .black, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
+//        orgInfoImageView3.layer.applyFigmaShadow(color: .shadow, opacity: 0.1, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
 //        orgDetailInformationView3.informationLabel.text = "업로드된 사진"
 //        orgDetailInformationView3.numberLabel.text = "0개"
         

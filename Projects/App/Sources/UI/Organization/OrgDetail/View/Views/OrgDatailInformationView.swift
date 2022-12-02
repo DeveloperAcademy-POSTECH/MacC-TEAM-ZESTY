@@ -38,14 +38,14 @@ final class OrgDetailInformationView: UIView {
 extension OrgDetailInformationView {
 
     private func configureUI() {
-        backgroundColor = .zestyColor(.background)
+        backgroundColor = .clear
         
         informationLabel.textColor = .secondaryLabel
         informationLabel.font = UIFont.systemFont(ofSize: CGFloat(13), weight: .regular)
         informationLabel.textAlignment = .left
         informationLabel.numberOfLines = 1
                 
-        numberLabel.textColor = .black
+        numberLabel.textColor = .label
         numberLabel.font = UIFont.systemFont(ofSize: CGFloat(17), weight: .medium)
         numberLabel.textAlignment = .left
         numberLabel.numberOfLines = 1
