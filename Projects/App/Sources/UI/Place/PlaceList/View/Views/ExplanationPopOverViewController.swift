@@ -32,11 +32,11 @@ final class ExplanationPopOverViewController: UIViewController {
 extension ExplanationPopOverViewController {
     
     private func configureUI() {
-        view.backgroundColor = .zestyColor(.gray42)
+        view.backgroundColor = .explanationPopOverFill
         
         explanationLabel.text = "리뷰를 점수로 환산하여 특정 점수 이상이 되면 맛집으로 선정돼요"
         explanationLabel.font = .zestyFont(size: .caption1, weight: .regular)
-        explanationLabel.textColor = .white
+        explanationLabel.textColor = .reverseLabel
         explanationLabel.numberOfLines = 0
     }
     

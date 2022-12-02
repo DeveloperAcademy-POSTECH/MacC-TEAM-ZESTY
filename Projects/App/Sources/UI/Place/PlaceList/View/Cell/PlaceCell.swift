@@ -119,9 +119,9 @@ extension PlaceCell {
         containerView.layer.cornerRadius = 16
         containerView.layer.masksToBounds = true
 
-        bottomView.backgroundColor = .label
+        bottomView.backgroundColor = .mainListDescription
         
-        placeNameLabel.textColor = .white
+        placeNameLabel.textColor = .staticLabel
         placeNameLabel.numberOfLines = 2
         placeNameLabel.font = .systemFont(ofSize: 20, weight: .bold)
         

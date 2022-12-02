@@ -62,4 +62,5 @@ public extension UIColor {
     static let mainListEmptyBackground = appearanceColor(light: .grayF2, dark: .gray42)
     static let categoryLabelFill = appearanceColor(light: .black, dark: .gray4A)
     static let friendsSelection = appearanceColor(light: .black, dark: .grayD0)
+    static let explanationPopOverFill = appearanceColor(light: .gray42, dark: .grayF2)
 }
