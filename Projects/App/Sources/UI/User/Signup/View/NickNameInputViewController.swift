@@ -188,27 +188,27 @@ extension NickNameInputViewController: UITextFieldDelegate {
 extension NickNameInputViewController {
     
     private func configureUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .background
         
         nickNameTextField.becomeFirstResponder()
-        nickNameTextField.attributedPlaceholder = .init(attributedString: NSAttributedString(string: "닉네임", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]))
+        nickNameTextField.attributedPlaceholder = .init(attributedString: NSAttributedString(string: "닉네임", attributes: [NSAttributedString.Key.foregroundColor: UIColor.reverseSecondaryLabel]))
         nickNameTextField.font = .preferredFont(forTextStyle: .body)
-        nickNameTextField.textColor = .white
-        nickNameTextField.backgroundColor = .black
+        nickNameTextField.textColor = .reverseLabel
+        nickNameTextField.backgroundColor = .blackComponent
         nickNameTextField.clipsToBounds = true
         nickNameTextField.layer.cornerRadius = 25
         
         nextButton.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
         
         warningLabel.text = "이미 있는 이름이에요"
-        warningLabel.textColor = .red
+        warningLabel.textColor = .point
         warningLabel.font = .preferredFont(forTextStyle: .footnote)
         warningLabel.isHidden = true
     }
     
     private func setNavigationBar() {
         let rightBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonDidTap))
-        rightBarButton.tintColor = .label
+        rightBarButton.tintColor = .accent
         navigationItem.leftBarButtonItem = rightBarButton
     }
     

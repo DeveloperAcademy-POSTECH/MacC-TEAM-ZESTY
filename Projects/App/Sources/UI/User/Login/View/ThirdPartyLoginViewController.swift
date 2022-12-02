@@ -121,7 +121,7 @@ extension ThirdPartyLoginViewController {
         view.backgroundColor = .background
         
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-//        navigationItem.backBarButtonItem?.tintColor = .tintColor
+        navigationItem.backBarButtonItem?.tintColor = .accent
         
         backgroundImageView.image = UIImage(.img_login)
         backgroundImageView.contentMode = .scaleAspectFit
