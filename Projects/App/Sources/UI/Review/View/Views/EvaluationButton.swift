@@ -46,8 +46,8 @@ extension EvaluationButton {
         $isSelected
             .sink { [weak self] isSelected in
                 guard let self = self else { return }
-                self.backgroundView.backgroundColor = isSelected ? .black : .zestyColor(.grayF6)
-                self.evaluationLabel.textColor = isSelected ? .white : .darkGray
+                self.backgroundView.backgroundColor = isSelected ? .friendsSelection : .grayComponent
+                self.evaluationLabel.textColor = isSelected ? .reverseLabel : .dim
             }
             .store(in: &cancelBag)
     }
@@ -65,11 +65,11 @@ extension EvaluationButton {
         evaluationLabel.text = type.desc
         evaluationLabel.textAlignment = .center
         evaluationLabel.font = .systemFont(ofSize: 13, weight: .medium)
-        evaluationLabel.textColor = .darkGray
+        evaluationLabel.textColor = .dim
         
         backgroundView.clipsToBounds = true
         backgroundView.layer.cornerRadius = 10
-        backgroundView.backgroundColor = .zestyColor(.grayF6)
+        backgroundView.backgroundColor = .grayComponent
         
         evaluationStackView.axis = .vertical
         evaluationStackView.spacing = 10

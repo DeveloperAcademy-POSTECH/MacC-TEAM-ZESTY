@@ -7,6 +7,7 @@
 
 import Combine
 import UIKit
+import DesignSystem
 import KakaoSDKAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {

@@ -143,17 +143,17 @@ private func analytics() {
 extension ReviewRegisterViewController {
     
     private func configureUI() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .background
         navigationController?.navigationBar.topItem?.title = ""
-        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.tintColor = .accent
         
         titleView.titleLabel.text = "\(viewModel.placeName)에서\n무엇을 드셨나요?"
         
-        var config = UIImage.SymbolConfiguration(paletteColors: [.darkGray])
+        var config = UIImage.SymbolConfiguration(paletteColors: [.dim])
         config = config.applying(UIImage.SymbolConfiguration(weight: .semibold) )
         let plusImage = UIImage(systemName: "plus", withConfiguration: config)
         plusImageView.image = plusImage
-        backgroundView.backgroundColor = .zestyColor(.grayF6)
+        backgroundView.backgroundColor = .grayComponent
         backgroundView.clipsToBounds = true
         backgroundView.layer.cornerRadius = 10
         
@@ -175,7 +175,7 @@ extension ReviewRegisterViewController {
         
         underline.clipsToBounds = true
         underline.layer.cornerRadius = 1
-        underline.backgroundColor = .black
+        underline.backgroundColor = .dim
         underline.isHidden = true
         
         registerButton.setTitle("사진 없이 리뷰 등록", for: .normal)
