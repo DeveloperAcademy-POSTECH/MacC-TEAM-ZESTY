@@ -57,3 +57,9 @@ extension SearchTextField {
         }
     }
 }
+
+extension SearchTextField {
+    public func setBorderColor(_ color: CGColor) {
+        backgroundView.layer.borderColor = color
+    }
+}

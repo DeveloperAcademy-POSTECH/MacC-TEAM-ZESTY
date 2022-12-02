@@ -63,6 +63,17 @@ final class AddPlaceSearchViewController: UIViewController {
         viewExitAnalytics()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        let savedTraitCollection = UITraitCollection.current
+        
+        UITraitCollection.current = self.traitCollection
+        searchingTextFieldView.setBorderColor(UIColor.blackComponent.cgColor)
+        
+        UITraitCollection.current = savedTraitCollection
+    }
+    
     // MARK: - Function
     
     @objc func backButtonDidTap() {
