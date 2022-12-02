@@ -54,7 +54,7 @@ extension DomainSettingCompleteViewController {
         
         cardView.clipsToBounds = true
         cardView.layer.cornerRadius = 16
-        cardView.layer.applyFigmaShadow(color: .shadow, opacity: 0.25, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
+        cardView.layer.applyFigmaShadow(color: .black, opacity: 0.25, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
         cardView.backgroundColor = .cardFill
         
         signupImageView.image = UIImage(.img_signup)

@@ -19,7 +19,7 @@ final class PlaceCardView: UIView {
     private lazy var iconView: UIImageView = {
         $0.image = UIImage(.img_categoryfriends_western)
         $0.contentMode = .scaleAspectFit
-        $0.layer.applyFigmaShadow(color: .shadow, opacity: 0.25, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
+        $0.layer.applyFigmaShadow(color: .black, opacity: 0.25, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
         return $0
     }(UIImageView())
     
@@ -126,10 +126,8 @@ extension PlaceCardView {
         
         clipsToBounds = true
         layer.cornerRadius = 16
-        layer.borderColor = UIColor.green.cgColor
-        layer.applyFigmaShadow(color: .shadow, opacity: 0.25, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
+        layer.applyFigmaShadow(color: .black, opacity: 0.25, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
         backgroundColor = .cardFill
-      
     }
     
     private func createLayout() {

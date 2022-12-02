@@ -97,7 +97,6 @@ extension ReviewCardView {
         clipsToBounds = true
         layer.cornerRadius = 16
         backgroundColor = .cardFill
-//        addShadow(opacity: 0.6, radius: 3)
         
         menuImageView.clipsToBounds = true
         menuImageView.layer.cornerRadius = 16
@@ -126,7 +125,7 @@ extension ReviewCardView {
         dateLabel.font = .preferredFont(forTextStyle: .callout).bold()
         
         evaluationImageView.image = UIImage(.img_reviewfriends_good)
-        evaluationImageView.addShadow(opacity: 0.1, radius: 2)
+        evaluationImageView.layer.applyFigmaShadow(color: .black, opacity: 0.1)
         
         placeStackView.axis = .vertical
         placeStackView.alignment = .leading

@@ -27,7 +27,7 @@ extension UITableView {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.image = UIImage((type == .search) ?  .img_emptyfriends_search : .img_emptyfriends_noresult)
             $0.layer.applyFigmaShadow(
-                color: .shadow,
+                color: .black,
                 opacity: 0.1,
                 xCoord: 0,
                 yCoord: 0,

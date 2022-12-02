@@ -11,7 +11,7 @@ import UIKit
 
 extension CALayer {
   func applyFigmaShadow(
-    color: UIColor = .shadow,
+    color: UIColor = .black,
     opacity: Float = 0.25,
     xCoord: CGFloat = 0,
     yCoord: CGFloat = 0,
