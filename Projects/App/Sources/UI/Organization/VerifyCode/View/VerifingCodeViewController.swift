@@ -55,6 +55,17 @@ final class VerifingCodeViewController: UIViewController {
         analytics()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        let savedTraitCollection = UITraitCollection.current
+        
+        UITraitCollection.current = self.traitCollection
+        arrowButton.setBorderColor(UIColor.blackComponent.cgColor)
+        
+        UITraitCollection.current = savedTraitCollection
+    }
+    
     // MARK: - Function
     
     @objc func resendButtonTapped() {

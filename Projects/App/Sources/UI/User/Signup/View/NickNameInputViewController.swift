@@ -57,6 +57,21 @@ final class NickNameInputViewController: UIViewController {
         nickNameTextField.delegate = self
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        let savedTraitCollection = UITraitCollection.current
+        
+        UITraitCollection.current = self.traitCollection
+        if viewModel.isTextEmpty {
+            nextButton.setBorderColor(UIColor.disabled.cgColor)
+        } else {
+            nextButton.setBorderColor(UIColor.blackComponent.cgColor)
+        }
+        
+        UITraitCollection.current = savedTraitCollection
+    }
+    
     // MARK: - Function
     
     @objc private func nextButtonClicked() {

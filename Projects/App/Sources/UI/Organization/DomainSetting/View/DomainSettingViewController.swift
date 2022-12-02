@@ -56,6 +56,21 @@ final class DomainSettingViewController: UIViewController {
         emailTextField.becomeFirstResponder()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        let savedTraitCollection = UITraitCollection.current
+        
+        UITraitCollection.current = self.traitCollection
+        if !viewModel.isInputValid || viewModel.shouldDisplayWarning {
+            arrowButton.setBorderColor(UIColor.disabled.cgColor)
+        } else {
+            arrowButton.setBorderColor(UIColor.blackComponent.cgColor)
+        }
+        
+        UITraitCollection.current = savedTraitCollection
+    }
+    
     // MARK: - Function
     
     @objc func arrowButtonTapped() {

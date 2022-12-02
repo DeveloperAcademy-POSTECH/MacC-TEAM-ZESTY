@@ -52,6 +52,10 @@ public final class ArrowButton: UIButton {
         activityIndicator.isHidden = true
         activityIndicator.stopAnimating()
     }
+    
+    public func setBorderColor(_ color: CGColor) {
+        layer.borderColor = color
+    }
 }
 
 extension ArrowButton {
