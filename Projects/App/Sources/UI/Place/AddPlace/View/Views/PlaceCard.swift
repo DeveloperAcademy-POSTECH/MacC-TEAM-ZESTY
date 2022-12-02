@@ -19,15 +19,15 @@ final class PlaceCardView: UIView {
     private lazy var iconView: UIImageView = {
         $0.image = UIImage(.img_categoryfriends_western)
         $0.contentMode = .scaleAspectFit
-        $0.layer.applyFigmaShadow(color: .black, opacity: 0.25, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
+        $0.layer.applyFigmaShadow(color: .shadow, opacity: 0.25, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
         return $0
     }(UIImageView())
     
     private lazy var categoryTagLabel: BasePaddingLabel = {
         $0.text = "일식"
         $0.font = .systemFont(ofSize: 11, weight: .bold)
-        $0.textColor = .white
-        $0.backgroundColor = .zestyColor(.point)
+        $0.textColor = .staticLabel
+        $0.backgroundColor = .point
         $0.layer.cornerRadius = 10
         $0.layer.masksToBounds = true
         return $0
@@ -72,7 +72,7 @@ final class PlaceCardView: UIView {
     
     private lazy var orgLabel: UILabel = {
         $0.text = "대학이름"
-        $0.textColor = .zestyColor(.gray3C)
+        $0.textColor = .label
         $0.font = .systemFont(ofSize: isSE ? 13 : 16, weight: .medium)
         $0.numberOfLines = 0
         return $0
@@ -80,14 +80,14 @@ final class PlaceCardView: UIView {
     
     private lazy var creatorLabel: UILabel = {
         $0.text = "만든사람"
-        $0.textColor = .zestyColor(.gray3C)
+        $0.textColor = .label
         $0.font = .systemFont(ofSize: isSE ? 13 : 16, weight: .medium)
         return $0
     }(UILabel())
     
     private lazy var dateLabel: UILabel = {
         $0.text = "YYYY.MM.DD"
-        $0.textColor = .zestyColor(.gray3C)
+        $0.textColor = .label
         $0.font = .systemFont(ofSize: isSE ? 13 : 16, weight: .medium)
         return $0
     }(UILabel())
@@ -127,8 +127,8 @@ extension PlaceCardView {
         clipsToBounds = true
         layer.cornerRadius = 16
         layer.borderColor = UIColor.green.cgColor
-        layer.applyFigmaShadow(color: .black, opacity: 0.25, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
-        backgroundColor = .white
+        layer.applyFigmaShadow(color: .shadow, opacity: 0.25, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
+        backgroundColor = .cardFill
       
     }
     

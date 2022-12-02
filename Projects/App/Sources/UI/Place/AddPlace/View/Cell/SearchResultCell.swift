@@ -81,7 +81,7 @@ final class SearchResultCell: UITableViewCell {
 extension SearchResultCell {
     
     private func configureUI() {
-        self.backgroundColor = .zestyColor(.background)
+        self.backgroundColor = .clear
     }
     
     private func createLayout() {

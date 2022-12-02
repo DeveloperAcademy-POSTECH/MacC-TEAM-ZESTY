@@ -29,21 +29,21 @@ final class AddPlaceResultViewController: UIViewController {
     private lazy var ticketImageView: UIImageView = {
         $0.contentMode = .scaleAspectFit
         $0.image = UIImage(.img_ticket_bg)
-        $0.layer.applyFigmaShadow(color: .black, opacity: 0.25, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
+        $0.layer.applyFigmaShadow(color: .shadow, opacity: 0.25, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
         return $0
     }(UIImageView())
     
     private lazy var iconView: UIImageView = {
         $0.contentMode = .scaleAspectFit
-        $0.layer.applyFigmaShadow(color: .black, opacity: 0.25, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
+        $0.layer.applyFigmaShadow(color: .shadow, opacity: 0.25, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
         return $0
     }(UIImageView())
     
     private lazy var categoryTagLabel: BasePaddingLabel = {
         $0.text = "일식"
         $0.font = .systemFont(ofSize: 11, weight: .bold)
-        $0.textColor = .white
-        $0.backgroundColor = .zestyColor(.point)
+        $0.textColor = .staticLabel
+        $0.backgroundColor = .point
         $0.layer.cornerRadius = 10
         $0.layer.masksToBounds = true
         return $0
@@ -88,7 +88,7 @@ final class AddPlaceResultViewController: UIViewController {
     
     private lazy var orgLabel: UILabel = {
         $0.text = "대학이름"
-        $0.textColor = .zestyColor(.gray3C)
+        $0.textColor = .label
         $0.font = .systemFont(ofSize: isSE ? 13 : 16, weight: .medium)
         $0.numberOfLines = 0
         return $0
@@ -96,24 +96,24 @@ final class AddPlaceResultViewController: UIViewController {
     
     private lazy var creatorLabel: UILabel = {
         $0.text = "만든사람"
-        $0.textColor = .zestyColor(.gray3C)
+        $0.textColor = .label
         $0.font = .systemFont(ofSize: isSE ? 13 : 16, weight: .medium)
         return $0
     }(UILabel())
     
     private lazy var dateLabel: UILabel = {
         $0.text = "YYYY.MM.DD"
-        $0.textColor = .zestyColor(.gray3C)
+        $0.textColor = .label
         $0.font = .systemFont(ofSize: isSE ? 13 : 16, weight: .medium)
         return $0
     }(UILabel())
     
     private lazy var saveButton: UIButton = {
-        let config = UIImage.SymbolConfiguration(paletteColors: [.zestyColor(.point) ?? .red])
+        let config = UIImage.SymbolConfiguration(paletteColors: [.point ?? .red])
         let downloadImage = UIImage(systemName: "square.and.arrow.down", withConfiguration: config)
         $0.setImage(downloadImage, for: .normal)
         $0.setTitle(" 맛집 카드 저장하기", for: .normal)
-        $0.setTitleColor(.zestyColor(.point), for: .normal)
+        $0.setTitleColor(.point, for: .normal)
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .medium)
         $0.addTarget(self, action: #selector(saveButtonDidTap), for: .touchUpInside)
         return $0
@@ -203,7 +203,7 @@ extension AddPlaceResultViewController {
 extension AddPlaceResultViewController {
     
     private func configureUI() {
-        view.backgroundColor = .white // zestyColor(.backgroundColor)
+        view.backgroundColor = .background
     }
     
     private func createLayout() {
@@ -237,7 +237,7 @@ extension AddPlaceResultViewController {
     
     private func setNavigationBar() {
         let rightBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(backButtonDidTap))
-        rightBarButton.tintColor = .label
+        rightBarButton.tintColor = .accent
         navigationItem.leftBarButtonItem = rightBarButton
     }
     
