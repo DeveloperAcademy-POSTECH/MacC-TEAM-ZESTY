@@ -33,7 +33,7 @@ public extension UIColor {
     
     // MARK: Background
     
-    static let background = appearanceColor(light: .white, dark: .black)
+    static let background = appearanceColor(light: .white, dark: .gray18)
     
     // MARK: Label
     
