@@ -3,7 +3,7 @@
 //  App
 //
 //  Created by 김태호 on 2022/10/25.
-//  Updated by 리아 on 2022/11/01.
+//  Updated by 고반 on 2022/12/03.
 //  Copyright (c) 2022 zesty. All rights reserved.
 //
 
@@ -33,6 +33,8 @@ final class PlaceListViewController: UIViewController {
     private var emptyImageView = UIImageView()
     private var emptyLabel = UILabel()
     
+    private let placeTitle = UILabel()
+    
     // MARK: - LifeCycle
     
     init(viewModel: PlaceListViewModel = PlaceListViewModel()) {
@@ -50,17 +52,28 @@ final class PlaceListViewController: UIViewController {
         configureDataSource()
         createLayout()
         configureUI()
+        bind()
         analytics()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        bind()
+        bindResult()
     }
     
     // MARK: - Function
     
     private func bind() {
+        UserInfoManager.shared.isNameFetched
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.placeTitle.text = UserInfoManager.userInfo?.userOrgName
+            }
+            .store(in: &cancelBag)
+    }
+    
+    private func bindResult() {
         viewModel.$result
             .receive(on: DispatchQueue.main)
             .sink { [weak self] placeList in
@@ -250,9 +263,8 @@ extension PlaceListViewController {
         let searchItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchButtonTapped))
         let personCropCircle = UIImage(systemName: "person.crop.circle")
         let userInfoItem = UIBarButtonItem(image: personCropCircle, style: .plain, target: self, action: #selector(userInfoButtonTapped))
-        let placeTitle = UILabel()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(orgDetailButtonTapped))
-
+        
         placeTitle.text = UserInfoManager.userInfo?.userOrgName ?? "(인증대학없음)"
         placeTitle.font = .systemFont(ofSize: 17, weight: .bold)
         placeTitle.isUserInteractionEnabled = true
