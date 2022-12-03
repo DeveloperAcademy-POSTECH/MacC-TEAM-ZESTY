@@ -15,7 +15,7 @@ final class ReviewPageView: UIView {
     private lazy var mainView = UIView()
     private lazy var menuLabel = UILabel()
     private lazy var reviewImageView = UIImageView()
-    private lazy var gradientView = GradientView(gradientStartColor: .clear, gradientEndColor: .black)
+    private lazy var gradientView = GradientView(gradientStartColor: .clear, gradientEndColor: .mainListDescription)
     
     // MARK: - LifeCycle
     
@@ -49,13 +49,11 @@ extension ReviewPageView {
     
     private func configure() {
         clipsToBounds = true
-        configureGradientView()
         
         reviewImageView.contentMode = .scaleAspectFill
         menuLabel.numberOfLines = 1
         menuLabel.font = .preferredFont(forTextStyle: .footnote)
-        menuLabel.textColor = .zestyColor(.whiteEBEBF5)
-        menuLabel.layer.opacity = 0.6
+        menuLabel.textColor = .staticSecondaryLabel
     }
     
     private func createLayout() {
@@ -75,13 +73,6 @@ extension ReviewPageView {
             $0.trailing.equalToSuperview().inset(80)
             $0.bottom.equalToSuperview()
         }
-    }
-    
-    private func configureGradientView() {
-        let gradientLayer: CAGradientLayer = CAGradientLayer()
-        gradientLayer.frame = gradientView.bounds
-        gradientLayer.colors = [UIColor.white.cgColor, UIColor.black.cgColor]
-        gradientView.layer.addSublayer(gradientLayer)
     }
     
 }

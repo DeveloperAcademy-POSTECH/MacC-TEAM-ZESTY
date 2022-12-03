@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "img_categoryfriends.svg",
+      "filename" : "Empty_Light.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Empty_Dark.svg",
       "idiom" : "universal"
     }
   ],

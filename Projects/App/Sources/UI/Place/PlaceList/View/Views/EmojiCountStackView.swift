@@ -34,7 +34,7 @@ final class EmojiCountStackView: UIStackView {
     private func configureUI(type: Evaluation, count: Int) {
         spacing = 5
         axis = .horizontal
-        countLabel.textColor = .white
+        countLabel.textColor = .staticLabel
         countLabel.font = .systemFont(ofSize: 13)
         imageView.image = type.image
         imageView.contentMode = .scaleAspectFit

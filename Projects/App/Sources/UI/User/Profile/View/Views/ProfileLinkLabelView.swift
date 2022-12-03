@@ -36,16 +36,16 @@ extension ProfileLinkLabelView {
     // MARK: UI Function
     
     private func configureUI() {
-        backgroundColor = .zestyColor(.background)
+        backgroundColor = .clear
         
         instaLabel.text = "인스타"
-        instaLabel.textColor = .black
+        instaLabel.textColor = .label
         instaLabel.font = .systemFont(ofSize: 13, weight: .regular)
         instaLabel.textAlignment = .center
         instaLabel.numberOfLines = 1
 
         mailLabel.text = "문의"
-        mailLabel.textColor = .black
+        mailLabel.textColor = .label
         mailLabel.font = .systemFont(ofSize: 13, weight: .regular)
         mailLabel.textAlignment = .center
         mailLabel.numberOfLines = 1

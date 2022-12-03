@@ -41,7 +41,7 @@ public final class FullWidthBlackButton: UIButton {
     
     public func setButtonState(_ state: Bool) {
         isUserInteractionEnabled = state
-        backgroundColor = state ? .black : .zestyColor(.disabled)
+        backgroundColor = state ? .blackComponent : .disabled
     }
     
 }
@@ -51,8 +51,8 @@ extension FullWidthBlackButton {
     private func configureUI() {
         configuration = .plain()
         configuration?.contentInsets = .init(top: 0, leading: 20, bottom: 0, trailing: 20)
-        tintColor = .white
-        backgroundColor = .black
+        tintColor = .reverseLabel
+        backgroundColor = .blackComponent
         clipsToBounds = true
         layer.cornerRadius = 28
     }

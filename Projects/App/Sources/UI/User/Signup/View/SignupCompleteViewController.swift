@@ -49,7 +49,7 @@ final class SignupCompleteViewController: UIViewController {
 extension SignupCompleteViewController {
     
     private func configureUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .background
         
         navigationItem.setHidesBackButton(true, animated: false)
 

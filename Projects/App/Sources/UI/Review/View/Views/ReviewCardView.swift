@@ -88,7 +88,7 @@ extension ReviewCardView {
         nicknameLabel.text = result.reviewer
         dateLabel.text = result.registeredAt
         categoryLabel.text = result.category
-        categoryLabel.backgroundColor = .red
+        categoryLabel.backgroundColor = .point
         placeNameLabel.text = result.placeName
         placeAddressLabel.text = result.placeAddress
     }
@@ -96,8 +96,7 @@ extension ReviewCardView {
     private func configureUI() {
         clipsToBounds = true
         layer.cornerRadius = 16
-        backgroundColor = .white
-        addShadow(opacity: 0.6, radius: 3)
+        backgroundColor = .cardFill
         
         menuImageView.clipsToBounds = true
         menuImageView.layer.cornerRadius = 16
@@ -126,7 +125,7 @@ extension ReviewCardView {
         dateLabel.font = .preferredFont(forTextStyle: .callout).bold()
         
         evaluationImageView.image = UIImage(.img_reviewfriends_good)
-        evaluationImageView.addShadow(opacity: 0.1, radius: 2)
+        evaluationImageView.layer.applyFigmaShadow(color: .black, opacity: 0.1)
         
         placeStackView.axis = .vertical
         placeStackView.alignment = .leading
@@ -136,7 +135,7 @@ extension ReviewCardView {
         categoryLabel.font = .boldSystemFont(ofSize: 9)
         categoryLabel.clipsToBounds = true
         categoryLabel.layer.cornerRadius = 10
-        categoryLabel.textColor = .white
+        categoryLabel.textColor = .staticLabel
         
         placeNameLabel.font = .preferredFont(forTextStyle: .title2).bold()
         placeNameLabel.numberOfLines = 0
@@ -145,15 +144,15 @@ extension ReviewCardView {
     }
     
     private func reconfigureUI(for isImageExist: Bool) {
-        nicknameStaticLabel.textColor = isImageExist ? .white : .secondaryLabel
-        nicknameLabel.textColor = isImageExist ? .white : .label
-        placeNameLabel.textColor = isImageExist ? .white : .label
-        placeAddressLabel.textColor = isImageExist ? .white : .secondaryLabel
+        nicknameStaticLabel.textColor = isImageExist ? .staticSecondaryLabel : .tertiaryLabel
+        nicknameLabel.textColor = isImageExist ? .staticLabel : .label
+        placeNameLabel.textColor = isImageExist ? .staticLabel : .label
+        placeAddressLabel.textColor = isImageExist ? .staticSecondaryLabel : .tertiaryLabel
         
         backgroundView.isHidden = !isImageExist
         menuImageView.isHidden = !isImageExist
-        dateStaticLabel.textColor = isImageExist ? .white : .clear
-        dateLabel.textColor = isImageExist ? .white : .clear
+        dateStaticLabel.textColor = isImageExist ? .staticSecondaryLabel : .clear
+        dateLabel.textColor = isImageExist ? .staticLabel : .clear
         
     }
     

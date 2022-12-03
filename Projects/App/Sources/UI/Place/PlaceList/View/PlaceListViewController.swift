@@ -175,7 +175,7 @@ extension PlaceListViewController {
     private func configureHierarchy() {
         collectionView = UICollectionView(frame: view.frame, collectionViewLayout: createCollectionViewLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        collectionView.backgroundColor = .systemBackground
+        collectionView.backgroundColor = .clear
         collectionView.delegate = self
         collectionView.prefetchDataSource = self
         collectionView.refreshControl = refreshControl
@@ -233,6 +233,7 @@ extension PlaceListViewController {
 extension PlaceListViewController {
     
     private func configureUI() {
+        view.backgroundColor = .background
         configureNaviBar()
 
         emptyImageView.image = UIImage(.img_emptyfriends_noresult)
@@ -262,7 +263,7 @@ extension PlaceListViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: placeTitle)
         navigationItem.hidesBackButton = true
         
-        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.tintColor = .accent
         navigationController?.navigationBar.isHidden = false
     }
     

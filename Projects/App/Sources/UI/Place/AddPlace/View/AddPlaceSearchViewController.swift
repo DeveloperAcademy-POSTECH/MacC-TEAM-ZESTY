@@ -28,8 +28,8 @@ final class AddPlaceSearchViewController: UIViewController {
         let largeConfig = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .default)
         let largeBoldDoc = UIImage(systemName: "magnifyingglass", withConfiguration: largeConfig)
         $0.setImage(largeBoldDoc, for: .normal)
-        $0.backgroundColor = .black
-        $0.tintColor = .white
+        $0.backgroundColor = .blackComponent
+        $0.tintColor = .reverseLabel
         $0.layer.cornerRadius = 45/2
         $0.clipsToBounds = true
         $0.addTarget(self, action: #selector(searchButtonDidTap), for: .touchUpInside)
@@ -61,6 +61,17 @@ final class AddPlaceSearchViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         viewExitAnalytics()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        let savedTraitCollection = UITraitCollection.current
+        
+        UITraitCollection.current = self.traitCollection
+        searchingTextFieldView.setBorderColor(UIColor.blackComponent.cgColor)
+        
+        UITraitCollection.current = savedTraitCollection
     }
     
     // MARK: - Function
@@ -134,11 +145,11 @@ extension AddPlaceSearchViewController {
 extension AddPlaceSearchViewController {
     
     private func configureUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .background
         
         setNavigationBar()
         
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
         tableView.showsVerticalScrollIndicator = false
@@ -180,7 +191,7 @@ extension AddPlaceSearchViewController {
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .medium)
         ]
         let leftBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonDidTap))
-        leftBarButton.tintColor = .label
+        leftBarButton.tintColor = .accent
         navigationItem.leftBarButtonItem = leftBarButton
     }
     

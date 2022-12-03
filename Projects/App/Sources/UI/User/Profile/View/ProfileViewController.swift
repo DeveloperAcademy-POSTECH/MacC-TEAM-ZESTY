@@ -129,11 +129,11 @@ extension ProfileViewController {
 extension ProfileViewController {
     
     private func configureUI() {
-        view.backgroundColor = .zestyColor(.background)
+        view.backgroundColor = .background
         
         navigationItem.title = "프로필"
         navigationController?.navigationBar.topItem?.backButtonTitle = ""
-        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.tintColor = .accent
         
         profileImageView.image = UIImage(.img_signup)
         profileImageView.contentMode = .scaleAspectFit
@@ -166,7 +166,7 @@ extension ProfileViewController {
         profileUserWithdrawalView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(userWithdrawal)))
         profileUserWithdrawalView.isUserInteractionEnabled = true
         
-        dividerView.backgroundColor = .zestyColor(.grayF6)
+        dividerView.backgroundColor = .grayComponent
     }
     
     private func createLayout() {

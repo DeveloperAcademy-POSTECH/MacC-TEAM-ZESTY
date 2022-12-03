@@ -3,6 +3,16 @@
     {
       "filename" : "btn_applelogin.png",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Dark.png",
+      "idiom" : "universal"
     }
   ],
   "info" : {

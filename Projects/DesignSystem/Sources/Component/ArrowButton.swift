@@ -31,8 +31,8 @@ public final class ArrowButton: UIButton {
     
     public func setDisabled(_ state: Bool) {
         isUserInteractionEnabled = !state
-        tintColor = state ? .lightGray : .black
-        layer.borderColor = state ? UIColor.lightGray.cgColor : UIColor.black.cgColor
+        tintColor = state ? .disabled : .blackComponent
+        layer.borderColor = state ? UIColor.disabled.cgColor : UIColor.blackComponent.cgColor
     }
     
     public func startIndicator() {
@@ -52,13 +52,17 @@ public final class ArrowButton: UIButton {
         activityIndicator.isHidden = true
         activityIndicator.stopAnimating()
     }
+    
+    public func setBorderColor(_ color: CGColor) {
+        layer.borderColor = color
+    }
 }
 
 extension ArrowButton {
     
     private func configureUI() {
-        tintColor = .black
-        backgroundColor = .white
+        tintColor = .accent
+        backgroundColor = .clear
         configuration = .plain()
         configuration?.contentInsets = .init(top: 14.5, leading: 15, bottom: 14.5, trailing: 15)
         clipsToBounds = true

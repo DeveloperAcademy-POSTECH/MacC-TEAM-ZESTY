@@ -40,7 +40,7 @@ extension UITableView {
         let messageLabel: UILabel = {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.text = message
-            $0.textColor = (type == .noresult) ? .zestyColor(.dim) : .label
+            $0.textColor = (type == .noresult) ? .dim : .label
             $0.numberOfLines = 0
             $0.textAlignment = .center
             $0.font = .systemFont(ofSize: 17, weight: .medium)

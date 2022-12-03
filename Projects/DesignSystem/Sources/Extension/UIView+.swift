@@ -41,17 +41,3 @@ public extension UIView {
     }
     
 }
-
-// MARK: - Draw
-
-public extension UIView {
-
-    func addShadow(opacity: Float, radius: CGFloat) {
-        self.layer.masksToBounds = false
-        self.layer.shadowColor = UIColor.lightGray.cgColor
-        self.layer.shadowOffset = CGSize(width: 0, height: 0)
-        self.layer.shadowOpacity = opacity
-        self.layer.shadowRadius = radius
-    }
-    
-}

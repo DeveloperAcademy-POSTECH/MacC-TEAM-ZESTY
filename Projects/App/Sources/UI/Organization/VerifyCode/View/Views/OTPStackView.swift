@@ -19,7 +19,7 @@ final class OTPStackView: UIStackView {
     private lazy var textFieldArray: [OTPTextField] = []
     private var showWarningMessage: Bool = false
     
-    private let textBackgroundColor = UIColor.zestyColor(.grayF6)
+    private let textBackgroundColor = UIColor.codeInputEmpty
     private var remainingStrStack: [String] = []
     
     // output
@@ -81,7 +81,7 @@ extension OTPStackView {
         textField.backgroundColor = textBackgroundColor
         textField.textAlignment = .center
         textField.font = .systemFont(ofSize: 17, weight: .bold)
-        textField.textColor = .white
+        textField.textColor = .reverseLabel
         textField.layer.cornerRadius = 20
         textField.layer.masksToBounds = true
         textField.keyboardType = .numberPad
@@ -112,7 +112,7 @@ extension OTPStackView {
         for textField in textFieldArray {
             if let charToAdd = remainingStrStack.popLast() {
                 textField.text = String(charToAdd)
-                textField.backgroundColor = .black
+                textField.backgroundColor = .codeInputFill
             } else {
                 break
             }
@@ -146,7 +146,7 @@ extension OTPStackView: UITextFieldDelegate {
                     textField.text? = string
                     textField.nextTextField?.becomeFirstResponder()
                 }
-                textField.backgroundColor = .black
+                textField.backgroundColor = .codeInputFill
                 sendOTP()
                 return false
             }
