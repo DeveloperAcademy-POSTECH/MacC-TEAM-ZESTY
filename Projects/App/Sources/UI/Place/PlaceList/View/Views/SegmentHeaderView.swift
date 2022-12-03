@@ -93,10 +93,10 @@ extension SegmentHeaderView {
 extension SegmentHeaderView {
     
     private func configureUI() {
-        backgroundColor = .white
+        backgroundColor = .background
         
         removeBackgroundAndDivider()
-        segmentIndicator.backgroundColor = .black
+        segmentIndicator.backgroundColor = .label
         segmentIndicator.layer.cornerRadius = 1
         segmentIndicator.layer.masksToBounds = true
         
@@ -105,10 +105,10 @@ extension SegmentHeaderView {
         segmentedControl.apportionsSegmentWidthsByContent = true
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 26, weight: .bold),
-                                                 NSAttributedString.Key.foregroundColor: UIColor.lightGray],
+                                                 NSAttributedString.Key.foregroundColor: UIColor.secondaryLabel],
                                                 for: .normal)
         segmentedControl.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 26, weight: .bold),
-                                                 NSAttributedString.Key.foregroundColor: UIColor.black],
+                                                 NSAttributedString.Key.foregroundColor: UIColor.label],
                                                 for: .selected)
         segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
         

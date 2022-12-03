@@ -33,7 +33,7 @@ public extension UIColor {
     
     // MARK: Background
     
-    static let background = appearanceColor(light: .white, dark: .black)
+    static let background = appearanceColor(light: .white, dark: .gray18)
     
     // MARK: Label
     
@@ -49,6 +49,7 @@ public extension UIColor {
     static let dim = appearanceColor(light: .gray54, dark: .grayD0)
     static let point = zestyColor(.red01)
     static let shadow = appearanceColor(light: .black, dark: .clear)
+    static let accent = appearanceColor(light: .black, dark: .white)
     
     // MARK: Component
     
@@ -61,4 +62,5 @@ public extension UIColor {
     static let mainListEmptyBackground = appearanceColor(light: .grayF2, dark: .gray42)
     static let categoryLabelFill = appearanceColor(light: .black, dark: .gray4A)
     static let friendsSelection = appearanceColor(light: .black, dark: .grayD0)
+    static let explanationPopOverFill = appearanceColor(light: .gray42, dark: .grayF2)
 }

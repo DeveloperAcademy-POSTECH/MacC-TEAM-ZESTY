@@ -51,6 +51,7 @@ extension OrganizationListCell {
     
     private func configureUI() {
         addSubviews([orgNameLabel, disclosureIndicator])
+        self.backgroundColor = .clear
         
         selectionStyle = .none
         

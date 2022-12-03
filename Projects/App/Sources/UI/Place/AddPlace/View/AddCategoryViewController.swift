@@ -124,11 +124,12 @@ extension AddCategoryViewController {
     private func configureUI() {
         setNavigationBar()
         
-        view.backgroundColor = .white // zestyColor(.backgroundColor)
+        view.backgroundColor = .background
         categoryCollectionView.register(CategoryIconCell.self, forCellWithReuseIdentifier: "CategoryIconCell")
         categoryCollectionView.isScrollEnabled = false
         categoryCollectionView.delegate = self
         categoryCollectionView.dataSource = self
+        categoryCollectionView.backgroundColor = .clear
     }
     
     private func createLayout() {
@@ -155,7 +156,7 @@ extension AddCategoryViewController {
     
     private func setNavigationBar() {
         let leftBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonDidTap))
-        leftBarButton.tintColor = .label
+        leftBarButton.tintColor = .accent
         navigationItem.leftBarButtonItem = leftBarButton
     }
     

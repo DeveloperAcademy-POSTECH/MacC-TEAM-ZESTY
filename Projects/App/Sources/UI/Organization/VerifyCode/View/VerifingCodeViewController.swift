@@ -31,7 +31,7 @@ final class VerifingCodeViewController: UIViewController {
     
     private let resendStackView = UIStackView()
     private let resendLabel = UILabel()
-    private let resendEamilButton = UIButton(type: .custom)
+    private let resendEmailButton = UIButton(type: .custom)
     
     private let arrowButton = ArrowButton(initialDisable: false)
     
@@ -55,6 +55,17 @@ final class VerifingCodeViewController: UIViewController {
         analytics()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        let savedTraitCollection = UITraitCollection.current
+        
+        UITraitCollection.current = self.traitCollection
+        arrowButton.setBorderColor(UIColor.blackComponent.cgColor)
+        
+        UITraitCollection.current = savedTraitCollection
+    }
+    
     // MARK: - Function
     
     @objc func resendButtonTapped() {
@@ -64,21 +75,21 @@ final class VerifingCodeViewController: UIViewController {
         viewModel.resendEamil()
         viewModel.startTimer()
         
-        resendEamilButton.isEnabled = false
+        resendEmailButton.isEnabled = false
         
         DispatchQueue.main.async {
             self.warningMessage.isHidden = true
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.1) {
-            self.resendEamilButton.isEnabled = true
+            self.resendEmailButton.isEnabled = true
         }
     }
     
     private func showToastMessage() {
         let toastLabel = UILabel()
-        toastLabel.backgroundColor = .black
-        toastLabel.textColor = .white
+        toastLabel.backgroundColor = .blackComponent
+        toastLabel.textColor = .reverseLabel
         toastLabel.font = .systemFont(ofSize: 16.0, weight: .regular)
         toastLabel.textAlignment = .center
         toastLabel.text = "메일을 다시 보냈어요"
@@ -137,7 +148,7 @@ extension VerifingCodeViewController {
             .sink { [weak self] timerText in
                 guard let self = self else { return }
                 self.timerLabel.text = timerText
-                self.timerLabel.textColor = timerText.count > 5 ? .zestyColor(.point) : .label
+                self.timerLabel.textColor = timerText.count > 5 ? .point : .label
             }
             .store(in: &cancelBag)
         
@@ -198,14 +209,14 @@ extension VerifingCodeViewController {
 extension VerifingCodeViewController {
     
     private func configureUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .background
         
         navigationController?.navigationBar.tintColor = .label
         navigationController?.navigationBar.topItem?.title = ""
         
         warningMessage.text = "잘못된 코드예요."
         warningMessage.isHidden = true
-        warningMessage.textColor = .zestyColor(.point)
+        warningMessage.textColor = .point
         
         timerLabel.text = viewModel.timerText
         
@@ -218,10 +229,10 @@ extension VerifingCodeViewController {
         resendLabel.font = .systemFont(ofSize: 13, weight: .regular)
         resendLabel.numberOfLines = 0
         
-        resendEamilButton.setTitle("다시 보내기", for: .normal)
-        resendEamilButton.setTitleColor(.label, for: .normal)
-        resendEamilButton.titleLabel?.font = .systemFont(ofSize: 13, weight: .bold)
-        resendEamilButton.addTarget(self, action: #selector(resendButtonTapped), for: .touchUpInside)
+        resendEmailButton.setTitle("다시 보내기", for: .normal)
+        resendEmailButton.setTitleColor(.label, for: .normal)
+        resendEmailButton.titleLabel?.font = .systemFont(ofSize: 13, weight: .bold)
+        resendEmailButton.addTarget(self, action: #selector(resendButtonTapped), for: .touchUpInside)
         
         arrowButton.isHidden = true
         arrowButton.startIndicator()
@@ -229,7 +240,7 @@ extension VerifingCodeViewController {
     
     private func createLayout() {
         view.addSubviews([titleView, warningMessage, otpStackView, timerLabel, resendStackView, arrowButton])
-        resendStackView.addArrangedSubviews([resendLabel, resendEamilButton])
+        resendStackView.addArrangedSubviews([resendLabel, resendEmailButton])
         
         titleView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)

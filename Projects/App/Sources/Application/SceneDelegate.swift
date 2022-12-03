@@ -7,6 +7,7 @@
 
 import Combine
 import UIKit
+import DesignSystem
 import KakaoSDKAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -35,7 +36,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
         
         /// remove navigation back button text and change color
-        navigationController.navigationBar.tintColor = .black
+        navigationController.navigationBar.tintColor = .accent
         navigationController.navigationBar.topItem?.title = ""
     }
     

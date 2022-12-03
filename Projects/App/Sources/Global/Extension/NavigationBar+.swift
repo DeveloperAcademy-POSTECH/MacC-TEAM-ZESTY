@@ -17,7 +17,7 @@ extension UINavigationBar {
             appearance.configureWithOpaqueBackground()
             
             // 네비게이션바 배경색
-            appearance.backgroundColor = .white
+            appearance.backgroundColor = .background
             
             // 아래 회색 라인 없애기
             appearance.shadowColor = .clear

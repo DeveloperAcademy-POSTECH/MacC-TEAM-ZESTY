@@ -24,8 +24,8 @@ final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
         
     private lazy var categoryTagLabel: BasePaddingLabel = {
         $0.font = .systemFont(ofSize: 11, weight: .bold)
-        $0.textColor = .white
-        $0.backgroundColor = .black
+        $0.textColor = .staticLabel
+        $0.backgroundColor = .categoryLabelFill
         $0.layer.cornerRadius = 12
         $0.layer.masksToBounds = true
         return $0
@@ -38,7 +38,7 @@ final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     }(UIButton(type: .custom))
 
     private lazy var placeNameLabel: UILabel = {
-        $0.textColor = .black
+        $0.textColor = .label
         $0.font = .systemFont(ofSize: 26, weight: .bold)
         return $0
     }(UILabel())
@@ -48,7 +48,7 @@ final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     private var badView = EvaluationItemView()
     
     private lazy var addressView: UIView = {
-        $0.backgroundColor = .zestyColor(.grayF6)
+        $0.backgroundColor = .grayComponent
         $0.layer.cornerRadius = 10
         return $0
     }(UIView())
@@ -77,13 +77,13 @@ final class PlaceInfoHeaderView: UITableViewHeaderFooterView {
     
     private lazy var reviewTitleLabel: UILabel = {
         $0.text = "리뷰"
-        $0.textColor = .black
+        $0.textColor = .label
         $0.font = .systemFont(ofSize: 26, weight: .bold)
         return $0
     }(UILabel())
     
     private lazy var lineView: UIView = {
-        $0.backgroundColor = .black
+        $0.backgroundColor = .label
         $0.layer.cornerRadius = 1
         $0.layer.masksToBounds = true
         return $0
@@ -155,7 +155,7 @@ extension PlaceInfoHeaderView {
 extension PlaceInfoHeaderView {
     
     private func configureUI() {
-        contentView.backgroundColor = .zestyColor(.background)
+        contentView.backgroundColor = .background
     }
     
     private func createLayout() {

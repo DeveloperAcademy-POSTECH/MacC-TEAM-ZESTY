@@ -56,6 +56,21 @@ final class DomainSettingViewController: UIViewController {
         emailTextField.becomeFirstResponder()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        let savedTraitCollection = UITraitCollection.current
+        
+        UITraitCollection.current = self.traitCollection
+        if !viewModel.isInputValid || viewModel.shouldDisplayWarning {
+            arrowButton.setBorderColor(UIColor.disabled.cgColor)
+        } else {
+            arrowButton.setBorderColor(UIColor.blackComponent.cgColor)
+        }
+        
+        UITraitCollection.current = savedTraitCollection
+    }
+    
     // MARK: - Function
     
     @objc func arrowButtonTapped() {
@@ -155,12 +170,12 @@ extension DomainSettingViewController {
 extension DomainSettingViewController {
     
     private func configureUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .background
         
-        self.navigationController?.navigationBar.tintColor = .black
+        self.navigationController?.navigationBar.tintColor = .accent
         self.navigationController?.navigationBar.topItem?.title = ""
         
-        emailInputView.backgroundColor = .black
+        emailInputView.backgroundColor = .blackComponent
         emailInputView.layer.cornerRadius = 25
         emailInputView.layer.masksToBounds = true
         
@@ -170,20 +185,20 @@ extension DomainSettingViewController {
         emailStackView.alignment = .fill
 
         emailTextField.becomeFirstResponder()
-        emailTextField.attributedPlaceholder = .init(attributedString: NSAttributedString(string: "이메일", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]))
-        emailTextField.textColor = .white
+        emailTextField.attributedPlaceholder = .init(attributedString: NSAttributedString(string: "이메일", attributes: [NSAttributedString.Key.foregroundColor: UIColor.reverseSecondaryLabel]))
+        emailTextField.textColor = .reverseLabel
         emailTextField.font = .systemFont(ofSize: 17, weight: .medium)
         emailTextField.keyboardType = .emailAddress
         emailTextField.autocapitalizationType = .none
         
-        domainPlaceholder.textColor = .white
+        domainPlaceholder.textColor = .reverseLabel
         domainPlaceholder.text = "@\(viewModel.organization.domain)"
         domainPlaceholder.font = .systemFont(ofSize: 17, weight: .medium)
         domainPlaceholder.setContentCompressionResistancePriority(.init(1000), for: .horizontal)
         
         arrowButton.addTarget(self, action: #selector(arrowButtonTapped), for: .touchUpInside)
         
-        emailDuplicatedLabel.textColor = .red
+        emailDuplicatedLabel.textColor = .point
         emailDuplicatedLabel.text = "이미 사용된 이메일이에요."
         emailDuplicatedLabel.font = .systemFont(ofSize: 13, weight: .regular)
     }

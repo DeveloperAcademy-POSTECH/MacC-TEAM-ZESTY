@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "img_errorfriends.svg",
+      "filename" : "Error_Light.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Error_Dark.svg",
       "idiom" : "universal"
     }
   ],

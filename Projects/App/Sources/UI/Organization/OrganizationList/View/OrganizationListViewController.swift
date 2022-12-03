@@ -35,6 +35,17 @@ final class OrganizationListViewController: UIViewController {
         bindUI()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        let savedTraitCollection = UITraitCollection.current
+        
+        UITraitCollection.current = self.traitCollection
+        searchingTextFieldView.setBorderColor(UIColor.blackComponent.cgColor)
+        
+        UITraitCollection.current = savedTraitCollection
+    }
+    
     // MARK: Function
     
     @objc func searchButtonTapped() {
@@ -132,7 +143,7 @@ extension OrganizationListViewController: UITableViewDelegate {
 extension OrganizationListViewController {
     
     private func configureUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .background
         
         navigationItem.title = "대학 선택"
         navigationController?.navigationBar.titleTextAttributes = [
@@ -146,8 +157,8 @@ extension OrganizationListViewController {
         let largeConfig = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .default)
         let largeBoldDoc = UIImage(systemName: "magnifyingglass", withConfiguration: largeConfig)
         searchButton.setImage(largeBoldDoc, for: .normal)
-        searchButton.backgroundColor = .black
-        searchButton.tintColor = .white
+        searchButton.backgroundColor = .blackComponent
+        searchButton.tintColor = .reverseLabel
         searchButton.layer.cornerRadius = 45/2
         searchButton.clipsToBounds = true
         searchButton.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
@@ -156,11 +167,12 @@ extension OrganizationListViewController {
         tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.backgroundColor = .background
     }
     
     private func setNavigationBar() {
         let rightBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonDidTap))
-        rightBarButton.tintColor = .label
+        rightBarButton.tintColor = .accent
         navigationItem.leftBarButtonItem = rightBarButton
     }
     
@@ -183,7 +195,7 @@ extension OrganizationListViewController {
         tableView.snp.makeConstraints { make in
             make.top.equalTo(searchingTextFieldView.snp.bottom).offset(16)
             make.horizontalEdges.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.bottom.equalTo(view.snp.bottom)
         }
     }
     

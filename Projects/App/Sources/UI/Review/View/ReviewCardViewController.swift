@@ -104,7 +104,7 @@ extension ReviewCardViewController {
 extension ReviewCardViewController {
     
     private func configureUI() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .background
         navigationController?.navigationBar.topItem?.title = ""
         
         let xmarkConfig = UIImage.SymbolConfiguration(weight: .bold)
@@ -117,16 +117,18 @@ extension ReviewCardViewController {
         
         titleView.titleLabel.text = "리뷰 등록 완료 🎉"
         
-        let config = UIImage.SymbolConfiguration(paletteColors: [.red])
+        let config = UIImage.SymbolConfiguration(paletteColors: [.point ?? .red])
         let downloadImage = UIImage(systemName: "square.and.arrow.down", withConfiguration: config)
         saveButton.setImage(downloadImage, for: .normal)
         saveButton.setTitle(" 리뷰 카드 저장하기", for: .normal)
-        saveButton.setTitleColor(.red, for: .normal)
+        saveButton.setTitleColor(.point, for: .normal)
         saveButton.titleLabel?.font = .preferredFont(forTextStyle: .footnote).bold()
         saveButton.addTarget(self, action: #selector(saveButtonTouched), for: .touchUpInside)
         
         completeButton.setTitle("완료", for: .normal)
         completeButton.addTarget(self, action: #selector(completeButtonTouched), for: .touchUpInside)
+        
+        cardView.layer.applyFigmaShadow()
     }
     
     private func createLayout() {

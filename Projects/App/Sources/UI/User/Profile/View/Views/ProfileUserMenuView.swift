@@ -41,10 +41,10 @@ extension ProfileUserMenuView {
     // MARK: UI Function
     
     private func configureUI() {
-        backgroundColor = .zestyColor(.background)
+        backgroundColor = .clear
 
         userMenuLabel.font = .systemFont(ofSize: 16, weight: .medium)
-        userMenuLabel.textColor = .zestyColor(.dim)
+        userMenuLabel.textColor = .dim
         userMenuLabel.textAlignment = .left
         userMenuLabel.numberOfLines = 1
     }

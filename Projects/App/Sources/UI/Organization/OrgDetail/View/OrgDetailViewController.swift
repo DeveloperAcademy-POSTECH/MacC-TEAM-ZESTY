@@ -115,14 +115,14 @@ extension OrgDetailViewController {
 extension OrgDetailViewController {
     
     private func configureUI() {
-        view.backgroundColor = .zestyColor(.background)
+        view.backgroundColor = .background
         
         orgDetailInformationView1 = OrgDetailInformationView()
         orgDetailInformationView2 = OrgDetailInformationView()
         orgDetailInformationView3 = OrgDetailInformationView()
         
         orgNameLabel.text = UserInfoManager.userInfo?.userOrgName ?? "(인증대학없음)"
-        orgNameLabel.textColor = .black
+        orgNameLabel.textColor = .label
         orgNameLabel.font = UIFont.systemFont(ofSize: CGFloat(26), weight: .bold)
         orgNameLabel.textAlignment = .center
         orgNameLabel.numberOfLines = 2

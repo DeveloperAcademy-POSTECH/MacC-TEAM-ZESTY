@@ -48,14 +48,14 @@ final class DomainSettingCompleteViewController: UIViewController {
 extension DomainSettingCompleteViewController {
     
     private func configureUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .background
         
         navigationItem.setHidesBackButton(true, animated: true)
         
         cardView.clipsToBounds = true
         cardView.layer.cornerRadius = 16
         cardView.layer.applyFigmaShadow(color: .black, opacity: 0.25, xCoord: 0, yCoord: 0, blur: 5, spread: 0)
-        cardView.backgroundColor = .white
+        cardView.backgroundColor = .cardFill
         
         signupImageView.image = UIImage(.img_signup)
         signupImageView.contentMode = .scaleAspectFit
@@ -67,7 +67,7 @@ extension DomainSettingCompleteViewController {
         
         cardUserNameLabel.text = viewModel.userName
         cardUserNameLabel.font = .systemFont(ofSize: 16, weight: .medium)
-        cardUserNameLabel.textColor = .zestyColor(.gray3C3C43)
+        cardUserNameLabel.textColor = .secondaryLabel
         
         startButton.setTitle("완료", for: .normal)
         startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)

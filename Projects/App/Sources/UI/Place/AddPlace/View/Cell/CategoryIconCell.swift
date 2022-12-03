@@ -28,7 +28,7 @@ final class CategoryIconCell: UICollectionViewCell {
     }(UIImageView())
     
     private let nameLabel: UILabel = {
-        $0.textColor = .black
+        $0.textColor = .label
         $0.textAlignment = .center
         $0.numberOfLines = 2
         $0.font = .systemFont(ofSize: 14, weight: .medium)
@@ -39,14 +39,14 @@ final class CategoryIconCell: UICollectionViewCell {
         didSet {
             if isSelected {
                 UIView.animate(withDuration: 0.1) { [weak self] in
-                    self?.contentView.backgroundColor = .black
-                    self?.nameLabel.textColor = .white
+                    self?.contentView.backgroundColor = .friendsSelection
+                    self?.nameLabel.textColor = .reverseLabel
                     self?.input.send(.categoryCellDidTap(category: self?.categoryId ?? 0))
                 }
             } else {
                 UIView.animate(withDuration: 0.1) {
-                    self.contentView.backgroundColor = .white
-                    self.nameLabel.textColor = .black
+                    self.contentView.backgroundColor = .clear
+                    self.nameLabel.textColor = .label
                 }
             }
             FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
@@ -76,7 +76,7 @@ final class CategoryIconCell: UICollectionViewCell {
     
     func configure(with category: Category, viewModel: AddPlaceViewModel) {
         _ = viewModel.transform(input: input.eraseToAnyPublisher())
-        self.backgroundColor = .white
+        self.backgroundColor = .clear
         self.layer.cornerRadius = 10
         self.clipsToBounds = true
         self.categoryId = category.id

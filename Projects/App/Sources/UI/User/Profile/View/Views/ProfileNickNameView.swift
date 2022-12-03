@@ -61,7 +61,7 @@ extension ProfileNickNameView {
 extension ProfileNickNameView {
 
     private func configureUI() {
-        backgroundColor = .zestyColor(.background)
+        backgroundColor = .clear
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(changeNickNameImageViewClicked))
         self.addGestureRecognizer(tapGesture)
@@ -69,11 +69,11 @@ extension ProfileNickNameView {
         
         changeNickNameImageView.image = UIImage(systemName: "pencil")
         changeNickNameImageView.contentMode = .scaleAspectFit
-        changeNickNameImageView.tintColor = .black
-        changeNickNameImageView.backgroundColor = .zestyColor(.background)
+        changeNickNameImageView.tintColor = .label
+        changeNickNameImageView.backgroundColor = .clear
 
-        nickNameLabel.backgroundColor = .zestyColor(.background)
-        nickNameLabel.textColor = .black
+        nickNameLabel.backgroundColor = .clear
+        nickNameLabel.textColor = .label
         nickNameLabel.font = UIFont.systemFont(ofSize: CGFloat(22), weight: .bold)
         nickNameLabel.text = viewModel?.userNickname
     }

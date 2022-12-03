@@ -127,7 +127,7 @@ extension PlaceDetailViewController {
 extension PlaceDetailViewController {
     
     private func configureUI() {
-        tableView.backgroundColor = .zestyColor(.background)
+        tableView.backgroundColor = .background
         tableView.delegate = self
         tableView.dataSource = self
         tableView.showsVerticalScrollIndicator = false
@@ -151,8 +151,8 @@ extension PlaceDetailViewController {
         ]
         let leftBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backButtonDidTap))
         let rightBarButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "exclamationmark.bubble"), style: .plain, target: self, action: #selector(reportButtonDidTap))
-        leftBarButton.tintColor = .black
-        rightBarButton.tintColor = .black
+        leftBarButton.tintColor = .accent
+        rightBarButton.tintColor = .accent
         navigationItem.leftBarButtonItem = leftBarButton
         navigationItem.rightBarButtonItem = rightBarButton
     }

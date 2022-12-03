@@ -3,6 +3,16 @@
     {
       "filename" : "btn_side_plus.svg",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "btn_side_plus_dark.svg",
+      "idiom" : "universal"
     }
   ],
   "info" : {
