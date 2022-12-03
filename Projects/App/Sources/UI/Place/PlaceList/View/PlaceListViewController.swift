@@ -63,6 +63,18 @@ final class PlaceListViewController: UIViewController {
     
     // MARK: - Function
     
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("place_list_viewed", parameters: [
+            AnalyticsParameterScreenName: "place_list"
+        ])
+    }
+
+}
+
+// MARK: - Bind Function
+
+extension PlaceListViewController {
+    
     private func bind() {
         UserInfoManager.shared.isNameFetched
             .receive(on: DispatchQueue.main)
@@ -84,12 +96,6 @@ final class PlaceListViewController: UIViewController {
             .store(in: &cancelBag)
     }
     
-    private func analytics() {
-        FirebaseAnalytics.Analytics.logEvent("place_list_viewed", parameters: [
-            AnalyticsParameterScreenName: "place_list"
-        ])
-    }
-
 }
 
 extension PlaceListViewController: UICollectionViewDataSourcePrefetching, UICollectionViewDelegate {
