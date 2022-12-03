@@ -61,6 +61,12 @@ final class PlaceListViewController: UIViewController {
         bindResult()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // TODO: 계속 sink 가 쌓이면서 중복 실행되는 버그 해결을 위해 임시로 cancelBag 초기화
+        cancelBag.removeAll()
+    }
+    
     // MARK: - Function
     
     private func analytics() {
@@ -80,7 +86,9 @@ extension PlaceListViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self = self else { return }
+                // TODO: 계속 sink 가 쌓이면서 중복 실행되는 버그가 있음. cancelBag에서 binding이 제대로 해제가 안되는 것 같음.
                 self.placeTitle.text = UserInfoManager.userInfo?.userOrgName
+                self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: self.placeTitle)
             }
             .store(in: &cancelBag)
     }
