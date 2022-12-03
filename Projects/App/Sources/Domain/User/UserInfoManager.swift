@@ -127,7 +127,7 @@ extension UserInfoManager: ErrorMapper {
                 case .finished: break
                 }
             } receiveValue: { [weak self] orgList in
-                UserInfoManager.userInfo?.userOrgName = orgList.first(where: {$0.id == orgID})?.name ?? "(대학 찾을 수 없음)"
+                UserInfoManager.userInfo?.userOrgName = orgList.first(where: {$0.id == orgID})?.name ?? "(인증대학없음)"
                 self?.isNameFetched.send(true)
             }
             .store(in: &cancelBag)
