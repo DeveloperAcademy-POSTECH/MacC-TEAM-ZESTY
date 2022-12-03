@@ -24,14 +24,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         let userAuthToken = KeyChainManager.read(key: .authToken)
         let userNickName = UserInfoManager.userInfo?.userNickname
-        let organizationID = UserInfoManager.userInfo?.userOrganization
         let isEmptyOrganization = UserInfoManager.userInfo?.userOrganization.isEmpty
         let navigationController = UINavigationController(rootViewController: ThirdPartyLoginViewController())
         // 정상적으로 가입을 한경우
         if userAuthToken != nil && userNickName != nil && isEmptyOrganization == false {
-            if UserInfoManager.userInfo?.userOrgName == nil, let orgID = organizationID?.first {
-                UserInfoManager.shared.fetchOrganizationList(orgID: orgID)
-            }
             navigationController.pushViewController(PlaceListViewController(), animated: false)
         }
         window.rootViewController = navigationController

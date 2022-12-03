@@ -88,10 +88,6 @@ final class ThirdPartyLoginViewModel {
                         self.shouldSetOrganizationSubject.send(true)
                         return
                     }
-                    let userOrganization = UserInfoManager.userInfo?.userOrganization
-                    if UserInfoManager.userInfo?.userOrgName == nil, let orgID = userOrganization?.first {
-                        UserInfoManager.shared.fetchOrganizationList(orgID: orgID)
-                    }
                     self.shouldSetNicknameSubject.send(false)
                 } else {
                     self.shouldSetNicknameSubject.send(true)

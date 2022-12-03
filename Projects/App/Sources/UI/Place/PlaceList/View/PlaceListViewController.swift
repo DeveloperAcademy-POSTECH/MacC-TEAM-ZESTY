@@ -271,6 +271,12 @@ extension PlaceListViewController {
         let userInfoItem = UIBarButtonItem(image: personCropCircle, style: .plain, target: self, action: #selector(userInfoButtonTapped))
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(orgDetailButtonTapped))
         
+        // TODO: 여러 조직을 가입을 대비하여 확장성 있게 구조 개선
+        if UserInfoManager.userInfo?.userOrgName != nil {
+            placeTitle.text = UserInfoManager.userInfo?.userOrgName
+        } else if let orgID = UserInfoManager.userInfo?.userOrganization.first {
+            UserInfoManager.shared.fetchOrganizationList(orgID: orgID)
+        }
         placeTitle.text = UserInfoManager.userInfo?.userOrgName ?? "(인증대학없음)"
         placeTitle.font = .systemFont(ofSize: 17, weight: .bold)
         placeTitle.isUserInteractionEnabled = true
