@@ -68,10 +68,17 @@ extension PlaceListViewModel: ErrorMapper {
     }
     
     func initialFetch() {
-        placeType = .hot
-        prefetch(at: [1], willUpdate: false)
-        placeType = .whole
-        prefetch(at: [1])
+        if placeType == .whole {
+            placeType = .hot
+            prefetch(at: [1], willUpdate: false)
+            placeType = .whole
+            prefetch(at: [1])
+        } else if placeType == .hot {
+            placeType = .whole
+            prefetch(at: [1], willUpdate: false)
+            placeType = .hot
+            prefetch(at: [1])
+        }
     }
     
     func prefetch(at rows: [Int], willUpdate: Bool = true) {
