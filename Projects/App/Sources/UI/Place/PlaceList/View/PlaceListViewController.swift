@@ -3,7 +3,8 @@
 //  App
 //
 //  Created by 김태호 on 2022/10/25.
-//  Updated by 고반 on 2022/12/03.
+//  Updated by 리아 on 2022/11/01.
+//  Updated userOrg by 고반 on 2022/12/03.
 //  Copyright (c) 2022 zesty. All rights reserved.
 //
 
