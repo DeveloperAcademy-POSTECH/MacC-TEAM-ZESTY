@@ -83,8 +83,8 @@ final class ThirdPartyLoginViewModel {
                         self.shouldSetNicknameSubject.send(true)
                         return
                     }
-                    let isEmptyOrganization = UserInfoManager.userInfo?.userOrganization.isEmpty
-                    if isEmptyOrganization == true {
+                    let isEmptyOrganization = UserInfoManager.userInfo?.userOrganization.isEmpty ?? true
+                    if isEmptyOrganization {
                         self.shouldSetOrganizationSubject.send(true)
                         return
                     }
