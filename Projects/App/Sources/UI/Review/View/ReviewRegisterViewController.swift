@@ -113,6 +113,19 @@ extension ReviewRegisterViewController: UIImagePickerControllerDelegate, UINavig
             }
             .store(in: &cancelBag)
         
+        viewModel.isRegisterFail
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errorMessage in
+                print(errorMessage)
+                let alert = UIAlertController(title: "리뷰 등록 실패",
+                                              message: errorMessage,
+                                              preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "확인", style: .default)
+                alert.addAction(okAction)
+                self?.present(alert, animated: false)
+            }
+            .store(in: &cancelBag)
+        
         viewModel.$isRegisterPossible
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isUploaded in

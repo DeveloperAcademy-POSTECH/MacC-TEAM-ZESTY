@@ -51,9 +51,10 @@ extension ReviewRegisterUseCase {
                         menuName: String? = nil,
                         image: String? = nil,
                         grade: Evaluation) -> AnyPublisher<ReviewDetailDTO, NetworkError> {
-        // TODO: userDefaults 에 유저 아이디 꼭!! 저장해야함
-//        UserInfoManager.userInfo?.userID = 11
-        let user = UserInfoManager.userInfo?.userID ?? 11
+
+        guard let user = UserInfoManager.userInfo?.userID else {
+            return Fail(error: NetworkError.unauthorized("유저 아이디를 알 수 없습니다")).eraseToAnyPublisher()
+        }
         let reviewDTO = RegisterReviewDTO(placeId: placeId,
                                    menuName: menuName,
                                    image: image,

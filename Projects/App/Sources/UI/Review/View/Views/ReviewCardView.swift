@@ -69,7 +69,7 @@ extension ReviewCardView {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] image in
                 guard let self = self else { return }
-                let imageExist = !image.isEmpty
+                let imageExist = image != nil
                 self.reconfigureUI(for: imageExist)
                 self.remakeLayout(with: imageExist)
             }
