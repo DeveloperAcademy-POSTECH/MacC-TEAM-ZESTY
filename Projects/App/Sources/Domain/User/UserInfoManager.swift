@@ -7,8 +7,17 @@
 //
 
 import Foundation
+import Combine
 
 final class UserInfoManager {
+    
+    public static let shared = UserInfoManager()
+    
+    private var useCase = UserInfoManagerUseCase()
+    private var cancelBag = Set<AnyCancellable>()
+    public var isNameFetched = PassthroughSubject<Bool, Never>()
+        
+    private init() {}
     
     private enum UserInfoKeys: String, CaseIterable {
         case userNickname
@@ -100,4 +109,27 @@ final class UserInfoManager {
         UserInfoManager.userInfo?.userOrganization = userOrganization
         UserInfoManager.userInfo?.userOrgName = userOrgName
     }
+    
+}
+
+extension UserInfoManager: ErrorMapper {
+    
+    // TODO: fetchOrganizationList 와 userOrgName 업데이트 분리
+    func fetchOrganizationList(orgID: Int) {
+        useCase.fetchOrganizationList()
+            .sink { [weak self] error in
+                guard let self = self else { return }
+                switch error {
+                case .failure(let error):
+                    let errorMessage = self.errorMessage(for: error)
+                    print(errorMessage)
+                case .finished: break
+                }
+            } receiveValue: { [weak self] orgList in
+                UserInfoManager.userInfo?.userOrgName = orgList.first(where: {$0.id == orgID})?.name ?? "(인증대학없음)"
+                self?.isNameFetched.send(true)
+            }
+            .store(in: &cancelBag)
+    }
+    
 }

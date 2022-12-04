@@ -4,6 +4,7 @@
 //
 //  Created by 김태호 on 2022/10/25.
 //  Updated by 리아 on 2022/11/01.
+//  Updated userOrg by 고반 on 2022/12/03.
 //  Copyright (c) 2022 zesty. All rights reserved.
 //
 
@@ -33,6 +34,8 @@ final class PlaceListViewController: UIViewController {
     private var emptyImageView = UIImageView()
     private var emptyLabel = UILabel()
     
+    private let placeTitle = UILabel()
+    
     // MARK: - LifeCycle
     
     init(viewModel: PlaceListViewModel = PlaceListViewModel()) {
@@ -50,17 +53,48 @@ final class PlaceListViewController: UIViewController {
         configureDataSource()
         createLayout()
         configureUI()
+        bind()
         analytics()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        bind()
+        bindResult()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // TODO: 계속 sink 가 쌓이면서 중복 실행되는 버그 해결을 위해 임시로 cancelBag 초기화
+        cancelBag.removeAll()
     }
     
     // MARK: - Function
     
+    private func analytics() {
+        FirebaseAnalytics.Analytics.logEvent("place_list_viewed", parameters: [
+            AnalyticsParameterScreenName: "place_list"
+        ])
+    }
+
+}
+
+// MARK: - Bind Function
+
+extension PlaceListViewController {
+    
     private func bind() {
+        UserInfoManager.shared.isNameFetched
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                // TODO: 계속 sink 가 쌓이면서 중복 실행되는 버그가 있음. cancelBag에서 binding이 제대로 해제가 안되는 것 같음.
+                self.placeTitle.text = UserInfoManager.userInfo?.userOrgName
+                self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: self.placeTitle)
+            }
+            .store(in: &cancelBag)
+    }
+    
+    private func bindResult() {
         viewModel.$result
             .receive(on: DispatchQueue.main)
             .sink { [weak self] placeList in
@@ -71,12 +105,6 @@ final class PlaceListViewController: UIViewController {
             .store(in: &cancelBag)
     }
     
-    private func analytics() {
-        FirebaseAnalytics.Analytics.logEvent("place_list_viewed", parameters: [
-            AnalyticsParameterScreenName: "place_list"
-        ])
-    }
-
 }
 
 extension PlaceListViewController: UICollectionViewDataSourcePrefetching, UICollectionViewDelegate {
@@ -251,9 +279,14 @@ extension PlaceListViewController {
         let searchItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchButtonTapped))
         let personCropCircle = UIImage(systemName: "person.crop.circle")
         let userInfoItem = UIBarButtonItem(image: personCropCircle, style: .plain, target: self, action: #selector(userInfoButtonTapped))
-        let placeTitle = UILabel()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(orgDetailButtonTapped))
-
+        
+        // TODO: 여러 조직을 가입을 대비하여 확장성 있게 구조 개선
+        if UserInfoManager.userInfo?.userOrgName != nil {
+            placeTitle.text = UserInfoManager.userInfo?.userOrgName
+        } else if let orgID = UserInfoManager.userInfo?.userOrganization.first {
+            UserInfoManager.shared.fetchOrganizationList(orgID: orgID)
+        }
         placeTitle.text = UserInfoManager.userInfo?.userOrgName ?? "(인증대학없음)"
         placeTitle.font = .systemFont(ofSize: 17, weight: .bold)
         placeTitle.isUserInteractionEnabled = true
