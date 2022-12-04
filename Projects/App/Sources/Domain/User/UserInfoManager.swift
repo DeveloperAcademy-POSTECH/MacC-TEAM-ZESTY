@@ -8,13 +8,18 @@
 
 import Foundation
 import Combine
-import Network
 
 final class UserInfoManager {
     
     public static let shared = UserInfoManager()
     private var cancelBag = Set<AnyCancellable>()
     public var isNameFetched = PassthroughSubject<Bool, Never>()
+        
+    private init(cancelBag: Set<AnyCancellable> = Set<AnyCancellable>(), useCase: UserInfoManagerUseCase = UserInfoManagerUseCase(), isNameFetched: PassthroughSubject<Bool, Never> = PassthroughSubject<Bool, Never>()) {
+        self.cancelBag = cancelBag
+        self.useCase = useCase
+        self.isNameFetched = isNameFetched
+    }
     
     private enum UserInfoKeys: String, CaseIterable {
         case userNickname
