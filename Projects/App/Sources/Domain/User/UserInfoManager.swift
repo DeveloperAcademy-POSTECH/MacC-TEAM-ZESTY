@@ -12,6 +12,8 @@ import Combine
 final class UserInfoManager {
     
     public static let shared = UserInfoManager()
+    
+    private var useCase = UserInfoManagerUseCase()
     private var cancelBag = Set<AnyCancellable>()
     public var isNameFetched = PassthroughSubject<Bool, Never>()
         
@@ -118,14 +120,9 @@ extension UserInfoManager: ErrorMapper {
     
     // TODO: fetchOrganizationList 와 userOrgName 업데이트 분리
     func fetchOrganizationList(orgID: Int) {
-        OrganizationAPI.fetchOrgList()
-            .map { orgList in
-                orgList.map { Organization(dto: $0) }
-            }
-            .eraseToAnyPublisher()
+        useCase.fetchOrganizationList()
             .sink { [weak self] error in
                 guard let self = self else { return }
-                
                 switch error {
                 case .failure(let error):
                     let errorMessage = self.errorMessage(for: error)
