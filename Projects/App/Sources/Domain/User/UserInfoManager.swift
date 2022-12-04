@@ -111,6 +111,7 @@ final class UserInfoManager {
 
 extension UserInfoManager: ErrorMapper {
     
+    // TODO: fetchOrganizationList 와 userOrgName 업데이트 분리
     func fetchOrganizationList(orgID: Int) {
         OrganizationAPI.fetchOrgList()
             .map { orgList in
