@@ -79,6 +79,7 @@ extension ProfileLinkButtonView {
         mailButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
             make.centerY.equalTo(instaButton.snp.centerY)
+            make.size.equalTo(60)
         }
         
     }
