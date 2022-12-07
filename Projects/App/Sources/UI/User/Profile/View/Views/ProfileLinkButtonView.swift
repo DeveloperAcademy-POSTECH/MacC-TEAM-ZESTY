@@ -34,7 +34,7 @@ final class ProfileLinkButtonView: UIView {
 
     @objc func instaButtonDidTap() {
         instaButton.showAnimation {
-            UrlUtils.openExternalLink(urlStr: "https://www.instagram.com/kingbob_ne/")
+            UrlUtils.openExternalLink(urlStr: "https://www.instagram.com/zesty__official/")
         }
         FirebaseAnalytics.Analytics.logEvent(AnalyticsEventSelectItem, parameters: [
             AnalyticsParameterItemListName: "instagram_move"
@@ -79,6 +79,7 @@ extension ProfileLinkButtonView {
         mailButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
             make.centerY.equalTo(instaButton.snp.centerY)
+            make.size.equalTo(60)
         }
         
     }
